@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { loadBugs, getUnresolvedBugs, resolveBug } from "../store/bugs";
 import { useDispatch, useSelector } from "react-redux";
-import { loggin, getUser } from "../store/auth";
+import { login, getUser, selectToken } from "../store/auth";
 
 function Login(props) {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.entities.auth);
   const name = useSelector((state) => state.entities.auth.loading);
+  // const token = useSelector(selectToken);
+  // console.log(token);
 
   useEffect(() => {
     // const email = "timon@posti.fi";
@@ -16,21 +18,22 @@ function Login(props) {
     // const result = await authApi.login(email, password);
     // const user = jwtDecode(result.data);
 
-    dispatch(loggin("timon@posti.fi", "12345"));
+    dispatch(login("timon@posti.fi", "12345"));
 
     // console.log("muista vaihtaa aina oikea ip, koska vaihtelee");
   }, []);
 
   if (state.token) {
     const user = getUser(state);
+    console.log(state);
     console.log(user);
     console.log("mikä on iat");
-    console.log(
-      "kyl pitää olla userin tiedot jo valmiiksi palasteltu heti kirjauduttua tuonne stateen"
-    );
-    console.log(
-      "onko tämä useSelector jo valmis, että se ei päity kuin sillon kun state muuttuu, eli jos sen laittaa tarkasti johonkin, niin se toimii oikein. esim state.entities.auth.name"
-    );
+    // console.log(
+    //   "kyl pitää olla userin tiedot jo valmiiksi palasteltu heti kirjauduttua tuonne stateen"
+    // );
+    // console.log(
+    //   "onko tämä useSelector jo valmis, että se ei päity kuin sillon kun state muuttuu, eli jos sen laittaa tarkasti johonkin, niin se toimii oikein. esim state.entities.auth.name"
+    // );
   }
 
   return (

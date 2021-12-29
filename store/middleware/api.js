@@ -31,7 +31,7 @@ const api =
           type: onError,
           payload:
             // error.response.status === 400 ? error.response.data : error.message,
-            error.response.status === 400
+            error.response.status === 400 || error.response.status === 401
               ? error.response.data
               : "Something faild",
         });
