@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Button } from "react-native";
 import { loadBugs, getUnresolvedBugs, resolveBug } from "../store/bugs";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, selectToken } from "../store/auth";
@@ -17,17 +17,17 @@ function Login(props) {
     // const password = "12345";
     // const result = await authApi.login(email, password);
     // const user = jwtDecode(result.data);
-
-    dispatch(login("timon@posti.fi", "12345"));
-
     // console.log("muista vaihtaa aina oikea ip, koska vaihtelee");
   }, []);
 
+  const _login = () => {
+    dispatch(login("timon@posti.fi", "12345"));
+  };
   if (state.token) {
     const user = getUser(state);
     console.log(state);
     console.log(user);
-    console.log("mikä on iat");
+
     // console.log(
     //   "kyl pitää olla userin tiedot jo valmiiksi palasteltu heti kirjauduttua tuonne stateen"
     // );
@@ -39,6 +39,8 @@ function Login(props) {
   return (
     <View style={styles.container}>
       <Text>Login Hello</Text>
+      <Button title="kirjaudu" onPress={() => _login()} />
+      <Text>tee tunnukset</Text>
       {state.token && <Text>{state.token}</Text>}
       {state.error && <Text>{state.error}</Text>}
       <Text style={{ color: "red" }}>{name.toString()}</Text>

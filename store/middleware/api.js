@@ -31,6 +31,7 @@ const api =
           type: onError,
           payload:
             // error.response.status === 400 ? error.response.data : error.message,
+            //tässä ehkä pitää miettiä toista raktaisua voi olla esim 403 ja silti viesti
             error.response.status === 400 || error.response.status === 401
               ? error.response.data
               : "Something faild",

@@ -28,6 +28,7 @@ const slice = createSlice({
     loading: false,
     token: null,
     error: null,
+    loggedIn: false,
   },
   reducers: {
     // action => action handler
@@ -39,6 +40,7 @@ const slice = createSlice({
       auth.email = user.email;
       auth.name = user.name;
       auth._id = user._id;
+      auth.loggedIn = true;
     },
 
     loginFaild: (auth, action) => {
@@ -50,6 +52,7 @@ const slice = createSlice({
       //tämä ei ehkä oikea tapa tehdä tätä
       auth.token = null;
       auth.user = null;
+      auth.loggedIn = false;
     },
   },
 });
