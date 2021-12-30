@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
-import { loadBugs, getUnresolvedBugs, resolveBug } from "../store/bugs";
+import { loadBugs, getUnresolvedBugs, resolveBug } from "../../store/bugs";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getUser, selectToken } from "../store/auth";
+import { login, getUser, selectToken } from "../../store/auth";
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -24,10 +24,9 @@ function Login(props) {
     dispatch(login("timon@posti.fi", "12345"));
   };
   if (state.token) {
-    const user = getUser(state);
-    console.log(state);
-    console.log(user);
-
+    // const user = getUser(state);
+    // console.log(state);
+    // console.log(user);
     // console.log(
     //   "kyl pitää olla userin tiedot jo valmiiksi palasteltu heti kirjauduttua tuonne stateen"
     // );

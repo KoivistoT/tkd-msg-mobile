@@ -7,9 +7,9 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import messagesApi from "../api/messages";
+import messagesApi from "../../api/messages";
 
-function AppTextInput({}) {
+function testAppTextInput({}) {
   const [message, setMessage] = useState("");
   const onChangeText = (text) => setMessage(text);
 
@@ -85,4 +85,4 @@ function AppTextInput({}) {
 }
 
 const styles = StyleSheet.create({});
-export default AppTextInput;
+export default testAppTextInput;

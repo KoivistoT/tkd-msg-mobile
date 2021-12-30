@@ -43,8 +43,7 @@ const slice = createSlice({
       auth.loggedIn = true;
     },
 
-    loginFaild: (auth, action) => {
-      //tämä ei ehkä oikea tapa tehdä tätä
+    loginFailed: (auth, action) => {
       auth.token = null;
       auth.error = action.payload;
     },
@@ -57,7 +56,7 @@ const slice = createSlice({
   },
 });
 
-export const { userLoggedIn, loginFaild, userLoggedOut } = slice.actions;
+export const { userLoggedIn, loginFailed, userLoggedOut } = slice.actions;
 export default slice.reducer;
 
 const url = settings.apiUrl;
@@ -69,12 +68,19 @@ export const login = (email, password) =>
     method: "post",
     data: { email, password },
     onSuccess: userLoggedIn.type,
-    onError: loginFaild.type,
+    onError: loginFailed.type,
   });
 
+export const logout = () => {
+  userLoggedOut();
+};
+
+export const onLoginFailed = () => {
+  loginFailed();
+};
 export const selectToken = (state) => state.entities.auth.token;
 
-export const getUser = createSelector(
+export const isLoggedIn = createSelector(
   (state) => state,
-  (auth) => (auth.token ? jwtDecode(auth.token) : null)
+  (auth) => auth
 );
