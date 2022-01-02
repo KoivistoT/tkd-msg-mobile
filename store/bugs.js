@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
-import { apiCallBegan } from "./api";
+import { apiCallBegan } from "./actions";
 import moment from "moment";
 
 const slice = createSlice({
@@ -56,7 +56,7 @@ export default slice.reducer;
 const url = "/bugs";
 
 export const loadBugs = () => (dispatch, getState) => {
-  const { lastFetch } = getState().entities.bugs;
+  // const { lastFetch } = getState().entities.bugs;
 
   // const diffMinutes = moment().diff(moment(lastFetch), "minutes");
   // if (diffMinutes < 10) return;

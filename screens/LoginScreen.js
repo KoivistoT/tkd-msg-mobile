@@ -55,10 +55,7 @@ function LoginScreen({ navigation }) {
               secureTextEntry
               textContentType="password"
             />
-            <ErrorMessage
-              error="Invalid username and/or password."
-              visible={isLoginFailed}
-            />
+            <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
             {/* <TouchableOpacity
             style={{ alignSelf: "flex-start", marginRight: 10 }}
             onPress={() => navigation.navigate("Reset_password")}

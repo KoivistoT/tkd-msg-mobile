@@ -1,5 +1,6 @@
 import axios from "axios";
-import * as actions from "../api";
+import * as actions from "../actions";
+
 import settings from "../../config/settings";
 
 const api =
@@ -27,16 +28,17 @@ const api =
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));
 
-      dispatch({
-        type: onError,
-        payload:
-          // error.response.status === 400 ? error.response.data : error.message,
-          //tässä ehkä pitää miettiä toista raktaisua voi olla esim 403 ja silti viesti
-          (error.response && error.response.status === 400) ||
-          (error.response && error.response.status === 401)
-            ? error.response.data
-            : "Something faild",
-      });
+      // console.log(error.response);
+      if (onError)
+        dispatch({
+          type: onError,
+          payload:
+            // error.response.status === 400 ? error.response.data : error.message,
+            //tässä ehkä pitää miettiä toista raktaisua voi olla esim 403 ja silti viesti
+            error.response && error.response.data
+              ? error.response.data
+              : "Something faild",
+        });
     }
   };
 

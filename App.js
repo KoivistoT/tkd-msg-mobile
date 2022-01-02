@@ -10,6 +10,8 @@ import { Provider } from "react-redux";
 import Login from "./app/components/Login";
 import { isLoggedIn, logout, selectToken, userLoggedOut } from "./store/auth";
 import LoginScreen from "./screens/LoginScreen";
+import ErrorMessage from "./app/components/ErrorMessage";
+import MessageScreen from "./screens/MessageScreen";
 
 export default function AppWrapper() {
   const store = configureStore();
@@ -37,18 +39,10 @@ function App() {
     // const user = jwtDecode(result.data);
     // console.log(user);
   };
-  const dispatch = useDispatch();
+
   return (
     <View style={styles.container}>
-      {token ? (
-        <View>
-          <TouchableOpacity onPress={() => dispatch(userLoggedOut())}>
-            <Text>kirjaudu ulos</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <LoginScreen />
-      )}
+      {token ? <MessageScreen /> : <LoginScreen />}
       <StatusBar style="auto" />
     </View>
   );

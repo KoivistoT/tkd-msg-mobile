@@ -13,7 +13,7 @@
 // ekana tee auth logini tähän
 
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./api";
+import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
