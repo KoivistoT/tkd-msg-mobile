@@ -26,9 +26,21 @@ export default function AppWrapper() {
       transports: ["websocket"],
       jsonp: false,
     });
-    socket.on("connect", () => {
-      console.log("connected to socket server");
+    // socket.on("connect", () => {
+    //   console.log("connected to socket server");
+    // });
+    // socket.on("chat message", () => {
+    //   console.log("connected to socket server");
+    // });
+    // socket.on("connection", (socket) => {
+    //   socket.on("chat message", (msg) => {
+    //     console.log("message: " + msg);
+    //   });
+    // });
+    socket.on("chat message", function (msg) {
+      console.log(msg);
     });
+    socket.emit("chat message", "täältä");
     // return () => {
     //   cleanup
     // }
