@@ -14,6 +14,7 @@ import ErrorMessage from "./app/components/ErrorMessage";
 import MessageScreen from "./screens/MessageScreen";
 import io from "socket.io-client";
 import settings from "./config/settings";
+import RoomsScreen from "./screens/RoomsScreen.js";
 
 export default function AppWrapper() {
   const store = configureStore();
@@ -37,13 +38,15 @@ export default function AppWrapper() {
     //     console.log("message: " + msg);
     //   });
     // });
-    socket.on("chat message", function (msg) {
-      console.log(msg);
-    });
+    const listener = (msg) => {
+      console.log(msg, "lkjlj");
+    };
+    socket.on("chat message", listener);
     socket.emit("chat message", "täältä");
-    // return () => {
-    //   cleanup
-    // }
+    // socket.off("chat message", listener);
+    return () => {
+      return socket.disconnect();
+    };
   }, []);
   return (
     <Provider store={store}>
@@ -72,7 +75,7 @@ function App() {
 
   return (
     <View style={styles.container}>
-      {token ? <MessageScreen /> : <LoginScreen />}
+      {token ? <RoomsScreen /> : <LoginScreen />}
       <StatusBar style="auto" />
     </View>
   );

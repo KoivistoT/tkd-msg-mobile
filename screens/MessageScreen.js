@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
-import { getMessagesbyId } from "../store/chats";
+import { getMessagesbyId } from "../store/rooms";
 
 function MessageScreen({}) {
   const [message, setMessage] = useState("");
@@ -18,7 +18,7 @@ function MessageScreen({}) {
 
   const dispatch = useDispatch();
 
-  const chatMessages = useSelector((state) => state.entities.chats);
+  const roomMessages = useSelector((state) => state.entities.rooms);
 
   // alert(
   //   "https://medium.com/react-native-mastery/buiding-chat-app-with-react-native-and-socket-io-6f9f9e503003"
@@ -28,10 +28,10 @@ function MessageScreen({}) {
   );
   useEffect(() => {
     // tämä dispatch vai mitä
-    const chatId = "61c07dc42815a00142a0b600";
-    dispatch(getMessagesbyId(chatId));
+    const roomId = "61d35b8145d1e3e2bc83ff0c";
+    dispatch(getMessagesbyId(roomId));
   }, []);
-  console.log(chatMessages.messages.messages);
+  console.log(roomMessages.messages.messages);
   return (
     <View>
       <View
@@ -43,7 +43,7 @@ function MessageScreen({}) {
         }}
       >
         <FlatList
-          data={chatMessages.messages.messages}
+          data={roomMessages.messages.messages}
           keyExtractor={(message) => message._id}
           renderItem={({ item }) => (
             <Text
