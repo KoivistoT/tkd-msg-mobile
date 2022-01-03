@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
-import { getBugs, loadBugs } from "../store/bugs";
 import { getMessagesbyId } from "../store/chats";
 
 function MessageScreen({}) {
@@ -24,7 +23,9 @@ function MessageScreen({}) {
   // alert(
   //   "https://medium.com/react-native-mastery/buiding-chat-app-with-react-native-and-socket-io-6f9f9e503003"
   // );
-
+  console.log(
+    "täältä jos monta huonetta https://socket.io/docs/v4/server-api/"
+  );
   useEffect(() => {
     // tämä dispatch vai mitä
     const chatId = "61c07dc42815a00142a0b600";
@@ -48,7 +49,7 @@ function MessageScreen({}) {
             <Text
               style={{
                 color: "black",
-                backgroundColor: "blue",
+                backgroundColor: "white",
               }}
               key={item._id}
             >
@@ -59,7 +60,7 @@ function MessageScreen({}) {
       </View>
       <View>
         <TextInput
-          style={{ backgroundColor: "lightgrey", width: 300, height: 30 }}
+          style={{ backgroundColor: "coral", width: 300, height: 30 }}
           placeholderTextColor={"black"}
           onChangeText={(text) => onChangeText(text)}
         />

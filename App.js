@@ -12,9 +12,27 @@ import { isLoggedIn, logout, selectToken, userLoggedOut } from "./store/auth";
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
 import MessageScreen from "./screens/MessageScreen";
+import io from "socket.io-client";
+import settings from "./config/settings";
 
 export default function AppWrapper() {
   const store = configureStore();
+  const msg = "joo";
+
+  const socketUrl = "http://localhost:3000/";
+
+  useEffect(() => {
+    const socket = io.connect(socketUrl, {
+      transports: ["websocket"],
+      jsonp: false,
+    });
+    socket.on("connect", () => {
+      console.log("connected to socket server");
+    });
+    // return () => {
+    //   cleanup
+    // }
+  }, []);
   return (
     <Provider store={store}>
       <App />
