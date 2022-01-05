@@ -43,18 +43,20 @@ export default function AppWrapper() {
 
     socket.on("chat message", listener);
     socket.emit("chat message", "täältä");
+    socket.emit("identity", Math.random());
 
-    // socket.emit("subscribe", "1234");
-    socket.emit("login", { name: "jaaha", room: "12345" }, (error) => {
-      // console.log(error, "tää error");
-    });
-    socket.on("notification", (notif) => {
-      console.log(notif);
-    });
+    socket.emit("subscribe", "1234");
+    // socket.emit("disconnect", "1234");
+    // socket.emit("login", { name: "jaaha", room: "12345" }, (error) => {
+    //   // console.log(error, "tää error");
+    // });
+    // socket.on("notification", (notif) => {
+    //   console.log(notif);
+    // });
     // socket.on("123f4", listener);
     // socket.off("chat message", listener);
     return () => {
-      return socket.disconnect();
+      socket.disconnect();
     };
   }, []);
   return (
