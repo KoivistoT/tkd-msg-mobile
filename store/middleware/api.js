@@ -13,13 +13,12 @@ const api =
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
-    console.log(action.payload);
+    // console.log(action.payload);
     try {
       const response = await axios.request({
         baseURL: settings.apiUrl,
         url,
         method,
-
         data,
       });
 
@@ -29,7 +28,6 @@ const api =
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));
 
-      // console.log(error.response);
       if (onError)
         dispatch({
           type: onError,

@@ -20,12 +20,10 @@ export default function AppWrapper() {
   const store = configureStore();
   const msg = "joo";
 
-  const socketUrl = "http://localhost:3000/";
-
   useEffect(() => {
-    const socket = io.connect(socketUrl, {
+    const socket = io.connect(settings.baseUrl, {
       transports: ["websocket"],
-      jsonp: false,
+      // jsonp: false,
     });
     // socket.on("connect", () => {
     //   console.log("connected to socket server");
@@ -38,11 +36,22 @@ export default function AppWrapper() {
     //     console.log("message: " + msg);
     //   });
     // });
+
     const listener = (msg) => {
       console.log(msg, "lkjlj");
     };
+
     socket.on("chat message", listener);
     socket.emit("chat message", "täältä");
+
+    // socket.emit("subscribe", "1234");
+    socket.emit("login", { name: "jaaha", room: "12345" }, (error) => {
+      // console.log(error, "tää error");
+    });
+    socket.on("notification", (notif) => {
+      console.log(notif);
+    });
+    // socket.on("123f4", listener);
     // socket.off("chat message", listener);
     return () => {
       return socket.disconnect();
