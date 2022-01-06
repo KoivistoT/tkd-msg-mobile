@@ -8,7 +8,13 @@ import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { Provider } from "react-redux";
 import Login from "./app/components/Login";
-import { isLoggedIn, logout, selectToken, userLoggedOut } from "./store/auth";
+import {
+  getToken,
+  isLoggedIn,
+  logout,
+  selectToken,
+  userLoggedOut,
+} from "./store/auth";
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
 import MessageScreen from "./screens/MessageScreen";
@@ -20,51 +26,54 @@ export default function AppWrapper() {
   const store = configureStore();
   const msg = "joo";
 
-  useEffect(() => {
-    const socket = io.connect(settings.baseUrl, {
-      transports: ["websocket"],
-      // jsonp: false,
-    });
-    // socket.on("connect", () => {
-    //   console.log("connected to socket server");
-    // });
-    // socket.on("chat message", () => {
-    //   console.log("connected to socket server");
-    // });
-    // socket.on("connection", (socket) => {
-    //   socket.on("chat message", (msg) => {
-    //     console.log("message: " + msg);
-    //   });
-    // });
+  // useEffect(() => {
+  //   const socket = io.connect(settings.baseUrl, {
+  //     transports: ["websocket"],
+  //     // jsonp: false,
+  //   });
+  //   // socket.on("connect", () => {
+  //   //   console.log("connected to socket server");
+  //   // });
+  //   // socket.on("chat message", () => {
+  //   //   console.log("connected to socket server");
+  //   // });
+  //   // socket.on("connection", (socket) => {
+  //   //   socket.on("chat message", (msg) => {
+  //   //     console.log("message: " + msg);
+  //   //   });
+  //   // });
 
-    const listener = (msg) => {
-      console.log(msg, "lkjlj");
-    };
+  //   const listener = (msg) => {
+  //     console.log(msg, "lkjlj");
+  //   };
 
-    socket.on("chat message", listener);
-    socket.emit("chat message", "täältä");
-    socket.emit("identity", Math.random());
+  //   socket.on("chat message", listener);
+  //   socket.emit("chat message", "täältä");
+  //   socket.emit("identity", Math.random());
 
-    socket.emit("subscribe", "1234");
-    // socket.emit("disconnect", "1234");
-    // socket.emit("login", { name: "jaaha", room: "12345" }, (error) => {
-    //   // console.log(error, "tää error");
-    // });
-    // socket.on("notification", (notif) => {
-    //   console.log(notif);
-    // });
-    // socket.on("123f4", listener);
-    // socket.off("chat message", listener);
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   socket.emit("subscribe", "1234");
+  //   // socket.emit("disconnect", "1234");
+  //   // socket.emit("login", { name: "jaaha", room: "12345" }, (error) => {
+  //   //   // console.log(error, "tää error");
+  //   // });
+  //   // socket.on("notification", (notif) => {
+  //   //   console.log(notif);
+  //   // });
+  //   // socket.on("123f4", listener);
+  //   // socket.off("chat message", listener);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
   return (
     <Provider store={store}>
       <App />
     </Provider>
   );
 }
+console.log(
+  "tee socket reducer, jossa socket io connect tallessa ja sinne functioita?"
+);
 
 function App() {
   useEffect(() => {

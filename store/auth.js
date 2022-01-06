@@ -49,9 +49,14 @@ const slice = createSlice({
     },
     userLoggedOut: (auth, action) => {
       //tämä ei ehkä oikea tapa tehdä tätä
+      auth.error = null;
+      auth.loading = false;
       auth.token = null;
-      auth.user = null;
+      auth.email = null;
+      auth.name = null;
+      auth._id = null;
       auth.loggedIn = false;
+      // console.log(auth);
     },
   },
 });
@@ -83,4 +88,9 @@ export const selectToken = (state) => state.entities.auth.token;
 export const isLoggedIn = createSelector(
   (state) => state,
   (auth) => auth
+);
+
+export const getToken = createSelector(
+  (state) => state.entities.auth,
+  (auth) => auth.token
 );
