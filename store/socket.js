@@ -14,8 +14,6 @@ const slice = createSlice({
   },
   reducers: {
     socketConnected: (socket, action) => {
-      console.log("lkjlkjlkj");
-
       socket.connection = action.payload;
     },
     socketDisconnected: (socket, action) => {

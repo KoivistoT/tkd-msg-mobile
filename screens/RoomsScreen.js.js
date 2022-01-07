@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import Screen from "../app/components/Screen";
 import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
 import { getAllRooms, getMessagesbyId } from "../store/rooms";
 import { disconnectSocket, selectSocket } from "../store/socket";
+import routes from "../app/navigation/routes";
 
-function RoomsScreen({}) {
+function RoomsScreen({ navigation }) {
   const [message, setMessage] = useState("");
   const onChangeText = (text) => setMessage(text);
 
@@ -23,20 +25,16 @@ function RoomsScreen({}) {
 
   useEffect(() => {
     // tämä dispatch vai mitä
-
-    dispatch(getAllRooms());
   }, []);
 
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
-
-    // socket.disconnect();
   };
   //   console.log(rooms.rooms, "täsät");
 
   return (
-    <View>
+    <Screen>
       <View
         style={{
           width: 300,
@@ -50,7 +48,7 @@ function RoomsScreen({}) {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={{ marginBottom: 10 }}
-              onPress={() => console.log(item.name)}
+              onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
             >
               <Text
                 style={{
@@ -71,7 +69,7 @@ function RoomsScreen({}) {
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Screen>
   );
 }
 

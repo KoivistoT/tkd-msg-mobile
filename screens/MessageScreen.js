@@ -23,15 +23,15 @@ function MessageScreen({}) {
   // alert(
   //   "https://medium.com/react-native-mastery/buiding-chat-app-with-react-native-and-socket-io-6f9f9e503003"
   // );
-  console.log(
-    "täältä jos monta huonetta https://socket.io/docs/v4/server-api/"
-  );
+  // console.log(
+  //   "täältä jos monta huonetta https://socket.io/docs/v4/server-api/"
+  // );
   useEffect(() => {
     // tämä dispatch vai mitä
     const roomId = "61d35b8145d1e3e2bc83ff0c";
     dispatch(getMessagesbyId(roomId));
   }, []);
-  console.log(roomMessages.messages.messages);
+
   return (
     <View>
       <View

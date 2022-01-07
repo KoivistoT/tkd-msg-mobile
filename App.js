@@ -1,7 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
-
+import { NavigationContainer } from "@react-navigation/native";
+import { navigationRef } from "./app/navigation/rootNavigation";
+import navigationTheme from "./app/navigation/navigationTheme";
 import authApi from "./api/auth";
 import configureStore from "./store/configureStore";
 import jwtDecode from "jwt-decode";
@@ -27,48 +29,12 @@ import {
   socketConnected,
   createSocketConnection,
 } from "./store/socket";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import AppNavigator from "./app/navigation/AppNavigator";
+import { getAllRooms } from "./store/rooms";
 
 export default function AppWrapper() {
   const store = configureStore();
-  const msg = "joo";
-
-  useEffect(() => {
-    //   const socket = io.connect(settings.baseUrl, {
-    //     transports: ["websocket"],
-    //     // jsonp: false,
-    //   });
-    //   // socket.on("connect", () => {
-    //   //   console.log("connected to socket server");
-    //   // });
-    //   // socket.on("chat message", () => {
-    //   //   console.log("connected to socket server");
-    //   // });
-    //   // socket.on("connection", (socket) => {
-    //   //   socket.on("chat message", (msg) => {
-    //   //     console.log("message: " + msg);
-    //   //   });
-    //   // });
-    //   const listener = (msg) => {
-    //     console.log(msg, "lkjlj");
-    //   };
-    //   socket.on("chat message", listener);
-    //   socket.emit("chat message", "täältä");
-    //   socket.emit("identity", Math.random());
-    //   socket.emit("subscribe", "1234");
-    //   // socket.emit("disconnect", "1234");
-    //   // socket.emit("login", { name: "jaaha", room: "12345" }, (error) => {
-    //   //   // console.log(error, "tää error");
-    //   // });
-    //   // socket.on("notification", (notif) => {
-    //   //   console.log(notif);
-    //   // });
-    //   // socket.on("123f4", listener);
-    //   // socket.off("chat message", listener);
-    //   return () => {
-    //     socket.disconnect();
-    //   };
-    //
-  }, []);
   return (
     <Provider store={store}>
       <App />
@@ -78,30 +44,21 @@ export default function AppWrapper() {
 
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    onLogin();
+  useEffect(() => {}, []);
 
-    // console.log(store.getState());
-  }, []);
-
-  const token = useSelector(selectToken);
-
-  const onLogin = async () => {
-    //katso moshilta tämä react native kurssilta kunnolla kuntoon
-    // const email = "timon@posti.fi";
-    // const password = "12345";
-    // const result = await authApi.login(email, password);
-    // const user = jwtDecode(result.data);
-    // console.log(user);
+  const onLogin = () => {
+    dispatch(createSocketConnection());
+    dispatch(getAllRooms());
   };
 
-  token ? dispatch(createSocketConnection()) : {};
+  const token = useSelector(selectToken);
+  token ? onLogin() : {};
 
   return (
-    <View style={styles.container}>
-      {token ? <RoomsScreen /> : <LoginScreen />}
+    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+      {token ? <AppNavigator /> : <AuthNavigator />}
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
 
