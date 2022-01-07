@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import Screen from "../app/components/Screen";
 import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
 import { getMessagesbyId } from "../store/rooms";
 
@@ -33,7 +34,7 @@ function MessageScreen({}) {
   }, []);
 
   return (
-    <View>
+    <Screen>
       <View
         style={{
           borderWidth: 1,
@@ -76,7 +77,7 @@ function MessageScreen({}) {
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Screen>
   );
 }
 
