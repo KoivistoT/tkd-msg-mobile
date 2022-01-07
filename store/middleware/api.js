@@ -30,7 +30,7 @@ const api =
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));
-      console.log(error);
+      console.log(error, "täältä tulee error1");
       if (onError)
         dispatch({
           type: onError,

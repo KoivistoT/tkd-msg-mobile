@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
 import { getAllRooms, getMessagesbyId } from "../store/rooms";
+import { disconnectSocket, selectSocket } from "../store/socket";
 
 function RoomsScreen({}) {
   const [message, setMessage] = useState("");
@@ -25,7 +26,15 @@ function RoomsScreen({}) {
 
     dispatch(getAllRooms());
   }, []);
+
+  const logout = () => {
+    dispatch(disconnectSocket());
+    dispatch(userLoggedOut());
+
+    // socket.disconnect();
+  };
   //   console.log(rooms.rooms, "täsät");
+
   return (
     <View>
       <View
@@ -58,7 +67,7 @@ function RoomsScreen({}) {
         />
       </View>
       <View>
-        <TouchableOpacity onPress={() => dispatch(userLoggedOut())}>
+        <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>
       </View>

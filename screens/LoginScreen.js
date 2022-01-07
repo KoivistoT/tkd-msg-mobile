@@ -10,7 +10,8 @@ import SubmitButton from "../app/components/forms/SubmitButton";
 import AppKeyboardDismiss from "../app/components/AppKeyboardDismiss";
 import AppLoadIndicator from "../app/components/AppLoadIndicator";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../store/auth";
+import { clearErrorMessage, errorMessageCleared, login } from "../store/auth";
+import { createSocketConnection } from "../store/socket";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
@@ -25,6 +26,8 @@ function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = async ({ userName, password }) => {
+    dispatch(errorMessageCleared());
+    setLoading(true);
     dispatch(login(userName, password));
   };
 
@@ -63,7 +66,7 @@ function LoginScreen({ navigation }) {
             <AppText>Reset password</AppText>
           </TouchableOpacity> */}
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-              {loading && <AppLoadIndicator />}
+              {loading && !isLoginFailed && <AppLoadIndicator />}
               <SubmitButton title="LOGIN" />
             </View>
           </>

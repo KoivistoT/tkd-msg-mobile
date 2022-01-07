@@ -58,10 +58,15 @@ const slice = createSlice({
       auth.loggedIn = false;
       // console.log(auth);
     },
+    errorMessageCleared: (auth, action) => {
+      auth.error = null;
+      auth.loading = false;
+    },
   },
 });
 
-export const { userLoggedIn, loginFailed, userLoggedOut } = slice.actions;
+export const { userLoggedIn, loginFailed, userLoggedOut, errorMessageCleared } =
+  slice.actions;
 export default slice.reducer;
 
 const url = settings.apiUrl;
@@ -77,12 +82,14 @@ export const login = (email, password) =>
   });
 
 export const logout = () => {
+  console.log("tämä suoraan logout siellä missä onkaan");
   userLoggedOut();
 };
 
 export const onLoginFailed = () => {
   loginFailed();
 };
+
 export const selectToken = (state) => state.entities.auth.token;
 
 export const isLoggedIn = createSelector(
