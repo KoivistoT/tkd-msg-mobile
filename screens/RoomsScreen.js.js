@@ -8,25 +8,51 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import messagesApi from "../api/messages";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
-import { getAllRooms, getMessagesbyId } from "../store/rooms";
+import {
+  getToken,
+  isLoggedIn,
+  logout,
+  selectToken,
+  userLoggedOut,
+} from "../store/auth";
+import {
+  getAllRooms,
+  getErrorMessage,
+  getMessagesbyId,
+  messageSendErrorCleared,
+  selectErrorMessage,
+  sendMessage,
+  sendMessage2,
+} from "../store/rooms";
 import { disconnectSocket, selectSocket } from "../store/socket";
 import routes from "../app/navigation/routes";
 
 function RoomsScreen({ navigation }) {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("jaaha");
   const onChangeText = (text) => setMessage(text);
 
   const dispatch = useDispatch();
+  const store = useStore();
 
   const rooms = useSelector((state) => state.entities.rooms);
 
   useEffect(() => {
     // tämä dispatch vai mitä
   }, []);
+  const sendMessageTest = async () => {
+    await dispatch(sendMessage());
 
+    if (getErrorMessage()(store.getState())) {
+      console.log("on error");
+      console.log("triggeröi error message");
+      dispatch(messageSendErrorCleared());
+    } else {
+      console.log("Ei ole nyt");
+    }
+  };
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
@@ -63,6 +89,15 @@ function RoomsScreen({ navigation }) {
             </TouchableOpacity>
           )}
         />
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            sendMessageTest();
+          }}
+        >
+          <Text>lähetä viesti</Text>
+        </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => logout()}>

@@ -30,18 +30,6 @@ export const { socketConnected, connectionError, socketDisconnected } =
   slice.actions;
 
 export const createSocketConnection = (userId) => (dispatch, getState) => {
-  // console.log(
-  //   "ehkä tämä pitää olla tehty kuten disconnect, jotta ei ole middlewaressa turhaan? tämä kuitenkin tehdään vain kerran ja alussa hidastaa kirjautumista, kun lataa kuitenkin yhteyden luonnissa"
-  // );
-  // dispatch(
-  //   createSocketConnectionBegan({
-  //     userId,
-  //     url: settings.baseUrl,
-  //     onSuccess: socketConnected.type,
-  //     onError: connectionError.type,
-  //   })
-  // );
-
   try {
     const socket = io(settings.baseUrl, {
       transports: ["websocket"],

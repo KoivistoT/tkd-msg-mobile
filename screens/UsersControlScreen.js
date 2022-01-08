@@ -22,7 +22,7 @@ import CreateUserModal from "../app/components/modals/CreateUserModal";
 function UsersControlScreen({ navigation }) {
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.entities.users);
-  console.log(allUsers);
+
   useEffect(() => {
     dispatch(getAllUsers());
     // return () => {

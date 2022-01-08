@@ -21,18 +21,14 @@ import AppButton from "../AppButton";
 
 import AppText from "../AppText";
 import Screen from "../Screen";
+import CreateUserForm from "../forms/CreateUserForm";
 
 function CreateUserModal({}) {
   const [modalVisible, setModalVisible] = useState(false);
   //huom ei react-native-modal
   return (
     <View>
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent={true}
-        style={styles.modal}
-      >
+      <Modal visible={modalVisible} animationType="slide" style={styles.modal}>
         <Screen>
           <TouchableOpacity
             onPress={() => setModalVisible(false)}
@@ -45,9 +41,9 @@ function CreateUserModal({}) {
             />
           </TouchableOpacity>
 
-          {/* <SignUpScreen2
-          closeModal={() => setModalVisible(false)}
-        ></SignUpScreen2> */}
+          <CreateUserForm
+            closeModal={() => setModalVisible(false)}
+          ></CreateUserForm>
         </Screen>
       </Modal>
       <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>

@@ -34,11 +34,9 @@ function UserDetailsScreen(item) {
           ItemSeparatorComponent={() => <ListItemSeparator />}
           data={userData.userRooms}
           bounces={false}
-          keyExtractor={(data) => data.id}
+          keyExtractor={(data) => data}
           renderItem={({ item }) => (
-            <View style={styles.container2}>
-              <AppText style={styles.name}>{item}</AppText>
-            </View>
+            <AppText style={styles.name}>{item}</AppText>
           )}
         />
       )}

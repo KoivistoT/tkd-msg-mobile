@@ -12,24 +12,23 @@ const slice = createSlice({
   reducers: {
     // action => action handler
     usersResived: (users, action) => {
-      console.log("lkjlj");
+      console.log("users resived");
       users.users = action.payload;
     },
     usersError: (rooms, action) => {
-      console.log("lkjlj");
-      console.log("epännoistu appcode 12398321");
+      console.log(action.payload, "epännoistu appcode 12398321");
     },
   },
 });
 
-export const { usersResived, usersError } = slice.actions;
+export const { usersResived, usersError, userCreated } = slice.actions;
 export default slice.reducer;
 
-const url = settings.apiUrl;
+const url = settings.apiUrl + "/users";
 
 export const getAllUsers = () =>
   apiCallBegan({
-    url: url + "/users/all",
+    url: url + "/all",
     onSuccess: usersResived.type,
     onError: usersError.type,
   });
