@@ -17,7 +17,7 @@ import {
   logout,
   selectToken,
   userLoggedOut,
-} from "./store/auth";
+} from "./store/currentUser";
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
 import MessageScreen from "./screens/MessageScreen";

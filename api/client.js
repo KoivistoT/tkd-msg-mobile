@@ -3,7 +3,7 @@ import cache from "../utility/cache";
 import authStorage from "../auth/storage";
 import settings from "../config/settings";
 
-import { getToken } from "../store/auth";
+import { getToken } from "../store/currentUser";
 const apiClient = create({
   baseURL: settings.apiUrl,
 });

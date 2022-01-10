@@ -10,7 +10,12 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Screen from "../app/components/Screen";
-import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
+import {
+  isLoggedIn,
+  logout,
+  selectToken,
+  userLoggedOut,
+} from "../store/currentUser";
 import { getMessagesbyId } from "../store/rooms";
 
 function MessageScreen({}) {

@@ -17,7 +17,7 @@ import {
   logout,
   selectToken,
   userLoggedOut,
-} from "../store/auth";
+} from "../store/currentUser";
 import {
   getAllRooms,
   getErrorMessage,
@@ -46,11 +46,9 @@ function RoomsScreen({ navigation }) {
     await dispatch(sendMessage());
 
     if (getErrorMessage()(store.getState())) {
-      console.log("on error");
-      console.log("triggeröi error message");
-      dispatch(messageSendErrorCleared());
+      console.log("Viestin lähetys epäonnistui");
     } else {
-      console.log("Ei ole nyt");
+      console.log("Viestin lähetys onnistui!!!");
     }
   };
   const logout = () => {

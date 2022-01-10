@@ -9,8 +9,12 @@ import AppFormField from "../app/components/forms/AppFormField";
 import SubmitButton from "../app/components/forms/SubmitButton";
 import AppKeyboardDismiss from "../app/components/AppKeyboardDismiss";
 import AppLoadIndicator from "../app/components/AppLoadIndicator";
-import { useDispatch, useSelector } from "react-redux";
-import { clearErrorMessage, errorMessageCleared, login } from "../store/auth";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import {
+  clearErrorMessage,
+  errorMessageCleared,
+  login,
+} from "../store/currentUser";
 import { createSocketConnection } from "../store/socket";
 
 const validationSchema = Yup.object().shape({
@@ -20,8 +24,9 @@ const validationSchema = Yup.object().shape({
 
 function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
-
-  const isLoginFailed = useSelector((state) => state.entities.auth.error);
+  // const store = useStore();
+  // console.log(store.getState());
+  const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
 
   const dispatch = useDispatch();
 

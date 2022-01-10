@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import { loadBugs, getUnresolvedBugs, resolveBug } from "../../store/bugs";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getUser, selectToken } from "../../store/auth";
+import { login, getUser, selectToken } from "../../store/currentUser";
 
 function Login(props) {
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => state.entities.auth);
-  const name = useSelector((state) => state.entities.auth.loading);
+  const state = useSelector((state) => state.auth.currentUser);
+  const name = useSelector((state) => state.auth.currentUser.loading);
   // const token = useSelector(selectToken);
   // console.log(token);
 

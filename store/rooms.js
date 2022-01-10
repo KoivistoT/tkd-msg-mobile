@@ -77,6 +77,7 @@ export const sendMessage = (
       messageBody: message,
       roomId,
     },
+    onStart: messageSendErrorCleared.type,
     method: "post",
     url: url + "/messages/send_message2",
     onSuccess: messageSent.type,

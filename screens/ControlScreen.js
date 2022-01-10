@@ -11,7 +11,12 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import Screen from "../app/components/Screen";
-import { isLoggedIn, logout, selectToken, userLoggedOut } from "../store/auth";
+import {
+  isLoggedIn,
+  logout,
+  selectToken,
+  userLoggedOut,
+} from "../store/currentUser";
 import { getMessagesbyId } from "../store/rooms";
 
 import routes from "../app/navigation/routes";

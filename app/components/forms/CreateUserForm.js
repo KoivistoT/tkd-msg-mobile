@@ -14,7 +14,7 @@ import {
   clearErrorMessage,
   errorMessageCleared,
   login,
-} from "../../../store/auth";
+} from "../../../store/currentUser";
 import AppFormPicker from "./AppFormPicker";
 
 const validationSchema = Yup.object().shape({
@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
 function CreateUserForm({ navigation }) {
   const [loading, setLoading] = useState(false);
 
-  const isLoginFailed = useSelector((state) => state.entities.auth.error);
+  const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
 
   const dispatch = useDispatch();
 

@@ -3,18 +3,18 @@ import * as actions from "../actions";
 
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
-import { getToken } from "../auth";
+import { getToken } from "../currentUser";
 
 const api =
   ({ dispatch, getState }) =>
   (next) =>
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
-    next(action);
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
+    next(action);
 
     try {
       axios.defaults.headers.common["x-auth-token"] = getToken(getState());
