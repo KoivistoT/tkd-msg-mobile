@@ -22,7 +22,10 @@ import { getErrorMessage } from "../../../store/rooms";
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
   password: Yup.string().required().min(4).label("Password"),
-  accountType: Yup.string().required().min(4).label("AccountType"),
+  firstName: Yup.string().required().min(1).label("Firstname"),
+  lastName: Yup.string().required().min(2).label("lastname"),
+  email: Yup.string().required().email().label("Email"),
+  accountType: Yup.string().required().min(1).label("AccountType"),
 });
 
 function CreateUserForm({ navigation, closeModal }) {
@@ -32,13 +35,20 @@ function CreateUserForm({ navigation, closeModal }) {
   const store = useStore();
   const dispatch = useDispatch();
 
-  const handleSubmit = async ({ userName, password, accountType }) => {
+  const handleSubmit = async ({
+    userName,
+    password,
+    accountType,
+    firstName,
+    lastName,
+  }) => {
     // dispatch(errorMessageCleared());
     setLoading(true);
-    dispatch(createUser(userName, password, accountType));
+    dispatch(createUser(userName, password, accountType, firstName, lastName));
 
     if (getErrorMessage()(store.getState())) {
       console.log("Ei onnistunut päonnistui");
+      setLoading(false);
     } else {
       closeModal();
     }
@@ -51,6 +61,8 @@ function CreateUserForm({ navigation, closeModal }) {
           accountType: "basic",
           userName: "",
           password: "",
+          firstName: "",
+          lastName: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -69,6 +81,30 @@ function CreateUserForm({ navigation, closeModal }) {
             keyboardType="email-address"
             name="userName"
             placeholder="Username/email"
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            keyboardType="email-address"
+            name="firstName"
+            placeholder="Fistname"
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            keyboardType="email-address"
+            name="lastName"
+            placeholder="Lastname"
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            keyboardType="email-address"
+            name="email"
+            placeholder="email"
           />
 
           <AppFormField

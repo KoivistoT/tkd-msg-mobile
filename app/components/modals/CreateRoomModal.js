@@ -22,8 +22,9 @@ import AppButton from "../AppButton";
 import AppText from "../AppText";
 import Screen from "../Screen";
 import CreateUserForm from "../forms/CreateUserForm";
+import CreateRoomForm from "../forms/CreateRoomForm";
 
-function CreateUserModal({}) {
+function CreateRoomModal({}) {
   const [modalVisible, setModalVisible] = useState(false);
   //huom ei react-native-modal
   return (
@@ -41,13 +42,13 @@ function CreateUserModal({}) {
             />
           </TouchableOpacity>
 
-          <CreateUserForm closeModal={() => setModalVisible(false)} />
+          <CreateRoomForm closeModal={() => setModalVisible(false)} />
         </Screen>
       </Modal>
       <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
         <AppButton
           onPress={() => setModalVisible(true)}
-          title={"Create user"}
+          title={"Create room"}
         />
       </View>
     </View>
@@ -66,4 +67,4 @@ const styles = StyleSheet.create({
   },
   button: {},
 });
-export default CreateUserModal;
+export default CreateRoomModal;

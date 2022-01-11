@@ -16,31 +16,19 @@ import Screen from "../app/components/Screen";
 import { getAllUsers } from "../store/users";
 import colors from "../config/colors";
 
-function UserDetailsScreen(item) {
-  const { params: userData } = item.route;
-
-  const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
+function RoomDetailsScreen(item) {
+  const { params: roomData } = item.route;
 
   return (
     <Screen>
       <View style={{ flexDirection: "row" }}>
-        <AppText>{userData.firstName} </AppText>
-        <AppText>{userData.lastName}</AppText>
+        <AppText>{roomData.roomName} </AppText>
       </View>
 
-      {userData.userRooms.length > 0 && (
-        <FlatList
-          ItemSeparatorComponent={() => <ListItemSeparator />}
-          data={userData.userRooms}
-          bounces={false}
-          keyExtractor={(data) => data}
-          renderItem={userItem}
-        />
-      )}
-      {userData.userRooms.length === 0 && <AppText>User has no rooms</AppText>}
+      <AppText>{roomData.created_at}</AppText>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({});
-export default UserDetailsScreen;
+export default RoomDetailsScreen;

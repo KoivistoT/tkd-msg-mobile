@@ -36,11 +36,17 @@ export const getAllUsers = () =>
     onError: usersError.type,
   });
 
-export const createUser = (userName, password, accountType) =>
+export const createUser = (
+  userName = null,
+  password = null,
+  accountType = null,
+  firstName = null,
+  lastName = null
+) =>
   apiCallBegan({
     url: url + "/create_user",
     method: "post",
-    data: { userName, password, accountType },
+    data: { userName, password, accountType, firstName, lastName },
     onSuccess: userCreated.type,
     onError: usersError.type,
   });

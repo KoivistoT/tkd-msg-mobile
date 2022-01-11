@@ -36,6 +36,9 @@ const slice = createSlice({
     messageSendErrorCleared: (rooms, action) => {
       rooms.messageSendError = null;
     },
+    roomCreated: (rooms, action) => {
+      console.log("huone luotu");
+    },
   },
 });
 
@@ -46,6 +49,7 @@ export const {
   roomsError,
   messagesError,
   roomsResived,
+  roomCreated,
   messageSendErrorCleared,
 } = slice.actions;
 export default slice.reducer;
@@ -91,3 +95,12 @@ export const getErrorMessage = () =>
     (state) => state.entities.rooms,
     (rooms) => rooms.messageSendError
   );
+
+export const createRoom = (roomName) =>
+  apiCallBegan({
+    url: url + "/rooms/create_room2",
+    method: "post",
+    data: { roomName },
+    onSuccess: roomCreated.type,
+    onError: roomsError.type,
+  });

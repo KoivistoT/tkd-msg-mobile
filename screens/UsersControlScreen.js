@@ -25,10 +25,36 @@ function UsersControlScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(getAllUsers());
-    // return () => {
-    //     cleanup
-    // }
+
+    //tähän tulisi tulla listener auki,
+    //että kuuntelee uusia käyttäjiä, jolloin
+    //socketissa siis tulee aina uusi käyttäjä,
+    //kun lisätty, eli päivittää silloin listan
+    //socket auki ja kiinni tässä, eli ei ole aina päällä? Vai pitäisikö
+    //kuunnella koska tulee lista käyttäjistä johonkin.
+    //Silloin state muuttuu ja tässäkin tulee selectorissa uudet käyttäjät aina
   }, []);
+
+  const listKeyExtractor = (data) => data._id;
+
+  const listItem = ({ item }) => (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
+    >
+      <View>
+        <View>
+          <AppText style={styles.name}>{item.firstName}</AppText>
+        </View>
+
+        <MaterialCommunityIcons
+          name="chevron-right"
+          size={25}
+          color={colors.dark}
+        />
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <Screen>
@@ -37,27 +63,8 @@ function UsersControlScreen({ navigation }) {
         ItemSeparatorComponent={() => <ListItemSeparator />}
         data={allUsers.users}
         bounces={false}
-        keyExtractor={(data) => data._id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() =>
-              navigation.navigate(routes.USER_DETAILS_SCREEN, item)
-            }
-          >
-            <View style={styles.container2}>
-              <View style={styles.detailsContainer}>
-                <AppText style={styles.name}>{item.name}</AppText>
-              </View>
-
-              <MaterialCommunityIcons
-                name="chevron-right"
-                size={25}
-                color={colors.dark}
-              />
-            </View>
-          </TouchableOpacity>
-        )}
+        keyExtractor={listKeyExtractor}
+        renderItem={listItem}
       />
     </Screen>
   );
