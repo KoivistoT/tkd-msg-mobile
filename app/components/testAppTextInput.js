@@ -24,7 +24,7 @@ function testAppTextInput({}) {
 
   const addListener = async () => {
     const result = await messagesApi.addMessageListener();
-    console.log(result);
+    // console.log(result);
   };
   const loadMessages = async () => {
     const response = await messagesApi.getMessages();

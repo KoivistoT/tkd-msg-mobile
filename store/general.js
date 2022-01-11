@@ -9,12 +9,11 @@ const slice = createSlice({
   },
   reducers: {
     error: (general, action) => {
-      console.log(action.payload, "Tämä viesti menee toastiin!");
+      // console.log(action.payload, "Tämä viesti menee toastiin!");
       general.errorMessageVisibleTime = 3000;
       general.errorMessage = action.payload;
     },
     errorMessageCleared: (general, action) => {
-      console.log(action.payload, "Error message cleared");
       general.errorMessage = null;
     },
   },

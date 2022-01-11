@@ -54,9 +54,7 @@ function App() {
 
   const token = useSelector(selectToken);
   token ? onLogin() : {};
-  console.log(
-    "tee apptoast niin, että apissa jos onError, niin laukaiseen sen. tein jo alkuun"
-  );
+
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppToast />

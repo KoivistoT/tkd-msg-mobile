@@ -26,16 +26,15 @@ const slice = createSlice({
       console.log(action.payload, "epäonnistui");
     },
     messageSent: (rooms, action) => {
-      console.log("message lähetetty", action.payload);
+      // console.log("message lähetetty", action.payload);
       return action.payload;
     },
     messageSendError: (rooms, action) => {
       rooms.messageSendError = action.payload;
-      console.log("message ei lähetetty", action.payload);
+      // console.log("message ei lähetetty", action.payload);
     },
     messageSendErrorCleared: (rooms, action) => {
       rooms.messageSendError = null;
-      console.log("nyl clearas");
     },
   },
 });

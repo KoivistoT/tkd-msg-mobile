@@ -25,17 +25,9 @@ class AppToast extends React.Component {
           alignSelf: "center",
           zIndex: 100,
           width: "100%",
-          height: 200,
           marginTop: Constants.statusBarHeight,
         }}
       >
-        {/* <Button
-          title={"Press me"}
-          onPress={() => {
-            // this.toast.show(this.props.errorMessage, 2000);
-            console.log(this.props.errorMessage);
-          }}
-        /> */}
         <Toast
           ref={(toast) => (this.toast = toast)}
           style={{ backgroundColor: colors.danger }}

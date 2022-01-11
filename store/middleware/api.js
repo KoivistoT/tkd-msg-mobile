@@ -12,7 +12,7 @@ const api =
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
-
+    console.log("täällä kulkee");
     if (onStart) dispatch({ type: onStart });
     next(action);
 

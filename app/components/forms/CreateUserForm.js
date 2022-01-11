@@ -9,13 +9,15 @@ import AppFormField from "../forms/AppFormField";
 import SubmitButton from "../forms/SubmitButton";
 import AppKeyboardDismiss from "../AppKeyboardDismiss";
 import AppLoadIndicator from "../AppLoadIndicator";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import {
   clearErrorMessage,
   errorMessageCleared,
   login,
 } from "../../../store/currentUser";
 import AppFormPicker from "./AppFormPicker";
+import { createUser } from "../../../store/users";
+import { getErrorMessage } from "../../../store/rooms";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
@@ -23,17 +25,23 @@ const validationSchema = Yup.object().shape({
   accountType: Yup.string().required().min(4).label("AccountType"),
 });
 
-function CreateUserForm({ navigation }) {
+function CreateUserForm({ navigation, closeModal }) {
   const [loading, setLoading] = useState(false);
 
   const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
-
+  const store = useStore();
   const dispatch = useDispatch();
 
-  const handleSubmit = async ({ userName, password }) => {
-    dispatch(errorMessageCleared());
+  const handleSubmit = async ({ userName, password, accountType }) => {
+    // dispatch(errorMessageCleared());
     setLoading(true);
-    dispatch(login(userName, password));
+    dispatch(createUser(userName, password, accountType));
+
+    if (getErrorMessage()(store.getState())) {
+      console.log("Ei onnistunut päonnistui");
+    } else {
+      closeModal();
+    }
   };
 
   return (

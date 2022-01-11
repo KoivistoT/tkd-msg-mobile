@@ -18,6 +18,9 @@ const slice = createSlice({
     usersError: (rooms, action) => {
       console.log(action.payload, "epännoistu appcode 12398321");
     },
+    userCreated: (rooms, action) => {
+      console.log(action.payload, "User lisätty");
+    },
   },
 });
 
@@ -30,5 +33,14 @@ export const getAllUsers = () =>
   apiCallBegan({
     url: url + "/all",
     onSuccess: usersResived.type,
+    onError: usersError.type,
+  });
+
+export const createUser = (userName, password, accountType) =>
+  apiCallBegan({
+    url: url + "/create_user",
+    method: "post",
+    data: { userName, password, accountType },
+    onSuccess: userCreated.type,
     onError: usersError.type,
   });

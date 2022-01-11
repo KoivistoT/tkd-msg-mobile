@@ -43,8 +43,8 @@ function ControlScreen({ navigation }) {
             activeOpacity={0.5}
             onPress={() => navigation.navigate(item.onPress, item)}
           >
-            <View style={styles.container2}>
-              <View style={styles.detailsContainer}>
+            <View>
+              <View>
                 <AppText style={styles.name}>{item.name}</AppText>
               </View>
 

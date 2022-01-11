@@ -75,7 +75,7 @@ function MessageScreen({}) {
           title="Send message"
           onPress={async () => {
             const result = await messagesApi.sendMessage();
-            console.log(result);
+            // console.log(result);
           }}
         />
         <TouchableOpacity onPress={() => dispatch(userLoggedOut())}>
