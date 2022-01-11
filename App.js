@@ -9,7 +9,7 @@ import configureStore from "./store/configureStore";
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { Provider } from "react-redux";
-
+import AppToast from "./app/components/AppToast";
 import Login from "./app/components/Login";
 import {
   getToken,
@@ -54,9 +54,12 @@ function App() {
 
   const token = useSelector(selectToken);
   token ? onLogin() : {};
-
+  console.log(
+    "tee apptoast niin, että apissa jos onError, niin laukaiseen sen. tein jo alkuun"
+  );
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+      <AppToast />
       {token ? <AppNavigator /> : <AuthNavigator />}
       <StatusBar style="auto" />
     </NavigationContainer>

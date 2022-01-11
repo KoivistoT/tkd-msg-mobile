@@ -69,8 +69,8 @@ export const getAllRooms = () =>
 
 export const sendMessage = (
   message = "jaaha",
-  roomId = "61d3f5b8145d1e3e2bc83ff0c"
-  // roomId
+  // roomId = "61d3f5b8145d1e3e2bc83ff0c"
+  roomId = ""
 ) =>
   apiCallBegan({
     data: {
