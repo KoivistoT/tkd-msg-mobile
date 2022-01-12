@@ -48,7 +48,7 @@ function RoomsScreen({ navigation }) {
     if (getErrorMessage()(store.getState())) {
       console.log("Viestin lähetys epäonnistui");
     } else {
-      console.log("Viestin lähetys onnistui!!!");
+      console.log("Onnistui. Tähän reset form");
     }
   };
   const logout = () => {
@@ -82,7 +82,7 @@ function RoomsScreen({ navigation }) {
                 }}
                 key={item._id}
               >
-                {item.name}
+                {item.roomName}
               </Text>
             </TouchableOpacity>
           )}

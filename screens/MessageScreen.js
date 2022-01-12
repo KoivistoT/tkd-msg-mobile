@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import {
   isLoggedIn,
@@ -16,25 +16,30 @@ import {
   selectToken,
   userLoggedOut,
 } from "../store/currentUser";
-import { getMessagesbyId } from "../store/rooms";
+import { getErrorMessage, getMessagesbyId, sendMessage } from "../store/rooms";
 
-function MessageScreen({}) {
+function MessageScreen(item) {
+  // messageForm pitää olla erikseen, jotta ei päivitä viestilsitaa
   const [message, setMessage] = useState("");
   const onChangeText = (text) => setMessage(text);
-
+  const roomId = item.route.params._id;
+  const store = useStore();
   const dispatch = useDispatch();
 
   const roomMessages = useSelector((state) => state.entities.rooms);
 
-  // alert(
-  //   "https://medium.com/react-native-mastery/buiding-chat-app-with-react-native-and-socket-io-6f9f9e503003"
-  // );
-  // console.log(
-  //   "täältä jos monta huonetta https://socket.io/docs/v4/server-api/"
-  // );
+  const send = async () => {
+    await dispatch(sendMessage(message, roomId));
+
+    if (getErrorMessage()(store.getState())) {
+      console.log("Viestin lähetys epäonnistui");
+    } else {
+      console.log("Viestin lähetys onnistui!!!");
+    }
+  };
+
   useEffect(() => {
-    // tämä dispatch vai mitä
-    const roomId = "61d35b8145d1e3e2bc83ff0c";
+    const roomId = item.route.params._id;
     dispatch(getMessagesbyId(roomId));
   }, []);
 
@@ -48,21 +53,23 @@ function MessageScreen({}) {
           color: "black",
         }}
       >
-        <FlatList
-          data={roomMessages.messages.messages}
-          keyExtractor={(message) => message._id}
-          renderItem={({ item }) => (
-            <Text
-              style={{
-                color: "black",
-                backgroundColor: "white",
-              }}
-              key={item._id}
-            >
-              {item.messageBody}
-            </Text>
-          )}
-        />
+        {roomMessages.messages && (
+          <FlatList
+            data={roomMessages.messages.messages}
+            keyExtractor={(message) => message._id}
+            renderItem={({ item }) => (
+              <Text
+                style={{
+                  color: "black",
+                  backgroundColor: "white",
+                }}
+                key={item._id}
+              >
+                {item.messageBody}
+              </Text>
+            )}
+          />
+        )}
       </View>
       <View>
         <TextInput
@@ -73,9 +80,8 @@ function MessageScreen({}) {
 
         <Button
           title="Send message"
-          onPress={async () => {
-            const result = await messagesApi.sendMessage();
-            // console.log(result);
+          onPress={() => {
+            send();
           }}
         />
         <TouchableOpacity onPress={() => dispatch(userLoggedOut())}>

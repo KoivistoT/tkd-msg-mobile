@@ -27,7 +27,7 @@ const slice = createSlice({
     },
     messageSent: (rooms, action) => {
       // console.log("message lähetetty", action.payload);
-      return action.payload;
+      // return action.payload;
     },
     messageSendError: (rooms, action) => {
       rooms.messageSendError = action.payload;
@@ -71,7 +71,7 @@ export const getAllRooms = () =>
   });
 
 export const sendMessage = (
-  message = "jaaha",
+  message = "",
   // roomId = "61d3f5b8145d1e3e2bc83ff0c"
   roomId = ""
 ) =>
