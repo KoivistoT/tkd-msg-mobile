@@ -29,6 +29,7 @@ import {
   saveSocket,
   socketConnected,
   createSocketConnection,
+  selectSocket,
 } from "./store/socket";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";

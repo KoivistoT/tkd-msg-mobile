@@ -39,9 +39,19 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
       }
+      // nämä testiä*********
+      // nämä testiä*********
+      // nämä testiä*********
+      socket.on("notification", (notif) => {
+        console.log(notif, "tämä tulee socket.js ");
+      });
+      socket.emit("identity", Math.random());
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }
+      // nämä testiä*********
+      // nämä testiä*********
+      // nämä testiä*********
     });
   } catch (error) {
     dispatch(connectionError("Something faild"));

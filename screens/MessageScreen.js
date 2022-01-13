@@ -17,6 +17,7 @@ import {
   userLoggedOut,
 } from "../store/currentUser";
 import { getErrorMessage, getMessagesbyId, sendMessage } from "../store/rooms";
+import { disconnectSocket, selectSocket } from "../store/socket";
 
 function MessageScreen(item) {
   // messageForm pitää olla erikseen, jotta ei päivitä viestilsitaa
@@ -27,7 +28,7 @@ function MessageScreen(item) {
   const dispatch = useDispatch();
 
   const roomMessages = useSelector((state) => state.entities.rooms);
-
+  const socket = useSelector((state) => selectSocket(state));
   const send = async () => {
     await dispatch(sendMessage(message, roomId));
 
@@ -40,7 +41,25 @@ function MessageScreen(item) {
 
   useEffect(() => {
     const roomId = item.route.params._id;
+    // const listener = (msg) => {
+    //   console.log(msg, "lkjlj");
+    // };
+
+    // socket.emit("subscribe", roomId);
+    // socket.emit("login", { name: "jaaha", roomId: roomId }, (error) => {
+    //   if (error) {
+    //     console.log(error, "tää error");
+    //   }
+    // });
+
+    // socket.emit("chat message", "täältä");
+    // socket.emit("chat message", "ee");
+    socket.emit("subscribe", roomId);
     dispatch(getMessagesbyId(roomId));
+    return () => {
+      console.log("on täällä");
+      socket.emit("unsubscribe", roomId);
+    };
   }, []);
 
   return (
