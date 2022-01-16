@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
 
 const slice = createSlice({
   name: "rooms",
@@ -15,6 +15,7 @@ const slice = createSlice({
     // action => action handler
     messagesResived: (rooms, action) => {
       rooms.messages = action.payload;
+      // console.log(rooms.messages.messages, "messagesResived");
     },
     messagesError: (rooms, action) => {
       console.log("epännoistu2");
@@ -24,6 +25,11 @@ const slice = createSlice({
     },
     roomsError: (rooms, action) => {
       console.log(action.payload, "epäonnistui");
+    },
+    newMessageResived: (rooms, action) => {
+      console.log(rooms.messages.messages, "nämä ensin");
+      rooms.messages.messages.push(action.payload);
+      console.log(rooms.messages.messages, "nämä jälkeen");
     },
     messageSent: (rooms, action) => {
       // console.log("message lähetetty", action.payload);
@@ -51,6 +57,7 @@ export const {
   roomsResived,
   roomCreated,
   messageSendErrorCleared,
+  newMessageResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -104,3 +111,9 @@ export const createRoom = (roomName) =>
     onSuccess: roomCreated.type,
     onError: roomsError.type,
   });
+
+//tämä toki id:llä ja eri lailla
+export const getRoomMessages = createSelector(
+  (state) => state.entities.rooms,
+  (rooms) => rooms.messages
+);

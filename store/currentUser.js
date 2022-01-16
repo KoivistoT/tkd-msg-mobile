@@ -12,11 +12,11 @@
 // katso myös mitä clientissa
 // ekana tee auth logini tähän
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
-import { createSelector } from "reselect";
+// import { createSelector } from "reselect";
 
 const slice = createSlice({
   name: "currentUser",

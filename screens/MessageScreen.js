@@ -16,7 +16,13 @@ import {
   selectToken,
   userLoggedOut,
 } from "../store/currentUser";
-import { getErrorMessage, getMessagesbyId, sendMessage } from "../store/rooms";
+import {
+  getErrorMessage,
+  getMessagesbyId,
+  getRoomMessages,
+  newMessageResived,
+  sendMessage,
+} from "../store/rooms";
 import { disconnectSocket, selectSocket } from "../store/socket";
 
 function MessageScreen(item) {
@@ -27,7 +33,8 @@ function MessageScreen(item) {
   const store = useStore();
   const dispatch = useDispatch();
 
-  const roomMessages = useSelector((state) => state.entities.rooms);
+  const roomMessages2 = useSelector(getRoomMessages);
+
   const socket = useSelector((state) => selectSocket(state));
   const send = async () => {
     await dispatch(sendMessage(message, roomId));
@@ -38,7 +45,12 @@ function MessageScreen(item) {
       console.log("Viestin lähetys onnistui!!!");
     }
   };
+  const sendEmit = () => {
+    const msg = "tämä on viesti mobiilista";
+    const messageData = { roomId: item.route.params._id, msg };
 
+    socket.emit("chat message", messageData);
+  };
   useEffect(() => {
     const roomId = item.route.params._id;
     // const listener = (msg) => {
@@ -55,13 +67,32 @@ function MessageScreen(item) {
     // socket.emit("chat message", "täältä");
     // socket.emit("chat message", "ee");
     socket.emit("subscribe", roomId);
+    socket.on("new message", (message) => {
+      console.log("tässä käy tämä", message);
+      dispatch(newMessageResived(message.message));
+      // dispatch(getMessagesbyId(roomId));
+    });
     dispatch(getMessagesbyId(roomId));
     return () => {
       console.log("on täällä");
       socket.emit("unsubscribe", roomId);
+      socket.off("new message");
     };
   }, []);
 
+  const messageItem = ({ item }) => (
+    <Text
+      style={{
+        color: "black",
+        backgroundColor: "white",
+      }}
+      key={item._id}
+    >
+      {item.messageBody}
+    </Text>
+  );
+
+  // console.log(roomMessages.messages, "Täältä huoneesta");
   return (
     <Screen>
       <View
@@ -72,23 +103,33 @@ function MessageScreen(item) {
           color: "black",
         }}
       >
-        {roomMessages.messages && (
-          <FlatList
-            data={roomMessages.messages.messages}
-            keyExtractor={(message) => message._id}
-            renderItem={({ item }) => (
-              <Text
-                style={{
-                  color: "black",
-                  backgroundColor: "white",
-                }}
-                key={item._id}
-              >
-                {item.messageBody}
-              </Text>
-            )}
-          />
+        {/* {roomMessages2 && ( */}
+        {roomMessages2.messages && (
+          <Text style={{ color: "red" }}>
+            {
+              roomMessages2.messages[roomMessages2.messages.length - 1]
+                .messageBody
+            }
+            viimeisin
+          </Text>
         )}
+
+        <FlatList
+          data={roomMessages2.messages}
+          keyExtractor={(message) => message._id}
+          renderItem={({ item }) => (
+            <Text
+              style={{
+                color: "black",
+                backgroundColor: "white",
+              }}
+              key={item._id}
+            >
+              {item.messageBody}
+            </Text>
+          )}
+        />
+        {/* )} */}
       </View>
       <View>
         <TextInput
@@ -96,7 +137,12 @@ function MessageScreen(item) {
           placeholderTextColor={"black"}
           onChangeText={(text) => onChangeText(text)}
         />
-
+        <Button
+          title="Send emit"
+          onPress={() => {
+            sendEmit();
+          }}
+        />
         <Button
           title="Send message"
           onPress={() => {

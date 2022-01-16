@@ -49,6 +49,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }
+      // socket.on("new message", (message) => {
+      //   console.log("tässä tuli uusi viesti", message);
+      // });
       // nämä testiä*********
       // nämä testiä*********
       // nämä testiä*********
