@@ -76,11 +76,7 @@ export const getAllRooms = () =>
     onError: roomsError.type,
   });
 
-export const sendMessage = (
-  message = "",
-  // roomId = "61d3f5b8145d1e3e2bc83ff0c"
-  roomId = ""
-) =>
+export const sendMessage = (message = "", roomId = "") =>
   apiCallBegan({
     data: {
       messageBody: message,

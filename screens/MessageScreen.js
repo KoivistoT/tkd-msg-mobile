@@ -45,12 +45,7 @@ function MessageScreen(item) {
       console.log("Viestin lähetys onnistui!!!");
     }
   };
-  const sendEmit = () => {
-    const msg = "tämä on viesti mobiilista";
-    const messageData = { roomId: item.route.params._id, msg };
 
-    socket.emit("chat message", messageData);
-  };
   useEffect(() => {
     const roomId = item.route.params._id;
     // const listener = (msg) => {
@@ -70,7 +65,7 @@ function MessageScreen(item) {
 
     socket.on("new message", (message) => {
       alert("ilmoittaa uudsta viestistä");
-      // dispatch(newMessageResived(message.message));
+      dispatch(newMessageResived(message.message));
       // dispatch(getMessagesbyId(roomId));
     });
     socket.emit("getUsers");
@@ -129,12 +124,7 @@ function MessageScreen(item) {
           placeholderTextColor={"black"}
           onChangeText={(text) => onChangeText(text)}
         />
-        <Button
-          title="Send emit"
-          onPress={() => {
-            sendEmit();
-          }}
-        />
+
         <Button
           title="Send message"
           onPress={() => {

@@ -43,7 +43,9 @@ function RoomsScreen({ navigation }) {
   useEffect(() => {
     // tämä dispatch vai mitä
   }, []);
-  console.log(userRooms);
+  console.log(
+    "tuleeko viestit erikseen vai suoraan huoneeseen? Entä membersit, oma vai huoneeseen."
+  );
   const sendMessageTest = async () => {
     await dispatch(sendMessage());
 
