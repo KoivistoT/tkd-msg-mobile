@@ -32,9 +32,6 @@ import { disconnectSocket, selectSocket } from "../store/socket";
 import routes from "../app/navigation/routes";
 
 function RoomsScreen({ navigation }) {
-  const [message, setMessage] = useState("jaaha");
-  const onChangeText = (text) => setMessage(text);
-
   const dispatch = useDispatch();
   const store = useStore();
 
@@ -43,9 +40,9 @@ function RoomsScreen({ navigation }) {
   useEffect(() => {
     // tämä dispatch vai mitä
   }, []);
-  console.log(
-    "tuleeko viestit erikseen vai suoraan huoneeseen? Entä membersit, oma vai huoneeseen."
-  );
+  // console.log(
+  //   "tuleeko viestit erikseen vai suoraan huoneeseen? Entä membersit, oma vai huoneeseen."
+  // );
   const sendMessageTest = async () => {
     await dispatch(sendMessage());
 
@@ -92,15 +89,7 @@ function RoomsScreen({ navigation }) {
           )}
         />
       </View>
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            sendMessageTest();
-          }}
-        >
-          <Text>lähetä viesti</Text>
-        </TouchableOpacity>
-      </View>
+
       <View>
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>

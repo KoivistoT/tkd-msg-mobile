@@ -21,7 +21,15 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     roomsResived: (rooms, action) => {
+      // action.payload.forEach((item) => {
+      //   rooms.rooms = { [item._id]: item, ...rooms.rooms };
+      // });
       rooms.rooms = action.payload;
+
+      console.log(
+        rooms.rooms["61e6a80eb30d002e91d67b5a"],
+        "huoneet vastaanotettu, tässä yksi id:llä"
+      );
     },
     roomsError: (rooms, action) => {
       console.log(action.payload, "epäonnistui");
@@ -30,8 +38,13 @@ const slice = createSlice({
       rooms.messages.messages.push(action.payload);
       // console.log(rooms.messages.messages, "nämä jälkeen");
     },
+    membersResived: (rooms, action) => {
+      console.log(action.payload);
+      // console.log(rooms.rooms);
+      // console.log(rooms.messages.messages, "nämä jälkeen");
+    },
     messageSent: (rooms, action) => {
-      // console.log("message lähetetty", action.payload);
+      console.log("message lähetetty", action.payload);
       // return action.payload;
     },
     messageSendError: (rooms, action) => {
@@ -57,6 +70,7 @@ export const {
   roomCreated,
   messageSendErrorCleared,
   newMessageResived,
+  membersResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -107,6 +121,12 @@ export const createRoom = (roomName, type) =>
     onError: roomsError.type,
   });
 
+export const getMembersById = (roomId) =>
+  apiCallBegan({
+    url: url + "/rooms/members/" + roomId,
+    onSuccess: membersResived.type,
+    onError: roomsError.type,
+  });
 //tämä toki id:llä ja eri lailla
 export const getRoomMessages = createSelector(
   (state) => state.entities.rooms,
