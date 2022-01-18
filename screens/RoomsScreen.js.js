@@ -12,6 +12,7 @@ import messagesApi from "../api/messages";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import {
+  getCurrentUserRooms,
   getToken,
   isLoggedIn,
   logout,
@@ -38,10 +39,11 @@ function RoomsScreen({ navigation }) {
   const store = useStore();
 
   const rooms = useSelector((state) => state.entities.rooms);
-
+  const userRooms = useSelector(getCurrentUserRooms);
   useEffect(() => {
     // tämä dispatch vai mitä
   }, []);
+  console.log(userRooms);
   const sendMessageTest = async () => {
     await dispatch(sendMessage());
 

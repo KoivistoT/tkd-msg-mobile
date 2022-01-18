@@ -12,6 +12,9 @@ import { Provider } from "react-redux";
 import AppToast from "./app/components/AppToast";
 import Login from "./app/components/Login";
 import {
+  getCurrentUser,
+  getCurrentUserById,
+  getCurrentUserRooms,
   getToken,
   isLoggedIn,
   logout,
@@ -46,9 +49,12 @@ export default function AppWrapper() {
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {}, []);
 
   const onLogin = () => {
+    dispatch(getCurrentUserById());
+
     dispatch(createSocketConnection());
     dispatch(getAllRooms());
   };
@@ -60,6 +66,7 @@ function App() {
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppToast />
       {token ? <AppNavigator /> : <AuthNavigator />}
+      {/* <AppNavigator /> */}
       <StatusBar style="auto" />
     </NavigationContainer>
   );

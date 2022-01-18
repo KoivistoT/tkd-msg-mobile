@@ -19,8 +19,14 @@ import AppFormPicker from "./AppFormPicker";
 import { createUser } from "../../../store/users";
 import { getErrorMessage, createRoom } from "../../../store/rooms";
 
+const roomTypeOptions = [
+  { label: "Group", value: "group" },
+  { label: "Private", value: "private" },
+];
+
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Room name"),
+  type: Yup.string().required().min(1).label("Room type"),
 });
 
 function CreateRoomForm({ navigation, closeModal }) {
@@ -30,10 +36,10 @@ function CreateRoomForm({ navigation, closeModal }) {
   const store = useStore();
   const dispatch = useDispatch();
 
-  const handleSubmit = async ({ roomName }) => {
+  const handleSubmit = async ({ roomName, type }) => {
     setLoading(true);
 
-    dispatch(createRoom(roomName));
+    dispatch(createRoom(roomName, type));
 
     if (getErrorMessage()(store.getState())) {
       console.log("Ei onnistunut, epäonnistui");
@@ -47,12 +53,21 @@ function CreateRoomForm({ navigation, closeModal }) {
     <Screen style={styles.container}>
       <AppForm
         initialValues={{
+          type: "group",
           roomName: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <>
+          <AppFormPicker
+            options={roomTypeOptions}
+            autoCapitalize="none"
+            icon="account-outline"
+            name="type"
+            placeholder="Room type"
+          ></AppFormPicker>
+
           <AppFormField
             autoCapitalize="none"
             autoCorrect={false}

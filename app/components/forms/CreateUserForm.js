@@ -19,11 +19,16 @@ import AppFormPicker from "./AppFormPicker";
 import { createUser } from "../../../store/users";
 import { getErrorMessage } from "../../../store/rooms";
 
+const accountTypeOptions = [
+  { label: "Pro", value: "pro" },
+  { label: "Basic", value: "basic" },
+];
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
   password: Yup.string().required().min(4).label("Password"),
   firstName: Yup.string().required().min(1).label("Firstname"),
   lastName: Yup.string().required().min(2).label("lastname"),
+  displayName: Yup.string().required().min(2).label("Displayname"),
   email: Yup.string().required().email().label("Email"),
   accountType: Yup.string().required().min(1).label("AccountType"),
 });
@@ -39,12 +44,22 @@ function CreateUserForm({ navigation, closeModal }) {
     userName,
     password,
     accountType,
+    displayName,
     firstName,
     lastName,
   }) => {
     // dispatch(errorMessageCleared());
     setLoading(true);
-    dispatch(createUser(userName, password, accountType, firstName, lastName));
+    dispatch(
+      createUser(
+        userName,
+        password,
+        accountType,
+        firstName,
+        lastName,
+        displayName
+      )
+    );
 
     if (getErrorMessage()(store.getState())) {
       console.log("Ei onnistunut päonnistui");
@@ -63,12 +78,14 @@ function CreateUserForm({ navigation, closeModal }) {
           password: "",
           firstName: "",
           lastName: "",
+          displayName: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <>
           <AppFormPicker
+            options={accountTypeOptions}
             autoCapitalize="none"
             icon="account-outline"
             name="accountType"
@@ -97,6 +114,13 @@ function CreateUserForm({ navigation, closeModal }) {
             keyboardType="email-address"
             name="lastName"
             placeholder="Lastname"
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            name="displayName"
+            placeholder="DisplayName"
           />
           <AppFormField
             autoCapitalize="none"

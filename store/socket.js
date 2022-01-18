@@ -40,12 +40,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         dispatch(socketConnected(socket));
       }
       // nämä testiä*********
+      // nämä testiä*********r
       // nämä testiä*********
-      // nämä testiä*********
-      socket.on("notification", (notif) => {
-        console.log(notif, "tämä tulee socket.js ");
-      });
-      socket.emit("identity", Math.random());
+      // socket.on("notification", (notif) => {
+      //   console.log(notif, "tämä tulee socket.js ");
+      // });
+      socket.emit("identity", getState().auth.currentUser._id);
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }

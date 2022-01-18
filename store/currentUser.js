@@ -12,7 +12,7 @@
 // katso myös mitä clientissa
 // ekana tee auth logini tähän
 
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSlice, createSelector, current } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
@@ -29,6 +29,7 @@ const slice = createSlice({
     token: null,
     error: null,
     loggedIn: false,
+    userRooms: [],
   },
   reducers: {
     // action => action handler
@@ -41,8 +42,17 @@ const slice = createSlice({
       currentUser.name = user.name;
       currentUser._id = user._id;
       currentUser.loggedIn = true;
-    },
 
+      // console.log("ei tule backendistä nuo huoneet userRooms");
+    },
+    userResived: (currentUser, action) => {
+      // console.log(action.payload, "tässä käyttäjän tiedot");
+      currentUser.userRooms = action.payload[0].userRooms;
+      // console.log(action.payload.userRooms);
+    },
+    userFetchFaild: (currentUser, action) => {
+      console.log(action.payload, "error cod 99991");
+    },
     loginFailed: (currentUser, action) => {
       currentUser.token = null;
       currentUser.error = action.payload;
@@ -56,6 +66,7 @@ const slice = createSlice({
       currentUser.name = null;
       currentUser._id = null;
       currentUser.loggedIn = false;
+      currentUser.userRooms = [];
       // console.log(currentUser);
     },
     errorMessageCleared: (currentUser, action) => {
@@ -65,8 +76,14 @@ const slice = createSlice({
   },
 });
 
-export const { userLoggedIn, loginFailed, userLoggedOut, errorMessageCleared } =
-  slice.actions;
+export const {
+  userLoggedIn,
+  userResived,
+  loginFailed,
+  userLoggedOut,
+  errorMessageCleared,
+  userFetchFaild,
+} = slice.actions;
 export default slice.reducer;
 
 const url = settings.apiUrl;
@@ -81,6 +98,18 @@ export const login = (email, password) =>
     onError: loginFailed.type,
   });
 
+export const getCurrentUserById = (userId) => (dispatch, getState) => {
+  //pitääkö olla et katsoo onko jo käuyttäjä
+
+  return dispatch(
+    apiCallBegan({
+      url: url + "/users/" + getState().auth.currentUser._id,
+
+      onSuccess: userResived.type,
+      onError: userFetchFaild.type,
+    })
+  );
+};
 export const logout = () => {
   console.log("tämä suoraan logout siellä missä onkaan");
   userLoggedOut();
@@ -100,4 +129,14 @@ export const isLoggedIn = createSelector(
 export const getToken = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser.token
+);
+
+export const getCurrentUserRooms = createSelector(
+  (state) => state.auth,
+  (auth) => auth.currentUser.userRooms
+);
+
+export const getCurrentUser = createSelector(
+  (state) => state.auth,
+  (auth) => auth.currentUser
 );

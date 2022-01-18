@@ -38,7 +38,7 @@ function MessageScreen(item) {
   const socket = useSelector((state) => selectSocket(state));
   const send = async () => {
     await dispatch(sendMessage(message, roomId));
-
+    socket.emit("chat message", { message, roomId });
     if (getErrorMessage()(store.getState())) {
       console.log("Viestin lähetys epäonnistui");
     } else {
@@ -67,16 +67,23 @@ function MessageScreen(item) {
     // socket.emit("chat message", "täältä");
     // socket.emit("chat message", "ee");
     socket.emit("subscribe", roomId);
+
     socket.on("new message", (message) => {
-      console.log("tässä käy tämä", message);
-      dispatch(newMessageResived(message.message));
+      alert("ilmoittaa uudsta viestistä");
+      // dispatch(newMessageResived(message.message));
       // dispatch(getMessagesbyId(roomId));
+    });
+    socket.emit("getUsers");
+    socket.on("users live", (users) => {
+      // alert(users);
+      setUsersLive(users.users);
     });
     dispatch(getMessagesbyId(roomId));
     return () => {
       console.log("on täällä");
       socket.emit("unsubscribe", roomId);
       socket.off("new message");
+      socket.off("users live");
     };
   }, []);
 
@@ -92,42 +99,27 @@ function MessageScreen(item) {
     </Text>
   );
 
+  const [usersLive, setUsersLive] = useState([]);
   // console.log(roomMessages.messages, "Täältä huoneesta");
   return (
     <Screen>
+      {usersLive.map((item, index) => (
+        <Text key={index}>{item.userId}</Text>
+      ))}
       <View
         style={{
           borderWidth: 1,
           width: 300,
-          height: 500,
+          height: 400,
           color: "black",
         }}
       >
         {/* {roomMessages2 && ( */}
-        {roomMessages2.messages && (
-          <Text style={{ color: "red" }}>
-            {
-              roomMessages2.messages[roomMessages2.messages.length - 1]
-                .messageBody
-            }
-            viimeisin
-          </Text>
-        )}
 
         <FlatList
           data={roomMessages2.messages}
           keyExtractor={(message) => message._id}
-          renderItem={({ item }) => (
-            <Text
-              style={{
-                color: "black",
-                backgroundColor: "white",
-              }}
-              key={item._id}
-            >
-              {item.messageBody}
-            </Text>
-          )}
+          renderItem={messageItem}
         />
         {/* )} */}
       </View>

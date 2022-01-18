@@ -27,9 +27,8 @@ const slice = createSlice({
       console.log(action.payload, "epäonnistui");
     },
     newMessageResived: (rooms, action) => {
-      console.log(rooms.messages.messages, "nämä ensin");
       rooms.messages.messages.push(action.payload);
-      console.log(rooms.messages.messages, "nämä jälkeen");
+      // console.log(rooms.messages.messages, "nämä jälkeen");
     },
     messageSent: (rooms, action) => {
       // console.log("message lähetetty", action.payload);
@@ -89,7 +88,7 @@ export const sendMessage = (
     },
     onStart: messageSendErrorCleared.type,
     method: "post",
-    url: url + "/messages/send_message2",
+    url: url + "/messages/send_message",
     onSuccess: messageSent.type,
     onError: messageSendError.type,
   });
@@ -103,11 +102,11 @@ export const getErrorMessage = () =>
     (rooms) => rooms.messageSendError
   );
 
-export const createRoom = (roomName) =>
+export const createRoom = (roomName, type) =>
   apiCallBegan({
-    url: url + "/rooms/create_room2",
+    url: url + "/rooms/create_room",
     method: "post",
-    data: { roomName },
+    data: { roomName, type },
     onSuccess: roomCreated.type,
     onError: roomsError.type,
   });

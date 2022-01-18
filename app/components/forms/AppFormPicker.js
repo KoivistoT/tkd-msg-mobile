@@ -7,7 +7,7 @@ import ErrorMessage from "../ErrorMessage";
 import AppText from "../AppText";
 import colors from "../../../config/colors";
 
-function AppFormPicker({ name, width, ...otherProps }) {
+function AppFormPicker({ name, width, options, ...otherProps }) {
   //   const [selectedAccountType, setSelectedAccountType] = useState("worker");
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
@@ -19,11 +19,12 @@ function AppFormPicker({ name, width, ...otherProps }) {
       </AppText>
       <Picker
         onBlur={() => setFieldTouched(name)}
-        selectedValue={values.accountType}
+        selectedValue={values[name]}
         onValueChange={(itemValue) => setFieldValue(name, itemValue)}
       >
-        <Picker.Item label="Basic" value="basic" />
-        <Picker.Item label="Pro" value="pro" />
+        {options.map((item) => (
+          <Picker.Item key={item.value} label={item.label} value={item.value} />
+        ))}
       </Picker>
 
       <ErrorMessage error={errors[name]} visible={touched[name]}></ErrorMessage>
