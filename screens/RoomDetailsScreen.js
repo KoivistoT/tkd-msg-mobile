@@ -36,6 +36,7 @@ function RoomDetailsScreen(item) {
       dispatch(change_member(roomData._id, item, membership));
     }
   };
+
   // console.log(
   //   "ensin hakee membersit ja sit myös kaikki userit, kun userin lisää huoneeseen, sen id menee memberseihin"
   // );
@@ -43,21 +44,25 @@ function RoomDetailsScreen(item) {
   //   "tarvitsee actionin ja sen, että katsoo kuuluuko huoneeseen, eli pitääkin hakea huoneen membersit myös ja sitten ne yhdistää. sen voi tehdä BE:ssä "
   // );
   // console.log("listitemit voisi olla jossain reusable");
-  const usersListItem = ({ item }) => (
-    <View>
-      <AppText style={{ paddingLeft: 10, marginTop: 4 }}>
-        {item.displayName}
-      </AppText>
-      <AppButton
-        onPress={() => change_membership(item, true)}
-        title="Add to room"
-      />
-    </View>
-  );
+  const usersListItem = ({ item }) => {
+    if (!members.includes(item._id)) {
+      return (
+        <View>
+          <AppText style={{ paddingLeft: 10, marginTop: 4 }}>
+            {item.displayName}
+          </AppText>
+          <AppButton
+            onPress={() => change_membership(item, true)}
+            title="Add to room"
+          />
+        </View>
+      );
+    }
+  };
   const membersListItem = ({ item }) => (
     <View>
       <AppText style={{ paddingLeft: 10, marginTop: 4 }}>
-        {item.displayName}
+        {users[item].displayName}
       </AppText>
       <AppButton
         onPress={() => change_membership(item, false)}
@@ -65,6 +70,7 @@ function RoomDetailsScreen(item) {
       />
     </View>
   );
+
   return (
     <Screen>
       <View style={{ flexDirection: "row" }}>
@@ -81,7 +87,7 @@ function RoomDetailsScreen(item) {
       <AppText>All users</AppText>
       <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={users}
+        data={Object.values(users)}
         bounces={false}
         keyExtractor={(data) => data._id}
         renderItem={usersListItem}

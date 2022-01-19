@@ -68,7 +68,7 @@ function RoomsScreen({ navigation }) {
         }}
       >
         <FlatList
-          data={rooms.rooms}
+          data={Object.values(rooms.rooms)}
           keyExtractor={(room) => room._id}
           renderItem={({ item }) => (
             <TouchableOpacity

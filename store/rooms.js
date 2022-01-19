@@ -34,7 +34,7 @@ const slice = createSlice({
     },
 
     memberChanged: (rooms, action) => {
-      console.log(action.payload, "memberChanged");
+      // console.log(action.payload, "memberChanged");
       rooms.members = action.payload.members;
     },
     roomsError: (rooms, action) => {
@@ -137,7 +137,7 @@ export const getMembersById = (roomId) =>
 
 export const change_member = (roomId, userId, membership) =>
   apiCallBegan({
-    url: url + "/rooms/change_member",
+    url: url + "/rooms/change_membership",
     method: "post",
     data: { roomId, userId, membership },
     onSuccess: memberChanged.type,
