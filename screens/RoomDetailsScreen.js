@@ -16,42 +16,53 @@ import Screen from "../app/components/Screen";
 import { getAllUsers } from "../store/users";
 import colors from "../config/colors";
 import AppSwitch from "../app/components/forms/AppSwitch";
-import { getMembersById } from "../store/rooms";
+import { change_member, getMembersById, getRoomMembers } from "../store/rooms";
 import AppButton from "../app/components/AppButton";
 
 function RoomDetailsScreen(item) {
   const { params: roomData } = item.route;
   const { users } = useSelector((state) => state.entities.users);
+  const members = useSelector(getRoomMembers);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUsers());
     dispatch(getMembersById(roomData._id));
   }, []);
 
-  const addUserToRoom = (permission) => {
-    console.log(permission, "tälle action");
+  const change_membership = (item, membership) => {
+    if (membership) {
+      dispatch(change_member(roomData._id, item._id, membership));
+    } else {
+      dispatch(change_member(roomData._id, item, membership));
+    }
   };
-  console.log(
-    "ensin hakee membersit ja sit myös kaikki userit, kun userin lisää huoneeseen, sen id menee memberseihin"
-  );
+  // console.log(
+  //   "ensin hakee membersit ja sit myös kaikki userit, kun userin lisää huoneeseen, sen id menee memberseihin"
+  // );
   // console.log(
   //   "tarvitsee actionin ja sen, että katsoo kuuluuko huoneeseen, eli pitääkin hakea huoneen membersit myös ja sitten ne yhdistää. sen voi tehdä BE:ssä "
   // );
-  console.log("listitemit voisi olla jossain reusable");
+  // console.log("listitemit voisi olla jossain reusable");
   const usersListItem = ({ item }) => (
-    <View key={item._id}>
+    <View>
       <AppText style={{ paddingLeft: 10, marginTop: 4 }}>
         {item.displayName}
       </AppText>
-      <AppButton title="Add to room" />
+      <AppButton
+        onPress={() => change_membership(item, true)}
+        title="Add to room"
+      />
     </View>
   );
   const membersListItem = ({ item }) => (
-    <View key={item._id}>
+    <View>
       <AppText style={{ paddingLeft: 10, marginTop: 4 }}>
         {item.displayName}
       </AppText>
-      <AppButton title="Add to room" />
+      <AppButton
+        onPress={() => change_membership(item, false)}
+        title="Remove from room"
+      />
     </View>
   );
   return (
@@ -60,13 +71,13 @@ function RoomDetailsScreen(item) {
         <AppText>{roomData.roomName} </AppText>
       </View>
       <AppText>Room members</AppText>
-      {/* <FlatList
+      <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={users}
+        data={members}
         bounces={false}
-        keyExtractor={(data) => data._id}
-        renderItem={usersListItem}
-      /> */}
+        keyExtractor={(data) => data}
+        renderItem={membersListItem}
+      />
       <AppText>All users</AppText>
       <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}

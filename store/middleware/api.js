@@ -26,10 +26,10 @@ const api =
       });
 
       dispatch(actions.apiCallSuccess(response.data));
-      console.log(
-        response.data.success,
-        "messagen succes, mieti tulisiko tämä aina, onko apua success jutusta?"
-      );
+      // console.log(
+      //   response.data.success,
+      //   "messagen succes, mieti tulisiko tämä aina, onko apua success jutusta?"
+      // );
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));

@@ -38,6 +38,10 @@ import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
 import { getAllRooms } from "./store/rooms";
 
+if (!__DEV__) {
+  console.log = () => null;
+}
+
 export default function AppWrapper() {
   const store = configureStore();
   return (

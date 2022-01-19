@@ -53,7 +53,7 @@ function RoomsControlScreen({ navigation }) {
       <CreateRoomModal />
       <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={allRooms}
+        data={Object.values(allRooms)}
         bounces={false}
         keyExtractor={listKeyExtractor}
         renderItem={listItem}
