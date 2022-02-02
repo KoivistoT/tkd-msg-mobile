@@ -22,7 +22,7 @@ import {
   getRoomMessages,
   newMessageResived,
   sendMessage,
-} from "../store/rooms";
+} from "../store/messages";
 import { disconnectSocket, selectSocket } from "../store/socket";
 
 function MessageScreen(item) {
@@ -64,7 +64,8 @@ function MessageScreen(item) {
     socket.emit("subscribe", roomId);
 
     socket.on("new message", (message) => {
-      alert("ilmoittaa uudsta viestistä");
+      // alert("uusi viesti tuli");
+      alert("tämä alussa socketissa kuuntelee, ei täältä");
       dispatch(newMessageResived(message.message));
       // dispatch(getMessagesbyId(roomId));
     });

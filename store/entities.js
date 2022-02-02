@@ -1,14 +1,18 @@
 import { combineReducers } from "redux";
 import bugReducer from "./bugs";
 import generalReducer from "./general";
-import roomsReducer from "./rooms";
+import roomReducer from "./rooms";
 import socketReducer from "./socket";
-import usersReducer from "./users";
+import userReducer from "./users";
+import messageReducer from "./messages";
+import memberReducer from "./members";
 
 export default combineReducers({
   bugs: bugReducer,
   general: generalReducer,
-  rooms: roomsReducer,
+  rooms: roomReducer,
   socket: socketReducer,
-  users: usersReducer,
+  users: userReducer,
+  messages: messageReducer,
+  members: memberReducer,
 });
