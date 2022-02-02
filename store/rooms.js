@@ -63,6 +63,13 @@ const slice = createSlice({
     roomCreated: (rooms, action) => {
       console.log("huone luotu");
     },
+    roomAdded: (rooms, action) => {
+      console.log("huone lisätty");
+    },
+    roomRemoved: (rooms, action) => {
+      delete rooms.rooms[action.payload];
+      console.log("nyt huoneet on", rooms.rooms);
+    },
   },
 });
 
@@ -78,6 +85,8 @@ export const {
   newMessageResived,
   membersResived,
   memberChanged,
+  roomAdded,
+  roomRemoved,
 } = slice.actions;
 export default slice.reducer;
 

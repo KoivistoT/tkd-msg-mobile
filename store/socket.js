@@ -6,6 +6,7 @@ import {
   createSocketConnectionBegan,
   createSocketConnectionSuccess,
 } from "./actions";
+import { roomAdded, roomRemoved } from "./rooms";
 
 const slice = createSlice({
   name: "socket",
@@ -45,16 +46,23 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       // socket.on("notification", (notif) => {
       //   console.log(notif, "tämä tulee socket.js ");
       // });
+
       socket.on("updates", (type, data) => {
+        // tee casella
+
         if (type === "roomAdded") {
-          console.log("tässä dispatch roomadded tai room remove jne");
+          dispatch(roomAdded());
         }
-        console.log("updates", type, data);
+        if (type === "roomRemoved") {
+          dispatch(roomRemoved(data.roomId));
+        }
+        // console.log("updates", type, data);
       });
       socket.emit("identity", getState().auth.currentUser._id);
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }
+
       // socket.on("new message", (message) => {
       //   console.log("tässä tuli uusi viesti", message);
       // });

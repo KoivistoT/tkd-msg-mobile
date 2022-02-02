@@ -62,7 +62,8 @@ function RoomsScreen({ navigation }) {
   //   console.log(rooms.rooms, "täsät");
   const sendForUsers = () => {
     //tähän se miten yhdelle lähettää
-    socket.emit("id connect", { users: ["61e6a7fdb30d002e91d67b53"] });
+    const roomId = "61e6a80eb30d002e91d67b5a";
+    socket.emit("id connect", { users: ["61e6a7fdb30d002e91d67b53"], roomId });
   };
   return (
     <Screen>
