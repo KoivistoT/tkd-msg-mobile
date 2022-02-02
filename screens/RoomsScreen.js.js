@@ -36,7 +36,10 @@ function RoomsScreen({ navigation }) {
   const store = useStore();
 
   const rooms = useSelector((state) => state.entities.rooms);
-  const userRooms = useSelector(getCurrentUserRooms);
+  // const userRooms = useSelector(getCurrentUserRooms);
+  const socket = useSelector((state) => selectSocket(state));
+  // const socket = store.getState().entities.socket.connection;
+
   useEffect(() => {
     // tämä dispatch vai mitä
   }, []);
@@ -57,7 +60,10 @@ function RoomsScreen({ navigation }) {
     dispatch(userLoggedOut());
   };
   //   console.log(rooms.rooms, "täsät");
-
+  const sendForUsers = () => {
+    //tähän se miten yhdelle lähettää
+    socket.emit("id connect", { users: ["61e6a7fdb30d002e91d67b53"] });
+  };
   return (
     <Screen>
       <View
@@ -89,7 +95,11 @@ function RoomsScreen({ navigation }) {
           )}
         />
       </View>
-
+      <View>
+        <TouchableOpacity onPress={() => sendForUsers()}>
+          <Text>send something by userID</Text>
+        </TouchableOpacity>
+      </View>
       <View>
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>

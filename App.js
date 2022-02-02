@@ -56,11 +56,10 @@ function App() {
 
   useEffect(() => {}, []);
 
-  const onLogin = () => {
-    dispatch(getCurrentUserById());
-
+  const onLogin = async () => {
+    await dispatch(getCurrentUserById());
+    dispatch(getAllRooms()); // tätä ei tarvitse tässä
     dispatch(createSocketConnection());
-    dispatch(getAllRooms());
   };
 
   const token = useSelector(selectToken);

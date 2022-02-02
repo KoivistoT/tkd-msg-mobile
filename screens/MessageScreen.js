@@ -70,7 +70,6 @@ function MessageScreen(item) {
     });
     socket.emit("getUsers");
     socket.on("users live", (users) => {
-      // alert(users);
       setUsersLive(users.users);
     });
     dispatch(getMessagesbyId(roomId));

@@ -104,7 +104,6 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
   return dispatch(
     apiCallBegan({
       url: url + "/users/" + getState().auth.currentUser._id,
-
       onSuccess: userResived.type,
       onError: userFetchFaild.type,
     })

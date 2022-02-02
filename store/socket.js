@@ -45,6 +45,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       // socket.on("notification", (notif) => {
       //   console.log(notif, "tämä tulee socket.js ");
       // });
+      socket.on("updates", (type, data) => {
+        if (type === "roomAdded") {
+          console.log("tässä dispatch roomadded tai room remove jne");
+        }
+        console.log("updates", type, data);
+      });
       socket.emit("identity", getState().auth.currentUser._id);
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
