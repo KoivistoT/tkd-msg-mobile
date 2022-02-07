@@ -46,15 +46,17 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       // socket.on("notification", (notif) => {
       //   console.log(notif, "tämä tulee socket.js ");
       // });
-
+      console.log(
+        "pitää hakea käyttäjän huoneet, nyt hakee alussa kaikki huoneet käyttäjälle"
+      );
       socket.on("updates", (type, data) => {
         // tee casella
-        alert("nyt saavutti");
+
         if (type === "roomAdded") {
-          dispatch(roomAdded());
+          dispatch(roomAdded(data));
         }
         if (type === "roomRemoved") {
-          dispatch(roomRemoved(data.roomId));
+          dispatch(roomRemoved(Object.keys(data)));
         }
         // console.log("updates", type, data);
       });

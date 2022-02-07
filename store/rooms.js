@@ -43,11 +43,11 @@ const slice = createSlice({
       console.log("huone luotu");
     },
     roomAdded: (rooms, action) => {
-      console.log("huone lisätty");
+      rooms.rooms = Object.assign(rooms.rooms, action.payload);
+      console.log(rooms.rooms, "now");
     },
     roomRemoved: (rooms, action) => {
       delete rooms.rooms[action.payload];
-      // console.log("nyt huoneet on", rooms.rooms);
     },
   },
 });
