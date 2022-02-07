@@ -49,7 +49,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
       socket.on("updates", (type, data) => {
         // tee casella
-
+        alert("nyt saavutti");
         if (type === "roomAdded") {
           dispatch(roomAdded());
         }
