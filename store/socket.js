@@ -47,7 +47,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       //   console.log(notif, "tämä tulee socket.js ");
       // });
       console.log(
-        "pitää hakea käyttäjän huoneet, nyt hakee alussa kaikki huoneet käyttäjälle"
+        "pitää hakea käyttäjän huoneet, nyt hakee alussa kaikki huoneet käyttäjälle samalla tulisi hakea myös kaikki muu tieto yhdellä kutsulla, eli alkutiedot, init, eli viestit ja memberit. Tämä tapahtuu get current user by id app js ssä"
       );
       socket.on("updates", (type, data) => {
         // tee casella

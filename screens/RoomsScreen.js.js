@@ -75,7 +75,18 @@ function RoomsScreen({ navigation }) {
         }}
       >
         <FlatList
-          data={Object.values(rooms.rooms)}
+          data={Object.values(rooms.rooms).sort(function (a, b) {
+            var nameA = a.roomName;
+            var nameB = b.roomName;
+            console.log(a, b);
+            if (nameA > nameB) {
+              return 1;
+            }
+            if (nameA < nameB) {
+              return -1;
+            }
+            return 0;
+          })}
           keyExtractor={(room) => room._id}
           renderItem={({ item }) => (
             <TouchableOpacity

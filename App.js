@@ -58,7 +58,7 @@ function App() {
 
   const onLogin = async () => {
     await dispatch(getCurrentUserById());
-    // dispatch(getAllRooms()); // tätä ei tarvitse tässä
+    dispatch(getAllRooms()); // tätä ei tarvitse tässä
     dispatch(createSocketConnection());
   };
 

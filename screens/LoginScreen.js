@@ -32,7 +32,7 @@ function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = async ({ userName, password }) => {
-    dispatch(errorMessageCleared());
+    dispatch(errorMessageCleared()); // tämän voisti tehdä onStart:issa
     setLoading(true);
     dispatch(login(userName, password));
   };
