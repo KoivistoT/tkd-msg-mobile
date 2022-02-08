@@ -90,20 +90,19 @@ const url = settings.apiUrl;
 
 export const getInitialData = (email, password) =>
   // currentUserInit({
-  console.log("jostain syystä tämä epäonnistuus");
-apiCallBegan({
-  url: url + "/init",
-  // method: "post",
-  // data: {},
-  onSuccess: {
-    init: true,
-    user: userLoggedIn.type,
-    rooms: "tallentaa ne dispatchilla",
-    members: "jotain muuta",
-    messages: "tallentaa nämä",
-  },
-  // onError: loginFailed.type,
-});
+  apiCallBegan({
+    url: url + "/initial",
+    method: "post",
+    data: {},
+    onSuccess: {
+      init: true,
+      user: userLoggedIn.type,
+      rooms: "tallentaa ne dispatchilla",
+      members: "jotain muuta",
+      messages: "tallentaa nämä",
+    },
+    // onError: loginFailed.type,
+  });
 
 export const login = (email, password) =>
   //pitääkö olla et katsoo onko jo käuyttäjä

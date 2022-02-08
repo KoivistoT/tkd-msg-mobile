@@ -31,7 +31,10 @@ const api =
       //   "messagen succes, mieti tulisiko tämä aina, onko apua success jutusta?"
       // );
       if (onSuccess.init) {
-        console.log(response.data, "tässä on init, tämä tietysti allemmaksi");
+        console.log(
+          response.data,
+          "tässä on init ja katsoo, ettei tee toista dispatsia onSuccess"
+        );
       }
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
