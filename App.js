@@ -15,6 +15,7 @@ import {
   getCurrentUser,
   getCurrentUserById,
   getCurrentUserRooms,
+  getInitialData,
   getToken,
   isLoggedIn,
   logout,
@@ -59,6 +60,7 @@ function App() {
   const onLogin = async () => {
     await dispatch(getCurrentUserById());
     dispatch(getAllRooms()); // tätä ei tarvitse tässä
+    dispatch(getInitialData());
     dispatch(createSocketConnection());
   };
 

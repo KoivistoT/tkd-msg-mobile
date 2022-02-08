@@ -5,3 +5,5 @@ export const apiCallSuccess = createAction("api/callSuccess");
 export const apiCallFailed = createAction("api/callFailed");
 
 export const errorMessage = createAction("general/errorMessage");
+
+export const currentUserInit = createAction("currentUser/init");

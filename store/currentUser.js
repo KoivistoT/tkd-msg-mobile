@@ -13,7 +13,7 @@
 // ekana tee auth logini tähän
 
 import { createSlice, createSelector, current } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./actions";
+import { apiCallBegan, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 // import { createSelector } from "reselect";
@@ -87,6 +87,23 @@ export const {
 export default slice.reducer;
 
 const url = settings.apiUrl;
+
+export const getInitialData = (email, password) =>
+  // currentUserInit({
+  console.log("jostain syystä tämä epäonnistuus");
+apiCallBegan({
+  url: url + "/init",
+  // method: "post",
+  // data: {},
+  onSuccess: {
+    init: true,
+    user: userLoggedIn.type,
+    rooms: "tallentaa ne dispatchilla",
+    members: "jotain muuta",
+    messages: "tallentaa nämä",
+  },
+  // onError: loginFailed.type,
+});
 
 export const login = (email, password) =>
   //pitääkö olla et katsoo onko jo käuyttäjä

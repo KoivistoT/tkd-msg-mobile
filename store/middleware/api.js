@@ -30,10 +30,13 @@ const api =
       //   response.data.success,
       //   "messagen succes, mieti tulisiko tämä aina, onko apua success jutusta?"
       // );
+      if (onSuccess.init) {
+        console.log(response.data, "tässä on init, tämä tietysti allemmaksi");
+      }
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));
-      console.log(error, "täältä tulee error1");
+      console.log(error, "täältä tulee error1", onSuccess);
       if (onError) {
         dispatch({
           type: onError,

@@ -44,7 +44,7 @@ const slice = createSlice({
     },
     roomAdded: (rooms, action) => {
       rooms.rooms = Object.assign(rooms.rooms, action.payload);
-      console.log(rooms.rooms, "now");
+      // console.log(rooms.rooms, "now");
     },
     roomRemoved: (rooms, action) => {
       delete rooms.rooms[action.payload];

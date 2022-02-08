@@ -78,7 +78,7 @@ function RoomsScreen({ navigation }) {
           data={Object.values(rooms.rooms).sort(function (a, b) {
             var nameA = a.roomName;
             var nameB = b.roomName;
-            console.log(a, b);
+            // console.log(a, b);
             if (nameA > nameB) {
               return 1;
             }
