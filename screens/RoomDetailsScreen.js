@@ -29,6 +29,8 @@ function RoomDetailsScreen(item) {
     dispatch(getMembersById(roomData._id));
   }, []);
 
+  console.log("members pitäisi tulla memberseistä, ei roomista?");
+
   const change_membership = (item, membership) => {
     if (membership) {
       dispatch(change_member(roomData._id, item._id, membership));
@@ -62,7 +64,7 @@ function RoomDetailsScreen(item) {
   const membersListItem = ({ item }) => (
     <View>
       <AppText style={{ paddingLeft: 10, marginTop: 4 }}>
-        {users[item].displayName}
+        {users[item]?.displayName}
       </AppText>
       <AppButton
         onPress={() => change_membership(item, false)}

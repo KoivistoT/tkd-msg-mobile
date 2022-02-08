@@ -58,9 +58,9 @@ function App() {
   useEffect(() => {}, []);
 
   const onLogin = async () => {
-    await dispatch(getCurrentUserById());
-    dispatch(getAllRooms()); // tätä ei tarvitse tässä
-    dispatch(getInitialData());
+    // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
+    // dispatch(getAllRooms()); // tätä ei tarvitse tässä, kun init
+    await dispatch(getInitialData());
     dispatch(createSocketConnection());
   };
 

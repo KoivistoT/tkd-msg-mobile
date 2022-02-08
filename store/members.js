@@ -28,7 +28,7 @@ const slice = createSlice({
   },
 });
 
-export const { membersResived, memberChanged } = slice.actions;
+export const { membersResived, memberChanged, membersError } = slice.actions;
 export default slice.reducer;
 
 const url = settings.apiUrl;

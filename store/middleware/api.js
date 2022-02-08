@@ -11,7 +11,8 @@ const api =
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
-    const { url, method, data, onStart, onSuccess, onError } = action.payload;
+    const { url, method, data, onStart, onSuccess, onError, onInitSuccess } =
+      action.payload;
 
     if (onStart) dispatch({ type: onStart });
     next(action);
@@ -30,11 +31,13 @@ const api =
       //   response.data.success,
       //   "messagen succes, mieti tulisiko tämä aina, onko apua success jutusta?"
       // );
-      if (onSuccess.init) {
-        console.log(
-          response.data,
-          "tässä on init ja katsoo, ettei tee toista dispatsia onSuccess"
-        );
+      if (onInitSuccess) {
+        //tämä voisi olla myös functiolla joka on alhaalla, jotta tämä selkeämpi, tai sitten function on ihan jossain muualla
+        // dispatch({ type: onInitSuccess.messages, payload: response.data.messages });
+        dispatch({ type: onInitSuccess.rooms, payload: response.data.rooms });
+        dispatch({ type: onInitSuccess.user, payload: response.data.user });
+        // dispatch({ type: onInitSuccess.members, payload: response.data.members });
+        return;
       }
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {

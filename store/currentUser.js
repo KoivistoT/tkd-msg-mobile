@@ -16,6 +16,7 @@ import { createSlice, createSelector, current } from "@reduxjs/toolkit";
 import { apiCallBegan, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
+import { roomsResived } from "./rooms";
 // import { createSelector } from "reselect";
 
 const slice = createSlice({
@@ -47,8 +48,8 @@ const slice = createSlice({
     },
     userResived: (currentUser, action) => {
       // console.log(action.payload, "tässä käyttäjän tiedot");
-      currentUser.userRooms = action.payload[0].userRooms;
-      // console.log(action.payload.userRooms);
+
+      currentUser.userRooms = action.payload.userRooms;
     },
     userFetchFaild: (currentUser, action) => {
       console.log(action.payload, "error cod 99991");
@@ -88,21 +89,29 @@ export default slice.reducer;
 
 const url = settings.apiUrl;
 
-export const getInitialData = (email, password) =>
+export const getInitialData = () => (dispatch, getState) => {
   // currentUserInit({
-  apiCallBegan({
-    url: url + "/initial",
-    method: "post",
-    data: {},
-    onSuccess: {
-      init: true,
-      user: userLoggedIn.type,
-      rooms: "tallentaa ne dispatchilla",
-      members: "jotain muuta",
-      messages: "tallentaa nämä",
-    },
-    // onError: loginFailed.type,
-  });
+  console.log(
+    "seuraavaksi messaget ja memberit tänne ja apiin, tee siis ensin bacendiin"
+  );
+  console.log(
+    "millä tavalla se professional teki backendin, kun haki paljon, katso onko se tehokkaampi"
+  );
+  return dispatch(
+    apiCallBegan({
+      // method: "post",
+      url: url + "/initial/" + getState().auth.currentUser._id,
+      onInitSuccess: {
+        init: true,
+        user: userResived.type,
+        rooms: roomsResived.type,
+        members: "jotain muuta",
+        messages: "tallentaa nämä",
+      },
+      // onError: loginFailed.type,
+    })
+  );
+};
 
 export const login = (email, password) =>
   //pitääkö olla et katsoo onko jo käuyttäjä
