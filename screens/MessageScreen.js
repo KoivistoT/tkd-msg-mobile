@@ -75,7 +75,6 @@ function MessageScreen(item) {
     });
     dispatch(getMessagesbyId(roomId));
     return () => {
-      console.log("on täällä");
       socket.emit("unsubscribe", roomId);
       socket.off("new message");
       socket.off("users live");
