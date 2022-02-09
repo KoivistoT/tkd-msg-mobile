@@ -54,12 +54,16 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         // tee casella
 
         if (type === "roomAdded") {
+          const roomId = data[Object.keys(data)]._id; // vai olisiko data[0]._id tämä
           dispatch(roomAdded(data));
-          dispatch(getMessagesbyId(data[Object.keys(data)]._id)); // vai olisiko data[0]._id tämä
+          dispatch(getMessagesbyId(roomId));
+          socket.emit("subscribe", roomId);
         }
         if (type === "roomRemoved") {
-          dispatch(roomRemoved(Object.keys(data)));
-          dispatch(messagesRemoved(Object.keys(data)));
+          const roomId = Object.keys(data);
+          dispatch(roomRemoved(roomId));
+          dispatch(messagesRemoved(roomId));
+          socket.emit("unsubscribe", roomId);
         }
         // console.log("updates", type, data);
       });
@@ -67,7 +71,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }
-
+      getState().auth.currentUser.userRooms.forEach((roomId) => {
+        socket.emit("subscribe", roomId);
+      });
       // socket.on("new message", (message) => {
       //   console.log("tässä tuli uusi viesti", message);
       // });
@@ -83,6 +89,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 export const disconnectSocket = (userId) => {
   return async (dispatch, getState) => {
     // console.log(action.payload, "tästä tuli1");
+    await getState().auth.currentUser.userRooms.forEach((roomId) => {
+      getState().entities.socket.connection.emit("unsubscribe", roomId);
+    });
     getState().entities.socket.connection.disconnect();
     dispatch(socketDisconnected("Socket disconnected"));
   };
