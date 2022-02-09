@@ -36,6 +36,10 @@ const api =
         // dispatch({ type: onInitSuccess.messages, payload: response.data.messages });
         dispatch({ type: onInitSuccess.rooms, payload: response.data.rooms });
         dispatch({ type: onInitSuccess.user, payload: response.data.user });
+        dispatch({
+          type: onInitSuccess.messages,
+          payload: response.data.messages,
+        });
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;
       }

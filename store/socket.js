@@ -6,6 +6,7 @@ import {
   createSocketConnectionBegan,
   createSocketConnectionSuccess,
 } from "./actions";
+import { getMessagesbyId, messagesRemoved } from "./messages";
 import { roomAdded, roomRemoved } from "./rooms";
 
 const slice = createSlice({
@@ -54,9 +55,11 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "roomAdded") {
           dispatch(roomAdded(data));
+          dispatch(getMessagesbyId(data[Object.keys(data)]._id)); // vai olisiko data[0]._id tämä
         }
         if (type === "roomRemoved") {
           dispatch(roomRemoved(Object.keys(data)));
+          dispatch(messagesRemoved(Object.keys(data)));
         }
         // console.log("updates", type, data);
       });

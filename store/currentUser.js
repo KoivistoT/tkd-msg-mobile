@@ -17,6 +17,7 @@ import { apiCallBegan, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { roomsResived } from "./rooms";
+import { messagesResived } from "./messages";
 // import { createSelector } from "reselect";
 
 const slice = createSlice({
@@ -91,12 +92,7 @@ const url = settings.apiUrl;
 
 export const getInitialData = () => (dispatch, getState) => {
   // currentUserInit({
-  console.log(
-    "seuraavaksi messaget ja memberit tänne ja apiin, tee siis ensin bacendiin"
-  );
-  console.log(
-    "millä tavalla se professional teki backendin, kun haki paljon, katso onko se tehokkaampi"
-  );
+
   return dispatch(
     apiCallBegan({
       // method: "post",
@@ -105,8 +101,8 @@ export const getInitialData = () => (dispatch, getState) => {
         init: true,
         user: userResived.type,
         rooms: roomsResived.type,
-        members: "jotain muuta",
-        messages: "tallentaa nämä",
+        messages: messagesResived.type,
+        users: "haetaanko kaikki käyttäjät",
       },
       // onError: loginFailed.type,
     })

@@ -1,0 +1,4 @@
+  
+  
+  - hae myös all users?, jotta saa niiden tiedot nopeasti ja sitten id:llä aina haetaan ne, jos members jne. ja sitten myös muutokset niihin jos tulee"
+  - millä tavalla se professional teki backendin, kun haki paljon, katso onko se tehokkaampi"

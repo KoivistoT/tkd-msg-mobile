@@ -5,7 +5,7 @@ import roomReducer from "./rooms";
 import socketReducer from "./socket";
 import userReducer from "./users";
 import messageReducer from "./messages";
-import memberReducer from "./members";
+// import memberReducer from "./members";
 
 export default combineReducers({
   bugs: bugReducer,
@@ -14,5 +14,5 @@ export default combineReducers({
   socket: socketReducer,
   users: userReducer,
   messages: messageReducer,
-  members: memberReducer,
+  // members: memberReducer,
 });

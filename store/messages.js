@@ -13,8 +13,15 @@ const slice = createSlice({
   reducers: {
     messagesResived: (messages, action) => {
       messages.messages = action.payload;
-
+      // console.log(
+      //   action.payload["61e6a80eb30d002e91d67b5a"].messages,
+      //   "tässä kaikki viestit"
+      // );
       // console.log(messages.messages.messages, "messagesResived");
+    },
+    oneRoomMessagesResived: (messages, action) => {
+      messages.messages = Object.assign(messages.messages, action.payload);
+      // console.log(messages.messages);
     },
     messagesError: (messages, action) => {
       console.log("epännoistu2");
@@ -26,6 +33,9 @@ const slice = createSlice({
       console.log("message lähetetty", action.payload);
       // tässä respondissa olisi toki viesti, mutta haluan sen aina samasta paikasta kaikille
       //   messages.messages.messages.push(action.payload.message);
+    },
+    messagesRemoved: (messages, action) => {
+      delete messages.messages[action.payload];
     },
     messageSendError: (messages, action) => {
       messages.messageSendError = action.payload;
@@ -39,11 +49,13 @@ const slice = createSlice({
 
 export const {
   messagesResived,
+  oneRoomMessagesResived,
   messageSendError,
   messageSent,
   messagesError,
   messageSendErrorCleared,
   newMessageResived,
+  messagesRemoved,
 } = slice.actions;
 export default slice.reducer;
 
@@ -52,7 +64,7 @@ const url = settings.apiUrl;
 export const getMessagesbyId = (id) =>
   apiCallBegan({
     url: url + "/messages/" + id,
-    onSuccess: messagesResived.type,
+    onSuccess: oneRoomMessagesResived.type,
     onError: messagesError.type,
   });
 
@@ -82,3 +94,8 @@ export const getRoomMessages = createSelector(
   (state) => state.entities.messages,
   (messages) => messages.messages
 );
+export const getRoomMessagesByRoomId = (roomId) =>
+  createSelector(
+    (state) => state.entities.messages,
+    (messages) => messages.messages[roomId]?.messages
+  );

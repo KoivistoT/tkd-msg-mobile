@@ -29,8 +29,6 @@ function RoomDetailsScreen(item) {
     dispatch(getMembersById(roomData._id));
   }, []);
 
-  console.log("members pitäisi tulla memberseistä, ei roomista?");
-
   const change_membership = (item, membership) => {
     if (membership) {
       dispatch(change_member(roomData._id, item._id, membership));

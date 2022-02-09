@@ -20,6 +20,7 @@ import {
   getErrorMessage,
   getMessagesbyId,
   getRoomMessages,
+  getRoomMessagesByRoomId,
   newMessageResived,
   sendMessage,
 } from "../store/messages";
@@ -33,7 +34,7 @@ function MessageScreen(item) {
   const store = useStore();
   const dispatch = useDispatch();
 
-  const roomMessages2 = useSelector(getRoomMessages);
+  const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
 
   const socket = useSelector((state) => selectSocket(state));
   const send = async () => {
@@ -73,7 +74,7 @@ function MessageScreen(item) {
     socket.on("users live", (users) => {
       setUsersLive(users.users);
     });
-    dispatch(getMessagesbyId(roomId));
+    // dispatch(getMessagesbyId(roomId));
     return () => {
       socket.emit("unsubscribe", roomId);
       socket.off("new message");
@@ -111,7 +112,7 @@ function MessageScreen(item) {
         {/* {roomMessages2 && ( */}
 
         <FlatList
-          data={roomMessages2.messages}
+          data={roomMessages}
           keyExtractor={(message) => message._id}
           renderItem={messageItem}
         />
