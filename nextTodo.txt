@@ -11,6 +11,9 @@
   mukaan, myös äänet. Pitää olla subscripe kaikki huoneet, koska niin saa aina
   BE:stä uuden viestin heti.
 
+- nyt jos poistaa huoneen, se poistuu myös room controllsita, mutta tulee, 
+kun sinne menee uusiksi. Eli controllissa omat storet. Se siis myös lisää kaikki
+huoneet, kun käy kontrollissa
 
     - Jossain pitää unsubscripe huoneet, kun sovellus kill? Ei silloin, 
     jos menee taustalle? Eli app.js useeffect return? Vai appState. Nyt jo
