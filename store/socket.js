@@ -89,7 +89,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 export const disconnectSocket = (userId) => {
   return async (dispatch, getState) => {
     // console.log(action.payload, "tästä tuli1");
+    //saako nämä jotenkin nätemmin
     await getState().auth.currentUser.userRooms.forEach((roomId) => {
+      console.log("lähti huoneesta roomId, unsbuscripe");
       getState().entities.socket.connection.emit("unsubscribe", roomId);
     });
     getState().entities.socket.connection.disconnect();

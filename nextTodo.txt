@@ -1,4 +1,5 @@
   
+  - testaa aggregate ja static method mongoosessa
   - lisää listenerit sockettiin niin, että uusi viesti messageihin. 
   Huomaa subscripe ja new message, missä vaiheessa mikäin ja milloin 
   viesti tulee eri tavalla, jos on huoneessa ja jos ei ole
