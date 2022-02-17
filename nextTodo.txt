@@ -1,5 +1,8 @@
   
-  - testaa aggregate ja static method mongoosessa
+
+
+- mongossa timestamp myös viestiin, ei tule nyt. Eli tee static method create
+
   - lisää listenerit sockettiin niin, että uusi viesti messageihin. 
   Huomaa subscripe ja new message, missä vaiheessa mikäin ja milloin 
   viesti tulee eri tavalla, jos on huoneessa ja jos ei ole
@@ -13,7 +16,8 @@
 
 - nyt jos poistaa huoneen, se poistuu myös room controllsita, mutta tulee, 
 kun sinne menee uusiksi. Eli controllissa omat storet. Se siis myös lisää kaikki
-huoneet, kun käy kontrollissa
+huoneet, kun käy kontrollissa. Ei taida tarvita kuin huoneet omana storena,
+eli controllissa on aina kaikki huoneet.
 
     - Jossain pitää unsubscripe huoneet, kun sovellus kill? Ei silloin, 
     jos menee taustalle? Eli app.js useeffect return? Vai appState. Nyt jo
@@ -25,3 +29,7 @@ huoneet, kun käy kontrollissa
 
   - millä tavalla se professional teki backendin, kun haki paljon, 
   katso onko se tehokkaampi"
+
+
+  later:
+    - testaa aggregate ja static method mongoosessa

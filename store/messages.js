@@ -13,6 +13,7 @@ const slice = createSlice({
   reducers: {
     messagesResived: (messages, action) => {
       messages.messages = action.payload;
+
       // console.log(
       //   action.payload["61e6a80eb30d002e91d67b5a"].messages,
       //   "tässä kaikki viestit"
@@ -27,10 +28,21 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (messages, action) => {
-      messages.messages.messages.push(action.payload);
+      // console.log(action.payload);
+      // messages.messages.messages.push(action.payload);
+      messages.messages[action.payload.roomId].messages.push(action.payload);
     },
     messageSent: (messages, action) => {
-      console.log("message lähetetty", action.payload);
+      // console.log("message lähetetty");
+      // console.log(action.payload, "lähetetty viesti");
+      // console.log(messages.messages);
+      // Object.assign(
+      //   messages.messages[action.payload.message.roomId].messages,
+      //   action.payload
+      // );
+      // messages.messages[action.payload.message.roomId].messages.push(
+      //   action.payload.message
+      // );
       // tässä respondissa olisi toki viesti, mutta haluan sen aina samasta paikasta kaikille
       //   messages.messages.messages.push(action.payload.message);
     },

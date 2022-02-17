@@ -40,11 +40,11 @@ function MessageScreen(item) {
   const send = async () => {
     await dispatch(sendMessage(message, roomId));
     socket.emit("chat message", { message, roomId });
-    if (getErrorMessage()(store.getState())) {
-      console.log("Viestin lähetys epäonnistui");
-    } else {
-      console.log("Viestin lähetys onnistui!!!");
-    }
+    // if (getErrorMessage()(store.getState())) {
+    //   console.log("Viestin lähetys epäonnistui");
+    // } else {
+    //   console.log("Viestin lähetys onnistui!!!");
+    // }
   };
 
   useEffect(() => {
@@ -66,7 +66,9 @@ function MessageScreen(item) {
 
     socket.on("new message", (message) => {
       // alert("uusi viesti tuli");
-      alert("tämä alussa socketissa kuuntelee, ei täältä");
+      alert(
+        "tämä alussa socketissa kuuntelee, ei täältä. voi kuunnella vain new message, ja laittaa aina huoneeseen, mihin kuuluu, eli ei tartvitse erikseen kuunnella. Tee toki jos ei löydy huonetta, älä lisää"
+      );
       dispatch(newMessageResived(message.message));
       // dispatch(getMessagesbyId(roomId));
     });
@@ -95,7 +97,7 @@ function MessageScreen(item) {
   );
 
   const [usersLive, setUsersLive] = useState([]);
-  // console.log(roomMessages.messages, "Täältä huoneesta");
+  // console.log(roomMessages, "Täältä huoneesta");
   return (
     <Screen>
       {usersLive.map((item, index) => (
@@ -112,7 +114,18 @@ function MessageScreen(item) {
         {/* {roomMessages2 && ( */}
 
         <FlatList
-          data={roomMessages}
+          data={Object.values(roomMessages).sort(function (a, b) {
+            var nameA = a._id;
+            var nameB = b._id;
+            // console.log(a, b);
+            if (nameA > nameB) {
+              return 1;
+            }
+            if (nameA < nameB) {
+              return -1;
+            }
+            return 0;
+          })}
           keyExtractor={(message) => message._id}
           renderItem={messageItem}
         />
