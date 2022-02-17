@@ -1,7 +1,7 @@
   
 
 
-- mongossa timestamp myös viestiin, ei tule nyt. Eli tee static method create
+
 
   - lisää listenerit sockettiin niin, että uusi viesti messageihin. 
   Huomaa subscripe ja new message, missä vaiheessa mikäin ja milloin 

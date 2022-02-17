@@ -115,14 +115,14 @@ function MessageScreen(item) {
 
         <FlatList
           data={Object.values(roomMessages).sort(function (a, b) {
-            var nameA = a._id;
-            var nameB = b._id;
+            var nameA = a.createdAt;
+            var nameB = b.createdAt;
             // console.log(a, b);
             if (nameA > nameB) {
-              return 1;
+              return -1;
             }
             if (nameA < nameB) {
-              return -1;
+              return 1;
             }
             return 0;
           })}
