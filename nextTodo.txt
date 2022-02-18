@@ -2,20 +2,18 @@
   Huomaa subscripe ja new message, missä vaiheessa mikäin ja milloin 
   viesti tulee eri tavalla, jos on huoneessa ja jos ei ole
 
-  - nyt jos poistaa huoneen, se poistuu myös room controllsita, mutta tulee, 
-  kun sinne menee uusiksi. Eli controllissa omat storet. Se siis myös lisää kaikki
-  huoneet, kun käy kontrollissa. Ei taida tarvita kuin huoneet omana storena,
-  eli controllissa on aina kaikki huoneet.
 
 
-  - hae myös all users?, jotta saa niiden tiedot nopeasti ja sitten
-   id:llä aina haetaan ne, jos members jne. ja sitten myös muutokset 
-   niihin jos tulee"
 
 
 
 
   later:
+
+    - hae myös all users?, jotta saa niiden tiedot nopeasti ja sitten
+   id:llä aina haetaan ne, jos members jne. ja sitten myös muutokset 
+   niihin jos tulee"
+   
     -----> onko niin, että aluksi subscripe kaikkiin huoneisiin, myös pois ja 
   takaisin, jos add ja remove. Jos viesti tulee, niin se tulee "new message", jos
   huoneessa, niin ei push, eli erikseen on vielä activeRoomId. Eli "new message"
@@ -25,6 +23,7 @@
   
     - testaa aggregate ja static method mongoosessa
 
+    - error message handlelit kuntoon, esimerkiksi createUserForm ja createRoomForm
 
     - Jossain pitää unsubscripe huoneet, kun sovellus kill? Ei silloin, 
     jos menee taustalle? Eli app.js useeffect return? Vai appState. Nyt jo

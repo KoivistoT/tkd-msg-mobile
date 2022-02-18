@@ -50,13 +50,15 @@ function UsersControlScreen({ navigation }) {
   return (
     <Screen>
       <CreateUserModal />
-      <FlatList
-        ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={Object.values(allUsersList)}
-        bounces={false}
-        keyExtractor={listKeyExtractor}
-        renderItem={listItem}
-      />
+      {allUsersList && (
+        <FlatList
+          ItemSeparatorComponent={() => <ListItemSeparator />}
+          data={Object.values(allUsersList)}
+          bounces={false}
+          keyExtractor={listKeyExtractor}
+          renderItem={listItem}
+        />
+      )}
     </Screen>
   );
 }

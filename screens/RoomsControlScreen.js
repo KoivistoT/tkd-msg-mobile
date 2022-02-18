@@ -43,13 +43,15 @@ function RoomsControlScreen({ navigation }) {
   return (
     <Screen>
       <CreateRoomModal />
-      <FlatList
-        ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={Object.values(allRooms)}
-        bounces={false}
-        keyExtractor={listKeyExtractor}
-        renderItem={listItem}
-      />
+      {allRooms && (
+        <FlatList
+          ItemSeparatorComponent={() => <ListItemSeparator />}
+          data={Object.values(allRooms)}
+          bounces={false}
+          keyExtractor={listKeyExtractor}
+          renderItem={listItem}
+        />
+      )}
     </Screen>
   );
 }

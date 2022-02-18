@@ -67,22 +67,24 @@ function MessageScreen(item) {
           color: "black",
         }}
       >
-        <FlatList
-          data={Object.values(roomMessages).sort(function (a, b) {
-            var nameA = a.createdAt;
-            var nameB = b.createdAt;
-            // console.log(a, b);
-            if (nameA > nameB) {
-              return 1;
-            }
-            if (nameA < nameB) {
-              return -1;
-            }
-            return 0;
-          })}
-          keyExtractor={(message) => message._id}
-          renderItem={messageItem}
-        />
+        {roomMessages && (
+          <FlatList
+            data={Object.values(roomMessages).sort(function (a, b) {
+              var nameA = a.createdAt;
+              var nameB = b.createdAt;
+              // console.log(a, b);
+              if (nameA > nameB) {
+                return 1;
+              }
+              if (nameA < nameB) {
+                return -1;
+              }
+              return 0;
+            })}
+            keyExtractor={(message) => message._id}
+            renderItem={messageItem}
+          />
+        )}
       </View>
       <View>
         <TextInput

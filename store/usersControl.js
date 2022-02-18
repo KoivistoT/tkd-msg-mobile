@@ -13,7 +13,7 @@ const slice = createSlice({
   reducers: {
     // action => action handler
     usersResived: (usersControl, action) => {
-      console.log("users resived");
+      // console.log("users resived");
       usersControl.users = action.payload;
     },
     usersError: (usersControl, action) => {

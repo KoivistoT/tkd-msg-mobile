@@ -78,13 +78,15 @@ function RoomDetailsScreen(item) {
         renderItem={membersListItem}
       />
       <AppText>All users</AppText>
-      <FlatList
-        ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={Object.values(users)}
-        bounces={false}
-        keyExtractor={(data) => data._id}
-        renderItem={usersListItem}
-      />
+      {users && (
+        <FlatList
+          ItemSeparatorComponent={() => <ListItemSeparator />}
+          data={Object.values(users)}
+          bounces={false}
+          keyExtractor={(data) => data._id}
+          renderItem={usersListItem}
+        />
+      )}
     </Screen>
   );
 }
