@@ -10,76 +10,32 @@ import {
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import {
-  isLoggedIn,
-  logout,
-  selectToken,
-  userLoggedOut,
-} from "../store/currentUser";
-import {
-  getErrorMessage,
-  getMessagesbyId,
-  getRoomMessages,
-  getRoomMessagesByRoomId,
-  newMessageResived,
-  sendMessage,
-} from "../store/messages";
-import { disconnectSocket, selectSocket } from "../store/socket";
+import { userLoggedOut } from "../store/currentUser";
+import { getRoomMessagesByRoomId, sendMessage } from "../store/messages";
+import { selectSocket } from "../store/socket";
 
 function MessageScreen(item) {
   // messageForm pitää olla erikseen, jotta ei päivitä viestilsitaa
   const [message, setMessage] = useState("");
-  const onChangeText = (text) => setMessage(text);
   const roomId = item.route.params._id;
-  const store = useStore();
+
   const dispatch = useDispatch();
+  const onChangeText = (text) => setMessage(text);
 
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
-
   const socket = useSelector((state) => selectSocket(state));
-  const send = async () => {
-    await dispatch(sendMessage(message, roomId));
-    socket.emit("chat message", { message, roomId });
-    // if (getErrorMessage()(store.getState())) {
-    //   console.log("Viestin lähetys epäonnistui");
-    // } else {
-    //   console.log("Viestin lähetys onnistui!!!");
-    // }
+
+  const send = () => {
+    dispatch(sendMessage(message, roomId));
   };
 
   useEffect(() => {
-    const roomId = item.route.params._id;
-    // const listener = (msg) => {
-    //   console.log(msg, "lkjlj");
-    // };
-
-    // socket.emit("subscribe", roomId);
-    // socket.emit("login", { name: "jaaha", roomId: roomId }, (error) => {
-    //   if (error) {
-    //     console.log(error, "tää error");
-    //   }
-    // });
-
-    // socket.emit("chat message", "täältä");
-    // socket.emit("chat message", "ee");
-    socket.emit("subscribe", roomId);
-
-    socket.on("new message", (message) => {
-      // alert("uusi viesti tuli");
-      alert(
-        "tämä alussa socketissa kuuntelee, ei täältä. voi kuunnella vain new message, ja laittaa aina huoneeseen, mihin kuuluu, eli ei tartvitse erikseen kuunnella. Tee toki jos ei löydy huonetta, älä lisää"
-      );
-      dispatch(newMessageResived(message.message));
-      // dispatch(getMessagesbyId(roomId));
-    });
     socket.emit("getUsers");
-    socket.on("users live", (users) => {
-      setUsersLive(users.users);
+    socket.on("users live", (data) => {
+      setUsersLive(data.users);
     });
-    // dispatch(getMessagesbyId(roomId));
+
     return () => {
-      socket.emit("unsubscribe", roomId);
-      socket.off("new message");
       socket.off("users live");
     };
   }, []);
@@ -97,7 +53,7 @@ function MessageScreen(item) {
   );
 
   const [usersLive, setUsersLive] = useState([]);
-  // console.log(roomMessages, "Täältä huoneesta");
+
   return (
     <Screen>
       {usersLive.map((item, index) => (
@@ -111,25 +67,22 @@ function MessageScreen(item) {
           color: "black",
         }}
       >
-        {/* {roomMessages2 && ( */}
-
         <FlatList
           data={Object.values(roomMessages).sort(function (a, b) {
             var nameA = a.createdAt;
             var nameB = b.createdAt;
             // console.log(a, b);
             if (nameA > nameB) {
-              return -1;
+              return 1;
             }
             if (nameA < nameB) {
-              return 1;
+              return -1;
             }
             return 0;
           })}
           keyExtractor={(message) => message._id}
           renderItem={messageItem}
         />
-        {/* )} */}
       </View>
       <View>
         <TextInput

@@ -6,7 +6,11 @@ import {
   createSocketConnectionBegan,
   createSocketConnectionSuccess,
 } from "./actions";
-import { getMessagesbyId, messagesRemoved } from "./messages";
+import {
+  getMessagesbyId,
+  messagesRemoved,
+  newMessageResived,
+} from "./messages";
 import { roomAdded, roomRemoved } from "./rooms";
 
 const slice = createSlice({
@@ -50,6 +54,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       // console.log(
       //   "pitää hakea käyttäjän huoneet, nyt hakee alussa kaikki huoneet käyttäjälle samalla tulisi hakea myös kaikki muu tieto yhdellä kutsulla, eli alkutiedot, init, eli viestit ja memberit. Tämä tapahtuu get current user by id app js ssä"
       // );
+
       socket.on("updates", (type, data) => {
         // tee casella
 
@@ -73,6 +78,10 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       }
       getState().auth.currentUser.userRooms.forEach((roomId) => {
         socket.emit("subscribe", roomId);
+      });
+
+      socket.on("new message", (data) => {
+        dispatch(newMessageResived(data.message));
       });
       // socket.on("new message", (message) => {
       //   console.log("tässä tuli uusi viesti", message);
