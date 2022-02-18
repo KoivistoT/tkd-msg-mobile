@@ -13,6 +13,6 @@ export default combineReducers({
   rooms: roomReducer,
   socket: socketReducer,
   users: userReducer,
-  messages: messageReducer,
+  msgStore: messageReducer,
   // members: memberReducer,
 });

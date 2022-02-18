@@ -5,56 +5,56 @@ import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
 
 const slice = createSlice({
-  name: "messages",
+  name: "msgStore",
   initialState: {
-    messages: [],
+    allMessages: [],
     messageSendError: null,
   },
   reducers: {
-    messagesResived: (messages, action) => {
-      messages.messages = action.payload;
+    messagesResived: (msgStore, action) => {
+      msgStore.allMessages = action.payload;
 
       // console.log(
       //   action.payload["61e6a80eb30d002e91d67b5a"].messages,
       //   "tässä kaikki viestit"
       // );
-      // console.log(messages.messages.messages, "messagesResived");
+      // console.log(msgStore.messages.messages, "messagesResived");
     },
-    oneRoomMessagesResived: (messages, action) => {
-      messages.messages = Object.assign(messages.messages, action.payload);
+    oneRoomMessagesResived: (msgStore, action) => {
+      msgStore.allMessages = Object.assign(msgStore.messages, action.payload);
       // console.log(messages.messages);
     },
-    messagesError: (messages, action) => {
+    messagesError: (msgStore, action) => {
       console.log("epännoistu2");
     },
-    newMessageResived: (messages, action) => {
+    newMessageResived: (msgStore, action) => {
       // console.log(action.payload);
-      // messages.messages.messages.push(action.payload);
-      messages.messages[action.payload.roomId].messages.push(action.payload);
+      // msgStore.messages.messages.push(action.payload);
+      msgStore.allMessages[action.payload.roomId].messages.push(action.payload);
     },
-    messageSent: (messages, action) => {
+    messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
       // console.log(action.payload, "lähetetty viesti");
       // console.log(messages.messages);
       // Object.assign(
-      //   messages.messages[action.payload.message.roomId].messages,
+      //   msgStore.allMessages[action.payload.message.roomId].messages,
       //   action.payload
       // );
-      // messages.messages[action.payload.message.roomId].messages.push(
+      // msgStore.allMessages[action.payload.message.roomId].messages.push(
       //   action.payload.message
       // );
       // tässä respondissa olisi toki viesti, mutta haluan sen aina samasta paikasta kaikille
-      //   messages.messages.messages.push(action.payload.message);
+      //   msgStore.allMessages.messages.push(action.payload.message);
     },
-    messagesRemoved: (messages, action) => {
-      delete messages.messages[action.payload];
+    messagesRemoved: (msgStore, action) => {
+      delete msgStore.allMessages[action.payload];
     },
-    messageSendError: (messages, action) => {
-      messages.messageSendError = action.payload;
+    messageSendError: (msgStore, action) => {
+      msgStore.messageSendError = action.payload;
       // console.log("message ei lähetetty", action.payload);
     },
-    messageSendErrorCleared: (messages, action) => {
-      messages.messageSendError = null;
+    messageSendErrorCleared: (msgStore, action) => {
+      msgStore.messageSendError = null;
     },
   },
 });
@@ -103,11 +103,11 @@ export const getErrorMessage = () =>
   );
 
 export const getRoomMessages = createSelector(
-  (state) => state.entities.messages,
-  (messages) => messages.messages
+  (state) => state.entities.msgStore,
+  (msgStore) => msgStore.allMessages
 );
 export const getRoomMessagesByRoomId = (roomId) =>
   createSelector(
-    (state) => state.entities.messages,
-    (messages) => messages.messages[roomId]?.messages
+    (state) => state.entities.msgStore,
+    (msgStore) => msgStore.allMessages[roomId]?.messages
   );
