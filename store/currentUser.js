@@ -17,7 +17,7 @@ import { apiCallBegan, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { roomsResived } from "./rooms";
-import { messagesResived } from "./messages";
+import { messagesResived } from "./msgStore";
 // import { createSelector } from "reselect";
 
 const slice = createSlice({

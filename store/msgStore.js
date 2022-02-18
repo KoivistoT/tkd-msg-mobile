@@ -21,7 +21,11 @@ const slice = createSlice({
       // console.log(msgStore.messages.messages, "messagesResived");
     },
     oneRoomMessagesResived: (msgStore, action) => {
-      msgStore.allMessages = Object.assign(msgStore.messages, action.payload);
+      if (msgStore.messages) {
+        msgStore.allMessages = Object.assign(msgStore.messages, action.payload);
+      } else {
+        msgStore.allMessages = action.payload;
+      }
       // console.log(messages.messages);
     },
     messagesError: (msgStore, action) => {

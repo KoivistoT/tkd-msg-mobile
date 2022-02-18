@@ -10,7 +10,7 @@ import {
   getMessagesbyId,
   messagesRemoved,
   newMessageResived,
-} from "./messages";
+} from "./msgStore";
 import { roomAdded, roomRemoved } from "./rooms";
 
 const slice = createSlice({

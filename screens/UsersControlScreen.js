@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Button,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import { getAllUsers } from "../store/users";
+import { allUsers, getAllUsers } from "../store/usersControl";
 import colors from "../config/colors";
 import routes from "../app/navigation/routes";
-import AppButton from "../app/components/AppButton";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 
 function UsersControlScreen({ navigation }) {
   const dispatch = useDispatch();
-  const allUsers = useSelector((state) => state.entities.users);
+  const allUsersList = useSelector(allUsers());
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -61,7 +52,7 @@ function UsersControlScreen({ navigation }) {
       <CreateUserModal />
       <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}
-        data={Object.values(allUsers.users)}
+        data={Object.values(allUsersList)}
         bounces={false}
         keyExtractor={listKeyExtractor}
         renderItem={listItem}

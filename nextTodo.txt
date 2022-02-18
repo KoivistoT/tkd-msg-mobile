@@ -1,35 +1,31 @@
-  
-
-
-
-
   - lisää listenerit sockettiin niin, että uusi viesti messageihin. 
   Huomaa subscripe ja new message, missä vaiheessa mikäin ja milloin 
   viesti tulee eri tavalla, jos on huoneessa ja jos ei ole
-  
-  -----> onko niin, että aluksi subscripe kaikkiin huoneisiin, myös pois ja 
-  takaisin, jos add ja remove. Jos viesti tulee, niin se tulee "new message", jos
-  huoneessa, niin ei push, eli erikseen on vielä activeRoomId. Eli "new message"
-  socketissa katsoo onko new message roomId sama kuin activeRoomId ja toimii sen
-  mukaan, myös äänet. Pitää olla subscripe kaikki huoneet, koska niin saa aina
-  BE:stä uuden viestin heti.
 
-- nyt jos poistaa huoneen, se poistuu myös room controllsita, mutta tulee, 
-kun sinne menee uusiksi. Eli controllissa omat storet. Se siis myös lisää kaikki
-huoneet, kun käy kontrollissa. Ei taida tarvita kuin huoneet omana storena,
-eli controllissa on aina kaikki huoneet.
+  - nyt jos poistaa huoneen, se poistuu myös room controllsita, mutta tulee, 
+  kun sinne menee uusiksi. Eli controllissa omat storet. Se siis myös lisää kaikki
+  huoneet, kun käy kontrollissa. Ei taida tarvita kuin huoneet omana storena,
+  eli controllissa on aina kaikki huoneet.
 
-    - Jossain pitää unsubscripe huoneet, kun sovellus kill? Ei silloin, 
-    jos menee taustalle? Eli app.js useeffect return? Vai appState. Nyt jo
-    poistaakin, kun killaa. Riittääkö?
 
   - hae myös all users?, jotta saa niiden tiedot nopeasti ja sitten
    id:llä aina haetaan ne, jos members jne. ja sitten myös muutokset 
    niihin jos tulee"
 
-  - millä tavalla se professional teki backendin, kun haki paljon, 
-  katso onko se tehokkaampi"
+
 
 
   later:
+    -----> onko niin, että aluksi subscripe kaikkiin huoneisiin, myös pois ja 
+  takaisin, jos add ja remove. Jos viesti tulee, niin se tulee "new message", jos
+  huoneessa, niin ei push, eli erikseen on vielä activeRoomId. Eli "new message"
+  socketissa katsoo onko new message roomId sama kuin activeRoomId ja toimii sen
+  mukaan, myös äänet. Pitää olla subscripe kaikki huoneet, koska niin saa aina
+  BE:stä uuden viestin heti.
+  
     - testaa aggregate ja static method mongoosessa
+
+
+    - Jossain pitää unsubscripe huoneet, kun sovellus kill? Ei silloin, 
+    jos menee taustalle? Eli app.js useeffect return? Vai appState. Nyt jo
+    poistaakin, kun killaa. Riittääkö?

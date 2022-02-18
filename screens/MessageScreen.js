@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
-import { getRoomMessagesByRoomId, sendMessage } from "../store/messages";
+import { getRoomMessagesByRoomId, sendMessage } from "../store/msgStore";
 import { selectSocket } from "../store/socket";
 
 function MessageScreen(item) {

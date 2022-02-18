@@ -10,14 +10,14 @@ import SubmitButton from "../forms/SubmitButton";
 import AppKeyboardDismiss from "../AppKeyboardDismiss";
 import AppLoadIndicator from "../AppLoadIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import {
-  clearErrorMessage,
-  errorMessageCleared,
-  login,
-} from "../../../store/currentUser";
+
 import AppFormPicker from "./AppFormPicker";
-import { createUser } from "../../../store/users";
-import { getErrorMessage } from "../../../store/rooms";
+import {
+  createUser,
+  getAllUsers,
+  getErrorMessage,
+  usersErrorCleared,
+} from "../../../store/usersControl";
 
 const accountTypeOptions = [
   { label: "Pro", value: "pro" },
@@ -36,8 +36,7 @@ const validationSchema = Yup.object().shape({
 function CreateUserForm({ navigation, closeModal }) {
   const [loading, setLoading] = useState(false);
 
-  const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
-  const store = useStore();
+  const errorMessage = useSelector(getErrorMessage());
   const dispatch = useDispatch();
 
   const handleSubmit = async ({
@@ -47,6 +46,7 @@ function CreateUserForm({ navigation, closeModal }) {
     displayName,
     firstName,
     lastName,
+    email,
   }) => {
     // dispatch(errorMessageCleared());
     setLoading(true);
@@ -57,14 +57,21 @@ function CreateUserForm({ navigation, closeModal }) {
         accountType,
         firstName,
         lastName,
-        displayName
+        displayName,
+        email
       )
     );
 
-    if (getErrorMessage()(store.getState())) {
+    if (errorMessage) {
       console.log("Ei onnistunut päonnistui");
       setLoading(false);
     } else {
+      setTimeout(() => {
+        dispatch(getAllUsers());
+        console.log("tämä ei ole oikea tapa tehdä.");
+      }, 2000);
+
+      dispatch(usersErrorCleared());
       closeModal();
     }
   };
@@ -140,10 +147,8 @@ function CreateUserForm({ navigation, closeModal }) {
             secureTextEntry
             textContentType="password"
           />
-          <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
 
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            {loading && !isLoginFailed && <AppLoadIndicator />}
             <SubmitButton title="Create user" />
           </View>
         </>

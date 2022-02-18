@@ -10,14 +10,15 @@ import SubmitButton from "../forms/SubmitButton";
 import AppKeyboardDismiss from "../AppKeyboardDismiss";
 import AppLoadIndicator from "../AppLoadIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import {
-  clearErrorMessage,
-  errorMessageCleared,
-  login,
-} from "../../../store/currentUser";
+
 import AppFormPicker from "./AppFormPicker";
-import { createUser } from "../../../store/users";
-import { getErrorMessage, createRoom } from "../../../store/rooms";
+
+import {
+  getErrorMessage,
+  createRoom,
+  roomsErrorCleared,
+  getAllRooms,
+} from "../../../store/roomsControl";
 
 const roomTypeOptions = [
   { label: "Group", value: "group" },
@@ -35,16 +36,22 @@ function CreateRoomForm({ navigation, closeModal }) {
   const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
   const store = useStore();
   const dispatch = useDispatch();
-
+  const errorMessage = useSelector(getErrorMessage());
   const handleSubmit = async ({ roomName, type }) => {
     setLoading(true);
 
     dispatch(createRoom(roomName, type));
 
-    if (getErrorMessage()(store.getState())) {
+    if (errorMessage) {
       console.log("Ei onnistunut, epäonnistui");
       setLoading(false);
     } else {
+      setTimeout(() => {
+        dispatch(getAllRooms());
+        console.log("tämä ei ole oikea tapa tehdä.");
+      }, 2000);
+      dispatch(roomsErrorCleared());
+
       closeModal();
     }
   };

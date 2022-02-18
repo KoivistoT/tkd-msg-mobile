@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Button,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, StyleSheet, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import { getAllUsers } from "../store/users";
-import colors from "../config/colors";
-import AppSwitch from "../app/components/forms/AppSwitch";
-import { change_member, getMembersById, getRoomMembers } from "../store/rooms";
+import { getAllUsers } from "../store/usersControl";
+import {
+  change_member,
+  getMembersById,
+  getRoomMembers,
+} from "../store/roomsControl";
 import AppButton from "../app/components/AppButton";
 
 function RoomDetailsScreen(item) {
   const { params: roomData } = item.route;
-  const { users } = useSelector((state) => state.entities.users);
+  const { users } = useSelector((state) => state.entities.usersControl);
   const members = useSelector(getRoomMembers);
   const dispatch = useDispatch();
   useEffect(() => {
