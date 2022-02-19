@@ -40,17 +40,13 @@ function CreateRoomForm({ navigation, closeModal }) {
   const handleSubmit = async ({ roomName, type }) => {
     setLoading(true);
 
-    dispatch(createRoom(roomName, type));
+    await dispatch(createRoom(roomName, type));
 
     if (errorMessage) {
       console.log("Ei onnistunut, epäonnistui");
       setLoading(false);
     } else {
-      setTimeout(() => {
-        dispatch(getAllRooms());
-        console.log("tämä ei ole oikea tapa tehdä.");
-      }, 2000);
-      dispatch(roomsErrorCleared());
+      dispatch(getAllRooms());
 
       closeModal();
     }

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
-import jwtDecode from "jwt-decode";
 import { createSelector } from "@reduxjs/toolkit";
 
 const slice = createSlice({
@@ -40,6 +39,7 @@ const slice = createSlice({
     },
 
     roomsErrorCleared: (roomControl, action) => {
+      console.log("käy täälläkin joo");
       roomControl.errorMessage = null;
     },
 

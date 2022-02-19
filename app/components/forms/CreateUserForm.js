@@ -48,9 +48,8 @@ function CreateUserForm({ navigation, closeModal }) {
     lastName,
     email,
   }) => {
-    // dispatch(errorMessageCleared());
     setLoading(true);
-    dispatch(
+    await dispatch(
       createUser(
         userName,
         password,
@@ -66,11 +65,7 @@ function CreateUserForm({ navigation, closeModal }) {
       console.log("Ei onnistunut päonnistui");
       setLoading(false);
     } else {
-      setTimeout(() => {
-        dispatch(getAllUsers());
-        console.log("tämä ei ole oikea tapa tehdä.");
-      }, 2000);
-
+      dispatch(getAllUsers());
       dispatch(usersErrorCleared());
       closeModal();
     }

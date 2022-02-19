@@ -21,12 +21,14 @@ const slice = createSlice({
       // console.log(msgStore.messages.messages, "messagesResived");
     },
     oneRoomMessagesResived: (msgStore, action) => {
-      if (msgStore.messages) {
-        msgStore.allMessages = Object.assign(msgStore.messages, action.payload);
+      if (msgStore.allMessages) {
+        msgStore.allMessages = Object.assign(
+          msgStore.allMessages,
+          action.payload
+        );
       } else {
         msgStore.allMessages = action.payload;
       }
-      // console.log(messages.messages);
     },
     messagesError: (msgStore, action) => {
       console.log("epännoistu2");
