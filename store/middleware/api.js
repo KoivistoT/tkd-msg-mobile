@@ -31,6 +31,7 @@ const api =
       //   response.data.success,
       //   "messagen succes, mieti tulisiko tämä aina, onko apua success jutusta?"
       // );
+
       if (onInitSuccess) {
         //tämä voisi olla myös functiolla joka on alhaalla, jotta tämä selkeämpi, tai sitten function on ihan jossain muualla
         // dispatch({ type: onInitSuccess.messages, payload: response.data.messages });

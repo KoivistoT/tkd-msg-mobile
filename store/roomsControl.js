@@ -17,6 +17,7 @@ const slice = createSlice({
       // action.payload.forEach((item) => {
       //   rooms.rooms = { [item._id]: item, ...rooms.rooms };
       // });
+
       roomControl.rooms = action.payload;
 
       // console.log(

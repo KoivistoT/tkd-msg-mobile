@@ -7,7 +7,7 @@ import { createSelector } from "reselect";
 const slice = createSlice({
   name: "msgStore",
   initialState: {
-    allMessages: [],
+    allMessages: {},
     messageSendError: null,
   },
   reducers: {
@@ -34,9 +34,10 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (msgStore, action) => {
-      // console.log(action.payload);
-      // msgStore.messages.messages.push(action.payload);
-      msgStore.allMessages[action.payload.roomId].messages.push(action.payload);
+      var targetMessages =
+        msgStore.allMessages[Object.values(action.payload)[0].roomId].messages;
+
+      targetMessages = Object.assign(targetMessages, action.payload);
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");

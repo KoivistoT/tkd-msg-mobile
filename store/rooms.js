@@ -43,7 +43,7 @@ const slice = createSlice({
       console.log("huone luotu");
     },
     roomAdded: (rooms, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       rooms.rooms = Object.assign(rooms.rooms, action.payload);
       // console.log(rooms.rooms, "now");
     },
