@@ -109,6 +109,11 @@ export const getErrorMessage = () =>
     (messages) => messages.messageSendError
   );
 
+export const test = () =>
+  apiCallBegan({
+    url: url + "/messages/test2",
+  });
+
 export const getRoomMessages = createSelector(
   (state) => state.entities.msgStore,
   (msgStore) => msgStore.allMessages

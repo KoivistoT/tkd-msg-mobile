@@ -3,7 +3,14 @@
   viesti tulee eri tavalla, jos on huoneessa ja jos ei ole
 
 
+- Katso tässä jotain ideaa, mutta ehkä helpommin toteutettavissa
+https://stackoverflow.com/questions/65373593/how-to-cause-a-rerender-only-if-one-object-changes-in-a-useselector
+Tässä oikea
+https://redux.js.org/usage/deriving-data-selectors
 
+
+- Testaa täältä se, miten katsoo missä vaiheessa mennään. Onko parempi, kuin se
+mikä nyt mulla on https://redux.js.org/tutorials/essentials/part-5-async-logic
 
 
 

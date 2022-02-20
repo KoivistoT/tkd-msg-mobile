@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
-import { getRoomMessagesByRoomId, sendMessage } from "../store/msgStore";
+import { getRoomMessagesByRoomId, sendMessage, test } from "../store/msgStore";
 import { selectSocket } from "../store/socket";
 
 function MessageScreen(item) {
@@ -40,6 +40,9 @@ function MessageScreen(item) {
     };
   }, []);
 
+  const testi = () => {
+    dispatch(test());
+  };
   const messageItem = ({ item }) => (
     <Text
       style={{
@@ -59,6 +62,7 @@ function MessageScreen(item) {
       {usersLive.map((item, index) => (
         <Text key={index}>{item.userId}</Text>
       ))}
+      <Button onPress={() => testi()} title={"test"}></Button>
       <View
         style={{
           borderWidth: 1,

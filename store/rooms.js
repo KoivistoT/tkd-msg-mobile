@@ -1,18 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
-import { createSelector } from "@reduxjs/toolkit";
 
 const slice = createSlice({
   name: "rooms",
   initialState: {
     rooms: [],
+    loading: false,
     members: [],
   },
   reducers: {
     // action => action handler
-
+    requestStarted: (rooms, action) => {
+      rooms.loading = true;
+    },
     roomsResived: (rooms, action) => {
       // action.payload.forEach((item) => {
       //   rooms.rooms = { [item._id]: item, ...rooms.rooms };
@@ -40,6 +42,7 @@ const slice = createSlice({
     },
 
     roomCreated: (rooms, action) => {
+      rooms.loading = false;
       console.log("huone luotu");
     },
     roomAdded: (rooms, action) => {
@@ -61,6 +64,7 @@ export const {
   memberChanged,
   roomAdded,
   roomRemoved,
+  requestStarted,
 } = slice.actions;
 export default slice.reducer;
 
@@ -78,6 +82,7 @@ export const createRoom = (roomName, type) =>
     url: url + "/rooms/create_room",
     method: "post",
     data: { roomName, type },
+    onStart: requestStarted.type,
     onSuccess: roomCreated.type,
     onError: roomsError.type,
   });
