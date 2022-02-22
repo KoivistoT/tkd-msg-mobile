@@ -9,9 +9,16 @@ const slice = createSlice({
     rooms: [],
     loading: false,
     members: [],
+    activeRoomId: null,
   },
   reducers: {
     // action => action handler
+    activeRoomIdResived: (rooms, action) => {
+      rooms.activeRoomId = action.payload;
+    },
+    activeRoomIdClearer: (rooms, action) => {
+      rooms.activeRoomId = null;
+    },
     requestStarted: (rooms, action) => {
       rooms.loading = true;
     },
@@ -59,6 +66,8 @@ const slice = createSlice({
 export const {
   roomsError,
   roomsResived,
+  activeRoomIdClearer,
+  activeRoomIdResived,
   roomCreated,
   membersResived,
   memberChanged,

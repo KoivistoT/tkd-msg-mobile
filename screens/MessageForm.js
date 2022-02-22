@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { userLoggedOut } from "../store/currentUser";
+import { activeRoomIdResived, activeRoomIdClearer } from "../store/rooms";
 import { sendMessage } from "../store/msgStore";
 
 function MessageForm({ item }) {
@@ -17,6 +17,14 @@ function MessageForm({ item }) {
   const [message, setMessage] = useState("");
   const onChangeText = (text) => setMessage(text);
   const roomId = item.route.params._id;
+
+  useEffect(() => {
+    dispatch(activeRoomIdResived(roomId));
+
+    return () => {
+      dispatch(activeRoomIdClearer());
+    };
+  }, []);
 
   const send = () => {
     dispatch(sendMessage(message, roomId));
@@ -37,9 +45,6 @@ function MessageForm({ item }) {
             send();
           }}
         />
-        <TouchableOpacity onPress={() => dispatch(userLoggedOut())}>
-          <Text>kirjaudu ulos</Text>
-        </TouchableOpacity>
       </View>
     </>
   );

@@ -21,7 +21,6 @@ function MessageList({ item }) {
 
   return (
     <>
-      <Button onPress={() => testi()} title={"test"}></Button>
       <View
         style={{
           borderWidth: 1,
