@@ -1,23 +1,17 @@
 import React from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useStore } from "react-redux";
+import MessageItem from "../app/components/MessageItem";
 import { getRoomMessagesByRoomId } from "../store/msgStore";
 
 function MessageList({ item }) {
+  const store = useStore();
   const roomId = item.route.params._id;
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
+  const userId = store.getState().auth.currentUser._id;
+  console.log("ljlkj");
 
-  const messageItem = ({ item }) => (
-    <Text
-      style={{
-        color: "black",
-        backgroundColor: "white",
-      }}
-      key={item._id}
-    >
-      {item.messageBody}
-    </Text>
-  );
+  const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
 
   return (
     <>

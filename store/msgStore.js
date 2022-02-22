@@ -87,18 +87,26 @@ export const getMessagesbyId = (id) =>
     onError: messagesError.type,
   });
 
-export const sendMessage = (message = "", roomId = "") =>
-  apiCallBegan({
-    data: {
-      messageBody: message,
-      roomId,
-    },
-    onStart: messageSendErrorCleared.type,
-    method: "post",
-    url: url + "/messages/send_message",
-    onSuccess: messageSent.type,
-    onError: messageSendError.type,
-  });
+export const sendMessage =
+  (message = "", roomId = "") =>
+  (dispatch, getState) => {
+    const userId = getState().auth.currentUser._id;
+
+    return dispatch(
+      apiCallBegan({
+        data: {
+          messageBody: message,
+          roomId,
+          userId,
+        },
+        onStart: messageSendErrorCleared.type,
+        method: "post",
+        url: url + "/messages/send_message",
+        onSuccess: messageSent.type,
+        onError: messageSendError.type,
+      })
+    );
+  };
 
 export const selectErrorMessage = (state) =>
   state.entities.messages.messageSendError;
