@@ -8,21 +8,12 @@ function MessageItem({ item, userId }) {
     <TouchableOpacity
       style={item.postedByUser === userId ? styles.me : styles.otherUser}
     >
-      <AppText
-        style={{
-          color: "black",
-          backgroundColor: "white",
-        }}
-        key={item._id}
-      >
-        {item.messageBody}
-      </AppText>
+      <AppText key={item._id}>{item.messageBody}</AppText>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  messageFrame: {},
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
 });
