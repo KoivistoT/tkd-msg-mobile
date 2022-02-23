@@ -75,7 +75,7 @@ function MessageForm({ item }) {
 
 const validationSchema = Yup.object().shape({
   message: Yup.string().label("Message"),
-  // message: Yup.string().required().min(1).label("Message"),
+  message: Yup.string().required().min(1).label("Message"),
 });
 
 const styles = StyleSheet.create({});
