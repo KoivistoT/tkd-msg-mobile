@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Keyboard } from "react-native";
+import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { activeRoomIdResived, activeRoomIdClearer } from "../store/rooms";
@@ -8,7 +8,7 @@ import AppFormField from "../app/components/forms/AppFormField";
 import AppForm from "../app/components/forms/AppForm";
 import SendButton from "../app/components/SendButton";
 import ImageInputList from "../app/components/imageComponents/ImageInputList";
-
+import imageFuncs from "../utility/imageFuncs";
 function MessageForm({ item }) {
   const dispatch = useDispatch();
   const [photos, setPhotos] = useState([]);
@@ -23,7 +23,22 @@ function MessageForm({ item }) {
   }, []);
 
   const handleSubmit = async ({ message }, { resetForm }) => {
-    dispatch(sendMessage(message, roomId));
+    console.log("aloittaa latauksen");
+
+    let messageType = "text";
+    let imageURLs = null;
+    if (photos) {
+      messageType = "image";
+      const downloadUris = await imageFuncs.saveImagesToFirebase(
+        photos.map((photo) => photo.uri)
+      );
+
+      imageURLs = downloadUris.map((image) => image.downloadUri);
+      // console.log(imageURLs, "Täältä tulee");
+      console.log("lataus valmis");
+    }
+
+    dispatch(sendMessage(message, roomId, messageType, imageURLs));
     resetForm();
     Keyboard.dismiss();
   };
@@ -41,6 +56,8 @@ function MessageForm({ item }) {
   const handleRemove = (uri) => {
     setPhotos(photos.filter((imageUri) => imageUri.uri !== uri));
   };
+
+  const test = async () => {};
 
   return (
     <>
@@ -79,6 +96,7 @@ function MessageForm({ item }) {
             <SendButton />
           </View>
         </AppForm>
+        <Button title={"test"} onPress={test}></Button>
       </View>
     </>
   );

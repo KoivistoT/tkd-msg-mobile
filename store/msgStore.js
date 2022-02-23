@@ -88,7 +88,7 @@ export const getMessagesbyId = (id) =>
   });
 
 export const sendMessage =
-  (message = "", roomId = "") =>
+  (message = "", roomId = "", messageType = "text", imageURLs = null) =>
   (dispatch, getState) => {
     const userId = getState().auth.currentUser._id;
 
@@ -98,6 +98,8 @@ export const sendMessage =
           messageBody: message,
           roomId,
           userId,
+          messageType,
+          imageURLs,
         },
         onStart: messageSendErrorCleared.type,
         method: "post",

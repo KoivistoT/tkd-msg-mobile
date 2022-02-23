@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Provider } from "react-redux";
 import AppToast from "./app/components/AppToast";
 import Login from "./app/components/Login";
+
 import {
   getCurrentUser,
   getCurrentUserById,
@@ -38,10 +39,13 @@ import {
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
 import { getAllRooms } from "./store/rooms";
+import { firebaseLogin } from "./api/firebaseClient";
 
 if (!__DEV__) {
   console.log = () => null;
 }
+
+firebaseLogin();
 
 export default function AppWrapper() {
   const store = configureStore();
