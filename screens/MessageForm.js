@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Text,
-  Keyboard,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { activeRoomIdResived, activeRoomIdClearer } from "../store/rooms";
 import { sendMessage } from "../store/msgStore";
 import AppFormField from "../app/components/forms/AppFormField";
 import AppForm from "../app/components/forms/AppForm";
-import AppButton from "../app/components/AppButton";
 import SendButton from "../app/components/SendButton";
+import ImageInputList from "../app/components/imageComponents/ImageInputList";
 
 function MessageForm({ item }) {
   const dispatch = useDispatch();
-
+  const [photos, setPhotos] = useState([]);
   const roomId = item.route.params._id;
 
   useEffect(() => {
@@ -36,6 +28,20 @@ function MessageForm({ item }) {
     Keyboard.dismiss();
   };
 
+  const handleAdd = (uri) => {
+    setPhotos([
+      ...photos,
+      {
+        name: "IMG" + Math.random(),
+        type: "image/jpg",
+        uri: uri,
+      },
+    ]);
+  };
+  const handleRemove = (uri) => {
+    setPhotos(photos.filter((imageUri) => imageUri.uri !== uri));
+  };
+
   return (
     <>
       <View
@@ -43,6 +49,11 @@ function MessageForm({ item }) {
           marginBottom: Platform.OS == "ios" ? 10 : 0,
         }}
       >
+        <ImageInputList
+          imageUris={photos.map((photo) => photo.uri)}
+          onRemoveImage={handleRemove}
+          onAddImage={handleAdd}
+        />
         <AppForm
           initialValues={{ message: "" }}
           onSubmit={handleSubmit}
