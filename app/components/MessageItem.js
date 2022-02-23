@@ -3,21 +3,20 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import colors from "../../config/colors";
 
 import AppText from "./AppText";
+import ShowImageModal from "../components/imageComponents/ShowImageModal";
+
 function MessageItem({ item, userId }) {
-  console.log("tee avattava kuva");
   return (
     <TouchableOpacity
       style={item.postedByUser === userId ? styles.me : styles.otherUser}
     >
+      <ShowImageModal />
       <AppText key={item._id}>{item.messageBody}</AppText>
-      {item.imageURLs &&
+      {/* {item.imageURLs &&
         item.imageURLs.length !== 0 &&
         item.imageURLs.map((url) => (
-          <Image
-            style={{ width: 20, height: 20 }}
-            source={{ uri: url.toString() }}
-          />
-        ))}
+          <ShowImageModal imageURLs={item.imageURLs} image={url} />
+        ))} */}
     </TouchableOpacity>
   );
 }
