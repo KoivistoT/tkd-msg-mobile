@@ -121,7 +121,7 @@ export const getErrorMessage = () =>
 
 export const test = () =>
   apiCallBegan({
-    url: url + "/messages/test2",
+    url: url + "/messages/room_images",
   });
 
 export const getRoomMessages = createSelector(

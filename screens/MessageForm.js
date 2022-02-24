@@ -3,7 +3,7 @@ import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { activeRoomIdResived, activeRoomIdClearer } from "../store/rooms";
-import { sendMessage } from "../store/msgStore";
+import { sendMessage, test } from "../store/msgStore";
 import AppFormField from "../app/components/forms/AppFormField";
 import AppForm from "../app/components/forms/AppForm";
 import SendButton from "../app/components/SendButton";
@@ -57,7 +57,9 @@ function MessageForm({ item }) {
     setPhotos(photos.filter((imageUri) => imageUri.uri !== uri));
   };
 
-  const test = async () => {};
+  const testi = async () => {
+    dispatch(test());
+  };
 
   return (
     <>
@@ -96,7 +98,7 @@ function MessageForm({ item }) {
             <SendButton />
           </View>
         </AppForm>
-        <Button title={"test"} onPress={test}></Button>
+        <Button title={"test"} onPress={testi}></Button>
       </View>
     </>
   );

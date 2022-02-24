@@ -20,21 +20,22 @@ import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 
-function ShowImageModal({ imageURLs, image }) {
+function ShowImageModal({ imageURLs, image, index = 0 }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [saveButtonText, setSaveButtonText] = useState("Save image");
-
+  const [imageIndex, setImageIndex] = useState(index);
   const saveImage = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (granted) {
       setSaveButtonText("Image saved!");
       try {
-        const link = image;
+        const link = imageURLs[imageIndex];
         const myFolder = FileSystem.documentDirectory;
         const resp = await FileSystem.downloadAsync(
           link,
           `${myFolder}/image.jpg`
         );
+        MediaLibrary.createAssetAsync(resp.uri);
       } catch (error) {
         console.log("error code 123993", error);
       }
@@ -82,6 +83,7 @@ function ShowImageModal({ imageURLs, image }) {
           enableSwipeDown={true}
           swipeDownThreshold={150}
           // index={1}
+          onChange={(index) => setImageIndex(index)}
           renderIndicator={() => null}
           onSwipeDown={() => setModalVisible(false)}
           loadingRender={() => (
