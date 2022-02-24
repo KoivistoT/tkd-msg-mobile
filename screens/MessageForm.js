@@ -27,7 +27,7 @@ function MessageForm({ item }) {
 
     let messageType = "text";
     let imageURLs = null;
-    if (photos) {
+    if (photos.length !== 0) {
       messageType = "image";
       const downloadUris = await imageFuncs.saveImagesToFirebase(
         photos.map((photo) => photo.uri)
