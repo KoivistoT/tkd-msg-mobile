@@ -20,8 +20,15 @@ import { useSelector, useStore } from "react-redux";
 import { getRoomImagesByRoomId } from "../../../store/msgStore";
 
 function ShowImageModal({ image, roomId }) {
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  // const roomImages = useSelector(getRoomImagesByRoomId(roomId)) || [];
+  // console.log(roomImages.length);
   const store = useStore();
-  const roomImages = store.getState().entities.msgStore.images[roomId] || [];
+  const roomImages = store.getState().entities.msgStore.images[roomId];
+
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
 
   useEffect(() => {
     if (roomImages.findIndex((imageURL) => imageURL === image) !== undefined) {

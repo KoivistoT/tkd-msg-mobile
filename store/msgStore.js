@@ -13,7 +13,7 @@ const slice = createSlice({
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
-      msgStore.images = action.payload[0];
+      msgStore.images = action.payload;
     },
     oneRoomImagesResived: (msgStore, action) => {
       const { imageURLs, roomId } = action.payload;
