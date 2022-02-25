@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItem from "../app/components/MessageItem";
@@ -9,14 +9,27 @@ function MessageList({ item }) {
   const store = useStore();
   const roomId = item.route.params._id;
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
-
   const userId = store.getState().auth.currentUser._id;
-
+  const isImagesFetched = useRef(false);
   const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
 
   useEffect(() => {
-    dispatch(getRoomImages(roomId));
-  }, []);
+    getAllImages();
+  }, [roomMessages]);
+
+  const getAllImages = () => {
+    if (isImagesFetched.current === false) {
+      dispatch(getRoomImages(roomId));
+      isImagesFetched.current = true;
+    }
+    if (
+      Object.values(roomMessages)[Object.keys(roomMessages).length - 1].type ===
+        "image" &&
+      isImagesFetched.current !== false
+    ) {
+      dispatch(getRoomImages(roomId));
+    }
+  };
 
   return (
     <>
