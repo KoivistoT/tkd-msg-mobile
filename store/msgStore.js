@@ -9,8 +9,16 @@ const slice = createSlice({
   initialState: {
     allMessages: {},
     messageSendError: null,
+    images: {},
   },
   reducers: {
+    roomImagesResived: (msgStore, action) => {
+      const { imageURLs, roomId } = action.payload;
+
+      msgStore.images[roomId] = { imageURLs };
+
+      // console.log(msgStore.images["6214ebe20f8502580b0e19a1"]);
+    },
     messagesResived: (msgStore, action) => {
       msgStore.allMessages = action.payload;
 
@@ -75,6 +83,7 @@ export const {
   messageSendErrorCleared,
   newMessageResived,
   messagesRemoved,
+  roomImagesResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -119,9 +128,11 @@ export const getErrorMessage = () =>
     (messages) => messages.messageSendError
   );
 
-export const test = () =>
+export const getRoomImages = (id) =>
   apiCallBegan({
-    url: url + "/messages/room_images",
+    url: url + "/messages/room_images/" + id,
+    onSuccess: roomImagesResived.type,
+    onError: messagesError.type,
   });
 
 export const getRoomMessages = createSelector(
@@ -132,4 +143,10 @@ export const getRoomMessagesByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
     (msgStore) => msgStore.allMessages[roomId]?.messages
+  );
+
+export const getRoomImagesByRoomId = (roomId) =>
+  createSelector(
+    (state) => state.entities.msgStore,
+    (msgStore) => msgStore.images[roomId]?.imageURLs
   );

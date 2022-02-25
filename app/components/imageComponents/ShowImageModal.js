@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
 import {
   StyleSheet,
   Dimensions,
@@ -13,23 +11,36 @@ import {
 import ImageViewer from "react-native-image-zoom-viewer";
 import Constants from "expo-constants";
 import colors from "../../../config/colors";
-
 import AppText from "../AppText";
 import { ActivityIndicator } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
+import { useSelector } from "react-redux";
+import { getRoomImagesByRoomId } from "../../../store/msgStore";
 
-function ShowImageModal({ imageURLs, image, index = 0 }) {
+function ShowImageModal({ image, roomId }) {
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
+  const roomImages = useSelector(getRoomImagesByRoomId(roomId)) || [];
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
+
+  useEffect(() => {
+    setImageIndex(roomImages.findIndex((imageURL) => imageURL === image));
+  }, [modalVisible]);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [saveButtonText, setSaveButtonText] = useState("Save image");
-  const [imageIndex, setImageIndex] = useState(index);
+  const [imageIndex, setImageIndex] = useState();
+
   const saveImage = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (granted) {
       setSaveButtonText("Image saved!");
       try {
-        const link = imageURLs[imageIndex];
+        console.log(imageIndex, "tallentaa oikean kuvan");
+        const link = roomImages[imageIndex];
         const myFolder = FileSystem.documentDirectory;
         const resp = await FileSystem.downloadAsync(
           link,
@@ -47,7 +58,7 @@ function ShowImageModal({ imageURLs, image, index = 0 }) {
     }
   };
 
-  const images = imageURLs.map((imageURL) => {
+  const images = roomImages.map((imageURL) => {
     return { url: imageURL };
   });
 
@@ -82,7 +93,7 @@ function ShowImageModal({ imageURLs, image, index = 0 }) {
           saveToLocalByLongPress={false}
           enableSwipeDown={true}
           swipeDownThreshold={150}
-          // index={1}
+          index={imageIndex}
           onChange={(index) => setImageIndex(index)}
           renderIndicator={() => null}
           onSwipeDown={() => setModalVisible(false)}
@@ -96,7 +107,9 @@ function ShowImageModal({ imageURLs, image, index = 0 }) {
           <TouchableOpacity
             style={styles.closeButton}
             activeOpacity={1}
-            onPress={() => setModalVisible(false)}
+            onPress={() => {
+              setModalVisible(false);
+            }}
           >
             <AppText style={styles.text}>CLOSE</AppText>
           </TouchableOpacity>

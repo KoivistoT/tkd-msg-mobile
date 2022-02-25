@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItem from "../app/components/MessageItem";
-import { getRoomMessagesByRoomId } from "../store/msgStore";
+import { getRoomImages, getRoomMessagesByRoomId } from "../store/msgStore";
 
 function MessageList({ item }) {
+  const dispatch = useDispatch();
   const store = useStore();
   const roomId = item.route.params._id;
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
+
   const userId = store.getState().auth.currentUser._id;
 
   const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
+
+  useEffect(() => {
+    dispatch(getRoomImages(roomId));
+  }, []);
 
   return (
     <>
