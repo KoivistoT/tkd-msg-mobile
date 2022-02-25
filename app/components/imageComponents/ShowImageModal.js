@@ -20,15 +20,17 @@ import { useSelector } from "react-redux";
 import { getRoomImagesByRoomId } from "../../../store/msgStore";
 
 function ShowImageModal({ image, roomId }) {
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
   const roomImages = useSelector(getRoomImagesByRoomId(roomId)) || [];
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
 
   useEffect(() => {
-    setImageIndex(roomImages.findIndex((imageURL) => imageURL === image));
-  }, [modalVisible]);
+    if (roomImages.findIndex((imageURL) => imageURL === image) !== undefined) {
+      setImageIndex(roomImages.findIndex((imageURL) => imageURL === image));
+    }
+  }, [roomImages]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [saveButtonText, setSaveButtonText] = useState("Save image");
@@ -70,15 +72,7 @@ function ShowImageModal({ image, roomId }) {
 
   return (
     <View>
-      <Modal
-        onSwipeComplete={() => ended()}
-        animationType="slide"
-        transparent
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
+      <Modal animationType="slide" transparent visible={modalVisible}>
         <View style={styles.header}>
           <TouchableOpacity
             activeOpacity={1}
@@ -100,10 +94,12 @@ function ShowImageModal({ image, roomId }) {
           saveToLocalByLongPress={false}
           enableSwipeDown={true}
           swipeDownThreshold={150}
-          index={imageIndex}
+          index={roomImages.findIndex((imageURL) => imageURL === image)}
           onChange={(index) => setImageIndex(index)}
           renderIndicator={() => null}
           onSwipeDown={() => setModalVisible(false)}
+          useNativeDriver
+          enablePreload
           loadingRender={() => (
             <ActivityIndicator color={colors.white} size="large" />
           )}
