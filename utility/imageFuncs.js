@@ -27,7 +27,7 @@ const saveImagesToFirebase = async (images) => {
       });
     });
     await Promise.all([upload]);
-    console.log(downloadUris, "tämä joo");
+
     return downloadUris;
   } catch (error) {
     console.log("error code 14992", error);

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItem from "../app/components/MessageItem";
-import { getRoomImages, getRoomMessagesByRoomId } from "../store/msgStore";
+import { getRoomMessagesByRoomId } from "../store/msgStore";
 
 function MessageList({ item }) {
   const dispatch = useDispatch();
@@ -13,9 +13,9 @@ function MessageList({ item }) {
   const isImagesFetched = useRef(false);
   const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
 
-  useEffect(() => {
-    getAllImages(); // tämä on kyl turha hakea aina uudestaan, kun huoneeseen menee
-  }, [roomMessages]);
+  // useEffect(() => {
+  //    getAllImages(); // tämä on kyl turha hakea aina uudestaan, kun huoneeseen menee
+  // }, [roomMessages]);
 
   const getAllImages = () => {
     if (isImagesFetched.current === false) {

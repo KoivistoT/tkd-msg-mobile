@@ -16,15 +16,12 @@ import { ActivityIndicator } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-import { useSelector } from "react-redux";
+import { useSelector, useStore } from "react-redux";
 import { getRoomImagesByRoomId } from "../../../store/msgStore";
 
 function ShowImageModal({ image, roomId }) {
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  const roomImages = useSelector(getRoomImagesByRoomId(roomId)) || [];
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  const store = useStore();
+  const roomImages = store.getState().entities.msgStore.images[roomId] || [];
 
   useEffect(() => {
     if (roomImages.findIndex((imageURL) => imageURL === image) !== undefined) {

@@ -8,6 +8,7 @@ import {
 } from "./actions";
 import {
   getMessagesbyId,
+  getRoomImages,
   messagesRemoved,
   newMessageResived,
 } from "./msgStore";
@@ -62,6 +63,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           const roomId = data[Object.keys(data)]._id; // vai olisiko data[0]._id tämä
           dispatch(roomAdded(data));
           dispatch(getMessagesbyId(roomId));
+          dispatch(getRoomImages(roomId));
           socket.emit("subscribe", roomId);
         }
         if (type === "roomRemoved") {

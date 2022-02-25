@@ -41,6 +41,10 @@ const api =
           type: onInitSuccess.messages,
           payload: response.data.messages,
         });
+        dispatch({
+          type: onInitSuccess.images,
+          payload: response.data.allImages,
+        });
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;
       }

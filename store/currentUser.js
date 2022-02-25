@@ -17,7 +17,7 @@ import { apiCallBegan, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { roomsResived } from "./rooms";
-import { messagesResived } from "./msgStore";
+import { allImagesResived, messagesResived } from "./msgStore";
 // import { createSelector } from "reselect";
 
 const slice = createSlice({
@@ -102,6 +102,7 @@ export const getInitialData = () => (dispatch, getState) => {
         user: userResived.type,
         rooms: roomsResived.type,
         messages: messagesResived.type,
+        images: allImagesResived.type,
         users: "haetaanko kaikki käyttäjät",
       },
       // onError: loginFailed.type,

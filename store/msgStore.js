@@ -12,13 +12,14 @@ const slice = createSlice({
     images: {},
   },
   reducers: {
-    roomImagesResived: (msgStore, action) => {
-      const { imageURLs, roomId } = action.payload;
-
-      msgStore.images[roomId] = { imageURLs };
-
-      // console.log(msgStore.images["6214ebe20f8502580b0e19a1"]);
+    allImagesResived: (msgStore, action) => {
+      msgStore.images = action.payload[0];
     },
+    oneRoomImagesResived: (msgStore, action) => {
+      const { imageURLs, roomId } = action.payload;
+      msgStore.images[roomId] = imageURLs;
+    },
+
     messagesResived: (msgStore, action) => {
       msgStore.allMessages = action.payload;
 
@@ -42,10 +43,16 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (msgStore, action) => {
-      var targetMessages =
-        msgStore.allMessages[Object.values(action.payload)[0].roomId].messages;
+      const message = Object.values(action.payload)[0];
+      var targetMessages = msgStore.allMessages[message.roomId].messages;
 
-      targetMessages = Object.assign(targetMessages, action.payload);
+      Object.assign(targetMessages, action.payload);
+
+      if (message.type === "image") {
+        message.imageURLs.forEach((url) => {
+          msgStore.images[message.roomId].push(url);
+        });
+      }
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -63,7 +70,9 @@ const slice = createSlice({
     },
     messagesRemoved: (msgStore, action) => {
       delete msgStore.allMessages[action.payload];
+      delete msgStore.images[action.payload];
     },
+
     messageSendError: (msgStore, action) => {
       msgStore.messageSendError = action.payload;
       // console.log("message ei lähetetty", action.payload);
@@ -83,7 +92,8 @@ export const {
   messageSendErrorCleared,
   newMessageResived,
   messagesRemoved,
-  roomImagesResived,
+  oneRoomImagesResived,
+  allImagesResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -131,7 +141,7 @@ export const getErrorMessage = () =>
 export const getRoomImages = (id) =>
   apiCallBegan({
     url: url + "/messages/room_images/" + id,
-    onSuccess: roomImagesResived.type,
+    onSuccess: oneRoomImagesResived.type,
     onError: messagesError.type,
   });
 
@@ -148,5 +158,5 @@ export const getRoomMessagesByRoomId = (roomId) =>
 export const getRoomImagesByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
-    (msgStore) => msgStore.images[roomId]?.imageURLs
+    (msgStore) => msgStore.images[roomId]
   );
