@@ -107,6 +107,7 @@ function ShowImageModal({ image, roomId }) {
             <ActivityIndicator color={colors.white} size="large" />
           )}
           imageUrls={images}
+          style={styles.ImageViewer}
         />
 
         <View style={{ alignSelf: "center" }}>
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
     alignItems: "center",
   },
+  ImageViewer: { backgroundColor: "black" },
   headerButtons: {
     backgroundColor: colors.white,
 

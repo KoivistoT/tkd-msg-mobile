@@ -5,32 +5,12 @@ import MessageItem from "../app/components/MessageItem";
 import { getRoomMessagesByRoomId } from "../store/msgStore";
 
 function MessageList({ item }) {
-  const dispatch = useDispatch();
   const store = useStore();
   const roomId = item.route.params._id;
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
   const userId = store.getState().auth.currentUser._id;
-  const isImagesFetched = useRef(false);
+
   const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
-
-  // useEffect(() => {
-  //    getAllImages(); // tämä on kyl turha hakea aina uudestaan, kun huoneeseen menee
-  // }, [roomMessages]);
-
-  const getAllImages = () => {
-    if (isImagesFetched.current === false) {
-      dispatch(getRoomImages(roomId));
-      isImagesFetched.current = true;
-    }
-    if (
-      Object.values(roomMessages)[Object.keys(roomMessages).length - 1].type ===
-        "image" &&
-      isImagesFetched.current !== false
-    ) {
-      dispatch(getRoomImages(roomId));
-    }
-  };
-
   const keyExtractor = (item) => item._id;
 
   return (
