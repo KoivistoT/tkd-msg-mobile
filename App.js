@@ -40,6 +40,7 @@ import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
 import { getAllRooms } from "./store/rooms";
 import { firebaseLogin } from "./api/firebaseClient";
+import routes from "./app/navigation/routes";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -59,13 +60,15 @@ export default function AppWrapper() {
 function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
-
   const onLogin = async () => {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     // dispatch(getAllRooms()); // tätä ei tarvitse tässä, kun init
     await dispatch(getInitialData());
     dispatch(createSocketConnection());
+    // const item = {
+    //   _id: "6214ebe20f8502580b0e19a1",
+    // };
+    // navigationRef.current.navigate(routes.MESSAGE_SCREEN, item);
   };
 
   const token = useSelector(selectToken);

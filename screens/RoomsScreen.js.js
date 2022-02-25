@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket } from "../store/socket";
-
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
 
