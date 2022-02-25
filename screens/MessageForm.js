@@ -23,7 +23,7 @@ function MessageForm({ item }) {
   }, []);
 
   const handleSubmit = async ({ message }, { resetForm }) => {
-    console.log("aloittaa latauksen");
+    // console.log("aloittaa latauksen");
 
     let messageType = "text";
     let imageURLs = null;

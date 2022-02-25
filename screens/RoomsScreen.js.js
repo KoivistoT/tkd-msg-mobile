@@ -11,54 +11,33 @@ import { useDispatch, useSelector } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket } from "../store/socket";
-import routes from "../app/navigation/routes";
+
+import RoomsListItem from "../app/components/RoomsListItem";
+import sortObjectsByfield from "../utility/sortObjectsByfield";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
-  const rooms = useSelector((state) => state.entities.rooms);
+  const allRooms = useSelector((state) => state.entities.rooms);
 
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
   };
+  const keyExtractor = (item) => item._id;
+  const listItem = ({ item }) => (
+    <RoomsListItem navigation={navigation} item={item} />
+  );
 
   return (
     <Screen>
-      {!rooms.rooms && (
+      {!allRooms.rooms && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
-      {rooms.rooms && (
+      {allRooms.rooms && (
         <FlatList
-          data={Object.values(rooms.rooms).sort(function (a, b) {
-            var nameA = a.roomName;
-            var nameB = b.roomName;
-            // console.log(a, b);
-            if (nameA > nameB) {
-              return 1;
-            }
-            if (nameA < nameB) {
-              return -1;
-            }
-            return 0;
-          })}
-          keyExtractor={(room) => room._id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={{ marginBottom: 10 }}
-              onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
-            >
-              <Text
-                style={{
-                  color: "black",
-                  backgroundColor: "green",
-                  padding: 10,
-                }}
-                key={item._id}
-              >
-                {item.roomName}
-              </Text>
-            </TouchableOpacity>
-          )}
+          data={sortObjectsByfield(allRooms.rooms, "roomName")}
+          keyExtractor={keyExtractor}
+          renderItem={listItem}
         />
       )}
 

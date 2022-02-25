@@ -31,6 +31,8 @@ function MessageList({ item }) {
     }
   };
 
+  const keyExtractor = (item) => item._id;
+
   return (
     <>
       <View
@@ -54,7 +56,7 @@ function MessageList({ item }) {
               }
               return 0;
             })}
-            keyExtractor={(message) => message._id}
+            keyExtractor={keyExtractor}
             renderItem={messageItem}
           />
         )}
