@@ -16,8 +16,8 @@ import { ActivityIndicator } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-import { useDispatch, useSelector } from "react-redux";
-import { getRoomImages, getRoomImagesByRoomId } from "../../../store/msgStore";
+import { useSelector } from "react-redux";
+import { getRoomImagesByRoomId } from "../../../store/msgStore";
 
 function ShowImageModal({ image, roomId }) {
   // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki
@@ -62,6 +62,12 @@ function ShowImageModal({ image, roomId }) {
     return { url: imageURL };
   });
 
+  const indexHeaderItem = (currentIndex) => (
+    <AppText style={styles.indexHeader}>
+      {`IMAGE ${currentIndex + 1}/${images.length}`}
+    </AppText>
+  );
+
   return (
     <View>
       <Modal
@@ -90,6 +96,7 @@ function ShowImageModal({ image, roomId }) {
         </View>
 
         <ImageViewer
+          renderHeader={(currentIndex) => indexHeaderItem(currentIndex)}
           saveToLocalByLongPress={false}
           enableSwipeDown={true}
           swipeDownThreshold={150}
@@ -145,9 +152,14 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
   },
+  indexHeader: {
+    backgroundColor: colors.white,
+    alignSelf: "center",
+    marginTop: 2,
+    padding: 10,
+  },
   modal: {
     width: Dimensions.get("window").width,
-
     margin: 0,
   },
   closeButton: {

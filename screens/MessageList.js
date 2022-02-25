@@ -14,7 +14,7 @@ function MessageList({ item }) {
   const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
 
   useEffect(() => {
-    getAllImages();
+    getAllImages(); // tämä on kyl turha hakea aina uudestaan, kun huoneeseen menee
   }, [roomMessages]);
 
   const getAllImages = () => {
@@ -38,7 +38,7 @@ function MessageList({ item }) {
       <View
         style={{
           borderWidth: 1,
-          width: 300,
+          width: "100%",
           height: 400,
           color: "black",
         }}
