@@ -45,6 +45,10 @@ const api =
           type: onInitSuccess.images,
           payload: response.data.allImages,
         });
+        dispatch({
+          type: onInitSuccess.users,
+          payload: response.data.allUsers,
+        });
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;
       }

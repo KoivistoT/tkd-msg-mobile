@@ -4,13 +4,14 @@ import colors from "../../config/colors";
 
 import AppText from "./AppText";
 import ShowImageModal from "./imageComponents/ShowImageModal";
-function MessageItem({ item, userId }) {
+function MessageItem({ item, userId, sender }) {
   return (
     //item type voisi isomminkin määrittää heti, ettei montaa if lausetta
 
     <TouchableOpacity
       style={item.postedByUser === userId ? styles.me : styles.otherUser}
     >
+      <AppText>sender: {sender}</AppText>
       {item.type == "image" &&
         item.imageURLs.map((url) => (
           <ShowImageModal key={url} roomId={item.roomId} image={url} />

@@ -7,15 +7,19 @@ import { createSelector } from "reselect";
 const slice = createSlice({
   name: "users",
   initialState: {
-    users: [],
+    allUsers: [],
   },
   reducers: {
     // action => action handler
     usersResived: (users, action) => {
       // console.log("users resived");
-      users.users = action.payload;
+      users.allUsers = action.payload;
+      // console.log(
+      //   "users resived",
+      //   users.allUsers["61e6a7f6b30d002e91d67b50"].email
+      // );
     },
-    usersError: (rooms, action) => {
+    usersError: (users, action) => {
       console.log(action.payload, "epännoistu appcode 1233322");
     },
   },

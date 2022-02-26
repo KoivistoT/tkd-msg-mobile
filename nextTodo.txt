@@ -1,6 +1,8 @@
   
   
-- hae kaikki kuvat vieweriin
+- hae käyttäjät
+
+- testaa miten hakee lisää viestejä, kun aluksi saisi hakea vain esimerkiksi 30
   
   - lisää listenerit sockettiin niin, että uusi viesti messageihin. 
   Huomaa subscripe ja new message, missä vaiheessa mikäin ja milloin 

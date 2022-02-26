@@ -9,8 +9,16 @@ function MessageList({ item }) {
   const roomId = item.route.params._id;
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
   const userId = store.getState().auth.currentUser._id;
+  const allUsers = store.getState().entities.users.allUsers;
 
-  const messageItem = ({ item }) => <MessageItem item={item} userId={userId} />;
+  const messageItem = ({ item }) => (
+    <MessageItem
+      item={item}
+      sender={allUsers[item.postedByUser].displayName}
+      userId={userId}
+    />
+  );
+
   const keyExtractor = (item) => item._id;
 
   return (

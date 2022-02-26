@@ -138,6 +138,11 @@ export const getErrorMessage = () =>
     (messages) => messages.messageSendError
   );
 
+export const test = () =>
+  apiCallBegan({
+    url: url + "/messages/test2",
+  });
+
 export const getRoomImages = (id) =>
   apiCallBegan({
     url: url + "/messages/room_images/" + id,
