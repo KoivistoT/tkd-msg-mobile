@@ -13,7 +13,11 @@ import {
   newMessageResived,
 } from "./msgStore";
 import { roomAdded, roomRemoved } from "./rooms";
-import { newUserResived } from "./users";
+import { newUserResived, userDeleted } from "./users";
+import {
+  userControlNewUserResived,
+  userControlUserDeleted,
+} from "./usersControl";
 
 const slice = createSlice({
   name: "socket",
@@ -75,6 +79,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "newUser") {
           dispatch(newUserResived(data));
+          dispatch(userControlNewUserResived(data));
+        }
+        if (type === "userDeleted") {
+          const userId = Object.keys(data);
+          dispatch(userDeleted(userId));
+          dispatch(userControlUserDeleted(userId));
         }
         // console.log("updates", type, data);
       });

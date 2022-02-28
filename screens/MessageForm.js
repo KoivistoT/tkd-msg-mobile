@@ -9,7 +9,9 @@ import AppForm from "../app/components/forms/AppForm";
 import SendButton from "../app/components/SendButton";
 import ImageInputList from "../app/components/imageComponents/ImageInputList";
 import imageFuncs from "../utility/imageFuncs";
-import { userDeleted } from "../store/users";
+
+import { deleteUser } from "../store/usersControl";
+
 function MessageForm({ item }) {
   const dispatch = useDispatch();
   const [photos, setPhotos] = useState([]);
@@ -59,7 +61,7 @@ function MessageForm({ item }) {
   };
 
   const testi = async () => {
-    dispatch(userDeleted("621c682b76f652219f559c24"));
+    dispatch(deleteUser("621c682b76f652219f559c24"));
     // dispatch(test());
   };
 

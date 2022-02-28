@@ -12,12 +12,20 @@ const slice = createSlice({
   },
   reducers: {
     // action => action handler
+    userControlNewUserResived: (usersControl, action) => {
+      if (
+        typeof usersControl.users[Object.keys(action.payload)] === "undefined"
+      ) {
+        Object.assign(usersControl.users, action.payload);
+      }
+    },
     usersResived: (usersControl, action) => {
       // console.log("users resived");
       usersControl.users = action.payload;
     },
-    userDeleted: (usersControl, action) => {
-      console.log("user deleted");
+    userControlUserDeleted: (usersControl, action) => {
+      console.log("tässä on tämä", action.payload);
+      delete usersControl.users[action.payload];
     },
     usersError: (usersControl, action) => {
       usersControl.errorMessage = action.payload;
@@ -37,7 +45,8 @@ export const {
   usersError,
   userCreated,
   usersErrorCleared,
-  userDeleted,
+  userControlUserDeleted,
+  userControlNewUserResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -50,11 +59,10 @@ export const getAllUsers = () =>
     onError: usersError.type,
   });
 
-export const deleteUser = (userId) =>
+export const deleteUserById = (userId) =>
   apiCallBegan({
-    url: url + "/delete_user" + userId,
-    method: "post",
-    onSuccess: userDeleted.type,
+    url: url + "/delete_user/" + userId,
+    // onSuccess: userControlUserDeleted.type,
     onError: usersError.type,
   });
 
