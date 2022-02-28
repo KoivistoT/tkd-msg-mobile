@@ -45,6 +45,7 @@ const slice = createSlice({
       currentUser.name = user.name;
       currentUser._id = user._id;
       currentUser.loggedIn = true;
+      currentUser.accountType = user.accountType;
 
       // console.log("ei tule backendistä nuo huoneet userRooms");
     },

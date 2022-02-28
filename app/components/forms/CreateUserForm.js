@@ -20,7 +20,7 @@ import {
 } from "../../../store/usersControl";
 
 const accountTypeOptions = [
-  { label: "Pro", value: "pro" },
+  { label: "Admin", value: "admin" },
   { label: "Basic", value: "basic" },
 ];
 const validationSchema = Yup.object().shape({

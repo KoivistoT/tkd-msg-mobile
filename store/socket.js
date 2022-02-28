@@ -99,7 +99,11 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         // console.log("updates", type, data);
       });
-      socket.emit("identity", getState().auth.currentUser._id, "admin"); //hard code pois
+      socket.emit(
+        "identity",
+        getState().auth.currentUser._id,
+        getState().auth.currentUser.accountType
+      ); //hard code pois
 
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
