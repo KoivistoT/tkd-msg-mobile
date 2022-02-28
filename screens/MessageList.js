@@ -14,7 +14,9 @@ function MessageList({ item }) {
   const messageItem = ({ item }) => (
     <MessageItem
       item={item}
-      sender={allUsers[item.postedByUser].displayName}
+      sender={
+        allUsers ? allUsers[item.postedByUser].displayName : "unknown user"
+      }
       userId={userId}
     />
   );

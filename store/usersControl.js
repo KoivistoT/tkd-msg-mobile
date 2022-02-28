@@ -16,6 +16,9 @@ const slice = createSlice({
       // console.log("users resived");
       usersControl.users = action.payload;
     },
+    userDeleted: (usersControl, action) => {
+      console.log("user deleted");
+    },
     usersError: (usersControl, action) => {
       usersControl.errorMessage = action.payload;
       console.log(action.payload, "epännoistu appcode 12398321");
@@ -29,8 +32,13 @@ const slice = createSlice({
   },
 });
 
-export const { usersResived, usersError, userCreated, usersErrorCleared } =
-  slice.actions;
+export const {
+  usersResived,
+  usersError,
+  userCreated,
+  usersErrorCleared,
+  userDeleted,
+} = slice.actions;
 export default slice.reducer;
 
 const url = settings.apiUrl + "/users";
@@ -39,6 +47,14 @@ export const getAllUsers = () =>
   apiCallBegan({
     url: url + "/all",
     onSuccess: usersResived.type,
+    onError: usersError.type,
+  });
+
+export const deleteUser = (userId) =>
+  apiCallBegan({
+    url: url + "/delete_user" + userId,
+    method: "post",
+    onSuccess: userDeleted.type,
     onError: usersError.type,
   });
 

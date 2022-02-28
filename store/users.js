@@ -19,13 +19,26 @@ const slice = createSlice({
       //   users.allUsers["61e6a7f6b30d002e91d67b50"].email
       // );
     },
+    newUserResived: (users, action) => {
+      Object.assign(users.allUsers, action.payload);
+    },
+    userDeleted: (users, action) => {
+      delete users.allUsers[action.payload];
+    },
+
     usersError: (users, action) => {
       console.log(action.payload, "epännoistu appcode 1233322");
     },
   },
 });
 
-export const { usersResived, usersError, userCreated } = slice.actions;
+export const {
+  usersResived,
+  usersError,
+  userCreated,
+  newUserResived,
+  userDeleted,
+} = slice.actions;
 export default slice.reducer;
 
 const url = settings.apiUrl + "/users";

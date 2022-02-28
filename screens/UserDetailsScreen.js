@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
+import AppButton from "../app/components/AppButton";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
@@ -8,7 +9,7 @@ function UserDetailsScreen(item) {
   const { params: userData } = item.route;
 
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
-
+  const deleteUser = () => {};
   return (
     <Screen>
       <View style={{ flexDirection: "row" }}>
@@ -26,6 +27,7 @@ function UserDetailsScreen(item) {
         />
       )}
       {userData.userRooms.length === 0 && <AppText>User has no rooms</AppText>}
+      <AppButton title={"delete user"} />
     </Screen>
   );
 }

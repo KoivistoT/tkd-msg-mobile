@@ -13,6 +13,7 @@ import {
   newMessageResived,
 } from "./msgStore";
 import { roomAdded, roomRemoved } from "./rooms";
+import { newUserResived } from "./users";
 
 const slice = createSlice({
   name: "socket",
@@ -71,6 +72,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(roomRemoved(roomId));
           dispatch(messagesRemoved(roomId));
           socket.emit("unsubscribe", roomId);
+        }
+        if (type === "newUser") {
+          dispatch(newUserResived(data));
         }
         // console.log("updates", type, data);
       });
