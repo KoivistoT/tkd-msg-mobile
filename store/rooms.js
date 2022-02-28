@@ -35,7 +35,6 @@ const slice = createSlice({
     },
 
     memberChanged: (rooms, action) => {
-      console.log("tässä on taas", action.payload._id);
       try {
         rooms.rooms[action.payload._id].members = action.payload.members;
         // console.log(rooms.rooms[action.payload._id].members, "täältä huoneen");
