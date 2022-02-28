@@ -12,7 +12,7 @@ import {
   messagesRemoved,
   newMessageResived,
 } from "./msgStore";
-import { roomAdded, roomRemoved } from "./rooms";
+import { roomAdded, roomRemoved, memberChanged } from "./rooms";
 import { roomsControlMembersChanged } from "./roomsControl";
 import { newUserResived, userDeleted } from "./users";
 import {
@@ -88,9 +88,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(userDeleted(userId));
           dispatch(userControlUserDeleted(userId));
         }
-        if (type === "membersChanged") {
-          console.log(data, "täältä");
+        if (type === "controlMembersChanged") {
           dispatch(roomsControlMembersChanged(data[Object.keys(data)]));
+        }
+
+        if (type === "membersChanged") {
+          dispatch(memberChanged(data[Object.keys(data)]));
         }
         // console.log("updates", type, data);
       });

@@ -37,6 +37,7 @@ const slice = createSlice({
     memberChanged: (rooms, action) => {
       try {
         rooms.rooms[action.payload._id].members = action.payload.members;
+        console.log(rooms.rooms[action.payload._id].members, "täältä huoneen");
       } catch (error) {
         console.log(error, "code 39922");
       }

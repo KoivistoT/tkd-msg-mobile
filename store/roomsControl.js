@@ -35,7 +35,7 @@ const slice = createSlice({
     },
 
     roomsControlMembersChanged: (roomControl, action) => {
-      console.log(action.payload, "memberChanged, tästä");
+      // console.log(action.payload, "memberChanged, tästä");
       try {
         roomControl.rooms[action.payload._id].members = action.payload.members;
       } catch (error) {
