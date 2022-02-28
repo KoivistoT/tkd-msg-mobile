@@ -16,7 +16,7 @@ import sortObjectsByfield from "../utility/sortObjectsByfield";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
-  const allRooms = useSelector((state) => state.entities.rooms);
+  const allRooms = useSelector((state) => state.entities.rooms.rooms);
 
   const logout = () => {
     dispatch(disconnectSocket());
@@ -29,12 +29,12 @@ function RoomsScreen({ navigation }) {
 
   return (
     <Screen>
-      {!allRooms.rooms && (
+      {!allRooms && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
-      {allRooms.rooms && (
+      {allRooms && (
         <FlatList
-          data={sortObjectsByfield(allRooms.rooms, "roomName")}
+          data={sortObjectsByfield(allRooms, "roomName")}
           keyExtractor={keyExtractor}
           renderItem={listItem}
         />

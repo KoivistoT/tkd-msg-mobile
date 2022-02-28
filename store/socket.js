@@ -72,11 +72,13 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(getRoomImages(roomId));
           socket.emit("subscribe", roomId);
         }
+
         if (type === "roomRemoved") {
           const roomId = Object.keys(data);
+
+          socket.emit("unsubscribe", roomId);
           dispatch(roomRemoved(roomId));
           dispatch(messagesRemoved(roomId));
-          socket.emit("unsubscribe", roomId);
         }
         if (type === "newUser") {
           dispatch(newUserResived(data));
@@ -84,7 +86,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "userDeleted") {
           const userId = Object.keys(data);
-          console.log("täältä laittaa poiston");
+
           dispatch(userDeleted(userId));
           dispatch(userControlUserDeleted(userId));
         }
@@ -97,7 +99,8 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         // console.log("updates", type, data);
       });
-      socket.emit("identity", getState().auth.currentUser._id);
+      socket.emit("identity", getState().auth.currentUser._id, "admin"); //hard code pois
+
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }
