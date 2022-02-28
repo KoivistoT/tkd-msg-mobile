@@ -6,7 +6,7 @@ import jwtDecode from "jwt-decode";
 const slice = createSlice({
   name: "rooms",
   initialState: {
-    rooms: [],
+    allRooms: [],
     loading: false,
     members: [],
     activeRoomId: null,
@@ -24,20 +24,20 @@ const slice = createSlice({
     },
     roomsResived: (rooms, action) => {
       // action.payload.forEach((item) => {
-      //   rooms.rooms = { [item._id]: item, ...rooms.rooms };
+      //   rooms.allRooms = { [item._id]: item, ...rooms.allRooms };
       // });
-      rooms.rooms = action.payload;
+      rooms.allRooms = action.payload;
 
       // console.log(
-      //   rooms.rooms["61e6a80eb30d002e91d67b5a"],
+      //   rooms.allRooms["61e6a80eb30d002e91d67b5a"],
       //   "huoneet vastaanotettu, tässä yksi id:llä"
       // );
     },
 
     memberChanged: (rooms, action) => {
       try {
-        rooms.rooms[action.payload._id].members = action.payload.members;
-        // console.log(rooms.rooms[action.payload._id].members, "täältä huoneen");
+        rooms.allRooms[action.payload._id].members = action.payload.members;
+        // console.log(rooms.allRooms[action.payload._id].members, "täältä huoneen");
       } catch (error) {
         console.log(error, "code 39922");
       }
@@ -58,11 +58,11 @@ const slice = createSlice({
     },
     roomAdded: (rooms, action) => {
       // console.log(action.payload);
-      rooms.rooms = Object.assign(rooms.rooms, action.payload);
-      // console.log(rooms.rooms, "now");
+      rooms.allRooms = Object.assign(rooms.allRooms, action.payload);
+      // console.log(rooms.allRooms, "now");
     },
     roomRemoved: (rooms, action) => {
-      delete rooms.rooms[action.payload];
+      delete rooms.allRooms[action.payload];
     },
   },
 });
@@ -100,7 +100,7 @@ export const createRoom = (roomName, type) =>
     onError: roomsError.type,
   });
 
-export const getMembersById = (roomId) =>
+export const getMembersByRoomId = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/members/" + roomId,
     onSuccess: membersResived.type,
@@ -118,7 +118,13 @@ export const change_member = (roomId, userId, membership) =>
 
 //tämä toki id:llä ja eri lailla
 
-export const getRoomMembers = createSelector(
+export const getRoomMembersById = (roomId) =>
+  createSelector(
+    (state) => state.entities.rooms,
+    (roomsControl) => rooms.allRooms[roomId].members
+  );
+
+export const getUserRooms = createSelector(
   (state) => state.entities.rooms,
-  (rooms) => rooms.members
+  (rooms) => rooms.allRooms
 );

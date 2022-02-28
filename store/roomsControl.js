@@ -17,16 +17,8 @@ const slice = createSlice({
       roomControl.loading = true;
     },
     roomsResived: (roomControl, action) => {
-      // action.payload.forEach((item) => {
-      //   rooms.rooms = { [item._id]: item, ...rooms.rooms };
-      // });
-
       roomControl.rooms = action.payload;
       roomControl.loading = false;
-      // console.log(
-      //   rooms.rooms["61e6a80eb30d002e91d67b5a"],
-      //   "huoneet vastaanotettu, tässä yksi id:llä"
-      // );
     },
 
     roomsError: (roomControl, action) => {
@@ -67,7 +59,6 @@ const slice = createSlice({
       } else {
         roomControl.rooms = action.payload;
       }
-      // console.log(rooms.rooms, "now");
     },
     roomRemoved: (roomControl, action) => {
       delete roomControl.rooms[action.payload];
@@ -108,7 +99,7 @@ export const createRoom = (roomName, type) =>
     onError: roomsError.type,
   });
 
-export const getMembersById = (roomId) =>
+export const getMembersByRoomId = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/members/" + roomId,
     onSuccess: membersResived.type,

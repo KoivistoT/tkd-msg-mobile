@@ -13,10 +13,11 @@ import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket } from "../store/socket";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
+import { getUserRooms } from "../store/rooms";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
-  const allRooms = useSelector((state) => state.entities.rooms.rooms);
+  const allRooms = useSelector(getUserRooms);
 
   const logout = () => {
     dispatch(disconnectSocket());

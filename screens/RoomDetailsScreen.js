@@ -7,7 +7,7 @@ import Screen from "../app/components/Screen";
 import { getAllUsers } from "../store/usersControl";
 import {
   change_member,
-  getMembersById,
+  getMembersByRoomId,
   getRoomMembersById,
 } from "../store/roomsControl";
 import AppButton from "../app/components/AppButton";
@@ -21,7 +21,7 @@ function RoomDetailsScreen(item) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUsers());
-    dispatch(getMembersById(roomData._id));
+    dispatch(getMembersByRoomId(roomData._id));
   }, []);
 
   const change_membership = (item, membership) => {
