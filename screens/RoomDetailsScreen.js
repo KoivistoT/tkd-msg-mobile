@@ -16,7 +16,8 @@ function RoomDetailsScreen(item) {
   const { params: roomData } = item.route;
   const { users } = useSelector((state) => state.entities.usersControl);
   const members = useSelector(getRoomMembersById(roomData._id));
-
+  // console.log(users, "käyttäjät");
+  // console.log(members, "memberit");
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUsers());

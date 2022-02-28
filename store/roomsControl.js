@@ -34,8 +34,8 @@ const slice = createSlice({
       console.log(action.payload, "epännoistu appcode 12333298321");
     },
 
-    roomsControlMemberChanged: (roomControl, action) => {
-      // console.log(action.payload, "memberChanged");
+    roomsControlMembersChanged: (roomControl, action) => {
+      console.log(action.payload, "memberChanged, tästä");
       try {
         roomControl.rooms[action.payload._id].members = action.payload.members;
       } catch (error) {
@@ -80,7 +80,7 @@ export const {
   roomsResived,
   roomCreated,
   membersResived,
-  roomsControlMemberChanged,
+  roomsControlMembersChanged,
   roomAdded,
   roomRemoved,
   roomsErrorCleared,

@@ -13,7 +13,7 @@ import {
   newMessageResived,
 } from "./msgStore";
 import { roomAdded, roomRemoved } from "./rooms";
-import { roomsControlMemberChanged } from "./roomsControl";
+import { roomsControlMembersChanged } from "./roomsControl";
 import { newUserResived, userDeleted } from "./users";
 import {
   userControlNewUserResived,
@@ -84,11 +84,13 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "userDeleted") {
           const userId = Object.keys(data);
+          console.log("täältä laittaa poiston");
           dispatch(userDeleted(userId));
           dispatch(userControlUserDeleted(userId));
         }
         if (type === "membersChanged") {
-          dispatch(roomsControlMemberChanged(data[Object.keys(data)]));
+          console.log(data, "täältä");
+          dispatch(roomsControlMembersChanged(data[Object.keys(data)]));
         }
         // console.log("updates", type, data);
       });
