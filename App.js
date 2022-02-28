@@ -75,7 +75,6 @@ function App() {
 
   const accountType = useSelector(selectAccountType);
   accountType ? onLogin() : {};
-  console.log(accountType);
 
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
