@@ -7,7 +7,7 @@ import navigationTheme from "./app/navigation/navigationTheme";
 import authApi from "./api/auth";
 import configureStore from "./store/configureStore";
 import jwtDecode from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { Provider } from "react-redux";
 import AppToast from "./app/components/AppToast";
 import Login from "./app/components/Login";
@@ -20,6 +20,7 @@ import {
   getToken,
   isLoggedIn,
   logout,
+  selectAccountType,
   selectToken,
   userLoggedOut,
 } from "./store/currentUser";
@@ -41,6 +42,7 @@ import AppNavigator from "./app/navigation/AppNavigator";
 import { getAllRooms } from "./store/rooms";
 import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
+import AdminNavigator from "./app/navigation/AdminNavigator";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -71,13 +73,17 @@ function App() {
     // navigationRef.current.navigate(routes.MESSAGE_SCREEN, item);
   };
 
-  const token = useSelector(selectToken);
-  token ? onLogin() : {};
+  const accountType = useSelector(selectAccountType);
+  accountType ? onLogin() : {};
+  console.log(accountType);
 
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppToast />
-      {token ? <AppNavigator /> : <AuthNavigator />}
+      {!accountType && <AuthNavigator />}
+      {accountType === "admin" && <AdminNavigator />}
+      {accountType && accountType !== "admin" && <AppNavigator />}
+
       {/* <AppNavigator /> */}
       <StatusBar style="auto" />
     </NavigationContainer>

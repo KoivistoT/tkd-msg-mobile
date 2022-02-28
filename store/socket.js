@@ -43,6 +43,8 @@ export const { socketConnected, connectionError, socketDisconnected } =
   slice.actions;
 
 export const createSocketConnection = (userId) => (dispatch, getState) => {
+  const accountType = getState().auth.currentUser.accountType;
+
   try {
     const socket = io(settings.baseUrl, {
       transports: ["websocket"],
@@ -82,13 +84,17 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "newUser") {
           dispatch(newUserResived(data));
-          dispatch(userControlNewUserResived(data));
+          if (accountType === "admin") {
+            dispatch(userControlNewUserResived(data));
+          }
         }
         if (type === "userDeleted") {
           const userId = Object.keys(data);
 
           dispatch(userDeleted(userId));
-          dispatch(userControlUserDeleted(userId));
+          if (accountType === "admin") {
+            dispatch(userControlUserDeleted(userId));
+          }
         }
         if (type === "controlMembersChanged") {
           dispatch(roomsControlMembersChanged(data[Object.keys(data)]));
@@ -99,11 +105,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         // console.log("updates", type, data);
       });
-      socket.emit(
-        "identity",
-        getState().auth.currentUser._id,
-        getState().auth.currentUser.accountType
-      ); //hard code pois
+      socket.emit("identity", getState().auth.currentUser._id, accountType); //hard code pois
 
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));

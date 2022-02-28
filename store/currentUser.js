@@ -63,6 +63,7 @@ const slice = createSlice({
     },
     userLoggedOut: (currentUser, action) => {
       //tämä ei ehkä oikea tapa tehdä tätä
+      currentUser.accountType = null;
       currentUser.error = null;
       currentUser.loading = false;
       currentUser.token = null;
@@ -71,7 +72,6 @@ const slice = createSlice({
       currentUser._id = null;
       currentUser.loggedIn = false;
       currentUser.userRooms = [];
-      // console.log(currentUser);
     },
     errorMessageCleared: (currentUser, action) => {
       currentUser.error = null;
@@ -142,7 +142,7 @@ export const onLoginFailed = () => {
   loginFailed();
 };
 
-export const selectToken = (state) => state.auth.currentUser.token;
+export const selectAccountType = (state) => state.auth.currentUser.accountType;
 
 export const isLoggedIn = createSelector(
   (state) => state.auth,

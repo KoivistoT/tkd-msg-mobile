@@ -8,7 +8,7 @@ import ControlNavigator from "./ControlNavigator";
 
 const Tab = createBottomTabNavigator();
 
-const AppNavigator = () => {
+const AdminNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route, navigation }) => ({
@@ -24,7 +24,7 @@ const AppNavigator = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="ControlNavigator"
         component={ControlNavigator}
         options={{
@@ -32,9 +32,9 @@ const AppNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 };
 
-export default AppNavigator;
+export default AdminNavigator;
