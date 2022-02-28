@@ -24,7 +24,6 @@ const slice = createSlice({
       usersControl.users = action.payload;
     },
     userControlUserDeleted: (usersControl, action) => {
-      console.log("tässä on tämä", action.payload);
       delete usersControl.users[action.payload];
     },
     usersError: (usersControl, action) => {

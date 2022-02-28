@@ -13,6 +13,7 @@ import {
   newMessageResived,
 } from "./msgStore";
 import { roomAdded, roomRemoved } from "./rooms";
+import { roomsControlMemberChanged } from "./roomsControl";
 import { newUserResived, userDeleted } from "./users";
 import {
   userControlNewUserResived,
@@ -85,6 +86,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           const userId = Object.keys(data);
           dispatch(userDeleted(userId));
           dispatch(userControlUserDeleted(userId));
+        }
+        if (type === "membersChanged") {
+          dispatch(roomsControlMemberChanged(data[Object.keys(data)]));
         }
         // console.log("updates", type, data);
       });

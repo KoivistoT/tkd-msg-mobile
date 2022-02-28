@@ -8,14 +8,15 @@ import { getAllUsers } from "../store/usersControl";
 import {
   change_member,
   getMembersById,
-  getRoomMembers,
+  getRoomMembersById,
 } from "../store/roomsControl";
 import AppButton from "../app/components/AppButton";
 
 function RoomDetailsScreen(item) {
   const { params: roomData } = item.route;
   const { users } = useSelector((state) => state.entities.usersControl);
-  const members = useSelector(getRoomMembers);
+  const members = useSelector(getRoomMembersById(roomData._id));
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUsers());

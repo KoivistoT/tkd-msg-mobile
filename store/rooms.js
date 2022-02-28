@@ -35,8 +35,11 @@ const slice = createSlice({
     },
 
     memberChanged: (rooms, action) => {
-      // console.log(action.payload, "memberChanged");
-      rooms.members = action.payload.members;
+      try {
+        rooms.rooms[action.payload._id].members = action.payload.members;
+      } catch (error) {
+        console.log(error, "code 39922");
+      }
     },
     roomsError: (rooms, action) => {
       console.log(action.payload, "epäonnistui");

@@ -34,9 +34,13 @@ const slice = createSlice({
       console.log(action.payload, "epännoistu appcode 12333298321");
     },
 
-    memberChanged: (roomControl, action) => {
+    roomsControlMemberChanged: (roomControl, action) => {
       // console.log(action.payload, "memberChanged");
-      roomControl.members = action.payload.members;
+      try {
+        roomControl.rooms[action.payload._id].members = action.payload.members;
+      } catch (error) {
+        console.log(error, "code 92992");
+      }
     },
     roomsError: (roomControl, action) => {
       console.log(action.payload, "epäonnistui");
@@ -76,7 +80,7 @@ export const {
   roomsResived,
   roomCreated,
   membersResived,
-  memberChanged,
+  roomsControlMemberChanged,
   roomAdded,
   roomRemoved,
   roomsErrorCleared,
@@ -116,7 +120,7 @@ export const change_member = (roomId, userId, membership) =>
     url: url + "/rooms/change_membership",
     method: "post",
     data: { roomId, userId, membership },
-    onSuccess: memberChanged.type,
+    // onSuccess: memberChanged.type,
     onError: roomsError.type,
   });
 
@@ -126,7 +130,8 @@ export const getErrorMessage = () =>
     (roomsControl) => roomsControl.errorMessage
   );
 
-export const getRoomMembers = createSelector(
-  (state) => state.entities.roomsControl,
-  (roomsControl) => roomsControl.members
-);
+export const getRoomMembersById = (roomId) =>
+  createSelector(
+    (state) => state.entities.roomsControl,
+    (roomsControl) => roomsControl.rooms[roomId].members
+  );
