@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import MessageItem from "../app/components/MessageItem";
-import { getRoomMessagesByRoomId } from "../store/msgStore";
+import MessageItem from "./MessageItem";
+import { getRoomMessagesByRoomId } from "../../store/msgStore";
 
 function MessageList({ item }) {
   const store = useStore();

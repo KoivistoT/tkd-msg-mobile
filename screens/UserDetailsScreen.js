@@ -24,7 +24,7 @@ function UserDetailsScreen(item) {
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
 
   const deleteUser = async () => {
-    const result = await confirmAlert("title", "text");
+    const result = await confirmAlert("Haluatko poistaa käyttäjän?", "");
     if (!result) return;
     dispatch(deleteUserById(userId));
     navigationRef.current.goBack();
@@ -32,14 +32,14 @@ function UserDetailsScreen(item) {
   };
 
   const archiveUser = async () => {
-    const result = await confirmAlert("title", "text");
+    const result = await confirmAlert("Haluatko arkistoida käyttäjän?", "");
     if (!result) return;
     dispatch(archiveUserById(userId));
     console.log("ilmoitus, että käyttäjä arkistoitu");
   };
 
   const activateUser = async () => {
-    const result = await confirmAlert("title", "text");
+    const result = await confirmAlert("Haluatko aktivoida käyttäjän?", "");
     if (!result) return;
     dispatch(activateUserById(userId));
     console.log("ilmoitus, että käyttäjä aktivoitu");

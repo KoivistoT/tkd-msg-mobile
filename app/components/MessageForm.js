@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { activeRoomIdResived, activeRoomIdClearer } from "../store/rooms";
-import { sendMessage, test } from "../store/msgStore";
-import AppFormField from "../app/components/forms/AppFormField";
-import AppForm from "../app/components/forms/AppForm";
-import SendButton from "../app/components/SendButton";
-import ImageInputList from "../app/components/imageComponents/ImageInputList";
-import imageFuncs from "../utility/imageFuncs";
+import { activeRoomIdResived, activeRoomIdClearer } from "../../store/rooms";
+import { sendMessage, test } from "../../store/msgStore";
+import AppFormField from "./forms/AppFormField";
+import AppForm from "./forms/AppForm";
+import SendButton from "./SendButton";
+import ImageInputList from "./imageComponents/ImageInputList";
+import imageFuncs from "../../utility/imageFuncs";
 
-import { deleteUser } from "../store/usersControl";
+import { deleteUser } from "../../store/usersControl";
 
 function MessageForm({ item }) {
   const dispatch = useDispatch();

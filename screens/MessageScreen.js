@@ -9,12 +9,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import MessageForm from "../app/components/MessageForm";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { getRoomMessagesByRoomId, sendMessage, test } from "../store/msgStore";
 import { selectSocket } from "../store/socket";
-import MessageForm from "./MessageForm";
-import MessageList from "./MessageList";
+
+import MessageList from "../app/components/MessageList";
 
 function MessageScreen(item) {
   useEffect(() => {
