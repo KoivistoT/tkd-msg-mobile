@@ -31,6 +31,7 @@ function MessageForm({ item }) {
     try {
       store.getState().entities.msgStore.allMessages[roomId].messages;
     } catch (error) {
+      console.log(error, "code 99292292");
       navigationRef.current.goBack();
       alert("tämä paremmin, huonetta ei ole enää");
     }
