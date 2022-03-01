@@ -10,7 +10,6 @@ function MessageList({ item }) {
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
   const userId = store.getState().auth.currentUser._id;
   const allUsers = store.getState().entities.users.allUsers;
-
   const messageItem = ({ item }) => (
     <MessageItem
       item={item}

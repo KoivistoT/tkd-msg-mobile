@@ -50,19 +50,11 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       transports: ["websocket"],
       // jsonp: false,
     });
+
     socket.on("connect", () => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
       }
-      // nämä testiä*********
-      // nämä testiä*********r
-      // nämä testiä*********
-      // socket.on("notification", (notif) => {
-      //   console.log(notif, "tämä tulee socket.js ");
-      // });
-      // console.log(
-      //   "pitää hakea käyttäjän huoneet, nyt hakee alussa kaikki huoneet käyttäjälle samalla tulisi hakea myös kaikki muu tieto yhdellä kutsulla, eli alkutiedot, init, eli viestit ja memberit. Tämä tapahtuu get current user by id app js ssä"
-      // );
 
       socket.on("updates", (type, data) => {
         // tee casella
@@ -117,12 +109,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       socket.on("new message", (data) => {
         dispatch(newMessageResived(data.message));
       });
-      // socket.on("new message", (message) => {
-      //   console.log("tässä tuli uusi viesti", message);
-      // });
-      // nämä testiä*********
-      // nämä testiä*********
-      // nämä testiä*********
     });
   } catch (error) {
     dispatch(connectionError("Something faild"));
