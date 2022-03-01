@@ -100,6 +100,16 @@ export const getAllRooms = () =>
     onError: roomsError.type,
   });
 
+export const createDirectRoom = (userId, otherUsers, roomName = "direct") =>
+  apiCallBegan({
+    url: url + "/rooms/create_direct_room",
+    method: "post",
+    data: { userId, otherUsers, roomName },
+    onStart: requestStarted.type,
+    onSuccess: roomCreated.type,
+    onError: roomsError.type,
+  });
+
 export const createRoom = (
   roomName = "",
   type,

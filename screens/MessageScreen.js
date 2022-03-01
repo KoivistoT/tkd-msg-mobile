@@ -39,9 +39,9 @@ function MessageScreen(item) {
     //   socket.off("users live");
     // };c
 
-    if (roomData.type === "private") {
-      setHeader();
-    }
+    // if (roomData.type === "private") {
+    setHeader();
+    // }
   }, []);
 
   const onDeleteRoom = async () => {

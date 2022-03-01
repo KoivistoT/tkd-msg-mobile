@@ -30,6 +30,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { allUsers } from "../../../store/users";
 import ListItemSeparator from "../ListItemSeparator";
 import AppCheckBox from "../AppCheckBox";
+import { createDirectRoom } from "../../../store/rooms";
 
 function NewRoomModal({}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -58,7 +59,8 @@ function NewRoomModal({}) {
   };
 
   const onCreateRoom = () => {
-    console.log("create room with users", selectedUsersRef.current);
+    // console.log("create room with users", selectedUsersRef.current);
+    dispatch(createDirectRoom(userId, selectedUsersRef.current));
   };
   const listItem = ({ item }) => (
     <AppCheckBox item={item} onPress={(userId) => selectUser(userId)} />

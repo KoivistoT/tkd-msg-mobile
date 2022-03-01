@@ -74,6 +74,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "roomAdded") {
           const roomId = data[Object.keys(data)]._id; // vai olisiko data[0]._id tämä
+          console.log(roomId, "tässä tämä");
           dispatch(roomAdded(data));
           dispatch(getMessagesbyId(roomId));
           dispatch(getRoomImages(roomId));
