@@ -31,7 +31,6 @@ const slice = createSlice({
     },
     userControlUserActivated: (usersControl, action) => {
       usersControl.users[action.payload].archived = false;
-      console.log(action.payload, "tästä tulee");
     },
     usersError: (usersControl, action) => {
       usersControl.errorMessage = action.payload;
@@ -125,4 +124,10 @@ export const allUsers = () =>
   createSelector(
     (state) => state.entities.usersControl,
     (usersControl) => usersControl.users
+  );
+
+export const userControlgetUserById = (userId) =>
+  createSelector(
+    (state) => state.entities.usersControl,
+    (usersControl) => usersControl.users[userId]
   );

@@ -7,8 +7,9 @@ import AppText from "./AppText";
 function AppButton({
   title,
   onPress,
-  color = "primary",
+  color = "white",
   width,
+  backgroundColor = "primary",
   buttonWidth,
   fontSize,
   fontWeight,
@@ -21,7 +22,7 @@ function AppButton({
       activeOpacity="0.7"
       style={{ padding: 15 }}
       onPress={onPress}
-      color="primary"
+      color={"primary"}
     >
       <View
         style={[
@@ -29,14 +30,21 @@ function AppButton({
           {
             flexDirection: "row",
             justifyContent: "center",
-            backgroundColor: colors[color],
+            backgroundColor: colors[backgroundColor],
             width: buttonWidth,
             margin: margin,
           },
         ]}
       >
         <AppText
-          style={[styles.text, { fontSize: fontSize, fontWeight: fontWeight }]}
+          style={[
+            styles.text,
+            {
+              color: colors[color],
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+            },
+          ]}
         >
           {title}
         </AppText>
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
     margin: 5,
     marginHorizontal: 10,
     fontWeight: "900",
-    color: colors.white,
+
     padding: 5,
     alignSelf: "center",
   },

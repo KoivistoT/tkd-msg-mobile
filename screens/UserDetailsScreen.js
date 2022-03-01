@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
@@ -10,33 +10,41 @@ import {
   archiveUserById,
   deleteUserById,
   activateUserById,
-  userControlUserDeleted,
+  userControlgetUserById,
 } from "../store/usersControl";
 import confirmAlert from "../utility/confirmAlert";
 
 function UserDetailsScreen(item) {
-  const { params: userData } = item.route;
-  const userId = item.route.params._id;
   const dispatch = useDispatch();
 
+  const userId = item.route.params._id;
+
+  const userData = useSelector(userControlgetUserById(userId));
+
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
+
   const deleteUser = async () => {
     const result = await confirmAlert("title", "text");
-
     if (!result) return;
-
     dispatch(deleteUserById(userId));
-
     navigationRef.current.goBack();
     console.log("ilmoitus, että käyttäjä poistettu");
   };
 
-  const archiveUser = () => {
+  const archiveUser = async () => {
+    const result = await confirmAlert("title", "text");
+    if (!result) return;
     dispatch(archiveUserById(userId));
+    console.log("ilmoitus, että käyttäjä arkistoitu");
   };
-  const activateUser = () => {
+
+  const activateUser = async () => {
+    const result = await confirmAlert("title", "text");
+    if (!result) return;
     dispatch(activateUserById(userId));
+    console.log("ilmoitus, että käyttäjä aktivoitu");
   };
+
   return (
     <Screen>
       <View style={{ flexDirection: "row" }}>
@@ -54,9 +62,28 @@ function UserDetailsScreen(item) {
         />
       )}
       {userData.userRooms.length === 0 && <AppText>User has no rooms</AppText>}
-      <AppButton title={"delete user"} onPress={deleteUser} />
-      <AppButton title={"archive user"} onPress={archiveUser} />
-      <AppButton title={"activate user"} onPress={activateUser} />
+
+      {userData.archived ? (
+        <AppButton
+          title={"activate user"}
+          color="white"
+          backgroundColor="green"
+          onPress={activateUser}
+        />
+      ) : (
+        <AppButton
+          title={"archive user"}
+          color="black"
+          backgroundColor="yellow"
+          onPress={archiveUser}
+        />
+      )}
+      <AppButton
+        title={"delete user"}
+        color="white"
+        backgroundColor="danger"
+        onPress={deleteUser}
+      />
     </Screen>
   );
 }
