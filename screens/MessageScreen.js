@@ -27,6 +27,7 @@ import {
 
 function MessageScreen(item) {
   const nav = useNavigation();
+
   const dispatch = useDispatch();
   const roomData = item.route.params;
   useEffect(() => {
@@ -68,13 +69,14 @@ function MessageScreen(item) {
 
   const setHeader = () => {
     nav.setOptions({
-      headerRight: () =>
-        // <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
-        roomData.status === "active" ? (
-          <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
-        ) : (
-          <AppButton title={"activate"} onPress={() => onActivateRoom()} />
-        ),
+      headerRight: () => (
+        <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
+      ),
+      // roomData.status === "active" ? (
+      //   <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
+      // ) : (
+      //   <AppButton title={"activate"} onPress={() => onActivateRoom()} />
+      // ),
     });
   };
   // const [usersLive, setUsersLive] = useState([]);

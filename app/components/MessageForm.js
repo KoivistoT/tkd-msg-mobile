@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { activeRoomIdResived, activeRoomIdClearer } from "../../store/rooms";
 import { sendMessage, test } from "../../store/msgStore";
+
 import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
 import SendButton from "./SendButton";
 import ImageInputList from "./imageComponents/ImageInputList";
 import imageFuncs from "../../utility/imageFuncs";
-
+import { navigationRef } from "../../app/navigation/rootNavigation";
 import { deleteUser } from "../../store/usersControl";
 
 function MessageForm({ item }) {
   const dispatch = useDispatch();
+  const store = useStore();
   const [photos, setPhotos] = useState([]);
   const roomId = item.route.params._id;
 
@@ -26,7 +28,12 @@ function MessageForm({ item }) {
   }, []);
 
   const handleSubmit = async ({ message }, { resetForm }) => {
-    // console.log("aloittaa latauksen");
+    try {
+      store.getState().entities.msgStore.allMessages[roomId].messages;
+    } catch (error) {
+      navigationRef.current.goBack();
+      alert("tämä paremmin, huonetta ei ole enää");
+    }
 
     let messageType = "text";
     let imageURLs = null;
