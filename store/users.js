@@ -50,3 +50,9 @@ export const getAllUsers = () =>
     onSuccess: usersResived.type,
     onError: usersError.type,
   });
+
+export const allUsers = () =>
+  createSelector(
+    (state) => state.entities.users,
+    (users) => users.allUsers
+  );

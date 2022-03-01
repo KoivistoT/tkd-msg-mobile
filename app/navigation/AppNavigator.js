@@ -5,6 +5,7 @@ import RoomsNavigator from "./RoomsNavigator";
 import RoomsScreen from "../../screens/RoomsScreen.js";
 import ControlScreen from "../../screens/ControlScreen";
 import ControlNavigator from "./ControlNavigator";
+import ContactsNavigator from "./ContactsNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +19,15 @@ const AppNavigator = () => {
       <Tab.Screen
         name="RoomsNavigator"
         component={RoomsNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ContactsNavigator"
+        component={ContactsNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
