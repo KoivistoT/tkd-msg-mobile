@@ -109,14 +109,15 @@ function RoomDetailsScreen(item) {
       {roomData.status === "archived" ? (
         <AppButton
           title="activate room"
-          backgroundColor="yellow"
+          backgroundColor="green"
           color="black"
           onPress={onActivateRoom}
         />
       ) : (
         <AppButton
           title="archive room"
-          backgroundColor="danger"
+          backgroundColor="yellow"
+          color="black"
           onPress={onArchiveRoom}
         />
       )}

@@ -25,6 +25,9 @@ function RoomsControlScreen({ navigation }) {
   const listItem = ({ item }) => (
     <TouchableOpacity
       activeOpacity={0.5}
+      style={{
+        backgroundColor: item.status === "archived" ? "yellow" : "white",
+      }}
       onPress={() => navigation.navigate(routes.ROOM_DETAILS_SCREEN, item)}
     >
       <View>
