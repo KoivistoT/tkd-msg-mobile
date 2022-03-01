@@ -5,7 +5,7 @@ import ListItemSeparator from "../app/components/ListItemSeparator";
 import { useDispatch, useSelector } from "react-redux";
 import Screen from "../app/components/Screen";
 
-import { getAllRooms } from "../store/roomsControl";
+import { getAllGroupRooms, getAllRooms } from "../store/roomsControl";
 import AppText from "../app/components/AppText";
 import colors from "../config/colors";
 import routes from "../app/navigation/routes";
@@ -14,7 +14,7 @@ import CreateRoomModal from "../app/components/modals/CreateRoomModal";
 function RoomsControlScreen({ navigation }) {
   const dispatch = useDispatch();
 
-  const allRooms = useSelector((state) => state.entities.roomsControl.rooms);
+  const allRooms = useSelector(getAllGroupRooms());
 
   useEffect(() => {
     dispatch(getAllRooms());

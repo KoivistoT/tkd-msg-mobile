@@ -139,3 +139,10 @@ export const getRoomMembersById = (roomId) =>
     (state) => state.entities.roomsControl,
     (roomsControl) => roomsControl.rooms[roomId].members
   );
+
+export const getAllGroupRooms = () =>
+  createSelector(
+    (state) => state.entities.roomsControl,
+    (roomsControl) =>
+      Object.values(roomsControl.rooms).filter((room) => room.type === "group")
+  );
