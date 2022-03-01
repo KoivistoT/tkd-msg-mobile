@@ -20,11 +20,6 @@ import {
   getAllRooms,
 } from "../../../store/roomsControl";
 
-const roomTypeOptions = [
-  { label: "Group", value: "group" },
-  { label: "Private", value: "private" },
-];
-
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Room name"),
   type: Yup.string().required().min(1).label("Room type"),
@@ -34,7 +29,7 @@ function CreateRoomForm({ navigation, closeModal }) {
   const [loading, setLoading] = useState(false);
 
   const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
-  const store = useStore();
+
   const dispatch = useDispatch();
   const errorMessage = useSelector(getErrorMessage());
   const handleSubmit = async ({ roomName, type }) => {
@@ -63,14 +58,6 @@ function CreateRoomForm({ navigation, closeModal }) {
         validationSchema={validationSchema}
       >
         <>
-          <AppFormPicker
-            options={roomTypeOptions}
-            autoCapitalize="none"
-            icon="account-outline"
-            name="type"
-            placeholder="Room type"
-          ></AppFormPicker>
-
           <AppFormField
             autoCapitalize="none"
             autoCorrect={false}
