@@ -26,6 +26,13 @@ const slice = createSlice({
     userControlUserDeleted: (usersControl, action) => {
       delete usersControl.users[action.payload];
     },
+    userControlUserArchived: (usersControl, action) => {
+      usersControl.users[action.payload].archived = true;
+    },
+    userControlUserActivated: (usersControl, action) => {
+      usersControl.users[action.payload].archived = false;
+      console.log(action.payload, "tästä tulee");
+    },
     usersError: (usersControl, action) => {
       usersControl.errorMessage = action.payload;
       console.log(action.payload, "epännoistu appcode 12398321");
@@ -46,6 +53,8 @@ export const {
   usersErrorCleared,
   userControlUserDeleted,
   userControlNewUserResived,
+  userControlUserArchived,
+  userControlUserActivated,
 } = slice.actions;
 export default slice.reducer;
 
@@ -65,6 +74,20 @@ export const deleteUserById = (userId) =>
     onError: usersError.type,
   });
 
+export const archiveUserById = (userId) =>
+  apiCallBegan({
+    url: url + "/archive_user/" + userId,
+    // onSuccess: userControlUserDeleted.type,
+    onError: usersError.type,
+  });
+
+export const activateUserById = (userId) =>
+  apiCallBegan({
+    url: url + "/activate_user/" + userId,
+    // onSuccess: userControlUserDeleted.type,
+    onError: usersError.type,
+  });
+
 export const createUser = (
   userName = null,
   password = null,
@@ -72,7 +95,8 @@ export const createUser = (
   firstName = null,
   lastName = null,
   displayName = null,
-  email = null
+  email = null,
+  archived = false
 ) =>
   apiCallBegan({
     url: url + "/create_user",
@@ -85,6 +109,7 @@ export const createUser = (
       lastName,
       displayName,
       email,
+      archived,
     },
     onSuccess: userCreated.type,
     onError: usersError.type,

@@ -27,7 +27,12 @@ const slice = createSlice({
     },
 
     roomsControlMembersChanged: (roomControl, action) => {
-      // console.log(action.payload, "memberChanged, tästä");
+      //ei voi päivittää, jollei huoneita ole haettu, kun ei ole käynyt huoneissa controllissa, se ei tosin haittaa
+      //ei voi päivittää, jollei huoneita ole haettu, kun ei ole käynyt huoneissa controllissa, se ei tosin haittaa
+      //ei voi päivittää, jollei huoneita ole haettu, kun ei ole käynyt huoneissa controllissa, se ei tosin haittaa
+      // pitää silti päivittää, jos joku muu on huoneissa silloin
+      // pitää silti päivittää, jos joku muu on huoneissa silloin
+      // pitää silti päivittää, jos joku muu on huoneissa silloin
       try {
         roomControl.rooms[action.payload._id].members = action.payload.members;
       } catch (error) {

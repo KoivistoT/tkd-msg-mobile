@@ -17,6 +17,8 @@ import { roomsControlMembersChanged } from "./roomsControl";
 import { newUserResived, userDeleted } from "./users";
 import {
   userControlNewUserResived,
+  userControlUserArchived,
+  userControlUserActivated,
   userControlUserDeleted,
 } from "./usersControl";
 
@@ -86,6 +88,22 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(userDeleted(userId));
           if (accountType === "admin") {
             dispatch(userControlUserDeleted(userId));
+          }
+        }
+        if (type === "userArchived") {
+          const userId = Object.keys(data);
+
+          dispatch(userDeleted(userId));
+          if (accountType === "admin") {
+            dispatch(userControlUserArchived(userId));
+          }
+        }
+        if (type === "userActivated") {
+          const userId = Object.keys(data);
+
+          dispatch(newUserResived(data));
+          if (accountType === "admin") {
+            dispatch(userControlUserActivated(userId));
           }
         }
         if (type === "controlMembersChanged") {

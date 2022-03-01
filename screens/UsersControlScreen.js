@@ -16,14 +16,6 @@ function UsersControlScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(getAllUsers());
-
-    //tähän tulisi tulla listener auki,
-    //että kuuntelee uusia käyttäjiä, jolloin
-    //socketissa siis tulee aina uusi käyttäjä,
-    //kun lisätty, eli päivittää silloin listan
-    //socket auki ja kiinni tässä, eli ei ole aina päällä? Vai pitäisikö
-    //kuunnella koska tulee lista käyttäjistä johonkin.
-    //Silloin state muuttuu ja tässäkin tulee selectorissa uudet käyttäjät aina
   }, []);
 
   const listKeyExtractor = (data) => data._id;
@@ -33,7 +25,9 @@ function UsersControlScreen({ navigation }) {
       activeOpacity={0.5}
       onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
     >
-      <View>
+      <View
+        style={{ backgroundColor: item.archived === true ? "yellow" : "white" }}
+      >
         <View>
           <AppText style={styles.name}>{item.firstName}</AppText>
         </View>

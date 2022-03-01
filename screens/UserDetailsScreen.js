@@ -6,11 +6,17 @@ import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
-import { deleteUserById, userControlUserDeleted } from "../store/usersControl";
+import {
+  archiveUserById,
+  deleteUserById,
+  activateUserById,
+  userControlUserDeleted,
+} from "../store/usersControl";
 import confirmAlert from "../utility/confirmAlert";
 
 function UserDetailsScreen(item) {
   const { params: userData } = item.route;
+  const userId = item.route.params._id;
   const dispatch = useDispatch();
 
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
@@ -19,11 +25,17 @@ function UserDetailsScreen(item) {
 
     if (!result) return;
 
-    const userId = item.route.params._id;
     dispatch(deleteUserById(userId));
-    // dispatch(userControlUserDeleted(userId));
+
     navigationRef.current.goBack();
     console.log("ilmoitus, että käyttäjä poistettu");
+  };
+
+  const archiveUser = () => {
+    dispatch(archiveUserById(userId));
+  };
+  const activateUser = () => {
+    dispatch(activateUserById(userId));
   };
   return (
     <Screen>
@@ -43,6 +55,8 @@ function UserDetailsScreen(item) {
       )}
       {userData.userRooms.length === 0 && <AppText>User has no rooms</AppText>}
       <AppButton title={"delete user"} onPress={deleteUser} />
+      <AppButton title={"archive user"} onPress={archiveUser} />
+      <AppButton title={"activate user"} onPress={activateUser} />
     </Screen>
   );
 }

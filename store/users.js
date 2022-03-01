@@ -14,6 +14,7 @@ const slice = createSlice({
     usersResived: (users, action) => {
       // console.log("users resived");
       users.allUsers = action.payload;
+      alert(Object.keys(users.allUsers).length, "monta käyttäjää tulee");
       // console.log(
       //   "users resived",
       //   users.allUsers["61e6a7f6b30d002e91d67b50"].email
