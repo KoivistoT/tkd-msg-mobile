@@ -14,6 +14,7 @@ import { disconnectSocket } from "../store/socket";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
 import { getUserRooms } from "../store/rooms";
+import NewRoomModal from "../app/components/modals/NewRoomModal";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function RoomsScreen({ navigation }) {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
   };
+
   const keyExtractor = (item) => item._id;
   const listItem = ({ item }) => (
     <RoomsListItem navigation={navigation} item={item} />
@@ -42,6 +44,7 @@ function RoomsScreen({ navigation }) {
       )}
 
       <View>
+        <NewRoomModal />
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>
