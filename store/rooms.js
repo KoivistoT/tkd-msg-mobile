@@ -146,7 +146,7 @@ export const change_member = (roomId, userId, membership) =>
 export const getRoomMembersById = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
-    (roomsControl) => rooms.allRooms[roomId].members
+    (rooms) => rooms.allRooms[roomId].members
   );
 
 export const getUserRooms = createSelector(

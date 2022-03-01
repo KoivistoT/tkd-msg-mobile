@@ -7,4 +7,5 @@ export default {
   USER_DETAILS_SCREEN: "User_details_screen",
   ROOM_DETAILS_SCREEN: "Room_details_screen",
   CONTACTS_SCREEN: "Contacts_screen",
+  ROOM_SETUP_SCREEN: "Room_setup_screen",
 };

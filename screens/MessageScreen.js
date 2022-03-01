@@ -24,6 +24,7 @@ import {
   roomControlArchiveRoom,
   roomControlDeleteRoom,
 } from "../store/roomsControl";
+import routes from "../app/navigation/routes";
 
 function MessageScreen(item) {
   const nav = useNavigation();
@@ -70,13 +71,21 @@ function MessageScreen(item) {
   const setHeader = () => {
     nav.setOptions({
       headerRight: () => (
-        <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
+        <AppButton
+          title={"setup"}
+          onPress={() =>
+            navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
+          }
+        />
+
+        //   <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
+        // ),
+
+        // roomData.status === "active" ? (
+        //   <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
+        // ) : (
+        //   <AppButton title={"activate"} onPress={() => onActivateRoom()} />
       ),
-      // roomData.status === "active" ? (
-      //   <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
-      // ) : (
-      //   <AppButton title={"activate"} onPress={() => onActivateRoom()} />
-      // ),
     });
   };
   // const [usersLive, setUsersLive] = useState([]);

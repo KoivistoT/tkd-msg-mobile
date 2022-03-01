@@ -3,8 +3,14 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import defaultStyles from "../../config/styles";
 import Checkbox from "expo-checkbox";
 import AppText from "./AppText";
-function AppCheckBox({ item, onPress, style, ...otherProps }) {
-  const [isChecked, setChecked] = useState(false);
+function AppCheckBox({
+  initialValue = false,
+  item,
+  onPress,
+  style,
+  ...otherProps
+}) {
+  const [isChecked, setChecked] = useState(initialValue);
 
   return (
     <TouchableOpacity
