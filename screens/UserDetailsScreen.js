@@ -24,7 +24,7 @@ function UserDetailsScreen(item) {
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
 
   const deleteUser = async () => {
-    const result = await confirmAlert("Haluatko poistaa käyttäjän?", "");
+    const result = await confirmAlert("Haluatko poistaa käyttäjän", "");
     if (!result) return;
     dispatch(deleteUserById(userId));
     navigationRef.current.goBack();
@@ -47,43 +47,49 @@ function UserDetailsScreen(item) {
 
   return (
     <Screen>
-      <View style={{ flexDirection: "row" }}>
-        <AppText>{userData.firstName} </AppText>
-        <AppText>{userData.lastName}</AppText>
-      </View>
+      {userData && (
+        <View>
+          <View style={{ flexDirection: "row" }}>
+            <AppText>{userData.firstName} </AppText>
+            <AppText>{userData.lastName}</AppText>
+          </View>
 
-      {userData.userRooms.length > 0 && (
-        <FlatList
-          ItemSeparatorComponent={() => <ListItemSeparator />}
-          data={userData.userRooms}
-          bounces={false}
-          keyExtractor={(data) => data}
-          renderItem={userItem}
-        />
-      )}
-      {userData.userRooms.length === 0 && <AppText>User has no rooms</AppText>}
+          {userData.userRooms.length > 0 && (
+            <FlatList
+              ItemSeparatorComponent={() => <ListItemSeparator />}
+              data={userData.userRooms}
+              bounces={false}
+              keyExtractor={(data) => data}
+              renderItem={userItem}
+            />
+          )}
+          {userData.userRooms.length === 0 && (
+            <AppText>User has no rooms</AppText>
+          )}
 
-      {userData.archived ? (
-        <AppButton
-          title={"activate user"}
-          color="white"
-          backgroundColor="green"
-          onPress={activateUser}
-        />
-      ) : (
-        <AppButton
-          title={"archive user"}
-          color="black"
-          backgroundColor="yellow"
-          onPress={archiveUser}
-        />
+          {userData.archived ? (
+            <AppButton
+              title={"activate user"}
+              color="white"
+              backgroundColor="green"
+              onPress={activateUser}
+            />
+          ) : (
+            <AppButton
+              title={"archive user"}
+              color="black"
+              backgroundColor="yellow"
+              onPress={archiveUser}
+            />
+          )}
+          <AppButton
+            title={"delete user"}
+            color="white"
+            backgroundColor="danger"
+            onPress={deleteUser}
+          />
+        </View>
       )}
-      <AppButton
-        title={"delete user"}
-        color="white"
-        backgroundColor="danger"
-        onPress={deleteUser}
-      />
     </Screen>
   );
 }
