@@ -9,22 +9,26 @@ import { getAllUsers } from "../store/usersControl";
 import {
   change_member,
   getMembersByRoomId,
+  getRoomDataById,
   getRoomMembersById,
+  roomControlActivateRoom,
+  roomControlArchiveRoom,
   roomControlDeleteRoom,
 } from "../store/roomsControl";
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
 
 function RoomDetailsScreen(item) {
-  const { params: roomData } = item.route;
+  const roomId = item.route.params._id;
+  const roomData = useSelector(getRoomDataById(roomId));
   const { users } = useSelector((state) => state.entities.usersControl);
-  const members = useSelector(getRoomMembersById(roomData._id));
+  const members = useSelector(getRoomMembersById(roomId));
   // console.log(users, "käyttäjät");
   // console.log(members, "memberit");
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUsers());
-    dispatch(getMembersByRoomId(roomData._id));
+    dispatch(getMembersByRoomId(roomId));
   }, []);
 
   const onDeleteRoom = async () => {
@@ -33,15 +37,28 @@ function RoomDetailsScreen(item) {
 
     navigationRef.current.goBack();
     setTimeout(() => {
-      dispatch(roomControlDeleteRoom(roomData._id));
+      dispatch(roomControlDeleteRoom(roomId));
     }, 1000);
+  };
+
+  const onArchiveRoom = async () => {
+    const result = await confirmAlert("Haluatko arkistoida huoneen?", "");
+    if (!result) return;
+
+    dispatch(roomControlArchiveRoom(roomId));
+  };
+
+  const onActivateRoom = async () => {
+    const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
+    if (!result) return;
+    dispatch(roomControlActivateRoom(roomId));
   };
 
   const change_membership = (item, membership) => {
     if (membership) {
-      dispatch(change_member(roomData._id, item._id, membership));
+      dispatch(change_member(roomId, item._id, membership));
     } else {
-      dispatch(change_member(roomData._id, item, membership));
+      dispatch(change_member(roomId, item, membership));
     }
   };
 
@@ -89,6 +106,21 @@ function RoomDetailsScreen(item) {
         backgroundColor="danger"
         onPress={onDeleteRoom}
       />
+      {roomData.status === "archived" ? (
+        <AppButton
+          title="activate room"
+          backgroundColor="yellow"
+          color="black"
+          onPress={onActivateRoom}
+        />
+      ) : (
+        <AppButton
+          title="archive room"
+          backgroundColor="danger"
+          onPress={onArchiveRoom}
+        />
+      )}
+
       <AppText>Room members</AppText>
       <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}

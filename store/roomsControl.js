@@ -54,6 +54,13 @@ const slice = createSlice({
       // console.log(rooms.messages.messages, "nämä jälkeen");
     },
 
+    roomControlRoomArchived: (roomControl, action) => {
+      roomControl.rooms[action.payload].status = "archived";
+    },
+    roomControlRoomActivated: (roomControl, action) => {
+      roomControl.rooms[action.payload].status = "active";
+    },
+
     roomCreated: (roomControl, action) => {
       console.log("huone luotu");
       roomControl.loading = false;
@@ -79,8 +86,9 @@ export const {
   roomsControlMembersChanged,
   roomAdded,
   roomsControlRoomRemoved,
-
+  roomControlRoomArchived,
   roomsErrorCleared,
+  roomControlRoomActivated,
   requestStarted,
 } = slice.actions;
 export default slice.reducer;
@@ -112,6 +120,20 @@ export const roomControlDeleteRoom = (roomId) =>
     onError: roomsError.type,
   });
 
+export const roomControlArchiveRoom = (roomId) =>
+  apiCallBegan({
+    url: url + "/rooms/archive_room/" + roomId,
+    onStart: requestStarted.ype,
+    onError: roomsError.type,
+  });
+
+export const roomControlActivateRoom = (roomId) =>
+  apiCallBegan({
+    url: url + "/rooms/activate_room/" + roomId,
+    onStart: requestStarted.ype,
+    onError: roomsError.type,
+  });
+
 export const getMembersByRoomId = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/members/" + roomId,
@@ -138,6 +160,12 @@ export const getRoomMembersById = (roomId) =>
   createSelector(
     (state) => state.entities.roomsControl,
     (roomsControl) => roomsControl.rooms[roomId].members
+  );
+
+export const getRoomDataById = (roomId) =>
+  createSelector(
+    (state) => state.entities.roomsControl,
+    (roomsControl) => roomsControl.rooms[roomId]
   );
 
 export const getAllGroupRooms = () =>

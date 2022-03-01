@@ -22,6 +22,13 @@ const slice = createSlice({
     requestStarted: (rooms, action) => {
       rooms.loading = true;
     },
+
+    roomArchived: (rooms, action) => {
+      rooms.allRooms[action.payload].status = "archived";
+    },
+    roomActivated: (rooms, action) => {
+      rooms.allRooms[action.payload].status = "active";
+    },
     roomsResived: (rooms, action) => {
       // action.payload.forEach((item) => {
       //   rooms.allRooms = { [item._id]: item, ...rooms.allRooms };
@@ -58,6 +65,7 @@ const slice = createSlice({
     },
     roomAdded: (rooms, action) => {
       // console.log(action.payload);
+      console.log(action.payload);
       rooms.allRooms = Object.assign(rooms.allRooms, action.payload);
       // console.log(rooms.allRooms, "now");
     },
@@ -77,6 +85,8 @@ export const {
   memberChanged,
   roomAdded,
   roomRemoved,
+  roomActivated,
+  roomArchived,
   requestStarted,
 } = slice.actions;
 export default slice.reducer;
