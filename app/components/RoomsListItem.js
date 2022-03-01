@@ -5,13 +5,16 @@ import routes from "../../app/navigation/routes";
 function RoomsListItem({ item, navigation }) {
   return (
     <TouchableOpacity
-      style={{ marginBottom: 10 }}
+      style={{
+        marginBottom: 10,
+        backgroundColor: item.status === "active" ? "lightgrey" : "yellow",
+      }}
       onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
     >
       <Text
         style={{
           color: "black",
-          backgroundColor: "green",
+
           padding: 10,
         }}
         key={item._id}

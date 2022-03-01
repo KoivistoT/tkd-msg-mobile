@@ -19,7 +19,11 @@ import { selectSocket } from "../store/socket";
 import confirmAlert from "../utility/confirmAlert";
 import MessageList from "../app/components/MessageList";
 import AppButton from "../app/components/AppButton";
-import { roomControlDeleteRoom } from "../store/roomsControl";
+import {
+  roomControlActivateRoom,
+  roomControlArchiveRoom,
+  roomControlDeleteRoom,
+} from "../store/roomsControl";
 
 function MessageScreen(item) {
   const nav = useNavigation();
@@ -46,12 +50,31 @@ function MessageScreen(item) {
     dispatch(roomControlDeleteRoom(roomData._id));
     navigationRef.current.goBack();
   };
-  console.log("päitittää");
+
+  const onArchiveRoom = async () => {
+    const result = await confirmAlert("Haluatko arkistoida huoneen?", "");
+    if (!result) return;
+
+    dispatch(roomControlArchiveRoom(roomData._id));
+    navigationRef.current.goBack();
+  };
+
+  const onActivateRoom = async () => {
+    const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
+    if (!result) return;
+
+    dispatch(roomControlActivateRoom(roomData._id));
+  };
+
   const setHeader = () => {
     nav.setOptions({
-      headerRight: () => (
-        <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
-      ),
+      headerRight: () =>
+        // <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
+        roomData.status === "active" ? (
+          <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
+        ) : (
+          <AppButton title={"activate"} onPress={() => onActivateRoom()} />
+        ),
     });
   };
   // const [usersLive, setUsersLive] = useState([]);

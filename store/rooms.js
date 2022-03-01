@@ -65,7 +65,7 @@ const slice = createSlice({
     },
     roomAdded: (rooms, action) => {
       // console.log(action.payload);
-      console.log(action.payload);
+
       rooms.allRooms = Object.assign(rooms.allRooms, action.payload);
       // console.log(rooms.allRooms, "now");
     },
