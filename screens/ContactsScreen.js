@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
@@ -10,15 +10,19 @@ import colors from "../config/colors";
 import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import AppButton from "../app/components/AppButton";
+import { createRoom } from "../store/rooms";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
+  const store = useStore();
+  const userId = store.getState().auth.currentUser._id;
   const allUsersList = useSelector(allUsers());
 
   const listKeyExtractor = (data) => data._id;
 
   const startConversation = (item) => {
-    console.log(item);
+    console.log("täällä tekee huonetta");
+    dispatch(createRoom("private", "private", userId, item._id));
   };
 
   const listItem = ({ item }) => (

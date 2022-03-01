@@ -90,11 +90,16 @@ export const getAllRooms = () =>
     onError: roomsError.type,
   });
 
-export const createRoom = (roomName, type) =>
+export const createRoom = (
+  roomName = "",
+  type,
+  userId = null,
+  otherUserId = null
+) =>
   apiCallBegan({
     url: url + "/rooms/create_room",
     method: "post",
-    data: { roomName, type },
+    data: { roomName, type, userId, otherUserId },
     onStart: requestStarted.type,
     onSuccess: roomCreated.type,
     onError: roomsError.type,

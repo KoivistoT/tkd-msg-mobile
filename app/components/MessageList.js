@@ -3,6 +3,7 @@ import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItem from "./MessageItem";
 import { getRoomMessagesByRoomId } from "../../store/msgStore";
+import sortObjectsByfield from "../../utility/sortObjectsByfield";
 
 function MessageList({ item }) {
   const store = useStore();
@@ -34,17 +35,7 @@ function MessageList({ item }) {
       >
         {roomMessages && (
           <FlatList
-            data={Object.values(roomMessages).sort(function (a, b) {
-              var nameA = a.createdAt;
-              var nameB = b.createdAt;
-              if (nameA > nameB) {
-                return 1;
-              }
-              if (nameA < nameB) {
-                return -1;
-              }
-              return 0;
-            })}
+            data={sortObjectsByfield(roomMessages, "createdAt")}
             keyExtractor={keyExtractor}
             renderItem={messageItem}
           />
