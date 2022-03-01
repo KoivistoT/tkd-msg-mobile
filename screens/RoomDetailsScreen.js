@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
+import { navigationRef } from "../app/navigation/rootNavigation";
 import { getAllUsers } from "../store/usersControl";
 import {
   change_member,
   getMembersByRoomId,
   getRoomMembersById,
+  roomControlDeleteRoom,
 } from "../store/roomsControl";
 import AppButton from "../app/components/AppButton";
+import confirmAlert from "../utility/confirmAlert";
 
 function RoomDetailsScreen(item) {
   const { params: roomData } = item.route;
@@ -23,6 +26,16 @@ function RoomDetailsScreen(item) {
     dispatch(getAllUsers());
     dispatch(getMembersByRoomId(roomData._id));
   }, []);
+
+  const onDeleteRoom = async () => {
+    const result = await confirmAlert("Haluatko poistaa huoneen?", "");
+    if (!result) return;
+
+    navigationRef.current.goBack();
+    setTimeout(() => {
+      dispatch(roomControlDeleteRoom(roomData._id));
+    }, 1000);
+  };
 
   const change_membership = (item, membership) => {
     if (membership) {
@@ -71,6 +84,11 @@ function RoomDetailsScreen(item) {
       <View style={{ flexDirection: "row" }}>
         <AppText>{roomData.roomName} </AppText>
       </View>
+      <AppButton
+        title="delete room"
+        backgroundColor="danger"
+        onPress={onDeleteRoom}
+      />
       <AppText>Room members</AppText>
       <FlatList
         ItemSeparatorComponent={() => <ListItemSeparator />}

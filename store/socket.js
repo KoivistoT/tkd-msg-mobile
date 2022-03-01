@@ -13,7 +13,10 @@ import {
   newMessageResived,
 } from "./msgStore";
 import { roomAdded, roomRemoved, memberChanged } from "./rooms";
-import { roomsControlMembersChanged } from "./roomsControl";
+import {
+  roomsControlMembersChanged,
+  roomsControlRoomRemoved,
+} from "./roomsControl";
 import { newUserResived, userDeleted } from "./users";
 import {
   userControlNewUserResived,
@@ -71,7 +74,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "roomRemoved") {
           const roomId = Object.keys(data);
-
+          console.log(roomId, "tässä id");
           socket.emit("unsubscribe", roomId);
           dispatch(roomRemoved(roomId));
           dispatch(messagesRemoved(roomId));
@@ -108,6 +111,10 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "controlMembersChanged") {
           dispatch(roomsControlMembersChanged(data[Object.keys(data)]));
+        }
+        if (type === "controRoomRemoved") {
+          const roomId = Object.keys(data);
+          dispatch(roomsControlRoomRemoved(roomId));
         }
 
         if (type === "membersChanged") {

@@ -65,7 +65,7 @@ const slice = createSlice({
         roomControl.rooms = action.payload;
       }
     },
-    roomRemoved: (roomControl, action) => {
+    roomsControlRoomRemoved: (roomControl, action) => {
       delete roomControl.rooms[action.payload];
     },
   },
@@ -78,7 +78,8 @@ export const {
   membersResived,
   roomsControlMembersChanged,
   roomAdded,
-  roomRemoved,
+  roomsControlRoomRemoved,
+
   roomsErrorCleared,
   requestStarted,
 } = slice.actions;
@@ -101,6 +102,13 @@ export const createRoom = (roomName, type) =>
     data: { roomName, type },
     onStart: requestStarted.type,
     onSuccess: roomCreated.type,
+    onError: roomsError.type,
+  });
+
+export const roomControlDeleteRoom = (roomId) =>
+  apiCallBegan({
+    url: url + "/rooms/delete_room/" + roomId,
+    onStart: requestStarted.ype,
     onError: roomsError.type,
   });
 
