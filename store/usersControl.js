@@ -27,10 +27,10 @@ const slice = createSlice({
       delete usersControl.users[action.payload];
     },
     userControlUserArchived: (usersControl, action) => {
-      usersControl.users[action.payload].archived = true;
+      usersControl.users[action.payload].status = "archived";
     },
     userControlUserActivated: (usersControl, action) => {
-      usersControl.users[action.payload].archived = false;
+      usersControl.users[action.payload].status = "active";
     },
     usersError: (usersControl, action) => {
       usersControl.errorMessage = action.payload;
@@ -95,7 +95,7 @@ export const createUser = (
   lastName = null,
   displayName = null,
   email = null,
-  archived = false
+  status = "active"
 ) =>
   apiCallBegan({
     url: url + "/create_user",
@@ -108,7 +108,7 @@ export const createUser = (
       lastName,
       displayName,
       email,
-      archived,
+      status,
     },
     onSuccess: userCreated.type,
     onError: usersError.type,

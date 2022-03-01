@@ -20,7 +20,7 @@ function UserDetailsScreen(item) {
   const userId = item.route.params._id;
 
   const userData = useSelector(userControlgetUserById(userId));
-
+  console.log("status on: ", userData.status);
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
 
   const deleteUser = async () => {
@@ -67,7 +67,7 @@ function UserDetailsScreen(item) {
             <AppText>User has no rooms</AppText>
           )}
 
-          {userData.archived ? (
+          {userData.status === "archived" ? (
             <AppButton
               title={"activate user"}
               color="white"

@@ -26,7 +26,9 @@ function UsersControlScreen({ navigation }) {
       onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
     >
       <View
-        style={{ backgroundColor: item.archived === true ? "yellow" : "white" }}
+        style={{
+          backgroundColor: item.status === "archived" ? "yellow" : "white",
+        }}
       >
         <View>
           <AppText style={styles.name}>{item.firstName}</AppText>
