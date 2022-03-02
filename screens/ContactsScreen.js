@@ -10,7 +10,12 @@ import colors from "../config/colors";
 import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import AppButton from "../app/components/AppButton";
-import { createPrivateRoom, getRoomLoadingStatus } from "../store/rooms";
+import {
+  createPrivateRoom,
+  getRoomLoadingStatus,
+  setRoomLoadingToFalse,
+  setRoomLoadingToTrue,
+} from "../store/rooms";
 import sortArray from "../utility/sortArray";
 import { error as errorToast } from "../store/general";
 
@@ -30,8 +35,12 @@ function ContactsScreen({ navigation }) {
     const index = userRooms.findIndex((room) => room.roomName === roomName);
 
     if (index !== -1) {
+      dispatch(setRoomLoadingToTrue());
       const roomData = userRooms[index];
       navigation.navigate(routes.MESSAGE_SCREEN, roomData);
+      setTimeout(() => {
+        dispatch(setRoomLoadingToFalse());
+      }, 200); // tämä ei tarpeen, mutta menee sujuvammin
     } else {
       dispatch(createPrivateRoom(userId, item._id));
 
