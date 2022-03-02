@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import io from "socket.io-client";
+import { navigationRef } from "../app/navigation/rootNavigation";
+import routes from "../app/navigation/routes";
 import settings from "../config/settings";
 import {
   createSocketConnectionBegan,
@@ -69,11 +71,20 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "roomAdded") {
           const roomId = data[Object.keys(data)]._id; // vai olisiko data[0]._id tämä
+          const roomData = data[Object.keys(data)];
           // console.log(roomId, "tässä tämä");
           dispatch(roomAdded(data));
           dispatch(getMessagesbyId(roomId));
           dispatch(getRoomImages(roomId));
           socket.emit("subscribe", roomId);
+          const userId = getState().auth.currentUser._id;
+          console.log(
+            "kun luo uuden huoneen, tulisi latausindikaattori kaiken päälle, keskelle ruutua, josta tietää lataako"
+          );
+          //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
+          if (roomData.roomCreator === userId) {
+            navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+          }
         }
 
         if (type === "roomRemoved") {

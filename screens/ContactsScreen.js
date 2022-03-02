@@ -10,14 +10,16 @@ import colors from "../config/colors";
 import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import AppButton from "../app/components/AppButton";
-import { createPrivateRoom } from "../store/rooms";
+import { createPrivateRoom, getRoomLoadingStatus } from "../store/rooms";
 import sortArray from "../utility/sortArray";
+import { error as errorToast } from "../store/general";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const userId = store.getState().auth.currentUser._id;
   const allUsersList = useSelector(allUsers());
+  // const roomLoadingStatus = useSelector(getRoomLoadingStatus());
 
   const listKeyExtractor = (data) => data._id;
 
@@ -31,19 +33,22 @@ function ContactsScreen({ navigation }) {
       const roomData = userRooms[index];
       navigation.navigate(routes.MESSAGE_SCREEN, roomData);
     } else {
-      await dispatch(createPrivateRoom(userId, item._id));
+      dispatch(createPrivateRoom(userId, item._id));
 
-      try {
-        const newRoomIndex = Object.values(
-          store.getState().entities.rooms.allRooms
-        ).findIndex((room) => room.roomName === roomName);
-        const newRoomData = Object.values(
-          store.getState().entities.rooms.allRooms
-        )[newRoomIndex];
-        navigation.navigate(routes.MESSAGE_SCREEN, newRoomData);
-      } catch (error) {
-        console.log(error, "code 9929111");
-      }
+      // setTimeout(() => {
+      //   try {
+      //     const newRoomIndex = Object.values(
+      //       store.getState().entities.rooms.allRooms
+      //     ).findIndex((room) => room.roomName === roomName);
+      //     const newRoomData = Object.values(
+      //       store.getState().entities.rooms.allRooms
+      //     )[newRoomIndex];
+      //     navigation.navigate(routes.MESSAGE_SCREEN, newRoomData);
+      //   } catch (error) {
+      //     dispatch(errorToast(error));
+      //     console.log(error, "code 9929111");
+      //   }
+      // }, 1000);
     }
   };
 

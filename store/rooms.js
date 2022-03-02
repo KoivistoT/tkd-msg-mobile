@@ -2,6 +2,8 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
+import { navigationRef } from "../app/navigation/rootNavigation";
+import routes from "../app/navigation/routes";
 
 const slice = createSlice({
   name: "rooms",
@@ -64,12 +66,12 @@ const slice = createSlice({
 
     roomCreated: (rooms, action) => {
       rooms.loading = false;
-      console.log("huone luotu");
     },
     roomAdded: (rooms, action) => {
       // console.log(action.payload);
 
       rooms.allRooms = Object.assign(rooms.allRooms, action.payload);
+
       // console.log(rooms.allRooms, "now");
     },
     roomRemoved: (rooms, action) => {
@@ -184,4 +186,10 @@ export const getErrorMessage = () =>
   createSelector(
     (state) => state.entities.rooms,
     (rooms) => rooms.errorMessage
+  );
+
+export const getRoomLoadingStatus = () =>
+  createSelector(
+    (state) => state.entities.rooms,
+    (rooms) => rooms.loading
   );

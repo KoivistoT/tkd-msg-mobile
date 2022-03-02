@@ -73,7 +73,7 @@ function MessageForm({ item }) {
     dispatch(deleteUser("621c682b76f652219f559c24"));
     // dispatch(test());
   };
-  console.log(roomStatus);
+
   return (
     <>
       {roomStatus !== "archived" ? (
