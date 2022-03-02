@@ -39,6 +39,9 @@ function MessageScreen(item) {
     // return () => {
     //   socket.off("users live");
     // };c
+    console.log(
+      "kun private room niin setup sivulla eri sisältö, mutta sama setup komponentti"
+    );
 
     // if (roomData.type === "private") {
     setHeader();

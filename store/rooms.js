@@ -43,6 +43,7 @@ const slice = createSlice({
 
     memberChanged: (rooms, action) => {
       try {
+        console.log(action.payload, "tässä memberit");
         rooms.allRooms[action.payload._id].members = action.payload.members;
         // console.log(rooms.allRooms[action.payload._id].members, "täältä huoneen");
       } catch (error) {
@@ -132,7 +133,16 @@ export const getMembersByRoomId = (roomId) =>
     onError: roomsError.type,
   });
 
-export const change_member = (roomId, userId, membership) =>
+export const change_members = (roomId, members) =>
+  apiCallBegan({
+    url: url + "/rooms/change_members",
+    method: "post",
+    data: { roomId, members },
+    onSuccess: memberChanged.type,
+    onError: roomsError.type,
+  });
+
+export const changeMembers = (roomId, userId, membership) =>
   apiCallBegan({
     url: url + "/rooms/change_membership",
     method: "post",

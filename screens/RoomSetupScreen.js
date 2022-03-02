@@ -7,7 +7,7 @@ import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import { getAllUsers } from "../store/usersControl";
 import { allUsers } from "../store/users";
-import { getRoomMembersById } from "../store/rooms";
+import { change_members, getRoomMembersById } from "../store/rooms";
 
 import {
   change_member,
@@ -30,6 +30,7 @@ function RoomSetupScreen(item) {
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const listKeyExtractor = (data) => data._id;
   const selectedUsersRef = React.useRef(selectedUsers);
+  const dispatch = useDispatch();
 
   const setSelectedUsers = (data) => {
     selectedUsersRef.current = data;
@@ -39,10 +40,8 @@ function RoomSetupScreen(item) {
   useEffect(() => {}, []);
 
   const onSaveChanges = () => {
-    console.log(
-      "muuta näisstä, tee oma muuotos, kun ei tarvi controlmuutosta",
-      selectedUsersRef.current
-    );
+    const members = selectedUsersRef.current;
+    dispatch(change_members(roomId, members));
   };
 
   const selectUser = (userId) => {
