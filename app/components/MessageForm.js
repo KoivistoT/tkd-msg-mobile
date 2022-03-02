@@ -12,12 +12,13 @@ import ImageInputList from "./imageComponents/ImageInputList";
 import imageFuncs from "../../utility/imageFuncs";
 import { navigationRef } from "../../app/navigation/rootNavigation";
 import { deleteUser } from "../../store/usersControl";
+import AppText from "./AppText";
 
 function MessageForm({ item }) {
   const dispatch = useDispatch();
   const store = useStore();
   const [photos, setPhotos] = useState([]);
-  const roomId = item.route.params._id;
+  const { _id: roomId, status: roomStatus } = item.route.params;
 
   useEffect(() => {
     dispatch(activeRoomIdResived(roomId));
@@ -72,46 +73,52 @@ function MessageForm({ item }) {
     dispatch(deleteUser("621c682b76f652219f559c24"));
     // dispatch(test());
   };
-
+  console.log(roomStatus);
   return (
     <>
-      <View
-        style={{
-          marginBottom: Platform.OS == "ios" ? 10 : 0,
-        }}
-      >
-        <ImageInputList
-          imageUris={photos.map((photo) => photo.uri)}
-          onRemoveImage={handleRemove}
-          onAddImage={handleAdd}
-        />
-        <AppForm
-          initialValues={{ message: "" }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+      {roomStatus !== "archived" ? (
+        <View
+          style={{
+            marginBottom: Platform.OS == "ios" ? 10 : 0,
+          }}
         >
-          <View
-            style={{
-              marginLeft: 0,
-
-              flexDirection: "row",
-              width: "75%",
-            }}
+          <ImageInputList
+            imageUris={photos.map((photo) => photo.uri)}
+            onRemoveImage={handleRemove}
+            onAddImage={handleAdd}
+          />
+          <AppForm
+            initialValues={{ message: "" }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
           >
-            <AppFormField
-              borderRadius={0}
-              marginTop={0}
-              style={{ maxHeight: 85, height: 65 }}
-              multiline
-              name="message"
-              numberOfLines={2}
-              placeholder="Message..."
-            />
-            <SendButton />
-          </View>
-        </AppForm>
-        <Button title={"test"} onPress={testi}></Button>
-      </View>
+            <View
+              style={{
+                marginLeft: 0,
+
+                flexDirection: "row",
+                width: "75%",
+              }}
+            >
+              <AppFormField
+                borderRadius={0}
+                marginTop={0}
+                style={{ maxHeight: 85, height: 65 }}
+                multiline
+                name="message"
+                numberOfLines={2}
+                placeholder="Message..."
+              />
+              <SendButton />
+            </View>
+          </AppForm>
+          <Button title={"test"} onPress={testi}></Button>
+        </View>
+      ) : (
+        <AppText>
+          Huone on arkistoitu. Aktivoi huone lähettääksesi viestejä.
+        </AppText>
+      )}
     </>
   );
 }
