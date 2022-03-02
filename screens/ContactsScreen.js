@@ -11,6 +11,7 @@ import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import AppButton from "../app/components/AppButton";
 import { createPrivateRoom } from "../store/rooms";
+import sortArray from "../utility/sortArray";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -20,9 +21,30 @@ function ContactsScreen({ navigation }) {
 
   const listKeyExtractor = (data) => data._id;
 
-  const startConversation = (item) => {
-    console.log("täällä tekee huonetta");
-    dispatch(createPrivateRoom(userId, item._id));
+  const startConversation = async (item) => {
+    const sortedArray = sortArray([userId, item._id]);
+    const roomName = sortedArray[0] + sortedArray[1];
+    const userRooms = Object.values(store.getState().entities.rooms.allRooms);
+    const index = userRooms.findIndex((room) => room.roomName === roomName);
+
+    if (index !== -1) {
+      const roomData = userRooms[index];
+      navigation.navigate(routes.MESSAGE_SCREEN, roomData);
+    } else {
+      await dispatch(createPrivateRoom(userId, item._id));
+
+      try {
+        const newRoomIndex = Object.values(
+          store.getState().entities.rooms.allRooms
+        ).findIndex((room) => room.roomName === roomName);
+        const newRoomData = Object.values(
+          store.getState().entities.rooms.allRooms
+        )[newRoomIndex];
+        navigation.navigate(routes.MESSAGE_SCREEN, newRoomData);
+      } catch (error) {
+        console.log(error, "code 9929111");
+      }
+    }
   };
 
   const listItem = ({ item }) => (
