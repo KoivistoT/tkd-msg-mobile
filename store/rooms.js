@@ -176,6 +176,15 @@ export const changeMembers = (roomId, userId, membership) =>
     onError: roomsError.type,
   });
 
+export const activateRoom = (roomId, userId) =>
+  apiCallBegan({
+    url: url + "/rooms/activate_room/",
+    method: "post",
+    data: { roomId, userId },
+    onStart: requestStarted.ype,
+    onError: roomsError.type,
+  });
+
 //tämä toki id:llä ja eri lailla
 
 export const getRoomMembersById = (roomId) =>

@@ -8,6 +8,7 @@ import { navigationRef } from "../app/navigation/rootNavigation";
 import { getAllUsers } from "../store/usersControl";
 import { allUsers } from "../store/users";
 import {
+  activateRoom,
   archiveRoomById,
   change_members,
   deleteRoom,
@@ -50,9 +51,9 @@ function RoomSetupScreen(item) {
     const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
     if (!result) return;
 
-    // dispatch(deleteRoom(roomId));
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
-    // navigationRef.current.goBack();
+    dispatch(activateRoom(roomId, currentUserData._id));
+    // navigationRef.current.navigate(routes.ROOM_SCREEN);
+    navigationRef.current.goBack();
   };
 
   const onDeleteRoom = async () => {
