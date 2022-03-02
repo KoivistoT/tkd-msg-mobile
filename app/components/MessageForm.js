@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
 import { useDispatch, useStore } from "react-redux";
-import { activeRoomIdResived, activeRoomIdClearer } from "../../store/rooms";
+import {
+  activeRoomIdResived,
+  activeRoomIdClearer,
+  setLoading,
+} from "../../store/rooms";
 import { sendMessage, test } from "../../store/msgStore";
 
 import AppFormField from "./forms/AppFormField";
@@ -13,6 +17,7 @@ import imageFuncs from "../../utility/imageFuncs";
 import { navigationRef } from "../../app/navigation/rootNavigation";
 import { deleteUser } from "../../store/usersControl";
 import AppText from "./AppText";
+import { error as errorToast } from "../../store/general";
 
 function MessageForm({ item }) {
   const dispatch = useDispatch();
@@ -70,7 +75,7 @@ function MessageForm({ item }) {
   };
 
   const testi = async () => {
-    dispatch(deleteUser("621c682b76f652219f559c24"));
+    dispatch(setLoading());
     // dispatch(test());
   };
 

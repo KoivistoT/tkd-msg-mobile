@@ -10,6 +10,7 @@ import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Provider } from "react-redux";
 import AppToast from "./app/components/AppToast";
+import GeneralLoadIndicator from "./app/components/GeneralLoadIndicator";
 import Login from "./app/components/Login";
 
 import {
@@ -79,6 +80,7 @@ function App() {
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppToast />
+      <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}
       {accountType && accountType !== "admin" && <AppNavigator />}
