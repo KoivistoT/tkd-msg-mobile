@@ -95,13 +95,6 @@ export default slice.reducer;
 
 const url = settings.apiUrl;
 
-export const getAllRooms = () =>
-  apiCallBegan({
-    url: url + "/rooms/all",
-    onSuccess: roomsResived.type,
-    onError: roomsError.type,
-  });
-
 export const createDirectRoom = (userId, otherUsers, roomName = "direct") =>
   apiCallBegan({
     url: url + "/rooms/create_direct_room",
@@ -139,13 +132,6 @@ export const createPrivateRoom = (userId = null, otherUserId = null) =>
     onError: roomsError.type,
   });
 
-export const getMembersByRoomId = (roomId) =>
-  apiCallBegan({
-    url: url + "/rooms/members/" + roomId,
-    onSuccess: membersResived.type,
-    onError: roomsError.type,
-  });
-
 export const archiveRoomById = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/archive_room/" + roomId,
@@ -167,15 +153,6 @@ export const leave_room = (roomId, userId) =>
     url: url + "/rooms/leave_room",
     method: "post",
     data: { roomId, userId },
-    onSuccess: memberChanged.type,
-    onError: roomsError.type,
-  });
-
-export const changeMembers = (roomId, userId, membership) =>
-  apiCallBegan({
-    url: url + "/rooms/change_membership",
-    method: "post",
-    data: { roomId, userId, membership },
     onSuccess: memberChanged.type,
     onError: roomsError.type,
   });

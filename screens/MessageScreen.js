@@ -54,9 +54,6 @@ function MessageScreen(item) {
           }
         />
 
-        //   <AppButton title={"delete"} onPress={() => onDeleteRoom()} />
-        // ),
-
         // roomData.status === "active" ? (
         //   <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
         // ) : (

@@ -39,7 +39,7 @@ import {
 } from "./store/socket";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
-import { getAllRooms } from "./store/rooms";
+
 import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
@@ -64,7 +64,6 @@ function App() {
 
   const onLogin = async () => {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
-    // dispatch(getAllRooms()); // tätä ei tarvitse tässä, kun init
 
     await dispatch(getInitialData());
     dispatch(createSocketConnection());
