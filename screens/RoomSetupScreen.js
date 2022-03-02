@@ -30,8 +30,8 @@ import { getCurrentUserData, getCurrentUserId } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 
 function RoomSetupScreen(item) {
-  const roomId = item.route.params._id;
-  const roomCreator = item.route.params.roomCreator;
+  const { _id: roomId, status: roomStatus, roomCreator } = item.route.params;
+
   const allUsersList = useSelector(allUsers());
   const roomMembers = useSelector(getRoomMembersById(roomId));
   const currentUserData = useSelector(getCurrentUserData);
@@ -123,17 +123,21 @@ function RoomSetupScreen(item) {
       {(currentUserData._id === roomCreator ||
         currentUserData.accountType === "admin") && (
         <View>
-          <AppButton
-            title={"activate room"}
-            onPress={onActivateRoom}
-            backgroundColor={"green"}
-          />
-          <AppButton
-            title={"Archive room"}
-            onPress={onArchiveRoom}
-            color={"black"}
-            backgroundColor={"yellow"}
-          />
+          {roomStatus === "archived" ? (
+            <AppButton
+              title={"activate room"}
+              onPress={onActivateRoom}
+              backgroundColor={"green"}
+            />
+          ) : (
+            <AppButton
+              title={"Archive room"}
+              onPress={onArchiveRoom}
+              color={"black"}
+              backgroundColor={"yellow"}
+            />
+          )}
+
           <AppButton
             title={"Delete room"}
             onPress={onDeleteRoom}
