@@ -58,8 +58,7 @@ function RoomSetupScreen(item) {
     if (!result) return;
 
     dispatch(leave_room(roomId, currentUserData._id));
-    // navigationRef.current.navigate(routes.ROOM_SCREEN);
-    navigationRef.current.goBack();
+    navigationRef.current.navigate(routes.ROOM_SCREEN);
   };
   const onActivateRoom = async () => {
     const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
