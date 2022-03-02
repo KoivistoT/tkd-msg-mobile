@@ -2,20 +2,18 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ControlScreen from "../../screens/ControlScreen.js";
-import RoomsControlScreen from "../../screens/RoomsControlScreen.js";
+
 import UsersControlScreen from "../../screens/UsersControlScreen.js";
 import UserDetailsScreen from "../../screens/UserDetailsScreen.js";
-import RoomDetailsScreen from "../../screens/RoomDetailsScreen.js";
 
 const Stack = createStackNavigator();
 
 const ControlNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen name="Control_screen" component={ControlScreen} />
-    <Stack.Screen name="Rooms_control_screen" component={RoomsControlScreen} />
+
     <Stack.Screen name="Users_control_screen" component={UsersControlScreen} />
     <Stack.Screen name="User_details_screen" component={UserDetailsScreen} />
-    <Stack.Screen name="Room_details_screen" component={RoomDetailsScreen} />
   </Stack.Navigator>
 );
 export default ControlNavigator;

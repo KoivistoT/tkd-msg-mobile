@@ -19,12 +19,7 @@ import {
   roomArchived,
   roomActivated,
 } from "./rooms";
-import {
-  roomControlRoomActivated,
-  roomControlRoomArchived,
-  roomsControlMembersChanged,
-  roomsControlRoomRemoved,
-} from "./roomsControl";
+
 import { newUserResived, userDeleted } from "./users";
 import {
   userControlNewUserResived,
@@ -111,10 +106,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           }
         }
 
-        if (type === "controRoomArchived") {
-          const roomId = Object.keys(data);
-          dispatch(roomControlRoomArchived(roomId));
-        }
         if (type === "roomArchived") {
           const roomId = Object.keys(data);
           dispatch(roomArchived(roomId));
@@ -131,17 +122,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           //tämä vain group huoneissa
           const roomId = Object.keys(data);
           dispatch(roomActivated(roomId));
-        }
-        if (type === "controRoomActivated") {
-          const roomId = Object.keys(data);
-          dispatch(roomControlRoomActivated(roomId));
-        }
-        if (type === "controlMembersChanged") {
-          dispatch(roomsControlMembersChanged(data[Object.keys(data)]));
-        }
-        if (type === "controRoomRemoved") {
-          const roomId = Object.keys(data);
-          dispatch(roomsControlRoomRemoved(roomId));
         }
 
         if (type === "membersChanged") {

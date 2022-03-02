@@ -19,11 +19,7 @@ import { selectSocket } from "../store/socket";
 import confirmAlert from "../utility/confirmAlert";
 import MessageList from "../app/components/MessageList";
 import AppButton from "../app/components/AppButton";
-import {
-  roomControlActivateRoom,
-  roomControlArchiveRoom,
-  roomControlDeleteRoom,
-} from "../store/roomsControl";
+
 import routes from "../app/navigation/routes";
 
 function MessageScreen(item) {
@@ -47,29 +43,6 @@ function MessageScreen(item) {
     setHeader();
     // }
   }, []);
-
-  const onDeleteRoom = async () => {
-    const result = await confirmAlert("Haluatko poistaa huoneen?", "");
-    if (!result) return;
-
-    dispatch(roomControlDeleteRoom(roomData._id));
-    navigationRef.current.goBack();
-  };
-
-  const onArchiveRoom = async () => {
-    const result = await confirmAlert("Haluatko arkistoida huoneen?", "");
-    if (!result) return;
-
-    dispatch(roomControlArchiveRoom(roomData._id));
-    navigationRef.current.goBack();
-  };
-
-  const onActivateRoom = async () => {
-    const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
-    if (!result) return;
-
-    dispatch(roomControlActivateRoom(roomData._id));
-  };
 
   const setHeader = () => {
     nav.setOptions({

@@ -5,7 +5,7 @@ import roomReducer from "./rooms";
 import socketReducer from "./socket";
 import userReducer from "./users";
 import msgStoreReducer from "./msgStore";
-import roomsControlReducer from "./roomsControl";
+
 import usersControlReducer from "./usersControl";
 // import memberReducer from "./members";
 
@@ -16,7 +16,7 @@ export default combineReducers({
   socket: socketReducer,
   users: userReducer,
   msgStore: msgStoreReducer,
-  roomsControl: roomsControlReducer,
+
   usersControl: usersControlReducer,
   // members: memberReducer,
 });

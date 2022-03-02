@@ -9,7 +9,6 @@ import ListItemSeparator from "../app/components/ListItemSeparator";
 
 function ControlScreen({ navigation }) {
   const data = [
-    { name: "Rooms", id: "1", onPress: routes.ROOMS_CONTROL_SCREEN },
     { name: "Users", id: "2", onPress: routes.USERS_CONTROL_SCREEN },
   ];
 
