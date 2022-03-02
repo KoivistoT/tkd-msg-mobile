@@ -47,7 +47,16 @@ function RoomSetupScreen(item) {
   useEffect(() => {}, []);
 
   const onLeaveRoom = async () => {
-    const result = await confirmAlert("Haluatko poistua?", "");
+    let result;
+    if (selectedUsersRef.current.length === 1) {
+      result = await confirmAlert(
+        "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",
+        "Poistuttuasi, huone ja huoneen viestit poistetaan pysyvästi."
+      );
+    } else {
+      result = await confirmAlert("Haluatko poistua huoneesta?", "");
+    }
+
     if (!result) return;
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
@@ -140,7 +149,7 @@ function RoomSetupScreen(item) {
             onPress={onLeaveRoom}
             backgroundColor={"primary"}
           />
-          {roomStatus === "archived" ? (
+          {/* {roomStatus === "archived" ? (
             <AppButton
               title={`Activate ${roomType}`}
               onPress={onActivateRoom}
@@ -153,7 +162,7 @@ function RoomSetupScreen(item) {
               color={"black"}
               backgroundColor={"yellow"}
             />
-          )}
+          )} */}
 
           <AppButton
             title={`Delete ${roomType}`}
