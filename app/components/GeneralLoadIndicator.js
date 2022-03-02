@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import Constants from "expo-constants";
 import colors from "../../config/colors";
 import { errorMessageCleared } from "../../store/general";
+import AppText from "./AppText";
 
 class GeneralLoadIndicator extends React.Component {
   constructor(props) {
@@ -21,7 +22,13 @@ class GeneralLoadIndicator extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.loading !== prevProps.loading) {
-      this.setState({ showIndicator: this.props.loading });
+      if (this.props.loading === false) {
+        setTimeout(() => {
+          this.setState({ showIndicator: this.props.loading });
+        }, 600);
+      } else {
+        this.setState({ showIndicator: this.props.loading });
+      }
     }
   }
 
@@ -33,22 +40,24 @@ class GeneralLoadIndicator extends React.Component {
             style={{
               position: "absolute",
               alignSelf: "center",
-              //   justifyContent: "center",
-              //   flex: 1,
+              justifyContent: "center",
+              flex: 1,
               zIndex: 100,
               width: "100%",
               height: "100%",
-
+              //   opacity: 0.9,
+              backgroundColor: colors.white,
               marginTop: Constants.statusBarHeight,
             }}
           >
-            <View>
+            <View style={{ alignItems: "center" }}>
+              <AppText style={{ margin: 20 }}>Loading...</AppText>
               <ActivityIndicator
                 animating={true}
                 size="large"
                 style={{
                   opacity: 1,
-                  backgroundColor: colors.primary,
+                  //   backgroundColor: colors.primary,
                   width: "100%",
                   //   height: 80,
                   //   borderRadius: 20,

@@ -6,6 +6,7 @@ import {
   activeRoomIdResived,
   activeRoomIdClearer,
   setLoading,
+  setRoomLoadingToTrue,
 } from "../../store/rooms";
 import { sendMessage, test } from "../../store/msgStore";
 
@@ -75,7 +76,7 @@ function MessageForm({ item }) {
   };
 
   const testi = async () => {
-    dispatch(setLoading());
+    dispatch(setRoomLoadingToTrue());
     // dispatch(test());
   };
 

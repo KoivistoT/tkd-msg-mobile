@@ -14,6 +14,8 @@ import {
   deleteRoom,
   getRoomMembersById,
   leave_room,
+  setRoomLoadingToFalse,
+  setRoomLoadingToTrue,
 } from "../store/rooms";
 
 import AppButton from "../app/components/AppButton";
@@ -79,8 +81,10 @@ function RoomSetupScreen(item) {
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
     // navigationRef.current.goBack();
+    dispatch(setRoomLoadingToTrue());
     setTimeout(() => {
       dispatch(deleteRoom(roomId));
+      dispatch(setRoomLoadingToFalse());
     }, 800);
   };
   const onArchiveRoom = async () => {

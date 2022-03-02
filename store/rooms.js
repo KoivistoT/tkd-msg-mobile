@@ -19,8 +19,11 @@ const slice = createSlice({
     activeRoomIdResived: (rooms, action) => {
       rooms.activeRoomId = action.payload;
     },
-    setLoading: (rooms, action) => {
+    setRoomLoadingToTrue: (rooms, action) => {
       rooms.loading = true;
+    },
+    setRoomLoadingToFalse: (rooms, action) => {
+      rooms.loading = false;
     },
     activeRoomIdClearer: (rooms, action) => {
       rooms.activeRoomId = null;
@@ -91,6 +94,8 @@ export const {
   activeRoomIdClearer,
   activeRoomIdResived,
   roomCreated,
+  setRoomLoadingToFalse,
+  setRoomLoadingToTrue,
   membersResived,
   memberChanged,
   roomAdded,
@@ -126,7 +131,7 @@ export const createChannel = (userId, roomName) =>
 export const deleteRoom = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/delete_room/" + roomId,
-    onStart: requestStarted.ype,
+    onStart: requestStarted.type,
     onError: roomsError.type,
   });
 
@@ -143,7 +148,7 @@ export const createPrivateRoom = (userId = null, otherUserId = null) =>
 export const archiveRoomById = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/archive_room/" + roomId,
-    onStart: requestStarted.ype,
+    onStart: requestStarted.type,
     onError: roomsError.type,
   });
 
@@ -170,7 +175,7 @@ export const activateRoom = (roomId, userId) =>
     url: url + "/rooms/activate_room/",
     method: "post",
     data: { roomId, userId },
-    onStart: requestStarted.ype,
+    onStart: requestStarted.type,
     onError: roomsError.type,
   });
 
