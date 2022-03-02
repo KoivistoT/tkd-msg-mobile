@@ -25,7 +25,6 @@ function RoomsScreen({ navigation }) {
 
   const logout = () => {
     dispatch(disconnectSocket());
-    r;
     dispatch(userLoggedOut());
   };
 
