@@ -10,7 +10,7 @@ import colors from "../config/colors";
 import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import AppButton from "../app/components/AppButton";
-import { createRoom } from "../store/rooms";
+import { createPrivateRoom } from "../store/rooms";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ function ContactsScreen({ navigation }) {
 
   const startConversation = (item) => {
     console.log("täällä tekee huonetta");
-    dispatch(createRoom("private", "private", userId, item._id));
+    dispatch(createPrivateRoom(userId, item._id));
   };
 
   const listItem = ({ item }) => (

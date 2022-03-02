@@ -129,16 +129,11 @@ export const deleteRoom = (roomId) =>
     onError: roomsError.type,
   });
 
-export const createRoom = (
-  roomName = "",
-  type,
-  userId = null,
-  otherUserId = null
-) =>
+export const createPrivateRoom = (userId = null, otherUserId = null) =>
   apiCallBegan({
-    url: url + "/rooms/create_room",
+    url: url + "/rooms/create_private_room",
     method: "post",
-    data: { roomName, type, userId, otherUserId },
+    data: { userId, otherUserId },
     onStart: requestStarted.type,
     onSuccess: roomCreated.type,
     onError: roomsError.type,
