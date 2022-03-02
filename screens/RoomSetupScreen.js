@@ -144,11 +144,13 @@ function RoomSetupScreen(item) {
       {(currentUserData._id === roomCreator ||
         currentUserData.accountType === "admin") && (
         <View>
-          <AppButton
-            title={`Leave ${roomType}`}
-            onPress={onLeaveRoom}
-            backgroundColor={"primary"}
-          />
+          {roomType !== "private" && (
+            <AppButton
+              title={`Leave ${roomType}`}
+              onPress={onLeaveRoom}
+              backgroundColor={"primary"}
+            />
+          )}
           {/* {roomStatus === "archived" ? (
             <AppButton
               title={`Activate ${roomType}`}
@@ -164,11 +166,15 @@ function RoomSetupScreen(item) {
             />
           )} */}
 
-          <AppButton
-            title={`Delete ${roomType}`}
-            onPress={onDeleteRoom}
-            backgroundColor={"danger"}
-          />
+          {(currentUserData.accountType === "admin" ||
+            currentUserData._id === roomCreator ||
+            roomType === "private") && (
+            <AppButton
+              title={`Delete ${roomType}`}
+              onPress={onDeleteRoom}
+              backgroundColor={"danger"}
+            />
+          )}
         </View>
       )}
     </Screen>
