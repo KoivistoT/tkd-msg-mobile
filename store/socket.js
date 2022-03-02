@@ -83,6 +83,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "roomRemoved") {
           const roomId = Object.keys(data);
+          // console.log(roomId, "täällä removed id");
           socket.emit("unsubscribe", roomId);
           dispatch(roomRemoved(roomId));
           dispatch(messagesRemoved(roomId));

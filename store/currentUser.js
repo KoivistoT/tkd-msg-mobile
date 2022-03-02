@@ -160,3 +160,4 @@ export const getCurrentUserRooms = createSelector(
 );
 
 export const getCurrentUserId = (state) => state.auth.currentUser._id;
+export const getCurrentUserData = (state) => state.auth.currentUser;

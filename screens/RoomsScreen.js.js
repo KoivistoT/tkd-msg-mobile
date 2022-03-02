@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import { userLoggedOut } from "../store/currentUser";
+import { getCurrentUserById, userLoggedOut } from "../store/currentUser";
 import { disconnectSocket } from "../store/socket";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
@@ -20,16 +20,19 @@ import CreateChannelModal from "../app/components/modals/CreateChannelModal";
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
   const allRooms = useSelector(getUserRooms);
-
+  const store = useStore();
+  const userId = store.getState().auth.currentUser._id;
+  console.log(userId);
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
   };
 
   const keyExtractor = (item) => item._id;
-  const listItem = ({ item }) => (
-    <RoomsListItem navigation={navigation} item={item} />
-  );
+  const listItem = ({ item }) => {
+    if (item.status === "archived" && item.roomCreator !== userId) return;
+    return <RoomsListItem navigation={navigation} item={item} />;
+  };
 
   return (
     <Screen>

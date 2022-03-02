@@ -122,6 +122,13 @@ export const createChannel = (userId, roomName) =>
     onError: roomsError.type,
   });
 
+export const deleteRoom = (roomId) =>
+  apiCallBegan({
+    url: url + "/rooms/delete_room/" + roomId,
+    onStart: requestStarted.ype,
+    onError: roomsError.type,
+  });
+
 export const createRoom = (
   roomName = "",
   type,
@@ -141,6 +148,15 @@ export const getMembersByRoomId = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/members/" + roomId,
     onSuccess: membersResived.type,
+    onError: roomsError.type,
+  });
+
+export const archiveRoomById = (roomId, userId) =>
+  apiCallBegan({
+    url: url + "/rooms/archive_room/",
+    method: "post",
+    data: { roomId, userId },
+    onStart: requestStarted.ype,
     onError: roomsError.type,
   });
 
