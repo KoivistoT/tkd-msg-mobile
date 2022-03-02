@@ -10,6 +10,7 @@ const slice = createSlice({
     loading: false,
     members: [],
     activeRoomId: null,
+    errorMessage: null,
   },
   reducers: {
     // action => action handler
@@ -43,7 +44,7 @@ const slice = createSlice({
 
     memberChanged: (rooms, action) => {
       try {
-        console.log(action.payload, "tässä memberit");
+        // console.log(action.payload, "tässä memberit");
         rooms.allRooms[action.payload._id].members = action.payload.members;
         // console.log(rooms.allRooms[action.payload._id].members, "täältä huoneen");
       } catch (error) {
@@ -51,7 +52,7 @@ const slice = createSlice({
       }
     },
     roomsError: (rooms, action) => {
-      console.log(action.payload, "epäonnistui");
+      rooms.errorMessage = action.payload;
     },
 
     membersResived: (rooms, action) => {
@@ -111,6 +112,16 @@ export const createDirectRoom = (userId, otherUsers, roomName = "direct") =>
     onError: roomsError.type,
   });
 
+export const createChannel = (userId, roomName) =>
+  apiCallBegan({
+    url: url + "/rooms/create_channel",
+    method: "post",
+    data: { userId, roomName },
+    onStart: requestStarted.type,
+    onSuccess: roomCreated.type,
+    onError: roomsError.type,
+  });
+
 export const createRoom = (
   roomName = "",
   type,
@@ -163,3 +174,9 @@ export const getUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms
 );
+
+export const getErrorMessage = () =>
+  createSelector(
+    (state) => state.entities.rooms,
+    (rooms) => rooms.errorMessage
+  );

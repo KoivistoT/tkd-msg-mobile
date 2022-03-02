@@ -22,9 +22,9 @@ import AppButton from "../AppButton";
 import AppText from "../AppText";
 import Screen from "../Screen";
 import CreateUserForm from "../forms/CreateUserForm";
-import CreateRoomForm from "../forms/CreateRoomForm";
+import CreateChannelForm from "../forms/CreateChannelForm";
 
-function CreateRoomModal({}) {
+function CreateChannelModal({}) {
   const [modalVisible, setModalVisible] = useState(false);
   //huom ei react-native-modal
   return (
@@ -42,13 +42,13 @@ function CreateRoomModal({}) {
             />
           </TouchableOpacity>
 
-          <CreateRoomForm closeModal={() => setModalVisible(false)} />
+          <CreateChannelForm closeModal={() => setModalVisible(false)} />
         </Screen>
       </Modal>
       <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
         <AppButton
           onPress={() => setModalVisible(true)}
-          title={"Create room"}
+          title={"New channel"}
         />
       </View>
     </View>
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
   button: {},
 });
-export default CreateRoomModal;
+export default CreateChannelModal;

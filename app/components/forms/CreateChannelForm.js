@@ -4,54 +4,41 @@ import { View, StyleSheet, Keyboard } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
 import ErrorMessage from "../ErrorMessage";
-import AppForm from "../forms/AppForm";
-import AppFormField from "../forms/AppFormField";
-import SubmitButton from "../forms/SubmitButton";
+import AppForm from "./AppForm";
+import AppFormField from "./AppFormField";
+import SubmitButton from "./SubmitButton";
 import AppKeyboardDismiss from "../AppKeyboardDismiss";
 import AppLoadIndicator from "../AppLoadIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import AppFormPicker from "./AppFormPicker";
 
-import {
-  getErrorMessage,
-  createRoom,
-  roomsErrorCleared,
-  getAllRooms,
-} from "../../../store/roomsControl";
+import { createChannel, getErrorMessage } from "../../../store/rooms";
+import { getCurrentUserId } from "../../../store/currentUser";
 
 const validationSchema = Yup.object().shape({
-  roomName: Yup.string().required().min(1).label("Room name"),
+  roomName: Yup.string().required().min(1).label("Channel name"),
   type: Yup.string().required().min(1).label("Room type"),
 });
 
-function CreateRoomForm({ navigation, closeModal }) {
+function CreateChannelForm({ navigation, closeModal }) {
   const [loading, setLoading] = useState(false);
 
   const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
 
   const dispatch = useDispatch();
   const errorMessage = useSelector(getErrorMessage());
+  const userId = useSelector(getCurrentUserId);
   const handleSubmit = async ({ roomName, type }) => {
-    setLoading(true);
-
-    await dispatch(createRoom(roomName, type));
-
-    if (errorMessage) {
-      console.log("Ei onnistunut, epäonnistui");
-      setLoading(false);
-    } else {
-      dispatch(getAllRooms());
-
-      closeModal();
-    }
+    dispatch(createChannel(userId, roomName));
+    closeModal();
   };
 
   return (
     <Screen style={styles.container}>
       <AppForm
         initialValues={{
-          type: "group",
+          type: "channel",
           roomName: "",
         }}
         onSubmit={handleSubmit}
@@ -64,14 +51,12 @@ function CreateRoomForm({ navigation, closeModal }) {
             icon="account-outline"
             keyboardType="email-address"
             name="roomName"
-            placeholder="Room name"
+            placeholder="Channel name"
           />
-
-          <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
 
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
             {loading && !isLoginFailed && <AppLoadIndicator />}
-            <SubmitButton title="Create room" />
+            <SubmitButton title="Create channel" />
           </View>
         </>
       </AppForm>
@@ -87,4 +72,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-export default CreateRoomForm;
+export default CreateChannelForm;

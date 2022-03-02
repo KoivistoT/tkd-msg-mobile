@@ -14,7 +14,8 @@ import { disconnectSocket } from "../store/socket";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
 import { getUserRooms } from "../store/rooms";
-import NewRoomModal from "../app/components/modals/NewRoomModal";
+import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
+import CreateChannelModal from "../app/components/modals/CreateChannelModal";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -44,7 +45,8 @@ function RoomsScreen({ navigation }) {
       )}
 
       <View>
-        <NewRoomModal />
+        <CreateChannelModal />
+        <NewDirectRoomModal />
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>

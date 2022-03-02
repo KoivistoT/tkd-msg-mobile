@@ -9,7 +9,7 @@ import { getAllGroupRooms, getAllRooms } from "../store/roomsControl";
 import AppText from "../app/components/AppText";
 import colors from "../config/colors";
 import routes from "../app/navigation/routes";
-import CreateRoomModal from "../app/components/modals/CreateRoomModal";
+import CreateChannelModal from "../app/components/modals/CreateChannelModal";
 
 function RoomsControlScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ function RoomsControlScreen({ navigation }) {
 
   return (
     <Screen>
-      <CreateRoomModal />
+      <CreateChannelModal />
       {allRooms && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}

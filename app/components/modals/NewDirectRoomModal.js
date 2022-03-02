@@ -24,7 +24,7 @@ import AppButton from "../AppButton";
 import AppText from "../AppText";
 import Screen from "../Screen";
 import CreateUserForm from "../forms/CreateUserForm";
-import CreateRoomForm from "../forms/CreateRoomForm";
+import CreateChannelForm from "../forms/CreateChannelForm";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { allUsers } from "../../../store/users";
@@ -32,7 +32,7 @@ import ListItemSeparator from "../ListItemSeparator";
 import AppCheckBox from "../AppCheckBox";
 import { createDirectRoom } from "../../../store/rooms";
 
-function NewRoomModal({}) {
+function NewDirectRoomModal({}) {
   const [modalVisible, setModalVisible] = useState(false);
 
   //huom ei react-native-modal
@@ -101,7 +101,10 @@ function NewRoomModal({}) {
         </Screen>
       </Modal>
       <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
-        <AppButton onPress={() => setModalVisible(true)} title={"New room"} />
+        <AppButton
+          onPress={() => setModalVisible(true)}
+          title={"New direct room"}
+        />
       </View>
     </View>
   );
@@ -120,4 +123,4 @@ const styles = StyleSheet.create({
   name: { marginLeft: 20 },
   button: {},
 });
-export default NewRoomModal;
+export default NewDirectRoomModal;
