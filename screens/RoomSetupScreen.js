@@ -27,7 +27,7 @@ import {
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
 import AppCheckBox from "../app/components/AppCheckBox";
-import { getCurrentUserData, getCurrentUserId } from "../store/currentUser";
+import { getCurrentUserData } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 
 function RoomSetupScreen(item) {

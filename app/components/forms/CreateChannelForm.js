@@ -14,7 +14,6 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppFormPicker from "./AppFormPicker";
 
 import { createChannel, getErrorMessage } from "../../../store/rooms";
-import { getCurrentUserId } from "../../../store/currentUser";
 
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Channel name"),
@@ -28,7 +27,8 @@ function CreateChannelForm({ navigation, closeModal }) {
 
   const dispatch = useDispatch();
   const errorMessage = useSelector(getErrorMessage());
-  const userId = useSelector(getCurrentUserId);
+  const store = useStore();
+  const userId = store.getState().auth.currentUser._id;
   const handleSubmit = async ({ roomName, type }) => {
     dispatch(createChannel(userId, roomName));
     closeModal();
