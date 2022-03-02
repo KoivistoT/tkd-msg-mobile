@@ -31,6 +31,7 @@ import { allUsers } from "../../../store/users";
 import ListItemSeparator from "../ListItemSeparator";
 import AppCheckBox from "../AppCheckBox";
 import { createDirectRoom } from "../../../store/rooms";
+import { navigationRef } from "../../navigation/rootNavigation";
 
 function NewDirectRoomModal({}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,7 +62,9 @@ function NewDirectRoomModal({}) {
   const onCreateRoom = () => {
     // console.log("create room with users", selectedUsersRef.current);
     dispatch(createDirectRoom(userId, selectedUsersRef.current));
+    setModalVisible(false);
   };
+
   const listItem = ({ item }) => (
     <AppCheckBox item={item} onPress={(userId) => selectUser(userId)} />
   );

@@ -79,7 +79,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           socket.emit("subscribe", roomId);
           const userId = getState().auth.currentUser._id;
           console.log(
-            "kun luo uuden huoneen, tulisi latausindikaattori kaiken päälle, keskelle ruutua, josta tietää lataako"
+            "kun luo tai poistaa!!! uuden huoneen, tulisi latausindikaattori kaiken päälle, keskelle ruutua, josta tietää lataako"
           );
           //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
           if (roomData.roomCreator === userId) {
