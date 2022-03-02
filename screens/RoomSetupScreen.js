@@ -40,6 +40,7 @@ function RoomSetupScreen(item) {
 
   const allUsersList = useSelector(allUsers());
   const roomMembers = useSelector(getRoomMembersById(roomId));
+
   const currentUserData = useSelector(getCurrentUserData);
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const listKeyExtractor = (data) => data._id;
@@ -57,8 +58,10 @@ function RoomSetupScreen(item) {
     const result = await confirmAlert("Haluatko poistua?", "");
     if (!result) return;
 
-    dispatch(leave_room(roomId, currentUserData._id));
     navigationRef.current.navigate(routes.ROOM_SCREEN);
+    setTimeout(() => {
+      dispatch(leave_room(roomId, currentUserData._id));
+    }, 800);
   };
   const onActivateRoom = async () => {
     const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
