@@ -119,14 +119,17 @@ function RoomSetupScreen(item) {
   };
   return (
     <Screen>
-      <View>
-        {selectedUsers.map((item) => (
-          <AppText key={item}>{item}</AppText>
-        ))}
-      </View>
-      <AppButton title={"save changes"} onPress={onSaveChanges} />
+      <AppText>{`Huoneen tyyppi on: ${roomType}`}</AppText>
+      <AppText>Members</AppText>
+      {selectedUsers.map((item) => (
+        <AppText key={item}>{item}</AppText>
+      ))}
 
-      {allUsersList && (
+      {roomType !== "private" && (
+        <AppButton title={"save changes"} onPress={onSaveChanges} />
+      )}
+
+      {roomType !== "private" && allUsersList && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsersList)}
