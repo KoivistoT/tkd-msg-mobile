@@ -13,6 +13,7 @@ import {
   change_members,
   deleteRoom,
   getRoomMembersById,
+  leave_room,
 } from "../store/rooms";
 
 import {
@@ -30,7 +31,12 @@ import { getCurrentUserData, getCurrentUserId } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 
 function RoomSetupScreen(item) {
-  const { _id: roomId, status: roomStatus, roomCreator } = item.route.params;
+  const {
+    _id: roomId,
+    status: roomStatus,
+    roomCreator,
+    type: roomType,
+  } = item.route.params;
 
   const allUsersList = useSelector(allUsers());
   const roomMembers = useSelector(getRoomMembersById(roomId));
@@ -47,6 +53,14 @@ function RoomSetupScreen(item) {
 
   useEffect(() => {}, []);
 
+  const onLeaveRoom = async () => {
+    const result = await confirmAlert("Haluatko poistua?", "");
+    if (!result) return;
+
+    dispatch(leave_room(roomId, currentUserData._id));
+    // navigationRef.current.navigate(routes.ROOM_SCREEN);
+    navigationRef.current.goBack();
+  };
   const onActivateRoom = async () => {
     const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
     if (!result) return;
@@ -123,15 +137,20 @@ function RoomSetupScreen(item) {
       {(currentUserData._id === roomCreator ||
         currentUserData.accountType === "admin") && (
         <View>
+          <AppButton
+            title={`Leave ${roomType}`}
+            onPress={onLeaveRoom}
+            backgroundColor={"primary"}
+          />
           {roomStatus === "archived" ? (
             <AppButton
-              title={"activate room"}
+              title={`Activate ${roomType}`}
               onPress={onActivateRoom}
               backgroundColor={"green"}
             />
           ) : (
             <AppButton
-              title={"Archive room"}
+              title={`Archive ${roomType}`}
               onPress={onArchiveRoom}
               color={"black"}
               backgroundColor={"yellow"}
@@ -139,7 +158,7 @@ function RoomSetupScreen(item) {
           )}
 
           <AppButton
-            title={"Delete room"}
+            title={`Delete ${roomType}`}
             onPress={onDeleteRoom}
             backgroundColor={"danger"}
           />

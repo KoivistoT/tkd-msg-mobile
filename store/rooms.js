@@ -167,6 +167,15 @@ export const change_members = (roomId, members) =>
     onError: roomsError.type,
   });
 
+export const leave_room = (roomId, userId) =>
+  apiCallBegan({
+    url: url + "/rooms/leave_room",
+    method: "post",
+    data: { roomId, userId },
+    onSuccess: memberChanged.type,
+    onError: roomsError.type,
+  });
+
 export const changeMembers = (roomId, userId, membership) =>
   apiCallBegan({
     url: url + "/rooms/change_membership",
