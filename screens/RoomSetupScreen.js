@@ -75,7 +75,7 @@ function RoomSetupScreen(item) {
     navigationRef.current.navigate(routes.ROOM_SCREEN);
     console.log("ilmoita, että arhived");
 
-    dispatch(archiveRoomById(roomId, currentUserData._id));
+    dispatch(archiveRoomById(roomId));
   };
 
   const onSaveChanges = () => {

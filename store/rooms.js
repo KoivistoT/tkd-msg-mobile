@@ -151,11 +151,9 @@ export const getMembersByRoomId = (roomId) =>
     onError: roomsError.type,
   });
 
-export const archiveRoomById = (roomId, userId) =>
+export const archiveRoomById = (roomId) =>
   apiCallBegan({
-    url: url + "/rooms/archive_room/",
-    method: "post",
-    data: { roomId, userId },
+    url: url + "/rooms/archive_room/" + roomId,
     onStart: requestStarted.ype,
     onError: roomsError.type,
   });
