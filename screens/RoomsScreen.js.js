@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import { getCurrentUserById, userLoggedOut } from "../store/currentUser";
+import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket } from "../store/socket";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
