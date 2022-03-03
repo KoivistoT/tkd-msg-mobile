@@ -192,17 +192,16 @@ function RoomSetupScreen(item) {
               backgroundColor={"yellow"}
             />
           )} */}
-
-          {(currentUserData.accountType === "admin" ||
-            currentUserData._id === roomCreator ||
-            roomType === "private") && (
-            <AppButton
-              title={`Delete ${roomType}`}
-              onPress={onDeleteRoom}
-              backgroundColor={"danger"}
-            />
-          )}
         </View>
+      )}
+      {(currentUserData.accountType === "admin" ||
+        currentUserData._id === roomCreator ||
+        roomType === "private") && (
+        <AppButton
+          title={`Delete ${roomType}`}
+          onPress={onDeleteRoom}
+          backgroundColor={"danger"}
+        />
       )}
     </Screen>
   );
