@@ -21,7 +21,6 @@ import AppButton from "../app/components/AppButton";
 
 import routes from "../app/navigation/routes";
 import ScreenHeaderTitle from "../app/components/ScreenHeaderTitle";
-import { getRoomMembersById } from "../store/rooms";
 
 function MessageScreen(item) {
   const dispatch = useDispatch();

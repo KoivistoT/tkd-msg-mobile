@@ -84,10 +84,10 @@ function RoomSetupScreen(item) {
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
     dispatch(setRoomLoadingToTrue());
-    setTimeout(() => {
-      dispatch(deleteRoom(roomId));
-      dispatch(setRoomLoadingToFalse());
-    }, 800);
+    // setTimeout(() => {
+    dispatch(deleteRoom(roomId));
+    dispatch(setRoomLoadingToFalse());
+    // }, 800);
   };
   const onArchiveRoom = async () => {
     const result = await confirmAlert(
@@ -122,7 +122,7 @@ function RoomSetupScreen(item) {
     return (
       <AppCheckBox
         label={`${item.firstName} ${item.lastName}`}
-        initialValue={roomMembers.includes(item._id)}
+        initialValue={roomMembers ? roomMembers.includes(item._id) : false}
         item={item}
         onPressItem={item._id}
         onPress={(userId) => selectUser(userId)}

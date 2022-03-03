@@ -184,7 +184,10 @@ export const activateRoom = (roomId, userId) =>
 export const getRoomMembersById = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
-    (rooms) => rooms.allRooms[roomId].members
+    (rooms) =>
+      rooms.allRooms[roomId] !== undefined
+        ? rooms.allRooms[roomId].members
+        : null
   );
 
 export const getUserRooms = createSelector(
