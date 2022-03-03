@@ -24,6 +24,7 @@ import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
 import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
 import getPrivateRoomOtherUser from "../../utility/getPrivateRoomOtherUser";
+import getRoomActiveMembersSum from "../../utility/getRoomActiveMembersSum";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -50,13 +51,6 @@ function MessageForm({ item }) {
     };
   }, [roomMembers]);
 
-  const getActiveRoomMembers = () => {
-    let sum = 0;
-    roomMembers.forEach((userId) => {
-      allUsersList[userId].status === "active" ? (sum += 1) : (sum = sum);
-    });
-    return sum;
-  };
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
@@ -69,7 +63,10 @@ function MessageForm({ item }) {
           subTitle={
             roomData.type === "private"
               ? `View details`
-              : `Members ${getActiveRoomMembers()} >`
+              : `Members ${getRoomActiveMembersSum(
+                  roomMembers,
+                  allUsersList
+                )} >`
           }
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
