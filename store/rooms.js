@@ -118,11 +118,11 @@ export const createDirectRoom = (userId, otherUsers, roomName = "direct") =>
     onError: roomsError.type,
   });
 
-export const createChannel = (userId, roomName) =>
+export const createChannel = (userId, roomName, description) =>
   apiCallBegan({
     url: url + "/rooms/create_channel",
     method: "post",
-    data: { userId, roomName },
+    data: { userId, roomName, description },
     onStart: requestStarted.type,
     onSuccess: roomCreated.type,
     onError: roomsError.type,

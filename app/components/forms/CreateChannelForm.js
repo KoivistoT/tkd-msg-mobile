@@ -1,36 +1,27 @@
-import React, { useState } from "react";
-
-import { View, StyleSheet, Keyboard } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
-import ErrorMessage from "../ErrorMessage";
 import AppForm from "./AppForm";
 import AppFormField from "./AppFormField";
 import SubmitButton from "./SubmitButton";
-import AppKeyboardDismiss from "../AppKeyboardDismiss";
-import AppLoadIndicator from "../AppLoadIndicator";
-import { useDispatch, useSelector, useStore } from "react-redux";
-
-import AppFormPicker from "./AppFormPicker";
-
-import { createChannel, getErrorMessage } from "../../../store/rooms";
+import { useDispatch, useStore } from "react-redux";
+import { createChannel } from "../../../store/rooms";
 
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Channel name"),
-  type: Yup.string().required().min(1).label("Room type"),
+
+  description: Yup.string().label("Description"),
 });
 
-function CreateChannelForm({ navigation, closeModal }) {
-  const [loading, setLoading] = useState(false);
-
-  const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
-
+function CreateChannelForm({ closeModal }) {
   const dispatch = useDispatch();
-  const errorMessage = useSelector(getErrorMessage());
   const store = useStore();
+
   const userId = store.getState().auth.currentUser._id;
-  const handleSubmit = async ({ roomName, type }) => {
-    dispatch(createChannel(userId, roomName));
+
+  const handleSubmit = async ({ roomName, description }) => {
+    dispatch(createChannel(userId, roomName, description));
     closeModal();
   };
 
@@ -38,8 +29,8 @@ function CreateChannelForm({ navigation, closeModal }) {
     <Screen style={styles.container}>
       <AppForm
         initialValues={{
-          type: "channel",
           roomName: "",
+          description: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -53,9 +44,16 @@ function CreateChannelForm({ navigation, closeModal }) {
             name="roomName"
             placeholder="Channel name"
           />
+          <AppFormField
+            style={{ height: 100 }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            multiline
+            name="description"
+            placeholder="Description"
+          />
 
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            {loading && !isLoginFailed && <AppLoadIndicator />}
             <SubmitButton title="Create channel" />
           </View>
         </>

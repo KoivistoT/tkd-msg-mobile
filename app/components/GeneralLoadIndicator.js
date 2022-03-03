@@ -25,7 +25,7 @@ class GeneralLoadIndicator extends React.Component {
       if (this.props.loading === false) {
         setTimeout(() => {
           this.setState({ showIndicator: this.props.loading });
-        }, 600);
+        }, 200);
       } else {
         this.setState({ showIndicator: this.props.loading });
       }

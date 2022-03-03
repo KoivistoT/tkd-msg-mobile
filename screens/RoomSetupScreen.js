@@ -29,6 +29,7 @@ function RoomSetupScreen(item) {
     _id: roomId,
     status: roomStatus,
     roomCreator,
+    description,
     type: roomType,
   } = item.route.params;
 
@@ -125,6 +126,7 @@ function RoomSetupScreen(item) {
   return (
     <Screen>
       <AppText>{`Huoneen tyyppi on: ${roomType}`}</AppText>
+      <AppText>{`Huoneen kuvaus on: ${description}`}</AppText>
       <AppText>{`Huoneen status on: ${roomStatus}`}</AppText>
       <AppText>Members</AppText>
       {selectedUsers.map((item) => (
