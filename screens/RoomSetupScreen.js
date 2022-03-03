@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
-import { getAllUsers } from "../store/usersControl";
 import { allUsers } from "../store/users";
 import {
   activateRoom,
@@ -25,6 +24,8 @@ import { getCurrentUserData } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 
 function RoomSetupScreen(item) {
+  const dispatch = useDispatch();
+
   const {
     _id: roomId,
     status: roomStatus,
@@ -35,19 +36,17 @@ function RoomSetupScreen(item) {
 
   const allUsersList = useSelector(allUsers());
   const roomMembers = useSelector(getRoomMembersById(roomId));
-
   const currentUserData = useSelector(getCurrentUserData);
+
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
-  const listKeyExtractor = (data) => data._id;
   const selectedUsersRef = React.useRef(selectedUsers);
-  const dispatch = useDispatch();
 
   const setSelectedUsers = (data) => {
     selectedUsersRef.current = data;
     _setSelectedUsers(data);
   };
 
-  useEffect(() => {}, []);
+  const listKeyExtractor = (data) => data._id;
 
   const onLeaveRoom = async () => {
     let result;
@@ -67,12 +66,12 @@ function RoomSetupScreen(item) {
       dispatch(leave_room(roomId, currentUserData._id));
     }, 800);
   };
+
   const onActivateRoom = async () => {
     const result = await confirmAlert("Haluatko aktivoida huoneen?", "");
     if (!result) return;
 
     dispatch(activateRoom(roomId, currentUserData._id));
-    // navigationRef.current.navigate(routes.ROOM_SCREEN);
     navigationRef.current.goBack();
   };
 
@@ -81,7 +80,6 @@ function RoomSetupScreen(item) {
     if (!result) return;
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
-    // navigationRef.current.goBack();
     dispatch(setRoomLoadingToTrue());
     setTimeout(() => {
       dispatch(deleteRoom(roomId));
@@ -113,24 +111,31 @@ function RoomSetupScreen(item) {
       setSelectedUsers([...selectedUsersRef.current, userId]);
     }
   };
+
   const listItem = ({ item }) => {
     if (item._id === currentUserData._id) return;
     return (
       <AppCheckBox
+        label={`${item.firstName} ${item.lastName}`}
         initialValue={roomMembers.includes(item._id)}
         item={item}
+        onPressItem={item._id}
         onPress={(userId) => selectUser(userId)}
       />
     );
   };
+
   return (
     <Screen>
       <AppText>{`Huoneen tyyppi on: ${roomType}`}</AppText>
       <AppText>{`Huoneen kuvaus on: ${description}`}</AppText>
       <AppText>{`Huoneen status on: ${roomStatus}`}</AppText>
       <AppText>Members</AppText>
+
       {selectedUsers.map((item) => (
-        <AppText key={item}>{item}</AppText>
+        <AppText
+          key={item}
+        >{`${allUsersList[item].firstName} ${allUsersList[item].lastName}`}</AppText>
       ))}
 
       {roomType !== "private" && roomStatus !== "archived" && (

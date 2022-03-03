@@ -5,7 +5,8 @@ import Checkbox from "expo-checkbox";
 import AppText from "./AppText";
 function AppCheckBox({
   initialValue = false,
-  item,
+  onPressItem,
+  label,
   onPress,
   style,
   ...otherProps
@@ -16,7 +17,7 @@ function AppCheckBox({
     <TouchableOpacity
       style={{ flexDirection: "row" }}
       onPress={() => {
-        onPress(item._id);
+        onPress(onPressItem);
         setChecked(!isChecked);
       }}
     >
@@ -25,8 +26,8 @@ function AppCheckBox({
         value={isChecked}
         color={isChecked ? "#4630EB" : undefined}
       />
-      {/* tämä hard code pois */}
-      <AppText style={styles.name}>{item.firstName}</AppText>
+
+      <AppText style={styles.name}>{label}</AppText>
     </TouchableOpacity>
   );
 }

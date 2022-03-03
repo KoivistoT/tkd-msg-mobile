@@ -10,7 +10,6 @@ import { createChannel } from "../../../store/rooms";
 
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Channel name"),
-
   description: Yup.string().label("Description"),
 });
 
