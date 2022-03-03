@@ -29,6 +29,9 @@ const slice = createSlice({
     userControlUserArchived: (usersControl, action) => {
       usersControl.users[action.payload].status = "archived";
     },
+    userControlUserTemporaryDeleted: (usersControl, action) => {
+      usersControl.users[action.payload].status = "deleted";
+    },
     userControlUserActivated: (usersControl, action) => {
       usersControl.users[action.payload].status = "active";
     },
@@ -53,6 +56,7 @@ export const {
   userControlUserDeleted,
   userControlNewUserResived,
   userControlUserArchived,
+  userControlUserTemporaryDeleted,
   userControlUserActivated,
 } = slice.actions;
 export default slice.reducer;
@@ -73,9 +77,14 @@ export const deleteUserById = (userId) =>
     onError: usersError.type,
   });
 
-export const archiveUserById = (userId) =>
+export const archiveOrDeleteUserById = (userId, status) =>
   apiCallBegan({
-    url: url + "/archive_user/" + userId,
+    url: url + "/archive_or_delete_user",
+    method: "post",
+    data: {
+      userId,
+      status,
+    },
     // onSuccess: userControlUserDeleted.type,
     onError: usersError.type,
   });

@@ -23,6 +23,7 @@ import { error as errorToast } from "../../store/general";
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
 import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
+import getPrivateRoomOtherUser from "../../utility/getPrivateRoomOtherUser";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -35,31 +36,40 @@ function MessageForm({ item }) {
   const allUsersList = store.getState().entities.users.allUsers;
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
 
+  const otherUser =
+    roomData.type === "private"
+      ? getPrivateRoomOtherUser(roomData.members, currentUserId, allUsersList)
+      : "";
+
   useEffect(() => {
     dispatch(activeRoomIdResived(roomData._id));
     setHeader();
+
     return () => {
       dispatch(activeRoomIdClearer());
     };
   }, [roomMembers]);
 
+  const getActiveRoomMembers = () => {
+    let sum = 0;
+    roomMembers.forEach((userId) => {
+      allUsersList[userId].status === "active" ? (sum += 1) : (sum = sum);
+    });
+    return sum;
+  };
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
           title={
             roomData.type === "private"
-              ? getPrivateRoomTitle(
-                  roomData.members,
-                  currentUserId,
-                  allUsersList
-                )
+              ? `${otherUser.firstName} ${otherUser.lastName}`
               : roomData.roomName
           }
           subTitle={
             roomData.type === "private"
               ? `View details`
-              : `Members ${roomMembers.length} >`
+              : `Members ${getActiveRoomMembers()} >`
           }
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
@@ -117,47 +127,55 @@ function MessageForm({ item }) {
 
   return (
     <>
-      {roomData.status !== "archived" ? (
-        <View
-          style={{
-            marginBottom: Platform.OS == "ios" ? 10 : 0,
-          }}
-        >
-          <ImageInputList
-            imageUris={photos.map((photo) => photo.uri)}
-            onRemoveImage={handleRemove}
-            onAddImage={handleAdd}
-          />
-          <AppForm
-            initialValues={{ message: "" }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
+      {roomData.status !== "archived" &&
+        otherUser.status !== "deleted" &&
+        otherUser.status !== "archived" && (
+          <View
+            style={{
+              marginBottom: Platform.OS == "ios" ? 10 : 0,
+            }}
           >
-            <View
-              style={{
-                marginLeft: 0,
-
-                flexDirection: "row",
-                width: "75%",
-              }}
+            <ImageInputList
+              imageUris={photos.map((photo) => photo.uri)}
+              onRemoveImage={handleRemove}
+              onAddImage={handleAdd}
+            />
+            <AppForm
+              initialValues={{ message: "" }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
             >
-              <AppFormField
-                borderRadius={0}
-                marginTop={0}
-                style={{ maxHeight: 85, height: 65 }}
-                multiline
-                name="message"
-                numberOfLines={2}
-                placeholder="Message..."
-              />
-              <SendButton />
-            </View>
-          </AppForm>
-          <Button title={"test"} onPress={testi}></Button>
-        </View>
-      ) : (
+              <View
+                style={{
+                  marginLeft: 0,
+
+                  flexDirection: "row",
+                  width: "75%",
+                }}
+              >
+                <AppFormField
+                  borderRadius={0}
+                  marginTop={0}
+                  style={{ maxHeight: 85, height: 65 }}
+                  multiline
+                  name="message"
+                  numberOfLines={2}
+                  placeholder="Message..."
+                />
+                <SendButton />
+              </View>
+            </AppForm>
+            <Button title={"test"} onPress={testi}></Button>
+          </View>
+        )}
+      {roomData.status === "archived" && (
         <AppText>
           Huone on arkistoitu. Aktivoi huone lähettääksesi viestejä.
+        </AppText>
+      )}
+      {(otherUser.status === "deleted" || otherUser.status === "archived") && (
+        <AppText>
+          {`Käyttäjä ${otherUser.firstName} ${otherUser.lastName} on poistettu. Et voi lähettää hänelle viestejä.`}
         </AppText>
       )}
     </>

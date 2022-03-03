@@ -16,7 +16,6 @@ import {
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
 } from "../store/rooms";
-
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
 import AppCheckBox from "../app/components/AppCheckBox";
@@ -113,9 +112,11 @@ function RoomSetupScreen(item) {
       setSelectedUsers([...selectedUsersRef.current, userId]);
     }
   };
-  const [trigger, setTrigger] = useState(false);
+
   const listItem = ({ item }) => {
     if (item._id === currentUserData._id) return;
+    if (item.status === "deleted") return;
+    if (item.status === "archived") return;
     return (
       <AppCheckBox
         label={`${item.firstName} ${item.lastName}`}
@@ -141,11 +142,15 @@ function RoomSetupScreen(item) {
         ref={scrollView}
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
-        {selectedUsers.map((item) => (
-          <AppText
-            key={item}
-          >{`${allUsersList[item].firstName} ${allUsersList[item].lastName}`}</AppText>
-        ))}
+        {selectedUsers.map((item) => {
+          if (allUsersList[item].status === "deleted") return;
+          if (allUsersList[item].status === "archived") return;
+          return (
+            <AppText
+              key={item}
+            >{`${allUsersList[item].firstName} ${allUsersList[item].lastName}`}</AppText>
+          );
+        })}
       </ScrollView>
       {roomType !== "private" && roomStatus !== "archived" && (
         <AppButton title={"save changes"} onPress={onSaveChanges} />
@@ -153,7 +158,6 @@ function RoomSetupScreen(item) {
 
       {roomType !== "private" && roomStatus !== "archived" && allUsersList && (
         <FlatList
-          trigger={trigger}
           ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsersList)}
           bounces={false}

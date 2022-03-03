@@ -20,28 +20,32 @@ function UsersControlScreen({ navigation }) {
 
   const listKeyExtractor = (data) => data._id;
 
-  const listItem = ({ item }) => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
-    >
-      <View
-        style={{
-          backgroundColor: item.status === "archived" ? "yellow" : "white",
-        }}
-      >
-        <View>
-          <AppText style={styles.name}>{item.firstName}</AppText>
-        </View>
+  const listItem = ({ item }) => {
+    if (item.status === "deleted") return;
 
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={25}
-          color={colors.dark}
-        />
-      </View>
-    </TouchableOpacity>
-  );
+    return (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
+      >
+        <View
+          style={{
+            backgroundColor: item.status === "archived" ? "yellow" : "white",
+          }}
+        >
+          <View>
+            <AppText style={styles.name}>{item.firstName}</AppText>
+          </View>
+
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={25}
+            color={colors.dark}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Screen>

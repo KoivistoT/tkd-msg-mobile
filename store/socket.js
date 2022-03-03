@@ -22,12 +22,18 @@ import {
   roomActivated,
 } from "./rooms";
 
-import { newUserResived, userDeleted } from "./users";
+import {
+  newUserResived,
+  userArchived,
+  userDeleted,
+  userTemporaryDeleted,
+} from "./users";
 import {
   userControlNewUserResived,
   userControlUserArchived,
   userControlUserActivated,
   userControlUserDeleted,
+  userControlUserTemporaryDeleted,
 } from "./usersControl";
 
 const slice = createSlice({
@@ -106,10 +112,18 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             dispatch(userControlUserDeleted(userId));
           }
         }
+        if (type === "userTemporaryDeleted") {
+          const userId = Object.keys(data);
+
+          dispatch(userTemporaryDeleted(userId));
+          if (accountType === "admin") {
+            dispatch(userControlUserTemporaryDeleted(userId));
+          }
+        }
         if (type === "userArchived") {
           const userId = Object.keys(data);
 
-          dispatch(userDeleted(userId));
+          dispatch(userArchived(userId));
           if (accountType === "admin") {
             dispatch(userControlUserArchived(userId));
           }

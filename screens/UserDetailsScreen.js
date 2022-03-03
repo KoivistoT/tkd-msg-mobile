@@ -11,6 +11,7 @@ import {
   deleteUserById,
   activateUserById,
   userControlgetUserById,
+  archiveOrDeleteUserById,
 } from "../store/usersControl";
 import confirmAlert from "../utility/confirmAlert";
 
@@ -23,10 +24,10 @@ function UserDetailsScreen(item) {
   console.log("status on: ", userData.status);
   const userItem = ({ item }) => <AppText style={styles.name}>{item}</AppText>;
 
-  const deleteUser = async () => {
+  const onDeleteUser = async () => {
     const result = await confirmAlert("Haluatko poistaa käyttäjän", "");
     if (!result) return;
-    dispatch(deleteUserById(userId));
+    dispatch(archiveOrDeleteUserById(userId, "deleted"));
     navigationRef.current.goBack();
     console.log("ilmoitus, että käyttäjä poistettu");
   };
@@ -34,7 +35,7 @@ function UserDetailsScreen(item) {
   const archiveUser = async () => {
     const result = await confirmAlert("Haluatko arkistoida käyttäjän?", "");
     if (!result) return;
-    dispatch(archiveUserById(userId));
+    dispatch(archiveOrDeleteUserById(userId, "archived"));
     console.log("ilmoitus, että käyttäjä arkistoitu");
   };
 
@@ -86,7 +87,7 @@ function UserDetailsScreen(item) {
             title={"delete user"}
             color="white"
             backgroundColor="danger"
-            onPress={deleteUser}
+            onPress={onDeleteUser}
           />
         </View>
       )}

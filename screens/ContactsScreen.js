@@ -61,31 +61,35 @@ function ContactsScreen({ navigation }) {
     }
   };
 
-  const listItem = ({ item }) => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
-    >
-      <View
-        style={{
-          backgroundColor: item.status === "archived" ? "yellow" : "white",
-        }}
+  const listItem = ({ item }) => {
+    if (item.status === "archived" || item.status === "deleted") return;
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
       >
-        <View>
-          <AppText style={styles.name}>{item.firstName}</AppText>
+        <View
+          style={{
+            backgroundColor: item.status === "archived" ? "yellow" : "white",
+          }}
+        >
+          <View>
+            <AppText style={styles.name}>{item.firstName}</AppText>
+          </View>
+          <AppButton
+            title="uusi keskustelu"
+            onPress={() => startConversation(item)}
+          />
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={25}
+            color={colors.dark}
+          />
         </View>
-        <AppButton
-          title="uusi keskustelu"
-          onPress={() => startConversation(item)}
-        />
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={25}
-          color={colors.dark}
-        />
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Screen>

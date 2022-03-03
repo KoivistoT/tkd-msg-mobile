@@ -27,6 +27,12 @@ const slice = createSlice({
       delete users.allUsers[action.payload];
     },
 
+    userArchived: (users, action) => {
+      users.allUsers[action.payload].status = "archived";
+    },
+    userTemporaryDeleted: (users, action) => {
+      users.allUsers[action.payload].status = "deleted";
+    },
     usersError: (users, action) => {
       console.log(action.payload, "epännoistu appcode 1233322");
     },
@@ -39,6 +45,8 @@ export const {
   userCreated,
   newUserResived,
   userDeleted,
+  userTemporaryDeleted,
+  userArchived,
 } = slice.actions;
 export default slice.reducer;
 
