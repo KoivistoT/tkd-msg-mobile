@@ -22,6 +22,7 @@ import AppText from "./AppText";
 import { error as errorToast } from "../../store/general";
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
+import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -30,7 +31,10 @@ function MessageForm({ item }) {
   const [photos, setPhotos] = useState([]);
   const roomData = item.route.params;
 
+  const currentUserId = store.getState().auth.currentUser._id;
+  const allUsersList = store.getState().entities.users.allUsers;
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
+
   useEffect(() => {
     dispatch(activeRoomIdResived(roomData._id));
     setHeader();
@@ -43,8 +47,20 @@ function MessageForm({ item }) {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
-          title={roomData.roomName}
-          subTitle={`Members ${roomMembers.length} >`}
+          title={
+            roomData.type === "private"
+              ? getPrivateRoomTitle(
+                  roomData.members,
+                  currentUserId,
+                  allUsersList
+                )
+              : roomData.roomName
+          }
+          subTitle={
+            roomData.type === "private"
+              ? `View details`
+              : `Members ${roomMembers.length} >`
+          }
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }

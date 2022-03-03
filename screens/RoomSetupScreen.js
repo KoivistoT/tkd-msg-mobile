@@ -130,7 +130,9 @@ function RoomSetupScreen(item) {
   return (
     <Screen>
       <AppText>{`Huoneen tyyppi on: ${roomType}`}</AppText>
-      <AppText>{`Huoneen kuvaus on: ${description}`}</AppText>
+      {description !== undefined && (
+        <AppText>{`Huoneen kuvaus on: ${description}`}</AppText>
+      )}
       <AppText>{`Huoneen status on: ${roomStatus}`}</AppText>
       <AppText>Members</AppText>
 

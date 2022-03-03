@@ -16,12 +16,14 @@ import sortObjectsByfield from "../utility/sortObjectsByfield";
 import { getUserRooms } from "../store/rooms";
 import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
 import CreateChannelModal from "../app/components/modals/CreateChannelModal";
+import { allUsers } from "../store/users";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
   const allRooms = useSelector(getUserRooms);
   const store = useStore();
-  const userId = store.getState().auth.currentUser._id;
+  const currentUserId = store.getState().auth.currentUser._id;
+  const allUsersList = useSelector(allUsers());
 
   const logout = () => {
     dispatch(disconnectSocket());
@@ -31,7 +33,14 @@ function RoomsScreen({ navigation }) {
   const keyExtractor = (item) => item._id;
   const listItem = ({ item }) => {
     if (item.status === "archived" && item.roomCreator !== userId) return;
-    return <RoomsListItem navigation={navigation} item={item} />;
+    return (
+      <RoomsListItem
+        navigation={navigation}
+        item={item}
+        allUsersList={allUsersList}
+        currentUserId={currentUserId}
+      />
+    );
   };
 
   return (
