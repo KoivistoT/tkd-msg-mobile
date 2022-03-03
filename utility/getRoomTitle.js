@@ -1,5 +1,5 @@
-import getDirectRoomTitle from "./getDirectRoomTitle";
-import getPrivateRoomTitle from "./getPrivateRoomTitle";
+import getDirectRoomTitle from "./getDirectRoomTitle"; // näitä ei kai tarvi
+import getPrivateRoomTitle from "./getPrivateRoomTitle"; // näitä ei kai tarvi
 
 export default getRoomTitle = (item, allUsersList, currentUserId) => {
   if (allUsersList.length === 0 || !item) return;

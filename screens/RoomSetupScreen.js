@@ -84,10 +84,11 @@ function RoomSetupScreen(item) {
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
     dispatch(setRoomLoadingToTrue());
-    // setTimeout(() => {
+
     dispatch(deleteRoom(roomId));
-    dispatch(setRoomLoadingToFalse());
-    // }, 800);
+    setTimeout(() => {
+      dispatch(setRoomLoadingToFalse());
+    }, 300); // tämä ei pakillinen, toimii vain hienommin
   };
   const onArchiveRoom = async () => {
     const result = await confirmAlert(

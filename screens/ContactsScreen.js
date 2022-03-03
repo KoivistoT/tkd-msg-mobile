@@ -40,7 +40,7 @@ function ContactsScreen({ navigation }) {
       navigation.navigate(routes.MESSAGE_SCREEN, roomData);
       setTimeout(() => {
         dispatch(setRoomLoadingToFalse());
-      }, 200); // tämä ei tarpeen, mutta menee sujuvammin
+      }, 300); // tämä ei tarpeen, mutta menee sujuvammin
     } else {
       dispatch(createPrivateRoom(userId, item._id));
 
