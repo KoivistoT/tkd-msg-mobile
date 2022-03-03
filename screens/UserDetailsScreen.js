@@ -75,9 +75,6 @@ function UserDetailsScreen(item) {
               renderItem={userItem}
             />
           )}
-          {userData.userRooms.length === 0 && (
-            <AppText>User has no rooms</AppText>
-          )}
 
           {userData.status === "archived" ? (
             <AppButton

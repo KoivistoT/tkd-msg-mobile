@@ -39,11 +39,12 @@ function NewDirectRoomModal({}) {
   //huom ei react-native-modal
   const dispatch = useDispatch();
   const store = useStore();
-  const userId = store.getState().auth.currentUser._id;
+  const currentUserId = store.getState().auth.currentUser._id;
   const allUsersList = useSelector(allUsers());
+
   const listKeyExtractor = (data) => data._id;
 
-  const [selectedUsers, _setSelectedUsers] = useState([]);
+  const [selectedUsers, _setSelectedUsers] = useState([currentUserId]);
 
   const selectedUsersRef = React.useRef(selectedUsers);
   const setSelectedUsers = (data) => {
@@ -61,13 +62,22 @@ function NewDirectRoomModal({}) {
 
   const onCreateRoom = () => {
     // console.log("create room with users", selectedUsersRef.current);
-    dispatch(createDirectRoom(userId, selectedUsersRef.current));
+    dispatch(createDirectRoom(currentUserId, selectedUsersRef.current));
     setModalVisible(false);
   };
 
-  const listItem = ({ item }) => (
-    <AppCheckBox item={item} onPress={(userId) => selectUser(userId)} />
-  );
+  const listItem = ({ item }) => {
+    if (item._id == currentUserId) return;
+    if (item.status === "deleted") return;
+    if (item.status === "archived") return;
+    return (
+      <AppCheckBox
+        label={`${item.firstName} ${item.lastName}`}
+        onPressItem={item._id}
+        onPress={(userId) => selectUser(userId)}
+      />
+    );
+  };
 
   return (
     <View>
@@ -76,7 +86,7 @@ function NewDirectRoomModal({}) {
           <TouchableOpacity
             onPress={() => {
               setModalVisible(false);
-              setSelectedUsers([]);
+              setSelectedUsers([currentUserId]);
             }}
             style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
           >
@@ -89,7 +99,11 @@ function NewDirectRoomModal({}) {
           <AppButton title="Create room" onPress={onCreateRoom} />
           <View>
             {selectedUsers.map((item) => (
-              <AppText key={item}>{item}</AppText>
+              <AppText key={item}>
+                {allUsersList.length !== 0
+                  ? `${allUsersList[item].firstName} ${allUsersList[item].lastName}`
+                  : ""}
+              </AppText>
             ))}
           </View>
           {allUsersList && (
