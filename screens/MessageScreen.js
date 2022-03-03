@@ -19,14 +19,17 @@ import { selectSocket } from "../store/socket";
 import confirmAlert from "../utility/confirmAlert";
 import MessageList from "../app/components/MessageList";
 import AppButton from "../app/components/AppButton";
-
+navigationRef;
 import routes from "../app/navigation/routes";
+import ScreenHeaderTitle from "../app/components/ScreenHeaderTitle";
+import { getRoomMembersById } from "../store/rooms";
 
 function MessageScreen(item) {
   const nav = useNavigation();
 
   const dispatch = useDispatch();
   const roomData = item.route.params;
+  const roomMembers = useSelector(getRoomMembersById(roomData._id));
   useEffect(() => {
     // socket.emit("getUsers");
     // socket.on("users live", (data) => {
@@ -39,22 +42,18 @@ function MessageScreen(item) {
     // if (roomData.type === "private") {
     setHeader();
     // }
-  }, []);
+  }, [roomMembers]);
 
   const setHeader = () => {
     nav.setOptions({
-      headerRight: () => (
-        <AppButton
-          title={"setup"}
-          onPress={() =>
+      headerTitle: () => (
+        <ScreenHeaderTitle
+          title={roomData.roomName}
+          subTitle={`Members ${roomMembers.length} >`}
+          action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }
         />
-
-        // roomData.status === "active" ? (
-        //   <AppButton title={"archive"} onPress={() => onArchiveRoom()} />
-        // ) : (
-        //   <AppButton title={"activate"} onPress={() => onActivateRoom()} />
       ),
     });
   };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
@@ -22,9 +22,11 @@ import confirmAlert from "../utility/confirmAlert";
 import AppCheckBox from "../app/components/AppCheckBox";
 import { getCurrentUserData } from "../store/currentUser";
 import routes from "../app/navigation/routes";
+import { ScrollView } from "react-native-gesture-handler";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
+  const scrollView = useRef();
 
   const {
     _id: roomId,
@@ -111,7 +113,7 @@ function RoomSetupScreen(item) {
       setSelectedUsers([...selectedUsersRef.current, userId]);
     }
   };
-
+  const [trigger, setTrigger] = useState(false);
   const listItem = ({ item }) => {
     if (item._id === currentUserData._id) return;
     return (
@@ -132,18 +134,24 @@ function RoomSetupScreen(item) {
       <AppText>{`Huoneen status on: ${roomStatus}`}</AppText>
       <AppText>Members</AppText>
 
-      {selectedUsers.map((item) => (
-        <AppText
-          key={item}
-        >{`${allUsersList[item].firstName} ${allUsersList[item].lastName}`}</AppText>
-      ))}
-
+      <ScrollView
+        style={{ maxHeight: 100 }}
+        ref={scrollView}
+        onContentSizeChange={() => scrollView.current.scrollToEnd()}
+      >
+        {selectedUsers.map((item) => (
+          <AppText
+            key={item}
+          >{`${allUsersList[item].firstName} ${allUsersList[item].lastName}`}</AppText>
+        ))}
+      </ScrollView>
       {roomType !== "private" && roomStatus !== "archived" && (
         <AppButton title={"save changes"} onPress={onSaveChanges} />
       )}
 
       {roomType !== "private" && roomStatus !== "archived" && allUsersList && (
         <FlatList
+          trigger={trigger}
           ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsersList)}
           bounces={false}
