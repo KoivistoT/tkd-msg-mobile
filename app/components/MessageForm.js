@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
-import { useDispatch, useStore } from "react-redux";
+import { useDispatch, useStore, useSelector } from "react-redux";
 import {
   activeRoomIdResived,
   activeRoomIdClearer,
   setLoading,
   setRoomLoadingToTrue,
+  getRoomMembersById,
 } from "../../store/rooms";
 import { sendMessage, test } from "../../store/msgStore";
-
+import { useNavigation } from "@react-navigation/native";
 import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
 import SendButton from "./SendButton";
@@ -19,24 +20,42 @@ import { navigationRef } from "../../app/navigation/rootNavigation";
 import { deleteUser } from "../../store/usersControl";
 import AppText from "./AppText";
 import { error as errorToast } from "../../store/general";
+import ScreenHeaderTitle from "./ScreenHeaderTitle";
+import routes from "../navigation/routes";
 
 function MessageForm({ item }) {
+  const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
   const [photos, setPhotos] = useState([]);
-  const { _id: roomId, status: roomStatus } = item.route.params;
+  const roomData = item.route.params;
 
+  const roomMembers = useSelector(getRoomMembersById(roomData._id));
   useEffect(() => {
-    dispatch(activeRoomIdResived(roomId));
-
+    dispatch(activeRoomIdResived(roomData._id));
+    setHeader();
     return () => {
       dispatch(activeRoomIdClearer());
     };
-  }, []);
+  }, [roomMembers]);
+
+  const setHeader = () => {
+    nav.setOptions({
+      headerTitle: () => (
+        <ScreenHeaderTitle
+          title={roomData.roomName}
+          subTitle={`Members ${roomMembers.length} >`}
+          action={() =>
+            navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
+          }
+        />
+      ),
+    });
+  };
 
   const handleSubmit = async ({ message }, { resetForm }) => {
     try {
-      store.getState().entities.msgStore.allMessages[roomId].messages;
+      store.getState().entities.msgStore.allMessages[roomData._id].messages;
     } catch (error) {
       console.log(error, "code 99292292");
       navigationRef.current.goBack();
@@ -56,7 +75,7 @@ function MessageForm({ item }) {
       console.log("lataus valmis");
     }
 
-    dispatch(sendMessage(message, roomId, messageType, imageURLs));
+    dispatch(sendMessage(message, roomData._id, messageType, imageURLs));
     resetForm();
     Keyboard.dismiss();
   };
@@ -82,7 +101,7 @@ function MessageForm({ item }) {
 
   return (
     <>
-      {roomStatus !== "archived" ? (
+      {roomData.status !== "archived" ? (
         <View
           style={{
             marginBottom: Platform.OS == "ios" ? 10 : 0,
