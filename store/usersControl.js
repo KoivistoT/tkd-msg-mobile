@@ -8,6 +8,7 @@ const slice = createSlice({
   name: "usersControl",
   initialState: {
     users: [],
+    allChannels: [],
     errorMessage: null,
   },
   reducers: {
@@ -45,6 +46,10 @@ const slice = createSlice({
     usersErrorCleared: (usersControl, action) => {
       usersControl.errorMessage = null;
     },
+
+    channelsResived: (usersControl, action) => {
+      usersControl.allChannels = action.payload;
+    },
   },
 });
 
@@ -58,6 +63,7 @@ export const {
   userControlUserArchived,
   userControlUserTemporaryDeleted,
   userControlUserActivated,
+  channelsResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -93,6 +99,13 @@ export const activateUserById = (userId) =>
   apiCallBegan({
     url: url + "/activate_user/" + userId,
     // onSuccess: userControlUserDeleted.type,
+    onError: usersError.type,
+  });
+
+export const userControlGetAllChannels = () =>
+  apiCallBegan({
+    url: settings.apiUrl + "/rooms/all_channels",
+    onSuccess: channelsResived.type,
     onError: usersError.type,
   });
 
@@ -139,4 +152,10 @@ export const userControlgetUserById = (userId) =>
   createSelector(
     (state) => state.entities.usersControl,
     (usersControl) => usersControl.users[userId]
+  );
+
+export const allChannels = () =>
+  createSelector(
+    (state) => state.entities.usersControl,
+    (usersControl) => usersControl.allChannels
   );
