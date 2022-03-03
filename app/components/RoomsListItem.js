@@ -1,7 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import routes from "../../app/navigation/routes";
+import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
 import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
+import getRoomTitle from "../../utility/getRoomTitle";
 import AppText from "./AppText";
 
 function RoomsListItem({ item, navigation, allUsersList, currentUserId }) {
@@ -13,19 +15,18 @@ function RoomsListItem({ item, navigation, allUsersList, currentUserId }) {
       }}
       onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
     >
-      <AppText
-        style={{
-          color: "black",
+      {allUsersList.length !== 0 && (
+        <AppText
+          style={{
+            color: "black",
 
-          padding: 10,
-        }}
-        key={item._id}
-      >
-        {item.type !== "private" && item.roomName}
-        {item.type === "private" &&
-          allUsersList.length !== 0 &&
-          getPrivateRoomTitle(item.members, currentUserId, allUsersList)}
-      </AppText>
+            padding: 10,
+          }}
+          key={item._id}
+        >
+          {getRoomTitle(item, allUsersList, currentUserId)}
+        </AppText>
+      )}
     </TouchableOpacity>
   );
 }
