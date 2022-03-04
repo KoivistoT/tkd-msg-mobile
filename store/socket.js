@@ -14,7 +14,7 @@ import {
 import {
   roomAdded,
   roomRemoved,
-  memberChanged,
+  membersChanged,
   roomArchived,
   roomActivated,
 } from "./rooms";
@@ -104,7 +104,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "userArchived") {
           const userId = Object.keys(data);
-
           dispatch(userArchived(userId));
         }
 
@@ -123,9 +122,8 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
 
         if (type === "membersChanged") {
-          dispatch(memberChanged(data[Object.keys(data)]));
+          dispatch(membersChanged(data[Object.keys(data)]));
         }
-        // console.log("updates", type, data);
       });
       socket.emit("identity", getState().auth.currentUser._id, accountType); //hard code pois
 

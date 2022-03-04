@@ -51,7 +51,7 @@ const slice = createSlice({
       // );
     },
 
-    memberChanged: (rooms, action) => {
+    membersChanged: (rooms, action) => {
       try {
         // console.log(action.payload, "tässä memberit");
         rooms.allRooms[action.payload._id].members = action.payload.members;
@@ -97,7 +97,7 @@ export const {
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
   membersResived,
-  memberChanged,
+  membersChanged,
   roomAdded,
   roomRemoved,
   roomActivated,
@@ -157,7 +157,7 @@ export const change_members = (roomId, members) =>
     url: url + "/rooms/change_members",
     method: "post",
     data: { roomId, members },
-    onSuccess: memberChanged.type,
+    onSuccess: membersChanged.type,
     onError: roomsError.type,
   });
 
@@ -166,7 +166,7 @@ export const leave_room = (roomId, userId) =>
     url: url + "/rooms/leave_room",
     method: "post",
     data: { roomId, userId },
-    onSuccess: memberChanged.type,
+    onSuccess: membersChanged.type,
     onError: roomsError.type,
   });
 
