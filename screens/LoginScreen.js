@@ -16,7 +16,6 @@ import {
   login,
 } from "../store/currentUser";
 import { createSocketConnection } from "../store/socket";
-import AppToast from "../app/components/AppToast";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
@@ -39,7 +38,6 @@ function LoginScreen({ navigation }) {
 
   return (
     <Screen style={styles.container}>
-      {/* <AppToast /> */}
       <AppKeyboardDismiss>
         <AppForm
           initialValues={{ userName: "timon@posti.fi", password: "12345" }}

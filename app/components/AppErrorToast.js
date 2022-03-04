@@ -6,7 +6,7 @@ import Constants from "expo-constants";
 import colors from "../../config/colors";
 import { errorMessageCleared } from "../../store/general";
 
-class AppToast extends React.Component {
+class AppErrorToast extends React.Component {
   componentDidUpdate(prevProps, nextProps) {
     if (prevProps !== nextProps && this.props.errorMessage) {
       this.toast.show(
@@ -51,4 +51,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   clearErrorMessage: () => dispatch(errorMessageCleared()),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AppToast);
+export default connect(mapStateToProps, mapDispatchToProps)(AppErrorToast);

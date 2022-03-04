@@ -5,21 +5,37 @@ const slice = createSlice({
   name: "general",
   initialState: {
     errorMessage: null,
+    successMessage: null,
     errorMessageVisibleTime: 3000,
+    successMessageVisibleTime: 3000,
   },
   reducers: {
-    error: (general, action) => {
+    errorMessageAdded: (general, action) => {
       // console.log(action.payload, "Tämä viesti menee toastiin!");
       general.errorMessageVisibleTime = 3000;
       general.errorMessage = action.payload;
     },
+    successMessageAdded: (general, action) => {
+      // console.log(action.payload, "Tämä viesti menee toastiin!");
+
+      general.successMessageVisibleTime = 3000;
+      general.successMessage = action.payload;
+    },
     errorMessageCleared: (general, action) => {
+      general.errorMessage = null;
+    },
+    successMessageCleared: (general, action) => {
       general.errorMessage = null;
     },
   },
 });
 
-export const { error, errorMessageCleared } = slice.actions;
+export const {
+  errorMessageAdded,
+  errorMessageCleared,
+  successMessageAdded,
+  successMessageCleared,
+} = slice.actions;
 
 export default slice.reducer;
 

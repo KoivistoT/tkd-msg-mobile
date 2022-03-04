@@ -13,6 +13,7 @@ const slice = createSlice({
     members: [],
     activeRoomId: null,
     errorMessage: null,
+    successMessage: null,
   },
   reducers: {
     // action => action handler
@@ -177,7 +178,7 @@ export const change_members = (roomId, members) =>
     url: url + "/rooms/change_members",
     method: "post",
     data: { roomId, members },
-    onSuccess: membersChanged.type,
+    // onSuccess: membersChanged.type,
     onError: roomsError.type,
   });
 
@@ -186,7 +187,7 @@ export const leave_room = (roomId, userId) =>
     url: url + "/rooms/leave_room",
     method: "post",
     data: { roomId, userId },
-    onSuccess: membersChanged.type,
+    onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
 

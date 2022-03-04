@@ -9,7 +9,7 @@ import configureStore from "./store/configureStore";
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Provider } from "react-redux";
-import AppToast from "./app/components/AppToast";
+import AppErrorToast from "./app/components/AppErrorToast";
 import GeneralLoadIndicator from "./app/components/GeneralLoadIndicator";
 import Login from "./app/components/Login";
 
@@ -44,6 +44,7 @@ import AppNavigator from "./app/navigation/AppNavigator";
 import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
+import AppSuccessToast from "./app/components/AppSuccessToast";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -79,7 +80,8 @@ function App() {
 
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-      <AppToast />
+      <AppErrorToast />
+      <AppSuccessToast />
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}

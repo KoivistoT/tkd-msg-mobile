@@ -20,7 +20,7 @@ import imageFuncs from "../../utility/imageFuncs";
 import { navigationRef } from "../../app/navigation/rootNavigation";
 
 import AppText from "./AppText";
-import { error as errorToast } from "../../store/general";
+
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
 import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
