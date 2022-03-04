@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
 import AppForm from "../forms/AppForm";
@@ -41,10 +41,19 @@ function EditUserForm({ userData, closeModal }) {
     firstName,
     lastName,
     email,
+    phone,
   }) => {
     const userId = userData._id;
     await dispatch(
-      editUserData(accountType, displayName, firstName, lastName, email, userId)
+      editUserData(
+        accountType,
+        displayName,
+        firstName,
+        lastName,
+        email,
+        phone,
+        userId
+      )
     );
 
     if (errorMessage) {
@@ -57,68 +66,80 @@ function EditUserForm({ userData, closeModal }) {
   };
 
   return (
-    <Screen style={styles.container}>
-      <AppForm
-        initialValues={{
-          accountType: userData.accountType,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          email: userData.email,
-          displayName: userData.displayName,
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <>
-          <AppFormPicker
-            options={accountTypeOptions}
-            autoCapitalize="none"
-            icon="account-outline"
-            name="accountType"
-            placeholder="Account type"
-          ></AppFormPicker>
+    <Screen>
+      <ScrollView style={styles.container}>
+        <AppForm
+          initialValues={{
+            accountType: userData.accountType,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            phone: userData.phone,
+            displayName: userData.displayName,
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <>
+            <AppFormPicker
+              options={accountTypeOptions}
+              autoCapitalize="none"
+              icon="account-outline"
+              name="accountType"
+              placeholder="Account type"
+            ></AppFormPicker>
 
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            keyboardType="email-address"
-            name="firstName"
-            placeholder="Fistname"
-            showLabel
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            keyboardType="email-address"
-            name="lastName"
-            placeholder="Lastname"
-            showLabel
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            name="displayName"
-            placeholder="DisplayName"
-            showLabel
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            keyboardType="email-address"
-            name="email"
-            placeholder="email"
-            showLabel
-          />
-
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <SubmitButton title="Save changes" />
-          </View>
-        </>
-      </AppForm>
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              keyboardType="email-address"
+              name="firstName"
+              placeholder="Fistname"
+              showLabel
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              keyboardType="email-address"
+              name="lastName"
+              placeholder="Lastname"
+              showLabel
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              name="displayName"
+              placeholder="DisplayName"
+              showLabel
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              keyboardType="email-address"
+              name="email"
+              placeholder="email"
+              showLabel
+            />
+            <AppFormField
+              placeholder="Phone"
+              autoCorrect={false}
+              icon="phone"
+              keyboardType="phone-pad"
+              autoCapitalize="none"
+              textContentType="telephoneNumber"
+              name="phone"
+              showLabel
+            />
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <SubmitButton title="Save changes" />
+            </View>
+          </>
+        </AppForm>
+      </ScrollView>
     </Screen>
   );
 }
@@ -128,7 +149,6 @@ const styles = StyleSheet.create({
     padding: 20,
 
     marginHorizontal: 10,
-    flex: 1,
   },
 });
 export default EditUserForm;

@@ -105,26 +105,26 @@ export const archiveOrDeleteUserById = (userId, status) =>
   });
 
 export const createUser = (
-  userName = null,
-  password = null,
-  accountType = null,
-  firstName = null,
-  lastName = null,
-  displayName = null,
-  email = null,
+  password,
+  accountType,
+  firstName,
+  lastName,
+  displayName,
+  email,
+  phone,
   status = "active"
 ) =>
   apiCallBegan({
     url: url + "/create_user",
     method: "post",
     data: {
-      userName,
       password,
       accountType,
       firstName,
       lastName,
       displayName,
       email,
+      phone,
       status,
     },
     onSuccess: requestSuccess.type,
@@ -136,6 +136,7 @@ export const editUserData = (
   firstName,
   lastName,
   email,
+  phone,
   userId
 ) =>
   apiCallBegan({
@@ -147,6 +148,7 @@ export const editUserData = (
       firstName,
       lastName,
       email,
+      phone,
       userId,
     },
     onSuccess: requestSuccess.type,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { View, StyleSheet, Keyboard } from "react-native";
+import { View, StyleSheet, Keyboard, ScrollView } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
 import ErrorMessage from "../ErrorMessage";
@@ -46,10 +46,19 @@ function CreateUserForm({ navigation, closeModal }) {
     firstName,
     lastName,
     email,
+    phone,
   }) => {
     setLoading(true);
     await dispatch(
-      createUser(password, accountType, firstName, lastName, displayName, email)
+      createUser(
+        password,
+        accountType,
+        firstName,
+        lastName,
+        displayName,
+        email,
+        phone
+      )
     );
 
     if (errorMessage) {
@@ -63,76 +72,87 @@ function CreateUserForm({ navigation, closeModal }) {
   };
 
   return (
-    <Screen style={styles.container}>
-      <AppForm
-        initialValues={{
-          accountType: "basic",
+    <Screen>
+      <ScrollView style={styles.container}>
+        <AppForm
+          initialValues={{
+            accountType: "basic",
 
-          password: "111111",
-          firstName: "joo",
-          lastName: "jaa",
-          email: "joo@joo.fi",
-          displayName: "joojaa",
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <>
-          <AppFormPicker
-            options={accountTypeOptions}
-            autoCapitalize="none"
-            icon="account-outline"
-            name="accountType"
-            placeholder="Account type"
-          ></AppFormPicker>
+            password: "111111",
+            firstName: "joo",
+            lastName: "jaa",
+            email: "joo@joo.fi",
+            displayName: "joojaa",
+            phone: "0456657435",
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <>
+            <AppFormPicker
+              options={accountTypeOptions}
+              autoCapitalize="none"
+              icon="account-outline"
+              name="accountType"
+              placeholder="Account type"
+            ></AppFormPicker>
 
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            keyboardType="email-address"
-            name="firstName"
-            placeholder="Fistname"
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            keyboardType="email-address"
-            name="lastName"
-            placeholder="Lastname"
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            name="displayName"
-            placeholder="DisplayName"
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="account-outline"
-            keyboardType="email-address"
-            name="email"
-            placeholder="email"
-          />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              keyboardType="email-address"
+              name="firstName"
+              placeholder="Fistname"
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              keyboardType="email-address"
+              name="lastName"
+              placeholder="Lastname"
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              name="displayName"
+              placeholder="DisplayName"
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account-outline"
+              keyboardType="email-address"
+              name="email"
+              placeholder="email"
+            />
+            <AppFormField
+              placeholder="Phone"
+              autoCorrect={false}
+              icon="phone"
+              keyboardType="phone-pad"
+              autoCapitalize="none"
+              textContentType="telephoneNumber"
+              name="phone"
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="password"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
 
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            name="password"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <SubmitButton title="Create user" />
-          </View>
-        </>
-      </AppForm>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <SubmitButton title="Create user" />
+            </View>
+          </>
+        </AppForm>
+      </ScrollView>
     </Screen>
   );
 }
