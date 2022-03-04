@@ -8,6 +8,7 @@ import {
   setLoading,
   setRoomLoadingToTrue,
   getRoomMembersById,
+  getRoomDataById,
 } from "../../store/rooms";
 import { sendMessage, test } from "../../store/msgStore";
 import { useNavigation } from "@react-navigation/native";
@@ -33,7 +34,8 @@ function MessageForm({ item }) {
   const dispatch = useDispatch();
   const store = useStore();
   const [photos, setPhotos] = useState([]);
-  const roomData = item.route.params;
+  // const roomData =  item.route.params;
+  const roomData = useSelector(getRoomDataById(item.route.params._id));
 
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsersList = store.getState().entities.users.allUsers;
@@ -51,7 +53,7 @@ function MessageForm({ item }) {
     return () => {
       dispatch(activeRoomIdClearer());
     };
-  }, [roomMembers]);
+  }, [roomMembers, roomData]);
 
   const getSubTitle = () => {
     if (!roomMembers) return;

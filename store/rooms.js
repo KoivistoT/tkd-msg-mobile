@@ -31,12 +31,18 @@ const slice = createSlice({
     requestStarted: (rooms, action) => {
       rooms.loading = true;
     },
+    requestSucceed: (rooms, action) => {
+      rooms.loading = false;
+    },
 
     roomArchived: (rooms, action) => {
       rooms.allRooms[action.payload].status = "archived";
     },
     roomActivated: (rooms, action) => {
       rooms.allRooms[action.payload].status = "active";
+    },
+    roomNameChanged: (rooms, action) => {
+      rooms.allRooms[action.payload._id].roomName = action.payload.newRoomName;
     },
     roomsResived: (rooms, action) => {
       // action.payload.forEach((item) => {
@@ -101,7 +107,9 @@ export const {
   roomAdded,
   roomRemoved,
   roomActivated,
+  requestSucceed,
   roomArchived,
+  roomNameChanged,
   requestStarted,
 } = slice.actions;
 export default slice.reducer;
@@ -132,6 +140,7 @@ export const deleteRoom = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/delete_room/" + roomId,
     onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
 
@@ -145,10 +154,21 @@ export const createPrivateRoom = (userId = null, otherUserId = null) =>
     onError: roomsError.type,
   });
 
+export const changeRoomName = (roomId, newRoomName) =>
+  apiCallBegan({
+    url: url + "/rooms/change_room_name",
+    method: "post",
+    data: { roomId, newRoomName },
+    onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
+    onError: roomsError.type,
+  });
+
 export const archiveRoomById = (roomId) =>
   apiCallBegan({
     url: url + "/rooms/archive_room/" + roomId,
     onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
 
@@ -176,6 +196,7 @@ export const activateRoom = (roomId, userId) =>
     method: "post",
     data: { roomId, userId },
     onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
 
@@ -188,6 +209,13 @@ export const getRoomMembersById = (roomId) =>
       rooms.allRooms[roomId] !== undefined
         ? rooms.allRooms[roomId].members
         : null
+  );
+
+export const getRoomDataById = (roomId) =>
+  createSelector(
+    (state) => state.entities.rooms,
+    (rooms) =>
+      rooms.allRooms[roomId] !== undefined ? rooms.allRooms[roomId] : null
   );
 
 export const getUserRooms = createSelector(

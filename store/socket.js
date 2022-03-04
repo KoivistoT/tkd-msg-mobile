@@ -17,6 +17,7 @@ import {
   membersChanged,
   roomArchived,
   roomActivated,
+  roomNameChanged,
 } from "./rooms";
 
 import {
@@ -84,7 +85,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "roomRemoved") {
           const roomId = Object.keys(data);
-          // console.log(roomId, "täällä removed id");
           socket.emit("unsubscribe", roomId);
           dispatch(roomRemoved(roomId));
           dispatch(messagesRemoved(roomId));
@@ -111,12 +111,15 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           const roomId = Object.keys(data);
           dispatch(roomArchived(roomId));
         }
+        if (type === "roomNameChanged") {
+          const requestData = Object.values(data)[0];
+          dispatch(roomNameChanged(requestData));
+        }
         if (type === "userActivated") {
           const userId = Object.keys(data);
           dispatch(userActivated(userId));
         }
         if (type === "roomActivated") {
-          //tämä vain group huoneissa
           const roomId = Object.keys(data);
           dispatch(roomActivated(roomId));
         }

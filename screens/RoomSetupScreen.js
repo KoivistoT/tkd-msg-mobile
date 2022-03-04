@@ -9,6 +9,7 @@ import { allUsers } from "../store/users";
 import {
   activateRoom,
   archiveRoomById,
+  changeRoomName,
   change_members,
   deleteRoom,
   getRoomMembersById,
@@ -23,6 +24,7 @@ import { getCurrentUserData } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
 import getRoomActiveMembersSum from "../utility/getRoomActiveMembersSum";
+import ChangeRoomNameModal from "../app/components/modals/ChangeRoomNameModal";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ function RoomSetupScreen(item) {
     roomCreator,
     description,
     type: roomType,
+    roomName,
   } = item.route.params;
 
   const allUsersList = useSelector(allUsers());
@@ -194,6 +197,9 @@ function RoomSetupScreen(item) {
             />
           )} */}
         </View>
+      )}
+      {roomType === "channel" && (
+        <ChangeRoomNameModal roomId={roomId} roomNameNow={roomName} />
       )}
       {(currentUserData.accountType === "admin" ||
         currentUserData._id === roomCreator ||

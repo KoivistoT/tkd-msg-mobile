@@ -24,7 +24,7 @@ function RoomsScreen({ navigation }) {
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsersList = useSelector(allUsers());
-  // console.log(allRooms);
+
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
