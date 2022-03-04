@@ -8,6 +8,8 @@ const slice = createSlice({
   name: "users",
   initialState: {
     allUsers: [],
+    allChannels: [],
+    errorMessage: null,
   },
   reducers: {
     // action => action handler
@@ -20,13 +22,18 @@ const slice = createSlice({
       //   users.allUsers["61e6a7f6b30d002e91d67b50"].email
       // );
     },
+    userActivated: (users, action) => {
+      users.allUsers[action.payload].status = "active";
+    },
     newUserResived: (users, action) => {
       Object.assign(users.allUsers, action.payload);
     },
     userDeleted: (users, action) => {
       delete users.allUsers[action.payload];
     },
-
+    userCreated: (users, action) => {
+      console.log(action.payload, "User lisätty");
+    },
     userArchived: (users, action) => {
       users.allUsers[action.payload].status = "archived";
     },
@@ -34,7 +41,15 @@ const slice = createSlice({
       users.allUsers[action.payload].status = "deleted";
     },
     usersError: (users, action) => {
+      users.errorMessage = action.payload;
+
       console.log(action.payload, "epännoistu appcode 1233322");
+    },
+    usersErrorCleared: (users, action) => {
+      users.errorMessage = null;
+    },
+    channelsResived: (users, action) => {
+      users.allChannels = action.payload;
     },
   },
 });
@@ -45,6 +60,9 @@ export const {
   userCreated,
   newUserResived,
   userDeleted,
+  channelsResived,
+  userActivated,
+  usersErrorCleared,
   userTemporaryDeleted,
   userArchived,
 } = slice.actions;
@@ -59,8 +77,79 @@ export const getAllUsers = () =>
     onError: usersError.type,
   });
 
+export const getAllChannels = () =>
+  apiCallBegan({
+    url: settings.apiUrl + "/rooms/all_channels",
+    onSuccess: channelsResived.type,
+    onError: usersError.type,
+  });
+
+export const archiveOrDeleteUserById = (userId, status) =>
+  apiCallBegan({
+    url: url + "/archive_or_delete_user",
+    method: "post",
+    data: {
+      userId,
+      status,
+    },
+    // onSuccess: userControlUserDeleted.type,
+    onError: usersError.type,
+  });
+
+export const createUser = (
+  userName = null,
+  password = null,
+  accountType = null,
+  firstName = null,
+  lastName = null,
+  displayName = null,
+  email = null,
+  status = "active"
+) =>
+  apiCallBegan({
+    url: url + "/create_user",
+    method: "post",
+    data: {
+      userName,
+      password,
+      accountType,
+      firstName,
+      lastName,
+      displayName,
+      email,
+      status,
+    },
+    onSuccess: userCreated.type,
+    onError: usersError.type,
+  });
+
+export const activateUserById = (userId) =>
+  apiCallBegan({
+    url: url + "/activate_user/" + userId,
+    // onSuccess: userControlUserDeleted.type,
+    onError: usersError.type,
+  });
+
+export const getRoomUsersById = (userId) =>
+  createSelector(
+    (state) => state.entities.users,
+    (users) => users.allUsers[userId]
+  );
+
 export const allUsers = () =>
   createSelector(
     (state) => state.entities.users,
     (users) => users.allUsers
+  );
+
+export const selectAllChannels = () =>
+  createSelector(
+    (state) => state.entities.users,
+    (users) => users.allChannels
+  );
+
+export const getErrorMessage = () =>
+  createSelector(
+    (state) => state.entities.users,
+    (users) => users.errorMessage
   );

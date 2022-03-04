@@ -4,10 +4,7 @@ import io from "socket.io-client";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
-import {
-  createSocketConnectionBegan,
-  createSocketConnectionSuccess,
-} from "./actions";
+
 import {
   getMessagesbyId,
   getRoomImages,
@@ -26,15 +23,9 @@ import {
   newUserResived,
   userArchived,
   userDeleted,
+  userActivated,
   userTemporaryDeleted,
 } from "./users";
-import {
-  userControlNewUserResived,
-  userControlUserArchived,
-  userControlUserActivated,
-  userControlUserDeleted,
-  userControlUserTemporaryDeleted,
-} from "./usersControl";
 
 const slice = createSlice({
   name: "socket",
@@ -100,33 +91,21 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "newUser") {
           dispatch(newUserResived(data));
-          if (accountType === "admin") {
-            dispatch(userControlNewUserResived(data));
-          }
         }
         if (type === "userDeleted") {
           const userId = Object.keys(data);
 
           dispatch(userDeleted(userId));
-          if (accountType === "admin") {
-            dispatch(userControlUserDeleted(userId));
-          }
         }
         if (type === "userTemporaryDeleted") {
           const userId = Object.keys(data);
 
           dispatch(userTemporaryDeleted(userId));
-          if (accountType === "admin") {
-            dispatch(userControlUserTemporaryDeleted(userId));
-          }
         }
         if (type === "userArchived") {
           const userId = Object.keys(data);
 
           dispatch(userArchived(userId));
-          if (accountType === "admin") {
-            dispatch(userControlUserArchived(userId));
-          }
         }
 
         if (type === "roomArchived") {
@@ -135,11 +114,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "userActivated") {
           const userId = Object.keys(data);
-
-          dispatch(newUserResived(data));
-          if (accountType === "admin") {
-            dispatch(userControlUserActivated(userId));
-          }
+          dispatch(userActivated(userId));
         }
         if (type === "roomActivated") {
           //tämä vain group huoneissa

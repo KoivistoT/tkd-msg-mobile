@@ -6,7 +6,6 @@ import socketReducer from "./socket";
 import userReducer from "./users";
 import msgStoreReducer from "./msgStore";
 
-import usersControlReducer from "./usersControl";
 // import memberReducer from "./members";
 
 export default combineReducers({
@@ -17,6 +16,5 @@ export default combineReducers({
   users: userReducer,
   msgStore: msgStoreReducer,
 
-  usersControl: usersControlReducer,
   // members: memberReducer,
 });

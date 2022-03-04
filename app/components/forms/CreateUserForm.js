@@ -12,12 +12,13 @@ import AppLoadIndicator from "../AppLoadIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import AppFormPicker from "./AppFormPicker";
+
 import {
   createUser,
   getAllUsers,
   getErrorMessage,
   usersErrorCleared,
-} from "../../../store/usersControl";
+} from "../../../store/users";
 
 const accountTypeOptions = [
   { label: "Admin", value: "admin" },

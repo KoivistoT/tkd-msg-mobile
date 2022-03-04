@@ -7,22 +7,21 @@ import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import {
-  archiveUserById,
-  deleteUserById,
+  getRoomUsersById,
   activateUserById,
-  userControlgetUserById,
   archiveOrDeleteUserById,
-  userControlGetAllChannels,
-  allChannels,
-} from "../store/usersControl";
+  getAllChannels,
+  selectAllChannels,
+} from "../store/users";
+
 import confirmAlert from "../utility/confirmAlert";
 
 function UserDetailsScreen(item) {
   const dispatch = useDispatch();
 
   const userId = item.route.params._id;
-  const allChannelsList = useSelector(allChannels());
-  const userData = useSelector(userControlgetUserById(userId));
+  const allChannelsList = useSelector(selectAllChannels());
+  const userData = useSelector(getRoomUsersById(userId));
 
   const userItem = ({ item }) => {
     if (allChannelsList[item] === undefined) return;
@@ -32,7 +31,7 @@ function UserDetailsScreen(item) {
   };
 
   useEffect(() => {
-    dispatch(userControlGetAllChannels()); // hakee tämän varmuudeksi aina details sivulle mennessä
+    dispatch(getAllChannels()); // hakee tämän varmuudeksi aina details sivulle mennessä
   }, []);
 
   const onDeleteUser = async () => {
@@ -65,7 +64,7 @@ function UserDetailsScreen(item) {
             <AppText>{userData.firstName} </AppText>
             <AppText>{userData.lastName}</AppText>
           </View>
-          <AppText>User channels:</AppText>
+          {/* <AppText>User channels:</AppText>
           {userData.userRooms.length > 0 && (
             <FlatList
               ItemSeparatorComponent={() => <ListItemSeparator />}
@@ -74,7 +73,7 @@ function UserDetailsScreen(item) {
               keyExtractor={(data) => data}
               renderItem={userItem}
             />
-          )}
+          )} */}
 
           {userData.status === "archived" ? (
             <AppButton

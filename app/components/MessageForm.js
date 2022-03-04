@@ -17,7 +17,7 @@ import SendButton from "./SendButton";
 import ImageInputList from "./imageComponents/ImageInputList";
 import imageFuncs from "../../utility/imageFuncs";
 import { navigationRef } from "../../app/navigation/rootNavigation";
-import { deleteUser } from "../../store/usersControl";
+
 import AppText from "./AppText";
 import { error as errorToast } from "../../store/general";
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
