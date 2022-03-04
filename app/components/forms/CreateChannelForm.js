@@ -6,7 +6,7 @@ import AppForm from "./AppForm";
 import AppFormField from "./AppFormField";
 import SubmitButton from "./SubmitButton";
 import { useDispatch, useStore } from "react-redux";
-import { createChannel } from "../../../store/rooms";
+import { createChannel, getRoomByName } from "../../../store/rooms";
 
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Channel name"),

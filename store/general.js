@@ -18,14 +18,14 @@ const slice = createSlice({
     successMessageAdded: (general, action) => {
       // console.log(action.payload, "Tämä viesti menee toastiin!");
 
-      general.successMessageVisibleTime = 3000;
+      general.successMessageVisibleTime = 2000;
       general.successMessage = action.payload;
     },
     errorMessageCleared: (general, action) => {
       general.errorMessage = null;
     },
     successMessageCleared: (general, action) => {
-      general.errorMessage = null;
+      general.successMessage = null;
     },
   },
 });

@@ -30,7 +30,10 @@ class AppSuccessToast extends React.Component {
       >
         <Toast
           ref={(toast) => (this.toast = toast)}
-          style={{ backgroundColor: colors.danger }}
+          style={{
+            backgroundColor: colors.success,
+            height: 40,
+          }}
           position="top"
           positionValue={0}
           fadeInDuration={200}

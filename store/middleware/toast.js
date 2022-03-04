@@ -1,4 +1,5 @@
-import { successMessageAdded } from "../general";
+import { errorMessageAdded, successMessageAdded } from "../general";
+import { setRoomLoadingToFalse } from "../rooms";
 
 const toast =
   ({ dispatch, getState }) =>
@@ -14,8 +15,18 @@ const toast =
 
     switch (action.type) {
       case "rooms/membersChanged":
-        dispatch(successMessageAdded("onnnistui "));
+        dispatch(successMessageAdded("Users changed"));
         break;
+      case "currentUser/loginFailed":
+        dispatch(errorMessageAdded(action.payload));
+        break;
+      case "rooms/roomsError":
+        dispatch(errorMessageAdded(action.payload));
+        dispatch(setRoomLoadingToFalse());
+        break;
+      // case "rooms/roomCreated":
+      //   dispatch(errorMessageAdded(action.payload));
+      //   break;
 
       default:
         next(action);

@@ -69,7 +69,7 @@ const api =
               ? error.response.data || error.response.message
               : "Something faild",
         });
-        dispatch(errorMessageAdded(error.response.data));
+        // dispatch(errorMessageAdded(error.response.data));
       }
     }
   };

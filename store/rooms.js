@@ -201,8 +201,6 @@ export const activateRoom = (roomId, userId) =>
     onError: roomsError.type,
   });
 
-//tämä toki id:llä ja eri lailla
-
 export const getRoomMembersById = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
