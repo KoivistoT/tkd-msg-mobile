@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
+import EditUserModal from "../app/components/modals/EditUserModal";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import {
@@ -75,6 +76,7 @@ function UserDetailsScreen(item) {
             />
           )} */}
 
+          <EditUserModal userId={userData._id} />
           {userData.status === "archived" ? (
             <AppButton
               title={"activate user"}

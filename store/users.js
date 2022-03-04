@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
-import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
 
 const slice = createSlice({
@@ -10,6 +9,7 @@ const slice = createSlice({
     allUsers: [],
     allChannels: [],
     errorMessage: null,
+    loading: false,
   },
   reducers: {
     // action => action handler
@@ -33,6 +33,12 @@ const slice = createSlice({
     },
     userCreated: (users, action) => {
       console.log(action.payload, "User lisätty");
+    },
+    userDataEdited: (users, action) => {
+      users.allUsers[action.payload._id] = action.payload.newUserData;
+    },
+    requestSuccess: (users, action) => {
+      users.loading = false;
     },
     userArchived: (users, action) => {
       users.allUsers[action.payload].status = "archived";
@@ -63,6 +69,8 @@ export const {
   channelsResived,
   userActivated,
   usersErrorCleared,
+  userDataEdited,
+  requestSuccess,
   userTemporaryDeleted,
   userArchived,
 } = slice.actions;
@@ -119,14 +127,36 @@ export const createUser = (
       email,
       status,
     },
-    onSuccess: userCreated.type,
+    onSuccess: requestSuccess.type,
+    onError: usersError.type,
+  });
+export const editUserData = (
+  accountType,
+  displayName,
+  firstName,
+  lastName,
+  email,
+  userId
+) =>
+  apiCallBegan({
+    url: url + "/edit_user_data",
+    method: "post",
+    data: {
+      accountType,
+      displayName,
+      firstName,
+      lastName,
+      email,
+      userId,
+    },
+    onSuccess: requestSuccess.type,
     onError: usersError.type,
   });
 
 export const activateUserById = (userId) =>
   apiCallBegan({
     url: url + "/activate_user/" + userId,
-    // onSuccess: userControlUserDeleted.type,
+    onSuccess: requestSuccess.type,
     onError: usersError.type,
   });
 

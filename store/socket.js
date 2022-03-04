@@ -26,6 +26,8 @@ import {
   userDeleted,
   userActivated,
   userTemporaryDeleted,
+  userDataChanged,
+  userDataEdited,
 } from "./users";
 
 const slice = createSlice({
@@ -114,6 +116,10 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         if (type === "roomNameChanged") {
           const requestData = Object.values(data)[0];
           dispatch(roomNameChanged(requestData));
+        }
+        if (type === "userDataEdited") {
+          const requestData = Object.values(data)[0];
+          dispatch(userDataEdited(requestData));
         }
         if (type === "userActivated") {
           const userId = Object.keys(data);
