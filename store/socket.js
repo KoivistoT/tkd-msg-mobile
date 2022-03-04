@@ -26,7 +26,6 @@ import {
   userDeleted,
   userActivated,
   userTemporaryDeleted,
-  userDataChanged,
   userDataEdited,
 } from "./users";
 
@@ -67,12 +66,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       }
 
       socket.on("updates", (type, data) => {
-        // tee casella
-
         if (type === "roomAdded") {
-          const roomId = data[Object.keys(data)]._id; // vai olisiko data[0]._id tämä
-          const roomData = data[Object.keys(data)];
-          // console.log(roomId, "tässä tämä");
+          const roomId = Object.keys(data);
+          const roomData = Object.values(data)[0];
           dispatch(roomAdded(data));
           dispatch(getMessagesbyId(roomId));
           dispatch(getRoomImages(roomId));
@@ -84,7 +80,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
           }
         }
-
         if (type === "roomRemoved") {
           const roomId = Object.keys(data);
           socket.emit("unsubscribe", roomId);
@@ -108,7 +103,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           const userId = Object.keys(data);
           dispatch(userArchived(userId));
         }
-
         if (type === "roomArchived") {
           const roomId = Object.keys(data);
           dispatch(roomArchived(roomId));
@@ -131,14 +125,16 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
 
         if (type === "membersChanged") {
-          dispatch(membersChanged(data[Object.keys(data)]));
+          dispatch(membersChanged(Object.values(data)[0]));
         }
       });
+
       socket.emit("identity", getState().auth.currentUser._id, accountType); //hard code pois
 
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
       }
+
       getState().auth.currentUser.userRooms.forEach((roomId) => {
         socket.emit("subscribe", roomId);
       });
