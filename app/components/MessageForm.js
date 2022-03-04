@@ -28,17 +28,16 @@ import getPrivateRoomOtherUser from "../../utility/getPrivateRoomOtherUser";
 import getRoomActiveMembersSum from "../../utility/getRoomActiveMembersSum";
 import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
 import getRoomTitle from "../../utility/getRoomTitle";
+import { allUsers } from "../../store/users";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
   const [photos, setPhotos] = useState([]);
-  // const roomData =  item.route.params;
   const roomData = useSelector(getRoomDataById(item.route.params._id));
-
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsersList = store.getState().entities.users.allUsers;
+  const allUsersList = useSelector(allUsers()); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
 
   const otherUser =
@@ -53,7 +52,7 @@ function MessageForm({ item }) {
     return () => {
       dispatch(activeRoomIdClearer());
     };
-  }, [roomMembers, roomData]);
+  }, [roomMembers, roomData, allUsersList]);
 
   const getSubTitle = () => {
     if (!roomMembers) return;
