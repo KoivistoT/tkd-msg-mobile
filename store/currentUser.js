@@ -92,25 +92,18 @@ export default slice.reducer;
 
 const url = settings.apiUrl;
 
-export const getInitialData = () => (dispatch, getState) => {
-  // currentUserInit({
-
-  return dispatch(
-    apiCallBegan({
-      // method: "post",
-      url: url + "/initial/" + getState().auth.currentUser._id,
-      onInitSuccess: {
-        init: true,
-        user: userResived.type,
-        rooms: roomsResived.type,
-        messages: messagesResived.type,
-        images: allImagesResived.type,
-        users: usersResived.type,
-      },
-      // onError: loginFailed.type,
-    })
-  );
-};
+export const getInitialData = () =>
+  apiCallBegan({
+    url: url + "/initial",
+    onInitSuccess: {
+      init: true,
+      user: userResived.type,
+      rooms: roomsResived.type,
+      messages: messagesResived.type,
+      images: allImagesResived.type,
+      users: usersResived.type,
+    },
+  });
 
 export const login = (email, password) =>
   //pitääkö olla et katsoo onko jo käuyttäjä
