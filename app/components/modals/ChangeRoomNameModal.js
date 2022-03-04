@@ -9,7 +9,7 @@ import ChangeRoomNameForm from "../forms/ChangeRoomNameForm";
 
 function ChangeRoomNameModal({ roomId, roomNameNow }) {
   const [modalVisible, setModalVisible] = useState(false);
-  //huom ei react-native-modal
+
   return (
     <View>
       <Modal visible={modalVisible} animationType="slide" style={styles.modal}>

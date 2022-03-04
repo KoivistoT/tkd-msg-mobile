@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Constants from "expo-constants";
-import { Dimensions } from "react-native";
 import {
   StyleSheet,
   Modal,
@@ -114,9 +112,7 @@ function NewDirectRoomModal() {
 }
 
 const styles = StyleSheet.create({
-  modal: {},
   name: { marginLeft: 20 },
   usersList: { margin: 20 },
-  button: {},
 });
 export default NewDirectRoomModal;
