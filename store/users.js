@@ -6,7 +6,7 @@ import { createSelector } from "reselect";
 const slice = createSlice({
   name: "users",
   initialState: {
-    allUsers: [],
+    allUsers: [], //nämä voi olla kai objecteja, myös muualla ?
     allChannels: [],
     errorMessage: null,
     loading: false,
