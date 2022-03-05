@@ -82,7 +82,7 @@ function NewDirectRoomModal() {
           <View>
             {selectedUsers.map((item) => (
               <AppText key={item}>
-                {allUsersList.length !== 0
+                {allUsersList
                   ? `${allUsersList[item].firstName} ${allUsersList[item].lastName}`
                   : ""}
               </AppText>

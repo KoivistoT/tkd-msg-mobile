@@ -171,7 +171,38 @@ export const getRoomUsersById = (userId) =>
 export const allUsers = () =>
   createSelector(
     (state) => state.entities.users,
-    (users) => users.allUsers
+    (users) => {
+      const a = Object.values(users.allUsers).map((user) =>
+        (({
+          _id,
+          firstName,
+          lastName,
+          accountType,
+          displayName,
+          email,
+          phone,
+          status,
+          userRooms,
+        }) => ({
+          [_id]: {
+            _id,
+            firstName,
+            lastName,
+            accountType,
+            displayName,
+            email,
+            phone,
+            status,
+            userRooms,
+          },
+        }))(user)
+      );
+      const b = a.reduce((newObject, item) => {
+        return Object.assign(newObject, item);
+      }, {});
+
+      return Object.keys(b).length > 0 ? b : null;
+    }
   );
 
 export const selectAllChannels = () =>
