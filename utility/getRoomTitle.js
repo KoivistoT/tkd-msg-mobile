@@ -2,7 +2,7 @@
 // import getPrivateRoomTitle from "./getPrivateRoomTitle"; // näitä ei kai tarvi
 
 export default getRoomTitle = (item, allUsers, currentUserId) => {
-  console.log("täällä menee");
+  // console.log("täällä menee"); // tämä päivittyy turhaa useasti
   if (allUsers === {} || !allUsers || !item) return;
   if (item.type === "private")
     return getPrivateRoomTitle(item.members, currentUserId, allUsers); //tämäkin voisi olla utility functiosta

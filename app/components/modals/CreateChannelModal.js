@@ -16,7 +16,6 @@ import Screen from "../Screen";
 import CreateChannelForm from "../forms/CreateChannelForm";
 
 function CreateChannelModal({}) {
-  console.log("käy täällä");
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>

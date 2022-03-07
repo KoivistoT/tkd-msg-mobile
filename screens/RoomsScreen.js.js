@@ -30,15 +30,14 @@ function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
   const userRooms = useSelector(getUserRooms);
   const store = useStore();
-  const state = store.getState();
+
   const currentUserId = store.getState().auth.currentUser._id;
   // const allUsers1 = useSelector(selectAllUsers1);
   const allUsers = useSelector(selectAllUsers2);
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
-  if (allUsers === null || Object.keys(allUsers).length === 0)
-    console.log("on null");
-  // console.log(...allUsers1, "selectAllUsers1");
-
+  // if (allUsers === null || Object.keys(allUsers).length === 0)
+  // console.log("on null");
+  console.log("päivittää tällä", currentUserId);
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
