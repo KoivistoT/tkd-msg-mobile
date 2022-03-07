@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -6,11 +6,12 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  AppState,
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
-import { disconnectSocket } from "../store/socket";
+import { disconnectSocket, selectSocket } from "../store/socket";
 // import RoomsListItem from "../app/components/RoomsListItem";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
@@ -24,6 +25,7 @@ import {
   selectAllUsers1,
   selectAllUsers2,
   selectUserRoomsAndAllUsers,
+  usersLiveResived,
 } from "../store/users";
 
 function RoomsScreen({ navigation }) {
@@ -42,6 +44,42 @@ function RoomsScreen({ navigation }) {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
   };
+
+  // tämä users live osuus, voisiko olla muualla
+  // tämä users live osuus, voisiko olla muualla
+  // tämä users live osuus, voisiko olla muualla
+  const socket = useSelector(selectSocket);
+
+  const handleChange = (newState) => {
+    if (newState === "active") {
+      // clearBadge();
+      socket.emit("onLive", currentUserId);
+      socket.on("onLive", (data) => {
+        // console.log(data, "livenä tulee");
+        // const userId = getState().auth.currentUser._id;
+        dispatch(usersLiveResived(data));
+        // console.log(data.users, userId, "<---tällä");
+      });
+      console.log("nyt actiivinen on");
+    } else {
+      socket.emit("offLive", currentUserId);
+      socket.off("onLive");
+      console.log("nyt ei ole actiivinen");
+    }
+  };
+
+  useEffect(() => {
+    if (socket) {
+      handleChange(AppState.currentState);
+      AppState.addEventListener("change", handleChange);
+    }
+    return () => {
+      AppState.removeEventListener("change", handleChange);
+    };
+  }, [socket]);
+  // tämä users live osuus, voisiko olla muualla
+  // tämä users live osuus, voisiko olla muualla
+  // tämä users live osuus, voisiko olla muualla
 
   const keyExtractor = (item) => item._id;
   const listItem = ({ item }) => {

@@ -29,11 +29,12 @@ function MessageScreen(item) {
   useEffect(() => {
     // socket.emit("getUsers");
     // socket.on("users live", (data) => {
-    //   setUsersLive(data.users);
+    //   // setUsersLive(data.users);
+    //   console.log(data.users);
     // });
     // return () => {
     //   socket.off("users live");
-    // };c
+    // };
     // if (roomData.type === "private") {
     // setHeader();
     // }

@@ -12,7 +12,7 @@ const slice = createSlice({
   name: "users",
   initialState: {
     allUsers: {}, //nämä voi olla kai objecteja, myös muualla ?
-
+    usersLive: {},
     myTestArray: [
       { a: 1, text: "eka" },
       { a: 1, text: "toinen" },
@@ -31,6 +31,10 @@ const slice = createSlice({
     },
     userActivated: (users, action) => {
       users.allUsers[action.payload].status = "active";
+    },
+    usersLiveResived: (users, action) => {
+      users.usersLive = action.payload;
+      // console.log(users.myTestArray);
     },
     itemAdded: (users, action) => {
       users.myTestArray[0].a = 2 * users.myTestArray[0].a;
@@ -93,6 +97,7 @@ export const {
   usersResived,
   usersError,
   userCreated,
+  usersLiveResived,
   newUserResived,
   userDeleted,
   channelsResived,
@@ -221,6 +226,11 @@ export const getUsersById = (userId) =>
     (state) => state.entities.users,
     (users) => users.allUsers[userId]
   );
+
+export const selectLiveUsers = createSelector(
+  (state) => state.entities.users,
+  (users) => users.usersLive
+);
 const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
 
 // export const selectMyItems = createSelector(

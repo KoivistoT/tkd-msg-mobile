@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, TouchableOpacity, Text, View, LogBox } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  AppState,
+  Text,
+  View,
+  LogBox,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";

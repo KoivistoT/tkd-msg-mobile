@@ -139,6 +139,8 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         socket.emit("subscribe", roomId);
       });
 
+      socket.emit("getUsers");
+
       socket.on("new message", (data) => {
         dispatch(newMessageResived(data.message));
       });
