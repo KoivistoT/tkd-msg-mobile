@@ -27,7 +27,6 @@ const slice = createSlice({
       rooms.loading = false;
     },
     activeRoomIdCleared: (rooms, action) => {
-      alert("clearaa");
       rooms.activeRoomId = null;
     },
     requestStarted: (rooms, action) => {

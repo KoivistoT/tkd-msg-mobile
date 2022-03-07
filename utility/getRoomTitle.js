@@ -1,5 +1,5 @@
-import getDirectRoomTitle from "./getDirectRoomTitle"; // näitä ei kai tarvi
-import getPrivateRoomTitle from "./getPrivateRoomTitle"; // näitä ei kai tarvi
+// import getDirectRoomTitle from "./getDirectRoomTitle"; // näitä ei kai tarvi
+// import getPrivateRoomTitle from "./getPrivateRoomTitle"; // näitä ei kai tarvi
 
 export default getRoomTitle = (item, allUsers, currentUserId) => {
   console.log("täällä menee");

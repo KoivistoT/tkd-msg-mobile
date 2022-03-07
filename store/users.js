@@ -11,7 +11,7 @@ import memoize from "proxy-memoize";
 const slice = createSlice({
   name: "users",
   initialState: {
-    allUsers: [], //nämä voi olla kai objecteja, myös muualla ?
+    allUsers: {}, //nämä voi olla kai objecteja, myös muualla ?
 
     myTestArray: [
       { a: 1, text: "eka" },
@@ -46,25 +46,25 @@ const slice = createSlice({
       console.log(action.payload, "User lisätty");
     },
     userDataEdited: (users, action) => {
-      console.log(
-        "tässä tämä tieti---------------------------------------",
-        deepEqual(
-          users.allUsers[action.payload._id],
-          action.payload.newUserData
-        )
-      );
-      if (
-        deepEqual(
-          users.allUsers[action.payload._id],
-          action.payload.newUserData
-        )
-      ) {
-        console.log("ovat samoja ei päivitä");
-        return;
-      } else {
-        console.log("eivät ole samoja");
-        users.allUsers[action.payload._id] = action.payload.newUserData;
-      }
+      // console.log(
+      //   "tässä tämä tieti---------------------------------------",
+      //   deepEqual(
+      //     users.allUsers[action.payload._id],
+      //     action.payload.newUserData
+      //   )
+      // );
+      // if (
+      //   deepEqual(
+      //     users.allUsers[action.payload._id],
+      //     action.payload.newUserData
+      //   )
+      // ) {
+      //   console.log("ovat samoja ei päivitä");
+      //   return;
+      // } else {
+      //   console.log("eivät ole samoja");
+      users.allUsers[action.payload._id] = action.payload.newUserData;
+      // }
     },
     requestSuccess: (users, action) => {
       users.loading = false;
@@ -356,12 +356,10 @@ export const selectAllUsers = createSelector(
   }
 );
 
-const getMyValues = (object) => {};
 export const selectAllUsers2 = memoize((state) => {
   console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
   return Object.values(state.entities.users.allUsers).reduce(
     (newObject, item) => {
-      console.log("laskee tokasssa 5-5--5-5--5-5--5-5--5-");
       const {
         _id,
         firstName,
@@ -383,7 +381,7 @@ export const selectAllUsers2 = memoize((state) => {
           email,
           phone,
           status,
-          userRooms,
+          userRooms: [...userRooms],
         },
       });
     },
@@ -393,34 +391,29 @@ export const selectAllUsers2 = memoize((state) => {
 
 export const selectAllUsers1 = memoize((state) => {
   console.log("laskee ekassa 1111111");
-  return Object.values(state.entities.users.allUsers).reduce(
-    (newObject, item) => {
-      console.log("laskee tokasssa 22222222");
-      const {
-        _id,
+  console.log("computingcomputingcomputingcomputingcomputingcomputing");
+  return Object.values(state.entities.users.allUsers).map((item) => {
+    const {
+      firstName,
+      _id,
+      accountType,
+      is_active,
+      email,
+      phone,
+      status,
+      userRooms,
+    } = item;
+    return {
+      [_id]: {
         firstName,
-
+        _id,
         accountType,
-        displayName,
+        is_active,
         email,
         phone,
         status,
-        userRooms,
-      } = item;
-      return Object.assign(newObject, {
-        [_id]: {
-          _id,
-          firstName,
-
-          accountType,
-          displayName,
-          email,
-          phone,
-          status,
-          userRooms,
-        },
-      });
-    },
-    []
-  );
+        userRooms: [...userRooms],
+      },
+    };
+  });
 });

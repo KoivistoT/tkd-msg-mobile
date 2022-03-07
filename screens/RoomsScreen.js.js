@@ -27,21 +27,18 @@ import {
 } from "../store/users";
 
 function RoomsScreen({ navigation }) {
-  console.log(
-    "päivittääkö tätä ____________SDfsdlfjskldfjlksdjfklsjfklsjdfkljslkdjfl"
-  );
   const dispatch = useDispatch();
   const userRooms = useSelector(getUserRooms);
   const store = useStore();
   const state = store.getState();
   const currentUserId = store.getState().auth.currentUser._id;
-  // const allUsers2 = useSelector(selectAllUsers2);
+  // const allUsers1 = useSelector(selectAllUsers1);
   const allUsers = useSelector(selectAllUsers2);
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
   if (allUsers === null || Object.keys(allUsers).length === 0)
     console.log("on null");
-  // console.log(allUsers2, "selectAllUsers2");
-  console.log("tämä");
+  // console.log(...allUsers1, "selectAllUsers1");
+
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
