@@ -11,20 +11,25 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket } from "../store/socket";
+// import RoomsListItem from "../app/components/RoomsListItem";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
 import { getUserRooms } from "../store/rooms";
-import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
-import CreateChannelModal from "../app/components/modals/CreateChannelModal";
-import { allUsers } from "../store/users";
+// import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
+import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
+// import CreateChannelModal from "../app/components/modals/CreateChannelModal";
+import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
+import { selectAllUsers, selectUserRoomsAndAllUsers } from "../store/users";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
-  const allRooms = useSelector(getUserRooms);
+  // const userRooms = useSelector(getUserRooms);
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsersList = useSelector(allUsers());
-  // console.log(allUsersList["61e6a7f6b30d002e91d67b50"]);
+  // const allUsers = useSelector(selectAllUsers());
+  const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers());
+  if (allUsers === null) console.log("on null");
+  console.log("tämä");
   const logout = () => {
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
@@ -37,7 +42,7 @@ function RoomsScreen({ navigation }) {
       <RoomsListItem
         navigation={navigation}
         item={item}
-        allUsersList={allUsersList}
+        allUsers={allUsers}
         currentUserId={currentUserId}
       />
     );
@@ -45,20 +50,20 @@ function RoomsScreen({ navigation }) {
 
   return (
     <Screen>
-      {!allRooms && (
+      {!userRooms && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
-      {allRooms && (
+      {userRooms && (
         <FlatList
-          data={sortObjectsByfield(allRooms, "roomName")}
+          data={sortObjectsByfield(userRooms, "roomName")}
           keyExtractor={keyExtractor}
           renderItem={listItem}
         />
       )}
 
       <View>
-        <CreateChannelModal />
-        <NewDirectRoomModal />
+        <MemoCreateChannelModal />
+        <MemoNewDirectRoomModal />
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>

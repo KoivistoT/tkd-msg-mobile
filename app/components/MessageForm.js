@@ -28,7 +28,7 @@ import getPrivateRoomOtherUser from "../../utility/getPrivateRoomOtherUser";
 import getRoomActiveMembersSum from "../../utility/getRoomActiveMembersSum";
 import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
 import getRoomTitle from "../../utility/getRoomTitle";
-import { allUsers } from "../../store/users";
+import { allUsers, selectAllUsers } from "../../store/users";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -37,12 +37,12 @@ function MessageForm({ item }) {
   const [photos, setPhotos] = useState([]);
   const roomData = useSelector(getRoomDataById(item.route.params._id));
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsersList = useSelector(allUsers()); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
+  const allUsers = useSelector(selectAllUsers()); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
 
   const otherUser =
     roomData.type === "private"
-      ? getPrivateRoomOtherUser(roomData.members, currentUserId, allUsersList)
+      ? getPrivateRoomOtherUser(roomData.members, currentUserId, allUsers)
       : "";
 
   useEffect(() => {
@@ -52,19 +52,19 @@ function MessageForm({ item }) {
     return () => {
       dispatch(activeRoomIdClearer());
     };
-  }, [roomMembers, roomData, allUsersList]);
+  }, [roomMembers, roomData, allUsers]);
 
   const getSubTitle = () => {
     if (!roomMembers) return;
     if (roomData.type === "private") return "View details";
-    return `Members ${getRoomActiveMembersSum(roomMembers, allUsersList)} >`;
+    return `Members ${getRoomActiveMembersSum(roomMembers, allUsers)} >`;
   };
 
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
-          title={getRoomTitle(roomData, allUsersList, currentUserId)}
+          title={getRoomTitle(roomData, allUsers, currentUserId)}
           subTitle={getSubTitle()}
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)

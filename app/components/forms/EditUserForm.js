@@ -14,7 +14,6 @@ import {
   editUserData,
   createUser,
   getAllUsers,
-  getErrorMessage,
   usersErrorCleared,
 } from "../../../store/users";
 import AppText from "../AppText";
@@ -32,7 +31,6 @@ const validationSchema = Yup.object().shape({
 });
 
 function EditUserForm({ userData, closeModal }) {
-  const errorMessage = useSelector(getErrorMessage());
   const dispatch = useDispatch();
 
   const handleSubmit = async ({
@@ -56,13 +54,13 @@ function EditUserForm({ userData, closeModal }) {
       )
     );
 
-    if (errorMessage) {
-      console.log("Ei onnistunut päonnistui");
-    } else {
-      dispatch(getAllUsers());
-      dispatch(usersErrorCleared());
-      closeModal();
-    }
+    // if (errorMessage) {
+    //   console.log("Ei onnistunut päonnistui");
+    // } else {
+    dispatch(getAllUsers());
+    dispatch(usersErrorCleared());
+    closeModal();
+    // }
   };
 
   return (

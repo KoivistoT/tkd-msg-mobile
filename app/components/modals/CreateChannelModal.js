@@ -16,6 +16,7 @@ import Screen from "../Screen";
 import CreateChannelForm from "../forms/CreateChannelForm";
 
 function CreateChannelModal({}) {
+  console.log("käy täällä");
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>
@@ -52,4 +53,11 @@ const styles = StyleSheet.create({
   },
   button: {},
 });
-export default CreateChannelModal;
+
+function areEqual(prevProps, nextProps) {
+  return true;
+}
+
+export const MemoCreateChannelModal = React.memo(CreateChannelModal, areEqual);
+
+// export default CreateChannelModal;

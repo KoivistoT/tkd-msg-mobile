@@ -5,7 +5,7 @@ import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
-import { allUsers } from "../store/users";
+import { allUsers, selectAllUsers } from "../store/users";
 import {
   activateRoom,
   archiveRoomById,
@@ -39,7 +39,7 @@ function RoomSetupScreen(item) {
     roomName,
   } = item.route.params;
 
-  const allUsersList = useSelector(allUsers());
+  const allUsers = useSelector(selectAllUsers());
   const roomMembers = useSelector(getRoomMembersById(roomId));
   const currentUserData = useSelector(getCurrentUserData);
 
@@ -55,7 +55,7 @@ function RoomSetupScreen(item) {
 
   const onLeaveRoom = async () => {
     let result;
-    const activeMembers = getRoomActiveMembersSum(roomMembers, allUsersList);
+    const activeMembers = getRoomActiveMembersSum(roomMembers, allUsers);
     if (activeMembers) {
       result = await confirmAlert(
         "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",
@@ -149,12 +149,12 @@ function RoomSetupScreen(item) {
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
         {selectedUsers.map((item) => {
-          if (allUsersList[item].status === "deleted") return;
-          if (allUsersList[item].status === "archived") return;
+          if (allUsers[item].status === "deleted") return;
+          if (allUsers[item].status === "archived") return;
           return (
             <AppText
               key={item}
-            >{`${allUsersList[item].firstName} ${allUsersList[item].lastName}`}</AppText>
+            >{`${allUsers[item].firstName} ${allUsers[item].lastName}`}</AppText>
           );
         })}
       </ScrollView>
@@ -162,10 +162,10 @@ function RoomSetupScreen(item) {
         <AppButton title={"save changes"} onPress={onSaveChanges} />
       )}
 
-      {roomType !== "private" && roomStatus !== "archived" && allUsersList && (
+      {roomType !== "private" && roomStatus !== "archived" && allUsers && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}
-          data={Object.values(allUsersList)}
+          data={Object.values(allUsers)}
           bounces={false}
           keyExtractor={listKeyExtractor}
           renderItem={listItem}

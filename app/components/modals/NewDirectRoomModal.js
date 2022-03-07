@@ -13,7 +13,7 @@ import AppButton from "../AppButton";
 import AppText from "../AppText";
 import Screen from "../Screen";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { allUsers } from "../../../store/users";
+import { allUsers, selectAllUsers } from "../../../store/users";
 import ListItemSeparator from "../ListItemSeparator";
 import AppCheckBox from "../AppCheckBox";
 import { createDirectRoom } from "../../../store/rooms";
@@ -23,7 +23,7 @@ function NewDirectRoomModal() {
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsersList = useSelector(allUsers());
+  const allUsers = useSelector(selectAllUsers());
 
   const listKeyExtractor = (data) => data._id;
 
@@ -80,19 +80,20 @@ function NewDirectRoomModal() {
           </TouchableOpacity>
           <AppButton title="Create room" onPress={onCreateRoom} />
           <View>
-            {selectedUsers.map((item) => (
-              <AppText key={item}>
-                {allUsersList
-                  ? `${allUsersList[item].firstName} ${allUsersList[item].lastName}`
-                  : ""}
-              </AppText>
-            ))}
+            {allUsers &&
+              selectedUsers.map((item) => (
+                <AppText key={item}>
+                  {allUsers
+                    ? `${allUsers[item].firstName} ${allUsers[item].lastName}`
+                    : ""}
+                </AppText>
+              ))}
           </View>
           <View style={styles.usersList}>
-            {allUsersList && (
+            {allUsers && (
               <FlatList
                 ItemSeparatorComponent={() => <ListItemSeparator />}
-                data={Object.values(allUsersList)}
+                data={Object.values(allUsers)}
                 bounces={false}
                 keyExtractor={listKeyExtractor}
                 renderItem={listItem}
@@ -115,4 +116,9 @@ const styles = StyleSheet.create({
   name: { marginLeft: 20 },
   usersList: { margin: 20 },
 });
-export default NewDirectRoomModal;
+
+function areEqual(prevProps, nextProps) {
+  return true;
+}
+export const MemoNewDirectRoomModal = React.memo(NewDirectRoomModal, areEqual);
+// export default NewDirectRoomModal;

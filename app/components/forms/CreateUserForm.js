@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Keyboard, ScrollView } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
-import ErrorMessage from "../ErrorMessage";
+
 import AppForm from "../forms/AppForm";
 import AppFormField from "../forms/AppFormField";
 import SubmitButton from "../forms/SubmitButton";
@@ -16,7 +16,6 @@ import AppFormPicker from "./AppFormPicker";
 import {
   createUser,
   getAllUsers,
-  getErrorMessage,
   usersErrorCleared,
 } from "../../../store/users";
 
@@ -36,7 +35,6 @@ const validationSchema = Yup.object().shape({
 function CreateUserForm({ navigation, closeModal }) {
   const [loading, setLoading] = useState(false);
 
-  const errorMessage = useSelector(getErrorMessage());
   const dispatch = useDispatch();
 
   const handleSubmit = async ({
@@ -61,14 +59,14 @@ function CreateUserForm({ navigation, closeModal }) {
       )
     );
 
-    if (errorMessage) {
-      console.log("Ei onnistunut päonnistui");
-      setLoading(false);
-    } else {
-      dispatch(getAllUsers());
-      dispatch(usersErrorCleared());
-      closeModal();
-    }
+    // if (errorMessage) {
+    //   console.log("Ei onnistunut päonnistui");
+    //   setLoading(false);
+    // } else {
+    dispatch(getAllUsers());
+    dispatch(usersErrorCleared());
+    closeModal();
+    // }
   };
 
   return (

@@ -5,7 +5,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import { allUsers } from "../store/users";
+import { allUsers, selectAllUsers } from "../store/users";
 import colors from "../config/colors";
 import routes from "../app/navigation/routes";
 import AppButton from "../app/components/AppButton";
@@ -20,7 +20,7 @@ function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const userId = store.getState().auth.currentUser._id;
-  const allUsersList = useSelector(allUsers());
+  const allUsers = useSelector(selectAllUsers());
 
   const listKeyExtractor = (data) => data._id;
 
@@ -74,10 +74,10 @@ function ContactsScreen({ navigation }) {
 
   return (
     <Screen>
-      {allUsersList && (
+      {allUsers && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}
-          data={Object.values(allUsersList)}
+          data={Object.values(allUsers)}
           bounces={false}
           keyExtractor={listKeyExtractor}
           renderItem={listItem}

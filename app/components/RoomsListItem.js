@@ -6,7 +6,7 @@ import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
 import getRoomTitle from "../../utility/getRoomTitle";
 import AppText from "./AppText";
 
-function RoomsListItem({ item, navigation, allUsersList, currentUserId }) {
+function RoomsListItem({ item, navigation, allUsers, currentUserId }) {
   return (
     <TouchableOpacity
       style={{
@@ -15,7 +15,7 @@ function RoomsListItem({ item, navigation, allUsersList, currentUserId }) {
       }}
       onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
     >
-      {allUsersList && (
+      {allUsers && (
         <AppText
           style={{
             color: "black",
@@ -24,7 +24,7 @@ function RoomsListItem({ item, navigation, allUsersList, currentUserId }) {
           }}
           key={item._id}
         >
-          {getRoomTitle(item, allUsersList, currentUserId)}
+          {getRoomTitle(item, allUsers, currentUserId)}
         </AppText>
       )}
     </TouchableOpacity>
@@ -35,4 +35,5 @@ const styles = StyleSheet.create({
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
 });
+
 export default RoomsListItem;

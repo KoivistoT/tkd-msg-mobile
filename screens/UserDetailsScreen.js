@@ -8,11 +8,9 @@ import EditUserModal from "../app/components/modals/EditUserModal";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import {
-  getRoomUsersById,
+  getUsersById,
   activateUserById,
   archiveOrDeleteUserById,
-  getAllChannels,
-  selectAllChannels,
 } from "../store/users";
 
 import confirmAlert from "../utility/confirmAlert";
@@ -21,19 +19,8 @@ function UserDetailsScreen(item) {
   const dispatch = useDispatch();
 
   const userId = item.route.params._id;
-  const allChannelsList = useSelector(selectAllChannels());
-  const userData = useSelector(getRoomUsersById(userId));
 
-  const userItem = ({ item }) => {
-    if (allChannelsList[item] === undefined) return;
-    return (
-      <AppText style={styles.name}>{allChannelsList[item].roomName}</AppText>
-    );
-  };
-
-  useEffect(() => {
-    dispatch(getAllChannels()); // hakee tämän varmuudeksi aina details sivulle mennessä
-  }, []);
+  const userData = useSelector(getUsersById(userId));
 
   const onDeleteUser = async () => {
     const result = await confirmAlert("Haluatko poistaa käyttäjän", "");

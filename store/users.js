@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
-import { createSelector } from "reselect";
+import { createSelector as memoCreateSelector } from "reselect";
 
 const slice = createSlice({
   name: "users",
@@ -162,32 +162,34 @@ export const activateUserById = (userId) =>
     onError: usersError.type,
   });
 
-export const getRoomUsersById = (userId) =>
+export const getUsersById = (userId) =>
   createSelector(
     (state) => state.entities.users,
     (users) => users.allUsers[userId]
   );
 
-export const allUsers = () =>
+export const selectUserRoomsAndAllUsers = () =>
   createSelector(
-    (state) => state.entities.users,
-    (users) => {
-      const a = Object.values(users.allUsers).map((user) =>
-        (({
+    (state) => state.entities.users.allUsers,
+    (state) => state.entities.rooms.allRooms,
+    (allUsers, userRooms) => {
+      const objects = Object.values(allUsers).reduce((newObject, item) => {
+        const {
           _id,
           firstName,
-          lastName,
+
           accountType,
           displayName,
           email,
           phone,
           status,
           userRooms,
-        }) => ({
+        } = item;
+        return Object.assign(newObject, {
           [_id]: {
             _id,
             firstName,
-            lastName,
+
             accountType,
             displayName,
             email,
@@ -195,24 +197,49 @@ export const allUsers = () =>
             status,
             userRooms,
           },
-        }))(user)
-      );
-      const b = a.reduce((newObject, item) => {
-        return Object.assign(newObject, item);
+        });
       }, {});
 
-      return Object.keys(b).length > 0 ? b : null;
+      return Object.keys(objects).length > 0
+        ? { allUsers: objects, userRooms }
+        : { allUsers: null, userRooms: null };
     }
   );
 
-export const selectAllChannels = () =>
+export const selectAllUsers = () =>
   createSelector(
     (state) => state.entities.users,
-    (users) => users.allChannels
-  );
+    (users) => {
+      const objects = Object.values(users.allUsers).reduce(
+        (newObject, item) => {
+          const {
+            _id,
+            firstName,
 
-export const getErrorMessage = () =>
-  createSelector(
-    (state) => state.entities.users,
-    (users) => users.errorMessage
+            accountType,
+            displayName,
+            email,
+            phone,
+            status,
+            userRooms,
+          } = item;
+          return Object.assign(newObject, {
+            [_id]: {
+              _id,
+              firstName,
+
+              accountType,
+              displayName,
+              email,
+              phone,
+              status,
+              userRooms,
+            },
+          });
+        },
+        {}
+      );
+
+      return Object.keys(objects).length > 0 ? objects : null;
+    }
   );
