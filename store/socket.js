@@ -4,7 +4,6 @@ import io from "socket.io-client";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
-
 import {
   getMessagesbyId,
   getRoomImages,
@@ -138,8 +137,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       getState().auth.currentUser.userRooms.forEach((roomId) => {
         socket.emit("subscribe", roomId);
       });
-
-      socket.emit("getUsers");
 
       socket.on("new message", (data) => {
         dispatch(newMessageResived(data.message));

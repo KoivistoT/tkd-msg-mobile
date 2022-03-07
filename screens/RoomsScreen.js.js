@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -61,6 +61,7 @@ function RoomsScreen({ navigation }) {
         // console.log(data.users, userId, "<---tällä");
       });
       console.log("nyt actiivinen on");
+      console.log("tulee kahdetsi onko ongelma=?==");
     } else {
       socket.emit("offLive", currentUserId);
       socket.off("onLive");
@@ -68,8 +69,10 @@ function RoomsScreen({ navigation }) {
     }
   };
 
+  const init = useRef(false);
   useEffect(() => {
     if (socket) {
+      init.current = true;
       handleChange(AppState.currentState);
       AppState.addEventListener("change", handleChange);
     }
@@ -80,7 +83,6 @@ function RoomsScreen({ navigation }) {
   // tämä users live osuus, voisiko olla muualla
   // tämä users live osuus, voisiko olla muualla
   // tämä users live osuus, voisiko olla muualla
-
   const keyExtractor = (item) => item._id;
   const listItem = ({ item }) => {
     if (item.status === "archived" && item.roomCreator !== userId) return;

@@ -56,7 +56,7 @@ function ContactsScreen({ navigation }) {
             backgroundColor: item.status === "archived" ? "yellow" : "white",
           }}
         >
-          {liveUsers.includes(item._id) && (
+          {liveUsers && liveUsers.includes(item._id) && (
             <AppText style={styles.liveIndicator}>Live</AppText>
           )}
           <View>
