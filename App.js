@@ -67,7 +67,7 @@ function App() {
   const onLogin = async () => {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
 
-    await dispatch(getInitialData());
+    await dispatch(getInitialData);
     dispatch(createSocketConnection());
     // const item = {
     //   _id: "6214ebe20f8502580b0e19a1",

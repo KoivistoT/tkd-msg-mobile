@@ -92,18 +92,17 @@ export default slice.reducer;
 
 const url = settings.apiUrl;
 
-export const getInitialData = () =>
-  apiCallBegan({
-    url: url + "/initial",
-    onInitSuccess: {
-      init: true,
-      user: userResived.type,
-      rooms: roomsResived.type,
-      messages: messagesResived.type,
-      images: allImagesResived.type,
-      users: usersResived.type,
-    },
-  });
+export const getInitialData = apiCallBegan({
+  url: url + "/initial",
+  onInitSuccess: {
+    init: true,
+    user: userResived.type,
+    rooms: roomsResived.type,
+    messages: messagesResived.type,
+    images: allImagesResived.type,
+    users: usersResived.type,
+  },
+});
 
 export const login = (email, password) =>
   //pitääkö olla et katsoo onko jo käuyttäjä
@@ -152,4 +151,7 @@ export const getCurrentUserRooms = createSelector(
   (auth) => auth.currentUser.userRooms
 );
 
-export const getCurrentUserData = (state) => state.auth.currentUser;
+export const getCurrentUserData = createSelector(
+  (state) => state.auth,
+  (auth) => auth.currentUser
+);

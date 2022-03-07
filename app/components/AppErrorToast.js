@@ -13,7 +13,7 @@ class AppErrorToast extends React.Component {
         this.props.errorMessage,
         this.props.errorMessageVisibleTime
       );
-      this.props.clearErrorMessage();
+      // this.props.clearErrorMessage(); // ei tuolla mitään  jotta ei rendaa
     }
   }
 

@@ -19,16 +19,28 @@ import { getUserRooms } from "../store/rooms";
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 // import CreateChannelModal from "../app/components/modals/CreateChannelModal";
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
-import { selectAllUsers, selectUserRoomsAndAllUsers } from "../store/users";
+import {
+  selectAllUsers,
+  selectAllUsers1,
+  selectAllUsers2,
+  selectUserRoomsAndAllUsers,
+} from "../store/users";
 
 function RoomsScreen({ navigation }) {
+  console.log(
+    "päivittääkö tätä ____________SDfsdlfjskldfjlksdjfklsjfklsjdfkljslkdjfl"
+  );
   const dispatch = useDispatch();
-  // const userRooms = useSelector(getUserRooms);
+  const userRooms = useSelector(getUserRooms);
   const store = useStore();
+  const state = store.getState();
   const currentUserId = store.getState().auth.currentUser._id;
-  // const allUsers = useSelector(selectAllUsers());
-  const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers());
-  if (allUsers === null) console.log("on null");
+  // const allUsers2 = useSelector(selectAllUsers2);
+  const allUsers = useSelector(selectAllUsers2);
+  // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
+  if (allUsers === null || Object.keys(allUsers).length === 0)
+    console.log("on null");
+  // console.log(allUsers2, "selectAllUsers2");
   console.log("tämä");
   const logout = () => {
     dispatch(disconnectSocket());

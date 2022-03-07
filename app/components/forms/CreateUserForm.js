@@ -63,8 +63,8 @@ function CreateUserForm({ navigation, closeModal }) {
     //   console.log("Ei onnistunut päonnistui");
     //   setLoading(false);
     // } else {
-    dispatch(getAllUsers());
-    dispatch(usersErrorCleared());
+    dispatch(getAllUsers);
+
     closeModal();
     // }
   };

@@ -10,7 +10,7 @@ import CreateUserModal from "../app/components/modals/CreateUserModal";
 import UserControlListItem from "../app/components/UserControlListItem";
 
 function UsersControlScreen({ navigation }) {
-  const allUsers = useSelector(selectAllUsers());
+  const allUsers = useSelector(selectAllUsers);
 
   const listKeyExtractor = (data) => data._id;
 

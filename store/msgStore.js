@@ -130,14 +130,15 @@ export const sendMessage =
     );
   };
 
-export const selectErrorMessage = (state) =>
-  state.entities.messages.messageSendError;
+export const selectErrorMessage = createSelector(
+  (state) => state.entities.messages,
+  (messages) => messages.messageSendError
+);
 
-export const getErrorMessage = () =>
-  createSelector(
-    (state) => state.entities.messages,
-    (messages) => messages.messageSendError
-  );
+export const getErrorMessage = createSelector(
+  (state) => state.entities.messages,
+  (messages) => messages.messageSendError
+);
 
 export const test = () =>
   apiCallBegan({

@@ -1,7 +1,7 @@
-export default getDirectRoomTitle = (roomMembers, allUsers) => {
+export default getDirectRoomTitle = (roomMembers, allUsersList) => {
   let roomTitle = "";
   roomMembers.forEach((userId) => {
-    roomTitle += `${allUsers[userId].firstName}, `;
+    roomTitle += `${allUsersList[userId].firstName}, `;
   });
 
   const finalTitle = roomTitle.slice(0, roomTitle.length - 2);

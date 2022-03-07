@@ -54,13 +54,8 @@ function EditUserForm({ userData, closeModal }) {
       )
     );
 
-    // if (errorMessage) {
-    //   console.log("Ei onnistunut päonnistui");
-    // } else {
-    dispatch(getAllUsers());
-    dispatch(usersErrorCleared());
+    dispatch(getAllUsers);
     closeModal();
-    // }
   };
 
   return (
@@ -79,6 +74,9 @@ function EditUserForm({ userData, closeModal }) {
           validationSchema={validationSchema}
         >
           <>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <SubmitButton title="Save changes" />
+            </View>
             <AppFormPicker
               options={accountTypeOptions}
               autoCapitalize="none"
@@ -132,9 +130,6 @@ function EditUserForm({ userData, closeModal }) {
               name="phone"
               showLabel
             />
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <SubmitButton title="Save changes" />
-            </View>
           </>
         </AppForm>
       </ScrollView>

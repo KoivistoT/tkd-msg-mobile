@@ -163,6 +163,9 @@ export const disconnectSocket = (userId) => {
 
 export const saveSocket = (socket) => {};
 
-export const selectSocket = (state) => state.entities.socket.connection;
+export const selectSocket = createSelector(
+  (state) => state.entities.socket,
+  (socket) => socket.connection
+);
 
 export default slice.reducer;

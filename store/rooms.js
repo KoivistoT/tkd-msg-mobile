@@ -26,7 +26,8 @@ const slice = createSlice({
     setRoomLoadingToFalse: (rooms, action) => {
       rooms.loading = false;
     },
-    activeRoomIdClearer: (rooms, action) => {
+    activeRoomIdCleared: (rooms, action) => {
+      alert("clearaa");
       rooms.activeRoomId = null;
     },
     requestStarted: (rooms, action) => {
@@ -84,7 +85,7 @@ const slice = createSlice({
     roomAdded: (rooms, action) => {
       // console.log(action.payload);
 
-      rooms.allRooms = Object.assign(rooms.allRooms, action.payload);
+      Object.assign(rooms.allRooms, action.payload);
 
       // console.log(rooms.allRooms, "now");
     },
@@ -98,7 +99,7 @@ export const {
   roomsError,
   setLoading,
   roomsResived,
-  activeRoomIdClearer,
+  activeRoomIdCleared,
   activeRoomIdResived,
   roomCreated,
   setRoomLoadingToFalse,
@@ -222,14 +223,7 @@ export const getUserRooms = createSelector(
   (rooms) => rooms.allRooms
 );
 
-export const getErrorMessage = () =>
-  createSelector(
-    (state) => state.entities.rooms,
-    (rooms) => rooms.errorMessage
-  );
-
-export const getRoomLoadingStatus = () =>
-  createSelector(
-    (state) => state.entities.rooms,
-    (rooms) => rooms.loading
-  );
+export const getRoomLoadingStatus = createSelector(
+  (state) => state.entities.rooms,
+  (rooms) => rooms.loading
+);

@@ -15,7 +15,7 @@ function RoomsListItem({ item, navigation, allUsers, currentUserId }) {
       }}
       onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
     >
-      {allUsers && (
+      {Object.keys(allUsers).length > 0 && (
         <AppText
           style={{
             color: "black",

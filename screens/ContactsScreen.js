@@ -20,7 +20,7 @@ function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const userId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsers());
+  const allUsers = useSelector(selectAllUsers);
 
   const listKeyExtractor = (data) => data._id;
 
@@ -31,11 +31,11 @@ function ContactsScreen({ navigation }) {
     const index = userRooms.findIndex((room) => room.roomName === roomName);
 
     if (index !== -1) {
-      dispatch(setRoomLoadingToTrue());
+      // dispatch(setRoomLoadingToTrue());
       const roomData = userRooms[index];
       navigation.navigate(routes.MESSAGE_SCREEN, roomData);
       setTimeout(() => {
-        dispatch(setRoomLoadingToFalse());
+        // dispatch(setRoomLoadingToFalse());
       }, 300); // tämä ei tarpeen, mutta menee sujuvammin
     } else {
       dispatch(createPrivateRoom(userId, item._id));

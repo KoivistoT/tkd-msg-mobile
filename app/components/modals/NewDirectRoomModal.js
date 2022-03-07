@@ -23,7 +23,7 @@ function NewDirectRoomModal() {
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsers());
+  const allUsers = useSelector(selectAllUsers);
 
   const listKeyExtractor = (data) => data._id;
 

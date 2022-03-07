@@ -26,6 +26,7 @@
     "firebase": "^9.6.7",
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
+    "loadash": "^1.0.0",
     "moment": "^2.29.1",
     "proxy-memoize": "^0.3.7",
     "re-reselect": "^4.0.0",

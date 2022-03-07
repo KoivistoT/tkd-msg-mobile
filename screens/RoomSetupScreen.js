@@ -39,7 +39,7 @@ function RoomSetupScreen(item) {
     roomName,
   } = item.route.params;
 
-  const allUsers = useSelector(selectAllUsers());
+  const allUsers = useSelector(selectAllUsers);
   const roomMembers = useSelector(getRoomMembersById(roomId));
   const currentUserData = useSelector(getCurrentUserData);
 
@@ -86,11 +86,11 @@ function RoomSetupScreen(item) {
     if (!result) return;
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
-    dispatch(setRoomLoadingToTrue());
+    // dispatch(setRoomLoadingToTrue());
 
     dispatch(deleteRoom(roomId));
     setTimeout(() => {
-      dispatch(setRoomLoadingToFalse());
+      // dispatch(setRoomLoadingToFalse());
     }, 300); // tämä ei pakillinen, toimii vain hienommin
   };
   const onArchiveRoom = async () => {

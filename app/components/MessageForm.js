@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
 import {
   activeRoomIdResived,
-  activeRoomIdClearer,
+  activeRoomIdCleared,
   setLoading,
   setRoomLoadingToTrue,
   getRoomMembersById,
@@ -28,7 +28,12 @@ import getPrivateRoomOtherUser from "../../utility/getPrivateRoomOtherUser";
 import getRoomActiveMembersSum from "../../utility/getRoomActiveMembersSum";
 import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
 import getRoomTitle from "../../utility/getRoomTitle";
-import { allUsers, selectAllUsers } from "../../store/users";
+import {
+  allUsers,
+  itemAdded,
+  selectAllUsers,
+  selectMyItems,
+} from "../../store/users";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -37,9 +42,11 @@ function MessageForm({ item }) {
   const [photos, setPhotos] = useState([]);
   const roomData = useSelector(getRoomDataById(item.route.params._id));
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsers()); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
+  const allUsers = useSelector(selectAllUsers); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
-
+  const myArray = useSelector(selectMyItems);
+  // console.log(myArray);
+  // console.log("päivittää");
   const otherUser =
     roomData.type === "private"
       ? getPrivateRoomOtherUser(roomData.members, currentUserId, allUsers)
@@ -50,7 +57,7 @@ function MessageForm({ item }) {
     setHeader();
 
     return () => {
-      dispatch(activeRoomIdClearer());
+      dispatch(activeRoomIdCleared());
     };
   }, [roomMembers, roomData, allUsers]);
 
@@ -116,7 +123,7 @@ function MessageForm({ item }) {
   };
 
   const testi = async () => {
-    dispatch(setRoomLoadingToTrue());
+    dispatch(itemAdded());
     // dispatch(test());
   };
 
