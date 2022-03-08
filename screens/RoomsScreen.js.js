@@ -35,7 +35,7 @@ function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
   const userRooms = useSelector(getUserRooms);
   const store = useStore();
-
+  const socket = useSelector(selectSocket);
   const currentUserId = store.getState().auth.currentUser._id;
   // const allUsers1 = useSelector(selectAllUsers1);
   const allUsers = useSelector(selectAllUsersMinimal);
@@ -51,18 +51,18 @@ function RoomsScreen({ navigation }) {
     dispatch(userLoggedOut());
   };
 
-  const socket = useSelector(selectSocket);
-
   const userOnline = () => {
     socket.emit("userOnline", currentUserId);
     socket.on("userOnline", (data) => {
       dispatch(usersOnlineResived(data));
     });
   };
+
   const userOffline = () => {
     socket.emit("userOffline", currentUserId);
     socket.off("userOnline");
   };
+
   const handleChange = (newState) => {
     if (newState === "active") {
       userOnline();
@@ -76,7 +76,6 @@ function RoomsScreen({ navigation }) {
       handleChange(AppState.currentState);
       var appStateListener = AppState.addEventListener("change", handleChange);
     }
-
     return () => {
       appStateListener?.remove();
     };

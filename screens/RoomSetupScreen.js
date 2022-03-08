@@ -94,12 +94,11 @@ function RoomSetupScreen(item) {
     if (!result) return;
 
     navigationRef.current.navigate(routes.ROOM_SCREEN);
-    // dispatch(setRoomLoadingToTrue());
-
     dispatch(deleteRoom(roomId));
-    setTimeout(() => {
-      // dispatch(setRoomLoadingToFalse());
-    }, 300); // tämä ei pakillinen, toimii vain hienommin
+
+    // setTimeout(() => {
+    //    dispatch(setRoomLoadingToFalse());
+    // }, 300); // tämä ei pakillinen, toimii vain hienommin
   };
   const onArchiveRoom = async () => {
     const result = await confirmAlert(
@@ -115,8 +114,7 @@ function RoomSetupScreen(item) {
   };
 
   const onSaveChanges = () => {
-    const members = selectedUsersRef.current;
-    dispatch(change_members(roomId, members));
+    dispatch(change_members(roomId, selectedUsersRef.current));
   };
 
   const selectUser = (userId) => {

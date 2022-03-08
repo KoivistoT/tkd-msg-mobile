@@ -1,3 +1,6 @@
+import { navigationRef } from "../app/navigation/rootNavigation";
+import routes from "../app/navigation/routes";
+
 const getRoomTitle = (item, allUsers, currentUserId) => {
   // console.log("täällä menee"); // tämä päivittyy turhaa useasti
   if (allUsers === {} || !allUsers || !item) return;
