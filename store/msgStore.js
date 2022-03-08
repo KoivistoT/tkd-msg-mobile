@@ -178,3 +178,9 @@ export const selectRoomImagesByRoomId = (roomId) =>
     (state) => state.entities.msgStore,
     (msgStore) => msgStore.images[roomId]
   );
+
+export const selectMessageById = (roomId, messageId) =>
+  createSelector(
+    (state) => state.entities.msgStore,
+    (msgStore) => msgStore.allMessages[roomId].messages[messageId]
+  );

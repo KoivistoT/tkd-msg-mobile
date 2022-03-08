@@ -145,12 +145,16 @@ function MessageForm({ item }) {
   };
 
   const isReplyItem = () => {
-    return replyMessageIds.some((item) => item.roomId === roomData._id);
+    const replyMessageData = replyMessageIds.filter(
+      (item) => item.roomId === roomData._id
+    );
+    if (replyMessageData.length === 0) return false;
+    return replyMessageData[0];
   };
 
   return (
     <>
-      {isReplyItem() && <ReplyItem />}
+      {isReplyItem() && <ReplyItem item={isReplyItem()} />}
       {roomData.status !== "archived" &&
         otherUser.status !== "deleted" &&
         otherUser.status !== "archived" && (
