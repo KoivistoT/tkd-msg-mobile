@@ -21,11 +21,7 @@ import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomMo
 // import CreateChannelModal from "../app/components/modals/CreateChannelModal";
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import {
-  selectAllUsers,
-  selectAllUsers1,
-  selectAllUsers2,
   selectAllUsersMinimal,
-  selectUserRoomsAndAllUsers,
   selectUsersOnline,
   usersOnlineResived,
 } from "../store/users";
@@ -33,12 +29,12 @@ import showOnlineIndicator from "../utility/showOnlineIndicator";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
-  const userRooms = useSelector(selectUserRooms);
   const store = useStore();
+  const userRooms = useSelector(selectUserRooms);
   const socket = useSelector(selectSocket);
+  const allUsers = useSelector(selectAllUsersMinimal);
   const currentUserId = store.getState().auth.currentUser._id;
   // const allUsers1 = useSelector(selectAllUsers1);
-  const allUsers = useSelector(selectAllUsersMinimal);
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
   // if (allUsers === null || Object.keys(allUsers).length === 0)
   // console.log("on null");
@@ -104,13 +100,17 @@ function RoomsScreen({ navigation }) {
       {!socket && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
-      {Object.keys(userRooms).length !== 0 && usersOnline.length > 0 && (
-        <FlatList
-          data={sortObjectsByfield(userRooms, "roomName")}
-          keyExtractor={keyExtractor}
-          renderItem={listItem}
-        />
-      )}
+      {/* ehkä ei tarpeen olla kaikki varmistukset, ei päivitä alussa roomListItemiä niin montaa kertaa, mutta ehkä ei haittaa... */}
+      {socket &&
+        Object.keys(userRooms).length !== 0 &&
+        usersOnline.length > 0 &&
+        Object.keys(allUsers).length !== 0 && (
+          <FlatList
+            data={sortObjectsByfield(userRooms, "roomName")}
+            keyExtractor={keyExtractor}
+            renderItem={listItem}
+          />
+        )}
 
       <View>
         <MemoCreateChannelModal />

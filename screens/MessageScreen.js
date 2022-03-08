@@ -23,11 +23,6 @@ import routes from "../app/navigation/routes";
 import ScreenHeaderTitle from "../app/components/ScreenHeaderTitle";
 
 function MessageScreen(item) {
-  const dispatch = useDispatch();
-  const roomData = item.route.params;
-
-  useEffect(() => {}, []);
-
   return (
     <Screen>
       <MessageList item={item} />

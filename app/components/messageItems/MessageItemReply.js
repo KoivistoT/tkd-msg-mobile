@@ -16,9 +16,6 @@ function MessageItemReply({ item, allUsers }) {
   const messageData = useSelector(selectMessageById(roomId, messageId));
   //   console.log(messageData, "täällä messageItemReply");
 
-  // tämä ei tarvinne olla selector, voi tehdä raskaaksi
-  //ehkä tulee messageMain itemista
-
   return (
     <>
       <TouchableOpacity

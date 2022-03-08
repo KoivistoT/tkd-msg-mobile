@@ -13,6 +13,7 @@ function RoomsListItem({
   currentUserId,
   showOnlineIndicator,
 }) {
+  console.log("tämä päicittyy");
   return (
     <TouchableOpacity
       style={{

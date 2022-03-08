@@ -12,8 +12,14 @@ function MessageList({ item }) {
   const roomId = item.route.params._id;
   const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
+
+  //*********** */
+  //*********** */
   // const allUsers = store.getState().entities.users.allUsers;
-  const allUsers = useSelector(selectAllUsersMinimal);
+  const allUsers = useSelector(selectAllUsersMinimal); // tämä ei tarvinne olla selector, voi tehdä raskaaksi
+  //*********** */
+  //*********** */
+
   const messageItem = ({ item }) => (
     <MessageItem
       item={item}
