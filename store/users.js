@@ -227,7 +227,7 @@ export const getUsersById = (userId) =>
     (users) => users.allUsers[userId]
   );
 
-export const selectOnlineUsers = createSelector(
+export const selectUsersOnline = createSelector(
   (state) => state.entities.users,
   (users) => users.usersOnline
 );

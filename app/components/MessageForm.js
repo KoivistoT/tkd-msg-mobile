@@ -33,6 +33,7 @@ import {
   itemAdded,
   selectAllUsers,
   selectMyItems,
+  selectOnlineUsers,
 } from "../../store/users";
 
 function MessageForm({ item }) {
@@ -72,6 +73,9 @@ function MessageForm({ item }) {
         <ScreenHeaderTitle
           title={getRoomTitle(roomData, allUsers, currentUserId)}
           subTitle={getSubTitle()}
+          currentUserId={currentUserId}
+          allUsers={allUsers}
+          roomData={roomData}
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }
