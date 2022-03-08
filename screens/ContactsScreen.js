@@ -5,7 +5,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import { allUsers, selectAllUsers, selectLiveUsers } from "../store/users";
+import { allUsers, selectAllUsers, selectOnlineUsers } from "../store/users";
 import colors from "../config/colors";
 import routes from "../app/navigation/routes";
 import AppButton from "../app/components/AppButton";
@@ -21,8 +21,8 @@ function ContactsScreen({ navigation }) {
   const store = useStore();
   const userId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsers);
-  const liveUsers = useSelector(selectLiveUsers);
-  // console.log(liveUsers, "userit livenä");
+  const usersOnline = useSelector(selectOnlineUsers);
+  // console.log(usersOnline, "userit online");
   const listKeyExtractor = (data) => data._id;
 
   const startConversation = async (item) => {
@@ -56,8 +56,8 @@ function ContactsScreen({ navigation }) {
             backgroundColor: item.status === "archived" ? "yellow" : "white",
           }}
         >
-          {liveUsers && liveUsers.includes(item._id) && (
-            <AppText style={styles.liveIndicator}>Live</AppText>
+          {usersOnline && usersOnline.includes(item._id) && (
+            <AppText style={styles.onlineIndicator}>Online</AppText>
           )}
           <View>
             <AppText style={styles.name}>{item.firstName}</AppText>
@@ -92,7 +92,7 @@ function ContactsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  liveIndicator: {
+  onlineIndicator: {
     backgroundColor: colors.danger,
   },
 });

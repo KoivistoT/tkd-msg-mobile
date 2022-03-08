@@ -44,8 +44,7 @@ function MessageForm({ item }) {
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsers); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
-  const myArray = useSelector(selectMyItems);
-  // console.log(myArray);
+
   // console.log("päivittää");
   const otherUser =
     roomData.type === "private"

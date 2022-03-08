@@ -25,7 +25,7 @@ import {
   selectAllUsers1,
   selectAllUsers2,
   selectUserRoomsAndAllUsers,
-  usersLiveResived,
+  usersOnlineResived,
 } from "../store/users";
 
 function RoomsScreen({ navigation }) {
@@ -35,7 +35,7 @@ function RoomsScreen({ navigation }) {
 
   const currentUserId = store.getState().auth.currentUser._id;
   // const allUsers1 = useSelector(selectAllUsers1);
-  const allUsers = useSelector(selectAllUsers2);
+  const allUsers = useSelector(selectAllUsers);
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
   // if (allUsers === null || Object.keys(allUsers).length === 0)
   // console.log("on null");
@@ -51,7 +51,7 @@ function RoomsScreen({ navigation }) {
   const userOnline = () => {
     socket.emit("userOnline", currentUserId);
     socket.on("userOnline", (data) => {
-      dispatch(usersLiveResived(data));
+      dispatch(usersOnlineResived(data));
     });
   };
   const userOffline = () => {

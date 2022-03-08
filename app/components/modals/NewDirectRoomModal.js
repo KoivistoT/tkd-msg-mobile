@@ -80,7 +80,7 @@ function NewDirectRoomModal() {
           </TouchableOpacity>
           <AppButton title="Create room" onPress={onCreateRoom} />
           <View>
-            {allUsers &&
+            {Object.keys(allUsers).length !== 0 &&
               selectedUsers.map((item) => (
                 <AppText key={item}>
                   {allUsers

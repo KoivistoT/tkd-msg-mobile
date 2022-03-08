@@ -12,7 +12,7 @@ const slice = createSlice({
   name: "users",
   initialState: {
     allUsers: {}, //nämä voi olla kai objecteja, myös muualla ?
-    usersLive: {},
+    usersOnline: {},
     myTestArray: [
       { a: 1, text: "eka" },
       { a: 1, text: "toinen" },
@@ -32,8 +32,8 @@ const slice = createSlice({
     userActivated: (users, action) => {
       users.allUsers[action.payload].status = "active";
     },
-    usersLiveResived: (users, action) => {
-      users.usersLive = action.payload;
+    usersOnlineResived: (users, action) => {
+      users.usersOnline = action.payload;
       // console.log(users.myTestArray);
     },
     itemAdded: (users, action) => {
@@ -97,7 +97,7 @@ export const {
   usersResived,
   usersError,
   userCreated,
-  usersLiveResived,
+  usersOnlineResived,
   newUserResived,
   userDeleted,
   channelsResived,
@@ -227,9 +227,9 @@ export const getUsersById = (userId) =>
     (users) => users.allUsers[userId]
   );
 
-export const selectLiveUsers = createSelector(
+export const selectOnlineUsers = createSelector(
   (state) => state.entities.users,
-  (users) => users.usersLive
+  (users) => users.usersOnline
 );
 const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
 
@@ -262,7 +262,7 @@ export const selectUserRoomsAndAllUsers = memoize(
         const {
           _id,
           firstName,
-
+          lastName,
           accountType,
           displayName,
           email,
@@ -274,7 +274,7 @@ export const selectUserRoomsAndAllUsers = memoize(
           [_id]: {
             _id,
             firstName,
-
+            lastName,
             accountType,
             displayName,
             email,
@@ -332,7 +332,7 @@ export const selectUserRoomsAndAllUsers = memoize(
 //   }
 // );
 
-export const selectAllUsers = createSelector(
+export const selectAllUsers2 = createSelector(
   (state) => state.entities.users,
   (users) => {
     const objects = Object.values(users.allUsers).reduce((newObject, item) => {
@@ -366,14 +366,14 @@ export const selectAllUsers = createSelector(
   }
 );
 
-export const selectAllUsers2 = memoize((state) => {
+export const selectAllUsers = memoize((state) => {
   console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
   return Object.values(state.entities.users.allUsers).reduce(
     (newObject, item) => {
       const {
         _id,
         firstName,
-
+        lastName,
         accountType,
         displayName,
         email,
@@ -385,7 +385,7 @@ export const selectAllUsers2 = memoize((state) => {
         [_id]: {
           _id,
           firstName,
-
+          lastName,
           accountType,
           displayName,
           email,
@@ -405,6 +405,7 @@ export const selectAllUsers1 = memoize((state) => {
   return Object.values(state.entities.users.allUsers).map((item) => {
     const {
       firstName,
+
       _id,
       accountType,
       is_active,
