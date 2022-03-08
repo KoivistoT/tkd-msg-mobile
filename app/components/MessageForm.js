@@ -24,7 +24,7 @@ import AppText from "./AppText";
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
 import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
-import getPrivateRoomOtherUser from "../../utility/getPrivateRoomOtherUser";
+import getPrivateRoomOtherUserName from "../../utility/getPrivateRoomOtherUserName";
 import getRoomActiveMembersSum from "../../utility/getRoomActiveMembersSum";
 import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
 import getRoomTitle from "../../utility/getRoomTitle";
@@ -34,6 +34,7 @@ import {
   selectAllUsers,
   selectMyItems,
   selectOnlineUsers,
+  selectUsersOnline,
 } from "../../store/users";
 
 function MessageForm({ item }) {
@@ -45,11 +46,11 @@ function MessageForm({ item }) {
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsers); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
-
+  const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää");
   const otherUser =
     roomData.type === "private"
-      ? getPrivateRoomOtherUser(roomData.members, currentUserId, allUsers)
+      ? getPrivateRoomOtherUserName(roomData.members, currentUserId, allUsers)
       : "";
 
   useEffect(() => {
@@ -67,15 +68,22 @@ function MessageForm({ item }) {
     return `Members ${getRoomActiveMembersSum(roomMembers, allUsers)} >`;
   };
 
+  const showOnlineIndicator = (roomData) => {
+    return roomData.type === "private" &&
+      usersOnline.includes(
+        getPrivateRoomOtherUserId(roomData.members, currentUserId)
+      )
+      ? true
+      : false;
+  };
+
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
           title={getRoomTitle(roomData, allUsers, currentUserId)}
           subTitle={getSubTitle()}
-          currentUserId={currentUserId}
-          allUsers={allUsers}
-          roomData={roomData}
+          showOnlineIndicator={showOnlineIndicator(roomData)}
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }

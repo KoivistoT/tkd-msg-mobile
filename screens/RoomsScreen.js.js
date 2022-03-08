@@ -25,6 +25,7 @@ import {
   selectAllUsers1,
   selectAllUsers2,
   selectUserRoomsAndAllUsers,
+  selectUsersOnline,
   usersOnlineResived,
 } from "../store/users";
 
@@ -40,6 +41,18 @@ function RoomsScreen({ navigation }) {
   // if (allUsers === null || Object.keys(allUsers).length === 0)
   // console.log("on null");
   // console.log("päivittää tällä", currentUserId);
+  const usersOnline = useSelector(selectUsersOnline);
+
+  const showOnlineIndicator = (item) => {
+    if (Object.keys(usersOnline).length === 0) return;
+    return item.type === "private" &&
+      usersOnline.includes(
+        getPrivateRoomOtherUserId(item.members, currentUserId)
+      )
+      ? true
+      : false;
+  };
+
   const logout = () => {
     userOffline();
     dispatch(disconnectSocket());
@@ -82,6 +95,7 @@ function RoomsScreen({ navigation }) {
     if (item.status === "archived" && item.roomCreator !== userId) return;
     return (
       <RoomsListItem
+        showOnlineIndicator={showOnlineIndicator(item)}
         navigation={navigation}
         item={item}
         allUsers={allUsers}
@@ -95,7 +109,7 @@ function RoomsScreen({ navigation }) {
       {!userRooms && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
-      {userRooms && (
+      {Object.keys(userRooms).length !== 0 && usersOnline.length > 0 && (
         <FlatList
           data={sortObjectsByfield(userRooms, "roomName")}
           keyExtractor={keyExtractor}
