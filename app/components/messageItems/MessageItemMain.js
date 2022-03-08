@@ -1,25 +1,44 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import colors from "../../../config/colors";
-
+import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
-import ShowImageModal from "../imageComponents/ShowImageModal";
-import MessageItemBasic from "./MessageItemBasic";
+
 import MessageItemImage from "./MessageItemImage";
+import {
+  replyMessageIdCleared,
+  replyMessageIdResived,
+} from "../../../store/msgStore";
 function MessageItem({ item, currentUserId, senderName }) {
+  const dispatch = useDispatch();
+  const { _id: messageId, roomId } = item;
+
   const sentBy = item.postedByUser === currentUserId ? "me" : "otherUser";
   const messageType = item.type;
-  const messageData = { item, sentBy, senderName };
+  const onReply = () => {
+    dispatch(replyMessageIdCleared(roomId));
+    dispatch(replyMessageIdResived({ messageId, roomId }));
+  };
+
   return (
     <>
-      {messageType === "text" && <MessageItemBasic messageData={messageData} />}
-      {messageType === "image" && (
-        <MessageItemImage messageData={messageData} />
-      )}
+      <TouchableOpacity key={messageId} style={styles[sentBy]}>
+        <TouchableOpacity title={"reply"} onPress={onReply}>
+          <AppText>Reply</AppText>
+        </TouchableOpacity>
+
+        <AppText>sender: {senderName}</AppText>
+        {messageType === "image" && <MessageItemImage item={item} />}
+        {item.replyMessageId && <AppText>{item.replyMessageId}</AppText>}
+        <AppText>{item.messageBody}</AppText>
+      </TouchableOpacity>
     </>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  me: { alignItems: "flex-end" },
+  otherUser: { alignItems: "flex-start" },
+});
 
 export default MessageItem;

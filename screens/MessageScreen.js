@@ -13,11 +13,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageForm from "../app/components/MessageForm";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
-import {
-  selectRoomMessagesByRoomId,
-  sendMessage,
-  test,
-} from "../store/msgStore";
+import { sendMessage, test } from "../store/msgStore";
 import { selectSocket } from "../store/socket";
 import confirmAlert from "../utility/confirmAlert";
 import MessageList from "../app/components/MessageList";

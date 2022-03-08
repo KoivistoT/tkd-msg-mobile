@@ -4,11 +4,9 @@ import colors from "../../../config/colors";
 
 import AppText from "../AppText";
 import ShowImageModal from "../imageComponents/ShowImageModal";
-function MessageItemImage({ item }) {
-  return item.imageURLs.map((url) => (
-    <ShowImageModal key={url} roomId={item.roomId} image={url} />
-  ));
+function ReplyItem({ item }) {
+  return <AppText>juu on</AppText>;
 }
 
 const styles = StyleSheet.create({});
-export default MessageItemImage;
+export default ReplyItem;

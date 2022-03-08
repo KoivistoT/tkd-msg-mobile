@@ -16,7 +16,7 @@ function AppFormField({
 }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
-  // console.log(errors);
+
   return (
     <>
       {showLabel && (

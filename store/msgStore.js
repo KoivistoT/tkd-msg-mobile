@@ -10,10 +10,21 @@ const slice = createSlice({
     allMessages: {},
     messageSendError: null,
     images: {},
+    replyMessageIds: [],
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
       msgStore.images = action.payload;
+    },
+    replyMessageIdResived: (msgStore, action) => {
+      msgStore.replyMessageIds.push(action.payload);
+      // console.log(msgStore.replyMessageIds);
+    },
+    replyMessageIdCleared: (msgStore, action) => {
+      msgStore.replyMessageIds = msgStore.replyMessageIds.filter(
+        (message) => message.roomId !== action.payload
+      );
+      // console.log(msgStore.replyMessageIds, "Tässä reply idt");
     },
     oneRoomImagesResived: (msgStore, action) => {
       const { imageURLs, roomId } = action.payload;
@@ -95,6 +106,8 @@ export const {
   messagesRemoved,
   oneRoomImagesResived,
   allImagesResived,
+  replyMessageIdResived,
+  replyMessageIdCleared,
 } = slice.actions;
 export default slice.reducer;
 
@@ -155,9 +168,9 @@ export const selectRoomMessagesByRoomId = (roomId) =>
     (msgStore) => msgStore.allMessages[roomId]?.messages
   );
 
-export const selectErrorMessage = createSelector(
-  (state) => state.entities.messages,
-  (messages) => messages.messageSendError
+export const selectReplyItemIds = createSelector(
+  (state) => state.entities.msgStore,
+  (msgStore) => msgStore.replyMessageIds
 );
 
 export const selectRoomImagesByRoomId = (roomId) =>

@@ -9,7 +9,7 @@ import {
   setRoomLoadingToTrue,
   selectRoomDataById,
 } from "../../store/rooms";
-import { sendMessage, test } from "../../store/msgStore";
+import { selectReplyItemIds, sendMessage, test } from "../../store/msgStore";
 import { useNavigation } from "@react-navigation/native";
 import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
@@ -36,6 +36,7 @@ import {
 } from "../../store/users";
 import showOnlineIndicator from "../../utility/showOnlineIndicator";
 import roomFuncs from "../../utility/roomFuncs";
+import ReplyItem from "./messageItems/ReplyItem";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -45,9 +46,11 @@ function MessageForm({ item }) {
   const roomData = useSelector(selectRoomDataById(item.route.params._id));
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
+  const replyMessageIds = useSelector(selectReplyItemIds);
   const roomMembers = useSelector(selectRoomDataById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää");
+
   const otherUser =
     roomData.type === "private"
       ? roomFuncs.getPrivateRoomOtherUserName(
@@ -117,7 +120,8 @@ function MessageForm({ item }) {
     }
 
     dispatch(sendMessage(message, roomData._id, messageType, imageURLs));
-    // resetForm();
+
+    resetForm();
     Keyboard.dismiss();
   };
 
@@ -140,8 +144,13 @@ function MessageForm({ item }) {
     // dispatch(test());
   };
 
+  const isReplyItem = () => {
+    return replyMessageIds.some((item) => item.roomId === roomData._id);
+  };
+
   return (
     <>
+      {isReplyItem() && <ReplyItem />}
       {roomData.status !== "archived" &&
         otherUser.status !== "deleted" &&
         otherUser.status !== "archived" && (
@@ -189,6 +198,7 @@ function MessageForm({ item }) {
           Huone on arkistoitu. Aktivoi huone lähettääksesi viestejä.
         </AppText>
       )}
+
       {(otherUser.status === "deleted" || otherUser.status === "archived") && (
         <AppText>
           {`Käyttäjä ${otherUser.firstName} ${otherUser.lastName} on poistettu. Et voi lähettää hänelle viestejä.`}
