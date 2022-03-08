@@ -16,36 +16,27 @@ import routes from "../app/navigation/routes";
 import AppButton from "../app/components/AppButton";
 import {
   createPrivateRoom,
+  getUserRooms,
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
 } from "../store/rooms";
 import sortArray from "../utility/sortArray";
+import roomFuncs from "../utility/roomFuncs";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
-  const userId = store.getState().auth.currentUser._id;
+  const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsersMinimal);
   const usersOnline = useSelector(selectUsersOnline);
+  const allRooms = useSelector(getUserRooms);
   // console.log(usersOnline, "userit online");
   const listKeyExtractor = (data) => data._id;
 
-  const startConversation = async (item) => {
-    const sortedArray = sortArray([userId, item._id]);
-    const roomName = sortedArray[0] + sortedArray[1];
-    const userRooms = Object.values(store.getState().entities.rooms.allRooms);
-    const index = userRooms.findIndex((room) => room.roomName === roomName);
-
-    if (index !== -1) {
-      // dispatch(setRoomLoadingToTrue());
-      const roomData = userRooms[index];
-      navigation.navigate(routes.MESSAGE_SCREEN, roomData);
-      setTimeout(() => {
-        // dispatch(setRoomLoadingToFalse());
-      }, 300); // tämä ei tarpeen, mutta menee sujuvammin
-    } else {
-      dispatch(createPrivateRoom(userId, item._id));
-    }
+  const onStartConversation = (item) => {
+    roomFuncs.startPrivateConversation(item, currentUserId, allRooms, () =>
+      dispatch(createPrivateRoom(currentUserId, item._id))
+    );
   };
 
   const listItem = ({ item }) => {
@@ -69,7 +60,7 @@ function ContactsScreen({ navigation }) {
           </View>
           <AppButton
             title="uusi keskustelu"
-            onPress={() => startConversation(item)}
+            onPress={() => onStartConversation(item)}
           />
           <MaterialCommunityIcons
             name="chevron-right"

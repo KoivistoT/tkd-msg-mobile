@@ -1,5 +1,6 @@
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
+import sortArray from "./sortArray";
 
 const getRoomTitle = (item, allUsers, currentUserId) => {
   // console.log("täällä menee"); // tämä päivittyy turhaa useasti
@@ -45,9 +46,32 @@ const getDirectRoomTitle = (roomMembers, allUsersList) => {
   return finalTitle;
 };
 
+const startPrivateConversation = async (
+  item,
+  currentUserId,
+  allRooms,
+  dispatchFunction
+) => {
+  const sortedArray = sortArray([currentUserId, item._id]);
+  const roomName = sortedArray[0] + sortedArray[1];
+  const userRooms = Object.values(allRooms);
+  const index = userRooms.findIndex((room) => room.roomName === roomName);
+
+  if (index !== -1) {
+    const roomData = userRooms[index];
+    navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+    // setTimeout(() => {
+    //    dispatch(setRoomLoadingToFalse());
+    // }, 300); // tämä ei tarpeen, mutta menee sujuvammin
+  } else {
+    dispatchFunction();
+  }
+};
+
 export default {
   getRoomTitle,
   getRoomActiveMembersSum,
   getPrivateRoomOtherUserName,
   getPrivateRoomOtherUserId,
+  startPrivateConversation,
 };
