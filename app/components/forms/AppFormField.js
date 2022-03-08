@@ -7,9 +7,16 @@ import ErrorMessage from "../ErrorMessage";
 import AppText from "../AppText";
 import colors from "../../../config/colors";
 
-function AppFormField({ name, width, showLabel = false, ...otherProps }) {
+function AppFormField({
+  name,
+  width,
+  showLabel = false,
+  showErrorMessage = true,
+  ...otherProps
+}) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
+  // console.log(errors);
   return (
     <>
       {showLabel && (
@@ -24,7 +31,12 @@ function AppFormField({ name, width, showLabel = false, ...otherProps }) {
         width={width}
         {...otherProps}
       />
-      <ErrorMessage error={errors[name]} visible={touched[name]}></ErrorMessage>
+      {showErrorMessage && (
+        <ErrorMessage
+          error={errors[name]}
+          visible={touched[name]}
+        ></ErrorMessage>
+      )}
     </>
   );
 }

@@ -118,7 +118,7 @@ function MessageForm({ item }) {
     }
 
     dispatch(sendMessage(message, roomData._id, messageType, imageURLs));
-    resetForm();
+    // resetForm();
     Keyboard.dismiss();
   };
 
@@ -170,6 +170,7 @@ function MessageForm({ item }) {
                 }}
               >
                 <AppFormField
+                  showErrorMessage={false}
                   borderRadius={0}
                   marginTop={0}
                   style={{ maxHeight: 85, height: 65 }}
@@ -199,7 +200,6 @@ function MessageForm({ item }) {
 }
 
 const validationSchema = Yup.object().shape({
-  message: Yup.string().label("Message"),
   message: Yup.string().required().min(1).label("Message"),
 });
 
