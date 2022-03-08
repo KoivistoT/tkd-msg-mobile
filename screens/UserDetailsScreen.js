@@ -8,7 +8,7 @@ import EditUserModal from "../app/components/modals/EditUserModal";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import {
-  getUsersById,
+  selectUserById,
   activateUserById,
   archiveOrDeleteUserById,
 } from "../store/users";
@@ -20,7 +20,7 @@ function UserDetailsScreen(item) {
 
   const userId = item.route.params._id;
 
-  const userData = useSelector(getUsersById(userId));
+  const userData = useSelector(selectUserById(userId));
 
   const onDeleteUser = async () => {
     const result = await confirmAlert("Haluatko poistaa käyttäjän", "");

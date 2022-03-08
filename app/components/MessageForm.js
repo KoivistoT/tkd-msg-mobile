@@ -7,8 +7,7 @@ import {
   activeRoomIdCleared,
   setLoading,
   setRoomLoadingToTrue,
-  getRoomMembersById,
-  getRoomDataById,
+  selectRoomDataById,
 } from "../../store/rooms";
 import { sendMessage, test } from "../../store/msgStore";
 import { useNavigation } from "@react-navigation/native";
@@ -43,10 +42,10 @@ function MessageForm({ item }) {
   const dispatch = useDispatch();
   const store = useStore();
   const [photos, setPhotos] = useState([]);
-  const roomData = useSelector(getRoomDataById(item.route.params._id));
+  const roomData = useSelector(selectRoomDataById(item.route.params._id));
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
-  const roomMembers = useSelector(getRoomMembersById(roomData._id));
+  const roomMembers = useSelector(selectRoomDataById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää");
   const otherUser =

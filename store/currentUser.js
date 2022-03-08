@@ -136,22 +136,12 @@ export const onLoginFailed = () => {
 
 export const selectAccountType = (state) => state.auth.currentUser.accountType;
 
-export const isLoggedIn = createSelector(
-  (state) => state.auth,
-  (auth) => auth.currentUser.isLoggedIn
-);
-
-export const getToken = createSelector(
+export const selectCurrentUserToken = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser.token
 );
 
-export const getCurrentUserRooms = createSelector(
-  (state) => state.auth,
-  (auth) => auth.currentUser.userRooms
-);
-
-export const getCurrentUserData = createSelector(
+export const selectCurrentUserData = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser
 );

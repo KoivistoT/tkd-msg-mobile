@@ -201,7 +201,7 @@ export const activateRoom = (roomId, userId) =>
     onError: roomsError.type,
   });
 
-export const getRoomMembersById = (roomId) =>
+export const selectRoomMembersById = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
     (rooms) =>
@@ -210,19 +210,14 @@ export const getRoomMembersById = (roomId) =>
         : null
   );
 
-export const getRoomDataById = (roomId) =>
+export const selectRoomDataById = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
     (rooms) =>
       rooms.allRooms[roomId] !== undefined ? rooms.allRooms[roomId] : null
   );
 
-export const getUserRooms = createSelector(
+export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms
-);
-
-export const getRoomLoadingStatus = createSelector(
-  (state) => state.entities.rooms,
-  (rooms) => rooms.loading
 );

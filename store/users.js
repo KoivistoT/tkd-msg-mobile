@@ -221,7 +221,7 @@ export const activateUserById = (userId) =>
     onError: usersError.type,
   });
 
-export const getUsersById = (userId) =>
+export const selectUserById = (userId) =>
   createSelector(
     (state) => state.entities.users,
     (users) => users.allUsers[userId]

@@ -3,7 +3,7 @@ import * as actions from "../actions";
 
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
-import { getToken } from "../currentUser";
+import { selectCurrentUserToken } from "../currentUser";
 import { errorMessageAdded } from "../general";
 const api =
   ({ dispatch, getState }) =>
@@ -18,7 +18,9 @@ const api =
     next(action);
 
     try {
-      axios.defaults.headers.common["x-auth-token"] = getToken(getState());
+      axios.defaults.headers.common["x-auth-token"] = selectCurrentUserToken(
+        getState()
+      );
       const response = await axios.request({
         baseURL: settings.apiUrl,
         url,

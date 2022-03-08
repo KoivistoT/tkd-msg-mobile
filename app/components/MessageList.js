@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useLayoutEffect } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItem from "./messageItems/MessageItemMain";
-import { getRoomMessagesByRoomId } from "../../store/msgStore";
+import { selectRoomMessagesByRoomId } from "../../store/msgStore";
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
 import { navigationRef } from "../navigation/rootNavigation";
 
 function MessageList({ item }) {
   const store = useStore();
   const roomId = item.route.params._id;
-  const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
+  const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = store.getState().entities.users.allUsers;
   const messageItem = ({ item }) => (

@@ -16,7 +16,7 @@ import {
   changeRoomName,
   change_members,
   deleteRoom,
-  getRoomMembersById,
+  selectRoomDataById,
   leave_room,
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
@@ -24,7 +24,7 @@ import {
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
 import AppCheckBox from "../app/components/AppCheckBox";
-import { getCurrentUserData } from "../store/currentUser";
+import { selectCurrentUserData } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -45,8 +45,8 @@ function RoomSetupScreen(item) {
   } = item.route.params;
 
   const allUsers = useSelector(selectAllUsersMinimal);
-  const roomMembers = useSelector(getRoomMembersById(roomId));
-  const currentUserData = useSelector(getCurrentUserData);
+  const roomMembers = useSelector(selectRoomDataById(roomId));
+  const currentUserData = useSelector(selectCurrentUserData);
 
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const selectedUsersRef = React.useRef(selectedUsers);

@@ -3,18 +3,15 @@ import cache from "../utility/cache";
 import authStorage from "../auth/storage";
 import settings from "../config/settings";
 
-import { getToken } from "../store/currentUser";
 const apiClient = create({
   baseURL: settings.apiUrl,
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
-  // const authToken = await authStorage.getToken();
   const authToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWQzNWI2YTQ1ZDFlM2UyYmM4M2ZmMDgiLCJuYW1lIjoiVGltbyBLb2l2aXN0byIsImVtYWlsIjoidGltb25AcG9zdGkuZmkiLCJpYXQiOjE2NDE1ODkyMjh9.eQ9yx4_wez_lXoEiXDwdJn_xSqUW-34qZbOsNXwTXJs";
 
   // const authToken = request.token;
-  // console.log(store.dispatch(getToken(store.getState())));
 
   if (!authToken) return;
   request.headers["x-auth-token"] = authToken;

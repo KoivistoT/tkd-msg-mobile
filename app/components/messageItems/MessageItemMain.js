@@ -5,20 +5,21 @@ import colors from "../../../config/colors";
 import AppText from "../AppText";
 import ShowImageModal from "../imageComponents/ShowImageModal";
 import MessageItemBasic from "./MessageItemBasic";
+import MessageItemImage from "./MessageItemImage";
 function MessageItem({ item, currentUserId, senderName }) {
   const sentBy = item.postedByUser === currentUserId ? "me" : "otherUser";
   const messageType = item.type;
+  const messageData = { item, sentBy, senderName };
   return (
     <>
-      {messageType === "text" && (
-        <MessageItemBasic item={item} sentBy={sentBy} senderName={senderName} />
+      {messageType === "text" && <MessageItemBasic messageData={messageData} />}
+      {messageType === "image" && (
+        <MessageItemImage messageData={messageData} />
       )}
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  me: { alignItems: "flex-end" },
-  otherUser: { alignItems: "flex-start" },
-});
+const styles = StyleSheet.create({});
+
 export default MessageItem;

@@ -137,16 +137,6 @@ export const sendMessage =
     );
   };
 
-export const selectErrorMessage = createSelector(
-  (state) => state.entities.messages,
-  (messages) => messages.messageSendError
-);
-
-export const getErrorMessage = createSelector(
-  (state) => state.entities.messages,
-  (messages) => messages.messageSendError
-);
-
 export const test = () =>
   apiCallBegan({
     url: url + "/messages/test2",
@@ -159,17 +149,18 @@ export const getRoomImages = (id) =>
     onError: messagesError.type,
   });
 
-export const getRoomMessages = createSelector(
-  (state) => state.entities.msgStore,
-  (msgStore) => msgStore.allMessages
-);
-export const getRoomMessagesByRoomId = (roomId) =>
+export const selectRoomMessagesByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
     (msgStore) => msgStore.allMessages[roomId]?.messages
   );
 
-export const getRoomImagesByRoomId = (roomId) =>
+export const selectErrorMessage = createSelector(
+  (state) => state.entities.messages,
+  (messages) => messages.messageSendError
+);
+
+export const selectRoomImagesByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
     (msgStore) => msgStore.images[roomId]

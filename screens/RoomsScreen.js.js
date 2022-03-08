@@ -15,7 +15,7 @@ import { disconnectSocket, selectSocket } from "../store/socket";
 // import RoomsListItem from "../app/components/RoomsListItem";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
-import { getUserRooms } from "../store/rooms";
+import { selectUserRooms } from "../store/rooms";
 // import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 // import CreateChannelModal from "../app/components/modals/CreateChannelModal";
@@ -33,7 +33,7 @@ import showOnlineIndicator from "../utility/showOnlineIndicator";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
-  const userRooms = useSelector(getUserRooms);
+  const userRooms = useSelector(selectUserRooms);
   const store = useStore();
   const socket = useSelector(selectSocket);
   const currentUserId = store.getState().auth.currentUser._id;

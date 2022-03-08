@@ -38,8 +38,3 @@ export const {
 } = slice.actions;
 
 export default slice.reducer;
-
-export const getErrorMessage = createSelector(
-  (state) => state.entities.general,
-  (general) => general.errorMessage
-);

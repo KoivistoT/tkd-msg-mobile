@@ -13,11 +13,11 @@ import AppButton from "../AppButton";
 import Screen from "../Screen";
 import EditUserForm from "../forms/EditUserForm";
 import { useSelector } from "react-redux";
-import { getUsersById } from "../../../store/users";
+import { selectUserById } from "../../../store/users";
 
 function EditUserModal({ userId }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const userData = useSelector(getUsersById(userId));
+  const userData = useSelector(selectUserById(userId));
 
   return (
     <View>

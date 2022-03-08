@@ -16,7 +16,7 @@ import routes from "../app/navigation/routes";
 import AppButton from "../app/components/AppButton";
 import {
   createPrivateRoom,
-  getUserRooms,
+  selectUserRooms,
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
 } from "../store/rooms";
@@ -29,7 +29,7 @@ function ContactsScreen({ navigation }) {
   const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = useSelector(selectAllUsersMinimal);
   const usersOnline = useSelector(selectUsersOnline);
-  const allRooms = useSelector(getUserRooms);
+  const allRooms = useSelector(selectUserRooms);
   // console.log(usersOnline, "userit online");
   const listKeyExtractor = (data) => data._id;
 

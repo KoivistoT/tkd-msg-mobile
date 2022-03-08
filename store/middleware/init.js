@@ -3,7 +3,7 @@ import * as actions from "../actions";
 
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
-import { getToken } from "../currentUser";
+
 import { error as errorToast } from "../general";
 const api =
   ({ dispatch, getState }) =>

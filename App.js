@@ -23,10 +23,8 @@ import Login from "./app/components/Login";
 import {
   getCurrentUser,
   getCurrentUserById,
-  getCurrentUserRooms,
   getInitialData,
-  getToken,
-  isLoggedIn,
+  selectIsCurrentUserLoggedIn,
   logout,
   selectAccountType,
   selectToken,
