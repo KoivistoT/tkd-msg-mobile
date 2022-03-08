@@ -5,7 +5,11 @@ import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
-import { allUsers, selectAllUsers } from "../store/users";
+import {
+  allUsers,
+  selectAllUsers,
+  selectAllUsersMinimal,
+} from "../store/users";
 import {
   activateRoom,
   archiveRoomById,
@@ -39,7 +43,7 @@ function RoomSetupScreen(item) {
     roomName,
   } = item.route.params;
 
-  const allUsers = useSelector(selectAllUsers);
+  const allUsers = useSelector(selectAllUsersMinimal);
   const roomMembers = useSelector(getRoomMembersById(roomId));
   const currentUserData = useSelector(getCurrentUserData);
 

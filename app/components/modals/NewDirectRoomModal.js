@@ -13,7 +13,11 @@ import AppButton from "../AppButton";
 import AppText from "../AppText";
 import Screen from "../Screen";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { allUsers, selectAllUsers } from "../../../store/users";
+import {
+  allUsers,
+  selectAllUsers,
+  selectAllUsersMinimal,
+} from "../../../store/users";
 import ListItemSeparator from "../ListItemSeparator";
 import AppCheckBox from "../AppCheckBox";
 import { createDirectRoom } from "../../../store/rooms";
@@ -23,7 +27,7 @@ function NewDirectRoomModal() {
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsers);
+  const allUsers = useSelector(selectAllUsersMinimal);
 
   const listKeyExtractor = (data) => data._id;
 

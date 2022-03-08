@@ -24,6 +24,7 @@ import {
   selectAllUsers,
   selectAllUsers1,
   selectAllUsers2,
+  selectAllUsersMinimal,
   selectUserRoomsAndAllUsers,
   selectUsersOnline,
   usersOnlineResived,
@@ -36,7 +37,7 @@ function RoomsScreen({ navigation }) {
 
   const currentUserId = store.getState().auth.currentUser._id;
   // const allUsers1 = useSelector(selectAllUsers1);
-  const allUsers = useSelector(selectAllUsers);
+  const allUsers = useSelector(selectAllUsersMinimal);
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
   // if (allUsers === null || Object.keys(allUsers).length === 0)
   // console.log("on null");
@@ -46,6 +47,7 @@ function RoomsScreen({ navigation }) {
   const showOnlineIndicator = (item) => {
     if (Object.keys(usersOnline).length === 0) return;
     return item.type === "private" &&
+      usersOnline &&
       usersOnline.includes(
         getPrivateRoomOtherUserId(item.members, currentUserId)
       )

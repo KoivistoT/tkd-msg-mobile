@@ -32,6 +32,7 @@ import {
   allUsers,
   itemAdded,
   selectAllUsers,
+  selectAllUsersMinimal,
   selectMyItems,
   selectOnlineUsers,
   selectUsersOnline,
@@ -44,7 +45,7 @@ function MessageForm({ item }) {
   const [photos, setPhotos] = useState([]);
   const roomData = useSelector(getRoomDataById(item.route.params._id));
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsers); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
+  const allUsers = useSelector(selectAllUsersMinimal); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää");
@@ -70,6 +71,7 @@ function MessageForm({ item }) {
 
   const showOnlineIndicator = (roomData) => {
     return roomData.type === "private" &&
+      usersOnline &&
       usersOnline.includes(
         getPrivateRoomOtherUserId(roomData.members, currentUserId)
       )

@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
 
-import { allUsers, selectAllUsers } from "../store/users";
+import { allUsers, selectAllUsersAllData } from "../store/users";
 import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import UserControlListItem from "../app/components/UserControlListItem";
 
 function UsersControlScreen({ navigation }) {
-  const allUsers = useSelector(selectAllUsers);
+  const allUsers = useSelector(selectAllUsersAllData);
 
   const listKeyExtractor = (data) => data._id;
 

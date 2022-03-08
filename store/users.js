@@ -366,8 +366,8 @@ export const selectAllUsers2 = createSelector(
   }
 );
 
-export const selectAllUsers = memoize((state) => {
-  console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
+export const selectAllUsersAllData = memoize((state) => {
+  // console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
   return Object.values(state.entities.users.allUsers).reduce(
     (newObject, item) => {
       const {
@@ -399,32 +399,22 @@ export const selectAllUsers = memoize((state) => {
   );
 });
 
-export const selectAllUsers1 = memoize((state) => {
+export const selectAllUsersMinimal = memoize((state) => {
   console.log("laskee ekassa 1111111");
-  console.log("computingcomputingcomputingcomputingcomputingcomputing");
-  return Object.values(state.entities.users.allUsers).map((item) => {
-    const {
-      firstName,
-
-      _id,
-      accountType,
-      is_active,
-      email,
-      phone,
-      status,
-      userRooms,
-    } = item;
-    return {
-      [_id]: {
-        firstName,
-        _id,
-        accountType,
-        is_active,
-        email,
-        phone,
-        status,
-        userRooms: [...userRooms],
-      },
-    };
-  });
+  // console.log("computingcomputingcomputingcomputingcomputingcomputing");
+  // console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
+  return Object.values(state.entities.users.allUsers).reduce(
+    (newObject, item) => {
+      const { _id, firstName, lastName, displayName } = item;
+      return Object.assign(newObject, {
+        [_id]: {
+          _id,
+          firstName,
+          lastName,
+          displayName,
+        },
+      });
+    },
+    {}
+  );
 });
