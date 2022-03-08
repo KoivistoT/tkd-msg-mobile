@@ -39,50 +39,44 @@ function RoomsScreen({ navigation }) {
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
   // if (allUsers === null || Object.keys(allUsers).length === 0)
   // console.log("on null");
-  console.log("päivittää tällä", currentUserId);
+  // console.log("päivittää tällä", currentUserId);
   const logout = () => {
+    userOffline();
     dispatch(disconnectSocket());
     dispatch(userLoggedOut());
   };
 
-  // tämä users live osuus, voisiko olla muualla
-  // tämä users live osuus, voisiko olla muualla
-  // tämä users live osuus, voisiko olla muualla
   const socket = useSelector(selectSocket);
 
+  const userOnline = () => {
+    socket.emit("userOnline", currentUserId);
+    socket.on("userOnline", (data) => {
+      dispatch(usersLiveResived(data));
+    });
+  };
+  const userOffline = () => {
+    socket.emit("userOffline", currentUserId);
+    socket.off("userOnline");
+  };
   const handleChange = (newState) => {
     if (newState === "active") {
-      // clearBadge();
-      socket.emit("onLive", currentUserId);
-      socket.on("onLive", (data) => {
-        // console.log(data, "livenä tulee");
-        // const userId = getState().auth.currentUser._id;
-        dispatch(usersLiveResived(data));
-        // console.log(data.users, userId, "<---tällä");
-      });
-      console.log("nyt actiivinen on");
-      console.log("tulee kahdetsi onko ongelma=?==");
-    } else {
-      socket.emit("offLive", currentUserId);
-      socket.off("onLive");
-      console.log("nyt ei ole actiivinen");
+      userOnline();
+    } else if (newState === "background") {
+      userOffline();
     }
   };
 
-  const init = useRef(false);
   useEffect(() => {
     if (socket) {
-      init.current = true;
       handleChange(AppState.currentState);
-      AppState.addEventListener("change", handleChange);
+      var appStateListener = AppState.addEventListener("change", handleChange);
     }
+
     return () => {
-      AppState.removeEventListener("change", handleChange);
+      appStateListener?.remove();
     };
   }, [socket]);
-  // tämä users live osuus, voisiko olla muualla
-  // tämä users live osuus, voisiko olla muualla
-  // tämä users live osuus, voisiko olla muualla
+
   const keyExtractor = (item) => item._id;
   const listItem = ({ item }) => {
     if (item.status === "archived" && item.roomCreator !== userId) return;
