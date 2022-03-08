@@ -67,6 +67,13 @@ const startPrivateConversation = async (
     dispatchFunction();
   }
 };
+const isReplyItem = (replyMessageIds, roomId) => {
+  const replyMessageData = replyMessageIds.filter(
+    (item) => item.roomId === roomId
+  );
+  if (replyMessageData.length === 0) return false;
+  return replyMessageData[0];
+};
 
 export default {
   getRoomTitle,
@@ -74,4 +81,5 @@ export default {
   getPrivateRoomOtherUserName,
   getPrivateRoomOtherUserId,
   startPrivateConversation,
+  isReplyItem,
 };

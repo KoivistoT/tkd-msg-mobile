@@ -9,6 +9,7 @@ import {
   replyMessageIdCleared,
   replyMessageIdResived,
 } from "../../../store/msgStore";
+import MessageItemReply from "./MessageItemReply";
 function MessageItem({ item, currentUserId, senderName }) {
   const dispatch = useDispatch();
   const { _id: messageId, roomId } = item;
@@ -29,7 +30,9 @@ function MessageItem({ item, currentUserId, senderName }) {
 
         <AppText>sender: {senderName}</AppText>
         {messageType === "image" && <MessageItemImage item={item} />}
-        {item.replyMessageId && <AppText>{item.replyMessageId}</AppText>}
+        {item.replyMessageId && (
+          <MessageItemReply item={{ roomId, messageId: item.replyMessageId }} />
+        )}
         <AppText>{item.messageBody}</AppText>
       </TouchableOpacity>
     </>

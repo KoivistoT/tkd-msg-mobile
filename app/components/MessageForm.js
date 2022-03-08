@@ -106,6 +106,9 @@ function MessageForm({ item }) {
       alert("tämä paremmin, huonetta ei ole enää");
     }
 
+    const { messageId } = getReplyItem();
+    const replyMessageId = messageId ? messageId : null;
+
     let messageType = "text";
     let imageURLs = null;
     if (photos.length !== 0) {
@@ -119,7 +122,9 @@ function MessageForm({ item }) {
       console.log("lataus valmis");
     }
 
-    dispatch(sendMessage(message, roomData._id, messageType, imageURLs));
+    dispatch(
+      sendMessage(message, roomData._id, messageType, imageURLs, replyMessageId)
+    );
 
     resetForm();
     Keyboard.dismiss();
@@ -144,17 +149,13 @@ function MessageForm({ item }) {
     // dispatch(test());
   };
 
-  const isReplyItem = () => {
-    const replyMessageData = replyMessageIds.filter(
-      (item) => item.roomId === roomData._id
-    );
-    if (replyMessageData.length === 0) return false;
-    return replyMessageData[0];
+  const getReplyItem = () => {
+    return roomFuncs.isReplyItem(replyMessageIds, roomData._id);
   };
 
   return (
     <>
-      {isReplyItem() && <ReplyItem item={isReplyItem()} />}
+      {getReplyItem() && <ReplyItem item={getReplyItem()} />}
       {roomData.status !== "archived" &&
         otherUser.status !== "deleted" &&
         otherUser.status !== "archived" && (
