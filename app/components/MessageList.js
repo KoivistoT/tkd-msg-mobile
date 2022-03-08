@@ -5,19 +5,19 @@ import MessageItem from "./messageItems/MessageItemMain";
 import { selectRoomMessagesByRoomId } from "../../store/msgStore";
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
 import { navigationRef } from "../navigation/rootNavigation";
+import { selectAllUsersMinimal } from "../../store/users";
 
 function MessageList({ item }) {
   const store = useStore();
   const roomId = item.route.params._id;
   const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = store.getState().entities.users.allUsers;
+  // const allUsers = store.getState().entities.users.allUsers;
+  const allUsers = useSelector(selectAllUsersMinimal);
   const messageItem = ({ item }) => (
     <MessageItem
       item={item}
-      senderName={
-        allUsers ? allUsers[item.postedByUser].displayName : "unknown user"
-      }
+      allUsers={allUsers}
       currentUserId={currentUserId}
     />
   );

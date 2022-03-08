@@ -10,11 +10,11 @@ import {
   replyMessageIdResived,
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
-function MessageItem({ item, currentUserId, senderName }) {
+function MessageItem({ item, currentUserId, allUsers }) {
   const dispatch = useDispatch();
-  const { _id: messageId, roomId } = item;
+  const { _id: messageId, roomId, postedByUser } = item;
 
-  const sentBy = item.postedByUser === currentUserId ? "me" : "otherUser";
+  const sentBy = postedByUser === currentUserId ? "me" : "otherUser";
   const messageType = item.type;
   const onReply = () => {
     dispatch(replyMessageIdCleared(roomId));
@@ -28,10 +28,16 @@ function MessageItem({ item, currentUserId, senderName }) {
           <AppText>Reply</AppText>
         </TouchableOpacity>
 
-        <AppText>sender: {senderName}</AppText>
+        <AppText>
+          sender:
+          {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
+        </AppText>
         {messageType === "image" && <MessageItemImage item={item} />}
         {item.replyMessageId && (
-          <MessageItemReply item={{ roomId, messageId: item.replyMessageId }} />
+          <MessageItemReply
+            allUsers={allUsers}
+            item={{ roomId, messageId: item.replyMessageId }}
+          />
         )}
         <AppText>{item.messageBody}</AppText>
       </TouchableOpacity>

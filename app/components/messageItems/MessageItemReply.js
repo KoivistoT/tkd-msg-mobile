@@ -10,15 +10,14 @@ import {
   replyMessageIdResived,
   selectMessageById,
 } from "../../../store/msgStore";
-import { getAllUsers, selectAllUsersMinimal } from "../../../store/users";
-function MessageItemReply({ item }) {
+import { selectAllUsersMinimal } from "../../../store/users";
+function MessageItemReply({ item, allUsers }) {
   const { roomId, messageId } = item;
   const messageData = useSelector(selectMessageById(roomId, messageId));
   //   console.log(messageData, "täällä messageItemReply");
 
   // tämä ei tarvinne olla selector, voi tehdä raskaaksi
   //ehkä tulee messageMain itemista
-  const allUsers = useSelector(selectAllUsersMinimal);
 
   return (
     <>
