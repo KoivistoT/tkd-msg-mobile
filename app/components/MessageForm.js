@@ -23,20 +23,20 @@ import AppText from "./AppText";
 
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
-import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
-import getPrivateRoomOtherUserName from "../../utility/getPrivateRoomOtherUserName";
-import getRoomActiveMembersSum from "../../utility/getRoomActiveMembersSum";
-import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
-import getRoomTitle from "../../utility/getRoomTitle";
+
 import {
   allUsers,
   itemAdded,
   selectAllUsers,
+  selectAllUsersAllData,
+  selectAllUsersMedium,
   selectAllUsersMinimal,
   selectMyItems,
   selectOnlineUsers,
   selectUsersOnline,
 } from "../../store/users";
+import showOnlineIndicator from "../../utility/showOnlineIndicator";
+import roomFuncs from "../../utility/roomFuncs";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -45,13 +45,17 @@ function MessageForm({ item }) {
   const [photos, setPhotos] = useState([]);
   const roomData = useSelector(getRoomDataById(item.route.params._id));
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsersMinimal); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
+  const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const roomMembers = useSelector(getRoomMembersById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää");
   const otherUser =
     roomData.type === "private"
-      ? getPrivateRoomOtherUserName(roomData.members, currentUserId, allUsers)
+      ? roomFuncs.getPrivateRoomOtherUserName(
+          roomData.members,
+          currentUserId,
+          allUsers
+        )
       : "";
 
   useEffect(() => {
@@ -66,26 +70,23 @@ function MessageForm({ item }) {
   const getSubTitle = () => {
     if (!roomMembers) return;
     if (roomData.type === "private") return "View details";
-    return `Members ${getRoomActiveMembersSum(roomMembers, allUsers)} >`;
-  };
-
-  const showOnlineIndicator = (roomData) => {
-    return roomData.type === "private" &&
-      usersOnline &&
-      usersOnline.includes(
-        getPrivateRoomOtherUserId(roomData.members, currentUserId)
-      )
-      ? true
-      : false;
+    return `Members ${roomFuncs.getRoomActiveMembersSum(
+      roomMembers,
+      allUsers
+    )} >`;
   };
 
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
-          title={getRoomTitle(roomData, allUsers, currentUserId)}
+          title={roomFuncs.getRoomTitle(roomData, allUsers, currentUserId)}
           subTitle={getSubTitle()}
-          showOnlineIndicator={showOnlineIndicator(roomData)}
+          showOnlineIndicator={showOnlineIndicator(
+            roomData,
+            usersOnline,
+            currentUserId
+          )}
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }

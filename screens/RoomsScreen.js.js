@@ -29,6 +29,7 @@ import {
   selectUsersOnline,
   usersOnlineResived,
 } from "../store/users";
+import showOnlineIndicator from "../utility/showOnlineIndicator";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -43,17 +44,6 @@ function RoomsScreen({ navigation }) {
   // console.log("on null");
   // console.log("päivittää tällä", currentUserId);
   const usersOnline = useSelector(selectUsersOnline);
-
-  const showOnlineIndicator = (item) => {
-    if (Object.keys(usersOnline).length === 0) return;
-    return item.type === "private" &&
-      usersOnline &&
-      usersOnline.includes(
-        getPrivateRoomOtherUserId(item.members, currentUserId)
-      )
-      ? true
-      : false;
-  };
 
   const logout = () => {
     userOffline();
@@ -97,7 +87,11 @@ function RoomsScreen({ navigation }) {
     if (item.status === "archived" && item.roomCreator !== userId) return;
     return (
       <RoomsListItem
-        showOnlineIndicator={showOnlineIndicator(item)}
+        showOnlineIndicator={showOnlineIndicator(
+          item,
+          usersOnline,
+          currentUserId
+        )}
         navigation={navigation}
         item={item}
         allUsers={allUsers}

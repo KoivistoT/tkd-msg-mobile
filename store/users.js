@@ -400,7 +400,7 @@ export const selectAllUsersAllData = memoize((state) => {
 });
 
 export const selectAllUsersMinimal = memoize((state) => {
-  console.log("laskee ekassa 1111111");
+  // console.log("laskee ekassa 1111111");
   // console.log("computingcomputingcomputingcomputingcomputingcomputing");
   // console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
   return Object.values(state.entities.users.allUsers).reduce(
@@ -412,6 +412,27 @@ export const selectAllUsersMinimal = memoize((state) => {
           firstName,
           lastName,
           displayName,
+        },
+      });
+    },
+    {}
+  );
+});
+
+export const selectAllUsersMedium = memoize((state) => {
+  // console.log("laskee ekassa 1111111");
+  // console.log("computingcomputingcomputingcomputingcomputingcomputing");
+  // console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
+  return Object.values(state.entities.users.allUsers).reduce(
+    (newObject, item) => {
+      const { _id, firstName, lastName, displayName, status } = item;
+      return Object.assign(newObject, {
+        [_id]: {
+          _id,
+          firstName,
+          lastName,
+          displayName,
+          status,
         },
       });
     },

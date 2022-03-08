@@ -27,8 +27,9 @@ import AppCheckBox from "../app/components/AppCheckBox";
 import { getCurrentUserData } from "../store/currentUser";
 import routes from "../app/navigation/routes";
 import { ScrollView } from "react-native-gesture-handler";
-import getRoomActiveMembersSum from "../utility/getRoomActiveMembersSum";
+
 import ChangeRoomNameModal from "../app/components/modals/ChangeRoomNameModal";
+import roomFuncs from "../utility/roomFuncs";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -59,7 +60,10 @@ function RoomSetupScreen(item) {
 
   const onLeaveRoom = async () => {
     let result;
-    const activeMembers = getRoomActiveMembersSum(roomMembers, allUsers);
+    const activeMembers = roomFuncs.getRoomActiveMembersSum(
+      roomMembers,
+      allUsers
+    );
     if (activeMembers) {
       result = await confirmAlert(
         "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",

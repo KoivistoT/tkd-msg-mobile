@@ -4,7 +4,7 @@ import AppText from "./AppText";
 import { useSelector } from "react-redux";
 import { selectUsersOnline } from "../../store/users";
 import colors from "../../config/colors";
-import getPrivateRoomOtherUserId from "../../utility/getPrivateRoomOtherUserId";
+
 function ScreenHeaderTitle({
   title,
   subTitle,

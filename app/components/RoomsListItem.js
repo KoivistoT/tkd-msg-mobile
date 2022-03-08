@@ -2,9 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import routes from "../../app/navigation/routes";
 import colors from "../../config/colors";
-import getDirectRoomTitle from "../../utility/getDirectRoomTitle";
-import getPrivateRoomTitle from "../../utility/getPrivateRoomTitle";
-import getRoomTitle from "../../utility/getRoomTitle";
+
+import roomFuncs from "../../utility/roomFuncs";
 import AppText from "./AppText";
 
 function RoomsListItem({
@@ -38,7 +37,7 @@ function RoomsListItem({
             }}
             key={item._id}
           >
-            {getRoomTitle(item, allUsers, currentUserId)}
+            {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
           </AppText>
         </View>
       )}
