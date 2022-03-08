@@ -26,21 +26,7 @@ function MessageScreen(item) {
   const dispatch = useDispatch();
   const roomData = item.route.params;
 
-  useEffect(() => {
-    // socket.emit("getUsers");
-    // socket.on("users live", (data) => {
-    //   // setUsersLive(data.users);
-    //   console.log(data.users);
-    // });
-    // return () => {
-    //   socket.off("users live");
-    // };
-    // if (roomData.type === "private") {
-    // setHeader();
-    // }
-  }, []);
-
-  // const [usersLive, setUsersLive] = useState([]);
+  useEffect(() => {}, []);
 
   return (
     <Screen>

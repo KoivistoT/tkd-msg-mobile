@@ -101,7 +101,7 @@ function RoomsScreen({ navigation }) {
 
   return (
     <Screen>
-      {!userRooms && (
+      {!socket && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
       {Object.keys(userRooms).length !== 0 && usersOnline.length > 0 && (

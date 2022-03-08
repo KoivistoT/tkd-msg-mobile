@@ -1,17 +1,15 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import colors from "../../config/colors";
+import colors from "../../../config/colors";
 
-import AppText from "./AppText";
-import ShowImageModal from "./imageComponents/ShowImageModal";
-function MessageItem({ item, userId, sender }) {
+import AppText from "../AppText";
+import ShowImageModal from "../imageComponents/ShowImageModal";
+function MessageItemBasic({ item, sentBy, senderName }) {
   return (
     //item type voisi isomminkin määrittää heti, ettei montaa if lausetta
 
-    <TouchableOpacity
-      style={item.postedByUser === userId ? styles.me : styles.otherUser}
-    >
-      <AppText>sender: {sender}</AppText>
+    <TouchableOpacity style={styles[sentBy]}>
+      <AppText>sender: {senderName}</AppText>
       {item.type == "image" &&
         item.imageURLs.map((url) => (
           <ShowImageModal key={url} roomId={item.roomId} image={url} />
@@ -25,4 +23,4 @@ const styles = StyleSheet.create({
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
 });
-export default MessageItem;
+export default MessageItemBasic;

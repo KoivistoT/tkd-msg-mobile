@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useLayoutEffect } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import MessageItem from "./MessageItem";
+import MessageItem from "./messageItems/MessageItemMain";
 import { getRoomMessagesByRoomId } from "../../store/msgStore";
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
 import { navigationRef } from "../navigation/rootNavigation";
@@ -10,15 +10,15 @@ function MessageList({ item }) {
   const store = useStore();
   const roomId = item.route.params._id;
   const roomMessages = useSelector(getRoomMessagesByRoomId(roomId));
-  const userId = store.getState().auth.currentUser._id;
+  const currentUserId = store.getState().auth.currentUser._id;
   const allUsers = store.getState().entities.users.allUsers;
   const messageItem = ({ item }) => (
     <MessageItem
       item={item}
-      sender={
+      senderName={
         allUsers ? allUsers[item.postedByUser].displayName : "unknown user"
       }
-      userId={userId}
+      currentUserId={currentUserId}
     />
   );
 
