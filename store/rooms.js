@@ -9,6 +9,7 @@ const slice = createSlice({
   name: "rooms",
   initialState: {
     allRooms: [],
+    allRoomsId: [],
     loading: false,
     members: [],
     activeRoomId: null,
@@ -51,6 +52,7 @@ const slice = createSlice({
       // });
 
       rooms.allRooms = action.payload;
+      rooms.allRoomsId = Object.keys(action.payload);
 
       // console.log(
       //   rooms.allRooms["61e6a80eb30d002e91d67b5a"],

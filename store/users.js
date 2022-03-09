@@ -13,6 +13,7 @@ const slice = createSlice({
   initialState: {
     allUsers: {}, //nämä voi olla kai objecteja, myös muualla ?
     usersOnline: {},
+    allUsersId: [],
     myTestArray: [
       { a: 1, text: "eka" },
       { a: 1, text: "toinen" },
@@ -23,6 +24,8 @@ const slice = createSlice({
     usersResived: (users, action) => {
       // console.log("users resived");
       users.allUsers = action.payload;
+      users.allUsersId = Object.keys(action.payload);
+
       // alert(Object.keys(users.allUsers).length, "monta käyttäjää tulee");
       // console.log(
       //   "users resived",
