@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
 
 function areEqual(prevProps, nextProps) {
   const roomProps =
-    prevProps.item.members !== nextProps.item.members &&
-    prevProps.item.roomName !== nextProps.item.roomName &&
-    prevProps.item.status !== nextProps.item.status;
+    prevProps.item.members === nextProps.item.members &&
+    prevProps.item.roomName === nextProps.item.roomName &&
+    prevProps.item.status === nextProps.item.status;
 
   try {
     var result = [];
@@ -76,6 +76,7 @@ function areEqual(prevProps, nextProps) {
     if (result.includes("notSameProps") || roomProps === false) return false;
     return true;
   } catch (error) {
+    console.log(prevProps.allUsers, userId, "tämä on tässä virheessa");
     console.log(error, "code 9kf92");
   }
 }
