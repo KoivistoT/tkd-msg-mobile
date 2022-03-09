@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -12,39 +12,28 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket, selectSocket } from "../store/socket";
-// import RoomListItem from "../app/components/RoomListItem";
 import RoomListItem from "../app/components/RoomListItem";
-import sortObjectsByfield from "../utility/sortObjectsByfield";
-import { selectAllActiveRoomsIds, selectUserRooms } from "../store/rooms";
-// import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
-import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
-// import CreateChannelModal from "../app/components/modals/CreateChannelModal";
-import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import {
-  selectAllUsersMinimal,
-  selectUsersOnline,
-  usersOnlineResived,
-} from "../store/users";
-import showOnlineIndicator from "../utility/showOnlineIndicator";
+  roomStateCleared,
+  selectAllActiveRoomsIds,
+  selectUserRooms,
+} from "../store/rooms";
+import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
+import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
+import { usersOnlineResived } from "../store/users";
 
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
-  // const userRooms = useSelector(selectUserRooms);
   const socket = useSelector(selectSocket);
-  // const allUsers = useSelector(selectAllUsersMinimal);
   const currentUserId = store.getState().auth.currentUser._id;
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
-  // const allUsers1 = useSelector(selectAllUsers1);
-  // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
-  // if (allUsers === null || Object.keys(allUsers).length === 0)
-  // console.log("on null");
-  // console.log("päivittää tällä", currentUserId);
-  // const usersOnline = useSelector(selectUsersOnline);
-  // console.log(allActiveRoomsIds);
+
   const logout = () => {
     userOffline();
+
     dispatch(disconnectSocket());
+    dispatch(roomStateCleared());
     dispatch(userLoggedOut());
   };
 

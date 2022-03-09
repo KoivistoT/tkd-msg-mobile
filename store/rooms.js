@@ -30,6 +30,14 @@ const slice = createSlice({
     activeRoomIdCleared: (rooms, action) => {
       rooms.activeRoomId = null;
     },
+    roomStateCleared: (rooms, action) => {
+      rooms.allRooms = [];
+      rooms.allActiveRoomsIds = [];
+      rooms.loading = false;
+      rooms.activeRoomId = null;
+      rooms.errorMessage = null;
+      rooms.successMessage = null;
+    },
     requestStarted: (rooms, action) => {
       rooms.loading = true;
     },
@@ -113,7 +121,7 @@ export const {
   roomCreated,
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
-
+  roomStateCleared,
   membersChanged,
   roomAdded,
   roomRemoved,
