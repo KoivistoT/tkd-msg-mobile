@@ -6,7 +6,7 @@ import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
 
 function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
-  console.log("child päivittyy");
+  // console.log("child päivittyy");
   return (
     <>
       <TouchableOpacity

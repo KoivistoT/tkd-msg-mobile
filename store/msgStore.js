@@ -9,6 +9,7 @@ const slice = createSlice({
   initialState: {
     allMessages: {},
     messageSendError: null,
+    allMessageIds: {},
     images: {},
     replyMessageIds: [],
   },
@@ -34,6 +35,13 @@ const slice = createSlice({
     messagesResived: (msgStore, action) => {
       msgStore.allMessages = action.payload;
 
+      Object.keys(action.payload).forEach((roomId) => {
+        // rooms.allActiveRoomsIds.push(id);
+        msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
+          [roomId]: Object.keys(action.payload[roomId].messages),
+        });
+      });
+      // console.log(msgStore.allMessageIds["6228a42601768b0dea508e41"]);
       // console.log(
       //   action.payload["61e6a80eb30d002e91d67b5a"].messages,
       //   "tässä kaikki viestit"
@@ -47,8 +55,19 @@ const slice = createSlice({
           msgStore.allMessages,
           action.payload
         );
+
+        //tätä ei testattu
+        const roomId = Object.keys(action.payload);
+        msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
+          [roomId]: Object.keys(action.payload[roomId].messages),
+        });
       } else {
         msgStore.allMessages = action.payload;
+
+        const roomId = Object.keys(action.payload);
+        msgStore.allMessageIds = {
+          [roomId]: Object.keys(action.payload[roomId].messages),
+        };
       }
     },
     messagesError: (msgStore, action) => {
@@ -83,6 +102,7 @@ const slice = createSlice({
     messagesRemoved: (msgStore, action) => {
       delete msgStore.allMessages[action.payload];
       delete msgStore.images[action.payload];
+      delete msgStore.allMessageIds[action.payload];
     },
 
     messageSendError: (msgStore, action) => {

@@ -27,8 +27,8 @@ function RoomsScreen({ navigation }) {
   const store = useStore();
   const socket = useSelector(selectSocket);
   const currentUserId = store.getState().auth.currentUser._id;
-  // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
-  const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
+  const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
+  // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
 
   const logout = () => {
     userOffline();
