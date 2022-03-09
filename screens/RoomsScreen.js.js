@@ -16,7 +16,7 @@ import RoomListItem from "../app/components/RoomListItem";
 import {
   roomStateCleared,
   selectAllActiveRoomsIds,
-  selectUserRooms,
+  selectAllActiveRoomsIdsOld,
 } from "../store/rooms";
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
@@ -27,6 +27,7 @@ function RoomsScreen({ navigation }) {
   const store = useStore();
   const socket = useSelector(selectSocket);
   const currentUserId = store.getState().auth.currentUser._id;
+  // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
 
   const logout = () => {
@@ -86,6 +87,22 @@ function RoomsScreen({ navigation }) {
     );
   };
 
+  // const sortRoomsByLastMessage = () => {
+  //   allActiveRoomsIds.sort(function (a, b) {
+  //     console.log(a, b);
+  //     var nameA = a[field];
+  //     var nameB = b[field];
+
+  //     if (nameA > nameB) {
+  //       return 1;
+  //     }
+  //     if (nameA < nameB) {
+  //       return -1;
+  //     }
+  //     return 0;
+  //   });
+  // };
+  // sortRoomsByLastMessage();
   return (
     <Screen>
       {!socket && (
@@ -95,6 +112,7 @@ function RoomsScreen({ navigation }) {
       {socket && allActiveRoomsIds && (
         <FlatList
           // data={sortObjectsByfield(userRooms, "roomName")}
+
           data={allActiveRoomsIds}
           keyExtractor={keyExtractor}
           renderItem={listItem}

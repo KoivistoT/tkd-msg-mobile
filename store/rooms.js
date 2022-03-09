@@ -4,7 +4,7 @@ import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
-
+import memoize from "proxy-memoize";
 const slice = createSlice({
   name: "rooms",
   initialState: {
@@ -244,7 +244,50 @@ export const selectUserRooms = createSelector(
   (rooms) => rooms.allRooms
 );
 
-export const selectAllActiveRoomsIds = createSelector(
+export const selectAllActiveRoomsIdsOld = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allActiveRoomsIds
 );
+
+export const selectAllActiveRoomsIds = memoize((state) => {
+  // console.log("laskee ekassa 1111111");
+  // console.log("computingcomputingcomputingcomputingcomputingcomputing");
+  // console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
+  // console.log(state.entities.rooms.allActiveRoomsIds);
+  const idAndDate = [];
+  state.entities.rooms.allActiveRoomsIds.forEach((roomId) => {
+    if (
+      state.entities.msgStore.allMessages &&
+      state.entities.msgStore.allMessages[roomId] &&
+      state.entities.msgStore.allMessages[roomId].messages &&
+      Object.values(state.entities.msgStore.allMessages[roomId].messages) &&
+      Object.keys(state.entities.msgStore.allMessages[roomId].messages)
+        .length !== 0
+    )
+      idAndDate.push({
+        id: roomId,
+        lastMessage: Object.values(
+          state.entities.msgStore.allMessages[roomId].messages
+        )[
+          Object.keys(state.entities.msgStore.allMessages[roomId].messages)
+            .length - 1
+        ].createdAt,
+      });
+  });
+
+  const sorted = idAndDate.sort(function (a, b) {
+    var nameA = a.lastMessage;
+    var nameB = b.lastMessage;
+
+    if (nameA > nameB) {
+      return -1;
+    }
+    if (nameA < nameB) {
+      return 1;
+    }
+    return 0;
+  });
+
+  const rightOrder = sorted.map((item) => item.id);
+  return rightOrder;
+});
