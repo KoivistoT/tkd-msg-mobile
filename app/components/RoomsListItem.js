@@ -14,9 +14,11 @@ import {
   selectWithArray,
   usersOnlineResived,
 } from "../../store/users";
+
 import showOnlineIndicator from "../../utility/showOnlineIndicator";
-import memoize from "proxy-memoize";
-import OnlineIndicator from "./OnlineIndicator";
+
+import { MemoRoomListMainItem } from "./RoomListMainItem";
+// import RoomListMainItem  from "./RoomListMainItem";
 function RoomsListItem({
   // item,
   roomId,
@@ -56,31 +58,12 @@ function RoomsListItem({
   return (
     <>
       {item && allUsers && (
-        <TouchableOpacity
-          style={{
-            marginBottom: 10,
-            backgroundColor: item.status === "active" ? "lightgrey" : "yellow",
-          }}
-          onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
-        >
-          {Object.keys(allUsers).length > 0 && (
-            <View style={styles.nameRow}>
-              {item.type === "private" && (
-                <OnlineIndicator members={item.members} />
-              )}
-              <AppText
-                style={{
-                  color: "black",
-
-                  padding: 10,
-                }}
-                key={item._id}
-              >
-                {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
-              </AppText>
-            </View>
-          )}
-        </TouchableOpacity>
+        <MemoRoomListMainItem
+          item={item}
+          allUsers={allUsers}
+          currentUserId={currentUserId}
+          navigation={navigation}
+        />
       )}
     </>
   );

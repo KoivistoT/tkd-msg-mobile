@@ -87,8 +87,8 @@ function MessageForm({ item }) {
           title={roomFuncs.getRoomTitle(roomData, allUsers, currentUserId)}
           subTitle={getSubTitle()}
           showOnlineIndicator={showOnlineIndicator(
-            roomData,
             usersOnline,
+            roomData.members,
             currentUserId
           )}
           action={() =>
