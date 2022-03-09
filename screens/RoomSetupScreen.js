@@ -20,6 +20,7 @@ import {
   leave_room,
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
+  selectRoomMembersById,
 } from "../store/rooms";
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
@@ -45,7 +46,8 @@ function RoomSetupScreen(item) {
   } = item.route.params;
 
   const allUsers = useSelector(selectAllUsersMinimal);
-  const roomMembers = useSelector(selectRoomDataById(roomId));
+  const roomMembers = useSelector(selectRoomMembersById(roomId));
+
   const currentUserData = useSelector(selectCurrentUserData);
 
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);

@@ -9,7 +9,7 @@ const slice = createSlice({
   name: "rooms",
   initialState: {
     allRooms: [],
-    allRoomsId: [],
+    allActiveRoomsIds: [],
     loading: false,
     members: [],
     activeRoomId: null,
@@ -39,9 +39,14 @@ const slice = createSlice({
 
     roomArchived: (rooms, action) => {
       rooms.allRooms[action.payload].status = "archived";
+      rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
+        (roomId) => roomId !== action.payload
+      );
     },
     roomActivated: (rooms, action) => {
       rooms.allRooms[action.payload].status = "active";
+
+      rooms.allActiveRoomsIds.push(action.payload);
     },
     roomNameChanged: (rooms, action) => {
       rooms.allRooms[action.payload._id].roomName = action.payload.newRoomName;
@@ -52,7 +57,12 @@ const slice = createSlice({
       // });
 
       rooms.allRooms = action.payload;
-      rooms.allRoomsId = Object.keys(action.payload);
+
+      Object.keys(action.payload).forEach((id) => {
+        if (action.payload[id].status === "active") {
+          rooms.allActiveRoomsIds.push(id);
+        }
+      });
 
       // console.log(
       //   rooms.allRooms["61e6a80eb30d002e91d67b5a"],
@@ -88,10 +98,14 @@ const slice = createSlice({
 
       Object.assign(rooms.allRooms, action.payload);
 
+      rooms.allActiveRoomsIds.push(action.payload);
       // console.log(rooms.allRooms, "now");
     },
     roomRemoved: (rooms, action) => {
       delete rooms.allRooms[action.payload];
+      rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
+        (roomId) => roomId !== action.payload
+      );
     },
   },
 });
@@ -222,4 +236,9 @@ export const selectRoomDataById = (roomId) =>
 export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms
+);
+
+export const selectAllActiveRoomsIds = createSelector(
+  (state) => state.entities.rooms,
+  (rooms) => rooms.allActiveRoomsIds
 );

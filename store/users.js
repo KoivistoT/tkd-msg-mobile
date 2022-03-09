@@ -234,6 +234,7 @@ export const selectUsersOnline = createSelector(
   (state) => state.entities.users,
   (users) => users.usersOnline
 );
+
 const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
 
 // export const selectMyItems = createSelector(
@@ -442,3 +443,67 @@ export const selectAllUsersMedium = memoize((state) => {
     {}
   );
 });
+
+// const heavyComputation = (state, idArray) => {
+//   return idArray.reduce((newObject, _id) => {
+//     return Object.assign(newObject, {
+//       [_id]: state.entities.users.allUsers[_id],
+//     });
+//   }, {});
+// };
+// const getUsers = memoize((state) => ({
+//   selectedUsers: heavyComputation(state.a + state.b),
+// }));
+
+// export const selectMultipleUsersById2 = (state, idArray) => ({
+//   selectedUsers: heavyComputation(state, idArray),
+// });
+export const selectMultipleUsersById2 = memoize((argument) => {
+  return argument.idArray.reduce((newObject, _id) => {
+    return Object.assign(newObject, {
+      [_id]: {
+        _id: argument.state.entities.users.allUsers[_id]._id,
+        firstName: argument.state.entities.users.allUsers[_id].firstName,
+        lastName: argument.state.entities.users.allUsers[_id].lastName,
+        // displayName: argument.state.entities.users.allUsers[_id].displayName,
+      },
+    });
+  }, {});
+});
+
+export const selectMultipleUsersById = (idArray) =>
+  createSelector(
+    (state) => state.entities.users,
+    (users) => {
+      return idArray.reduce((newObject, _id) => {
+        return Object.assign(newObject, {
+          [_id]: {
+            _id: users.allUsers[_id]._id,
+            firstName: users.allUsers[_id].firstName,
+            lastName: users.allUsers[_id].lastName,
+            displayName: users.allUsers[_id].displayName,
+          },
+        });
+      }, {});
+    }
+  );
+export const selectWithArray = (idArray) =>
+  memoCreateSelector(
+    (state) => state.entities.users,
+    (users) => {
+      console.log("kdsjfkjsdklfjlsfjsdklfjlksdjfklsjdf");
+      return Object.keys(users.allUsers).map((userId) => {
+        if (idArray.includes(userId)) {
+          return {
+            [users.allUsers[userId]._id]: {
+              _id: users.allUsers[userId]._id,
+              firstName: users.allUsers[userId].firstName,
+              lastName: users.allUsers[userId].lastName,
+              displayName: users.allUsers[userId].displayName,
+            },
+          };
+        }
+        return null;
+      });
+    }
+  );

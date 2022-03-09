@@ -15,7 +15,7 @@ import { disconnectSocket, selectSocket } from "../store/socket";
 // import RoomsListItem from "../app/components/RoomsListItem";
 import RoomsListItem from "../app/components/RoomsListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
-import { selectUserRooms } from "../store/rooms";
+import { selectAllActiveRoomsIds, selectUserRooms } from "../store/rooms";
 // import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 // import CreateChannelModal from "../app/components/modals/CreateChannelModal";
@@ -30,16 +30,17 @@ import showOnlineIndicator from "../utility/showOnlineIndicator";
 function RoomsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
-  const userRooms = useSelector(selectUserRooms);
+  // const userRooms = useSelector(selectUserRooms);
   const socket = useSelector(selectSocket);
-  const allUsers = useSelector(selectAllUsersMinimal);
+  // const allUsers = useSelector(selectAllUsersMinimal);
   const currentUserId = store.getState().auth.currentUser._id;
+  const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
   // const allUsers1 = useSelector(selectAllUsers1);
   // const { allUsers, userRooms } = useSelector(selectUserRoomsAndAllUsers);
   // if (allUsers === null || Object.keys(allUsers).length === 0)
   // console.log("on null");
   // console.log("päivittää tällä", currentUserId);
-  const usersOnline = useSelector(selectUsersOnline);
+  // const usersOnline = useSelector(selectUsersOnline);
 
   const logout = () => {
     userOffline();
@@ -77,19 +78,20 @@ function RoomsScreen({ navigation }) {
     };
   }, [socket]);
 
-  const keyExtractor = (item) => item._id;
+  const keyExtractor = (id) => id;
   const listItem = ({ item }) => {
-    if (item.status === "archived" && item.roomCreator !== userId) return;
+    // if (item.status === "archived" && item.roomCreator !== userId) return;
     return (
       <RoomsListItem
-        showOnlineIndicator={showOnlineIndicator(
-          item,
-          usersOnline,
-          currentUserId
-        )}
+        // showOnlineIndicator={showOnlineIndicator(
+        //   item,
+        //   usersOnline,
+        //   currentUserId
+        // )}
         navigation={navigation}
-        item={item}
-        allUsers={allUsers}
+        // item={item}
+        // allUsers={allUsers}
+        roomId={item}
         currentUserId={currentUserId}
       />
     );
@@ -101,16 +103,14 @@ function RoomsScreen({ navigation }) {
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
       {/* ehkä ei tarpeen olla kaikki varmistukset, ei päivitä alussa roomListItemiä niin montaa kertaa, mutta ehkä ei haittaa... */}
-      {socket &&
-        Object.keys(userRooms).length !== 0 &&
-        usersOnline.length > 0 &&
-        Object.keys(allUsers).length !== 0 && (
-          <FlatList
-            data={sortObjectsByfield(userRooms, "roomName")}
-            keyExtractor={keyExtractor}
-            renderItem={listItem}
-          />
-        )}
+      {socket && allActiveRoomsIds && (
+        <FlatList
+          // data={sortObjectsByfield(userRooms, "roomName")}
+          data={allActiveRoomsIds}
+          keyExtractor={keyExtractor}
+          renderItem={listItem}
+        />
+      )}
 
       <View>
         <MemoCreateChannelModal />
