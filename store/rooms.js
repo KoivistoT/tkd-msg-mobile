@@ -11,7 +11,7 @@ const slice = createSlice({
     allRooms: [],
     allActiveRoomsIds: [],
     loading: false,
-    members: [],
+
     activeRoomId: null,
     errorMessage: null,
     successMessage: null,
@@ -84,12 +84,6 @@ const slice = createSlice({
       rooms.loading = false;
     },
 
-    membersResived: (rooms, action) => {
-      rooms.members = action.payload.members;
-
-      // console.log(rooms.messages.messages, "nämä jälkeen");
-    },
-
     roomCreated: (rooms, action) => {
       rooms.loading = false;
     },
@@ -98,7 +92,7 @@ const slice = createSlice({
 
       Object.assign(rooms.allRooms, action.payload);
 
-      rooms.allActiveRoomsIds.push(action.payload);
+      rooms.allActiveRoomsIds.push(Object.keys(action.payload));
       // console.log(rooms.allRooms, "now");
     },
     roomRemoved: (rooms, action) => {
@@ -119,7 +113,7 @@ export const {
   roomCreated,
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
-  membersResived,
+
   membersChanged,
   roomAdded,
   roomRemoved,

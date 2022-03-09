@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import routes from "../../app/navigation/routes";
-import colors from "../../config/colors";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import React from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import routes from "../navigation/routes";
 import roomFuncs from "../../utility/roomFuncs";
 import AppText from "./AppText";
-import { selectRoomDataById } from "../../store/rooms";
-import {
-  selectAllUsersMinimal,
-  selectMultipleUsersById,
-  selectMultipleUsersById2,
-  selectUsersOnline,
-  selectWithArray,
-  usersOnlineResived,
-} from "../../store/users";
-import showOnlineIndicator from "../../utility/showOnlineIndicator";
-
 import OnlineIndicator from "./OnlineIndicator";
-function RoomListMainItem({ item, allUsers, currentUserId, navigation }) {
-  console.log("main päivittyy");
+
+function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
   return (
     <>
       <TouchableOpacity
@@ -62,17 +49,35 @@ const styles = StyleSheet.create({
 });
 
 function areEqual(prevProps, nextProps) {
-  console.log(
-    prevProps,
-    "tähän loop, missä katsoo kuuluuko uusi tieto tähän huoneeseen"
-  );
-  // Ei ehkä vaikutusta tästä?
-  // /*
-  // return true if passing nextProps to render would return
-  // the same result as passing prevProps to render,
-  // otherwise return false
-  // */
+  const roomProps =
+    prevProps.item.members !== nextProps.item.members &&
+    prevProps.item.roomName !== nextProps.item.roomName &&
+    prevProps.item.status !== nextProps.item.status;
+
+  try {
+    var result = [];
+    if (prevProps.allUsers) {
+      nextProps.item.members.forEach((userId) => {
+        if (
+          prevProps.allUsers[userId].firstName ===
+            nextProps.allUsers[userId].firstName &&
+          prevProps.allUsers[userId].lastName ===
+            nextProps.allUsers[userId].lastName &&
+          prevProps.allUsers[userId].displayName ===
+            nextProps.allUsers[userId].displayName
+        ) {
+          result.push("sameProps");
+        } else {
+          result.push("notSameProps");
+        }
+      });
+    }
+    if (result.includes("notSameProps") || roomProps === false) return false;
+    return true;
+  } catch (error) {
+    console.log(error, "code 9kf92");
+  }
 }
 
-export const MemoRoomListMainItem = React.memo(RoomListMainItem, areEqual);
+export const MemoRoomListItemChild = React.memo(RoomListItemChild, areEqual);
 // export default RoomListMainItem;

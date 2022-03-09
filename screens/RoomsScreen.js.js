@@ -12,8 +12,8 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket, selectSocket } from "../store/socket";
-// import RoomsListItem from "../app/components/RoomsListItem";
-import RoomsListItem from "../app/components/RoomsListItem";
+// import RoomListItem from "../app/components/RoomListItem";
+import RoomListItem from "../app/components/RoomListItem";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
 import { selectAllActiveRoomsIds, selectUserRooms } from "../store/rooms";
 // import NewDirectRoomModal from "../app/components/modals/NewDirectRoomModal";
@@ -41,7 +41,7 @@ function RoomsScreen({ navigation }) {
   // console.log("on null");
   // console.log("päivittää tällä", currentUserId);
   // const usersOnline = useSelector(selectUsersOnline);
-
+  // console.log(allActiveRoomsIds);
   const logout = () => {
     userOffline();
     dispatch(disconnectSocket());
@@ -82,7 +82,7 @@ function RoomsScreen({ navigation }) {
   const listItem = ({ item }) => {
     // if (item.status === "archived" && item.roomCreator !== userId) return;
     return (
-      <RoomsListItem
+      <RoomListItem
         // showOnlineIndicator={showOnlineIndicator(
         //   item,
         //   usersOnline,
