@@ -78,11 +78,14 @@ const slice = createSlice({
       // );
     },
 
-    membersChanged: (rooms, action) => {
+    roomMembersChanged: (rooms, action) => {
       try {
         // console.log(action.payload, "tässä memberit");
         rooms.allRooms[action.payload._id].members = action.payload.members;
-        // console.log(rooms.allRooms[action.payload._id].members, "täältä huoneen");
+        // console.log(
+        //   rooms.allRooms[action.payload._id].members,
+        //   "täältä huoneen"
+        // );
       } catch (error) {
         console.log(error, "code 39922");
       }
@@ -122,7 +125,8 @@ export const {
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
   roomStateCleared,
-  membersChanged,
+  roomMembersChanged,
+
   roomAdded,
   roomRemoved,
   roomActivated,

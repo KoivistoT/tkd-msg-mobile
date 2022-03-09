@@ -13,10 +13,11 @@ import {
 import {
   roomAdded,
   roomRemoved,
-  membersChanged,
   roomArchived,
   roomActivated,
   roomNameChanged,
+  membersChanged,
+  roomMembersChanged,
 } from "./rooms";
 
 import {
@@ -39,7 +40,7 @@ const slice = createSlice({
     },
     socketDisconnected: (socket, action) => {
       socket.connection = null;
-      console.log(action.payload, "appCode 12312593");
+      // console.log(action.payload, "appCode 12312593");
     },
     connectionError: (socket, action) => {
       console.log(action.payload, "tästä tuli2");
@@ -124,7 +125,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
 
         if (type === "membersChanged") {
-          dispatch(membersChanged(Object.values(data)[0]));
+          dispatch(roomMembersChanged(Object.values(data)[0]));
         }
       });
 
@@ -152,7 +153,6 @@ export const disconnectSocket = (userId) => {
     // console.log(action.payload, "tästä tuli1");
     //saako nämä jotenkin nätemmin
     await getState().auth.currentUser.userRooms.forEach((roomId) => {
-      console.log("lähti huoneesta roomId, unsbuscripe");
       getState().entities.socket.connection.emit("unsubscribe", roomId);
     });
     getState().entities.socket.connection.disconnect();
