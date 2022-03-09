@@ -3,6 +3,7 @@ import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
+import { requestStarted, requestSucceed } from "./rooms";
 
 const slice = createSlice({
   name: "msgStore",
@@ -106,6 +107,21 @@ const slice = createSlice({
       delete msgStore.allMessageIds[action.payload];
     },
 
+    messageDeleted: (msgStore, action) => {
+      // console.log(
+      //   "täällä pitää vielä tämä tehdä ja sit, että näyttää messagen is deleted messagelistalla"
+      // );
+
+      msgStore.allMessages[Object.keys(action.payload)].messages[
+        Object.values(action.payload)[0].messageId
+      ].is_deleted = true;
+
+      // msgStore.allMessages[Object.keys(action.payload)];
+      // .messages[
+      //   Object.values(action.payload).messageId
+      // ].is_deleted = true;
+    },
+
     messageSendError: (msgStore, action) => {
       msgStore.messageSendError = action.payload;
       // console.log("message ei lähetetty", action.payload);
@@ -120,6 +136,7 @@ export const {
   messagesResived,
   oneRoomMessagesResived,
   messageSendError,
+  messageDeleted,
   messageSent,
   messagesError,
   messageSendErrorCleared,
@@ -138,6 +155,19 @@ export const getMessagesbyId = (id) =>
   apiCallBegan({
     url: url + "/messages/" + id,
     onSuccess: oneRoomMessagesResived.type,
+    onError: messagesError.type,
+  });
+
+export const deleteMessageById = (roomId, messageId) =>
+  apiCallBegan({
+    url: url + "/messages/delete/",
+    method: "post",
+    data: {
+      roomId,
+      messageId,
+    },
+
+    onSuccess: requestSucceed.type,
     onError: messagesError.type,
   });
 

@@ -7,6 +7,7 @@ import settings from "../config/settings";
 import {
   getMessagesbyId,
   getRoomImages,
+  messageDeleted,
   messagesRemoved,
   newMessageResived,
 } from "./msgStore";
@@ -126,6 +127,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "membersChanged") {
           dispatch(roomMembersChanged(Object.values(data)[0]));
+        }
+        if (type === "messageDeleted") {
+          dispatch(messageDeleted(data));
         }
       });
 

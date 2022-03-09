@@ -6,6 +6,7 @@ import AppText from "../AppText";
 
 import MessageItemImage from "./MessageItemImage";
 import {
+  deleteMessageById,
   replyMessageIdCleared,
   replyMessageIdResived,
   selectMessageById,
@@ -23,6 +24,9 @@ function MessageItemMainChild({ messageData, sentBy, allUsers }) {
       })
     );
   };
+  const onDeleteMessage = () => {
+    dispatch(deleteMessageById(messageData.roomId, messageData._id));
+  };
   console.log("message Child päivittyy---------------------");
   return (
     <>
@@ -30,7 +34,10 @@ function MessageItemMainChild({ messageData, sentBy, allUsers }) {
         <TouchableOpacity title={"reply"} onPress={onReply}>
           <AppText>Reply</AppText>
         </TouchableOpacity>
-
+        <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
+          <AppText>delete</AppText>
+        </TouchableOpacity>
+        {messageData.is_deleted && <AppText>TÄMÄ ON DELETOIUTU</AppText>}
         <AppText>
           sender:
           {allUsers
@@ -61,6 +68,11 @@ const styles = StyleSheet.create({
 });
 
 function areEqual(prevProps, nextProps) {
+  console.log(
+    prevProps.messageData.is_deleted,
+    nextProps.messageData.is_deleted,
+    prevProps.messageData.is_deleted === nextProps.messageData.is_deleted
+  );
   try {
     if (
       prevProps.messageData.is_deleted === nextProps.messageData.is_deleted &&
