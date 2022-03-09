@@ -8,40 +8,32 @@ import MessageItemImage from "./MessageItemImage";
 import {
   replyMessageIdCleared,
   replyMessageIdResived,
+  selectMessageById,
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
-function MessageItem({ item, currentUserId, allUsers }) {
+import { MemoMessageItemMainChild } from "./MessageItemMainChild";
+
+function MessageItemMain({ messageId, roomId, currentUserId }) {
   const dispatch = useDispatch();
-  const { _id: messageId, roomId, postedByUser } = item;
+  // const { _id: messageId, roomId, postedByUser } = item;
+  const messageData = useSelector(selectMessageById(roomId, messageId));
+  const store = useStore();
+  const sentBy =
+    messageData.postedByUser === currentUserId ? "me" : "otherUser";
+  // const messageType = item.type;
+  const allUsers = store.getState().entities.users.allUsers;
 
-  const sentBy = postedByUser === currentUserId ? "me" : "otherUser";
-  const messageType = item.type;
-  const onReply = () => {
-    dispatch(replyMessageIdCleared(roomId));
-    dispatch(replyMessageIdResived({ messageId, roomId }));
-  };
-
+  // const onReply = () => {
+  //   dispatch(replyMessageIdCleared(roomId));
+  //   dispatch(replyMessageIdResived({ messageId, roomId }));
+  // };
+  console.log("message main päivittyy");
   return (
-    <>
-      <TouchableOpacity key={messageId} style={styles[sentBy]}>
-        <TouchableOpacity title={"reply"} onPress={onReply}>
-          <AppText>Reply</AppText>
-        </TouchableOpacity>
-
-        <AppText>
-          sender:
-          {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
-        </AppText>
-        {messageType === "image" && <MessageItemImage item={item} />}
-        {item.replyMessageId && (
-          <MessageItemReply
-            allUsers={allUsers}
-            item={{ roomId, messageId: item.replyMessageId }}
-          />
-        )}
-        <AppText>{item.messageBody}</AppText>
-      </TouchableOpacity>
-    </>
+    <MemoMessageItemMainChild
+      messageData={messageData}
+      sentBy={sentBy}
+      allUsers={allUsers}
+    />
   );
 }
 
@@ -50,4 +42,4 @@ const styles = StyleSheet.create({
   otherUser: { alignItems: "flex-start" },
 });
 
-export default MessageItem;
+export default MessageItemMain;

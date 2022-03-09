@@ -10,7 +10,12 @@ import {
   selectRoomDataById,
   selectRoomMembersById,
 } from "../../store/rooms";
-import { selectReplyItemIds, sendMessage, test } from "../../store/msgStore";
+import {
+  replyMessageIdCleared,
+  selectReplyItemIds,
+  sendMessage,
+  test,
+} from "../../store/msgStore";
 import { useNavigation } from "@react-navigation/native";
 import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
@@ -127,7 +132,7 @@ function MessageForm({ item }) {
     dispatch(
       sendMessage(message, roomData._id, messageType, imageURLs, replyMessageId)
     );
-
+    dispatch(replyMessageIdCleared(roomData._id));
     resetForm();
     Keyboard.dismiss();
   };

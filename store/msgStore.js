@@ -78,6 +78,7 @@ const slice = createSlice({
       var targetMessages = msgStore.allMessages[message.roomId].messages;
 
       Object.assign(targetMessages, action.payload);
+      msgStore.allMessageIds[message.roomId].push(message._id);
 
       if (message.type === "image") {
         message.imageURLs.forEach((url) => {
@@ -203,4 +204,10 @@ export const selectMessageById = (roomId, messageId) =>
   createSelector(
     (state) => state.entities.msgStore,
     (msgStore) => msgStore.allMessages[roomId].messages[messageId]
+  );
+
+export const selectRoomMessageIdsByRoomId = (roomId) =>
+  createSelector(
+    (state) => state.entities.msgStore,
+    (msgStore) => msgStore.allMessageIds[roomId]
   );
