@@ -36,7 +36,9 @@ function MessageList({ item }) {
   );
 
   useEffect(() => {
-    msgListRef.current.scrollToIndex({ animated: false, index: 0 });
+    try {
+      msgListRef.current.scrollToIndex({ animated: false, index: 0 });
+    } catch (error) {}
   }, []);
 
   const keyExtractor = (item) => item;

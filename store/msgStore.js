@@ -75,6 +75,7 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (msgStore, action) => {
+      console.log("täässää");
       const message = Object.values(action.payload)[0];
       var targetMessages = msgStore.allMessages[message.roomId].messages;
 

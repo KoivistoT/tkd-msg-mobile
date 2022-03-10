@@ -131,6 +131,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         if (type === "messageDeleted") {
           dispatch(messageDeleted(data));
         }
+
+        if (type === "new message") {
+          console.log("kyllä tenne mmenee");
+          // console.log(data);
+          dispatch(newMessageResived(data));
+        }
       });
 
       socket.emit("identity", getState().auth.currentUser._id, accountType); //hard code pois
@@ -141,10 +147,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
       getState().auth.currentUser.userRooms.forEach((roomId) => {
         socket.emit("subscribe", roomId);
-      });
-
-      socket.on("new message", (data) => {
-        dispatch(newMessageResived(data.message));
       });
     });
   } catch (error) {
