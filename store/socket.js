@@ -133,7 +133,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
 
         if (type === "new message") {
-          console.log("kyllä tenne mmenee");
           // console.log(data);
           dispatch(newMessageResived(data));
         }
