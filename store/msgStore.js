@@ -241,6 +241,7 @@ export const selectRoomMessageIdsByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
     (msgStore) =>
+      //tämä tsekkaus on turha sitten jos alussa sinne luodaan heti viesti
       msgStore.allMessageIds[roomId] !== undefined &&
       msgStore.allMessageIds[roomId].length !== 0
         ? [...msgStore.allMessageIds[roomId]].reverse()

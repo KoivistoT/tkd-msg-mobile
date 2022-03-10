@@ -27,10 +27,21 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
 
                 padding: 10,
               }}
-              key={item._id}
             >
               {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
             </AppText>
+            {/* tämä itemlatestMessage tsekkaus voi olla turha jatkoss */}
+            {item.latestMessage && (
+              <AppText
+                style={{
+                  color: "black",
+
+                  padding: 10,
+                }}
+              >
+                last: {item.latestMessage.messageBody}
+              </AppText>
+            )}
           </View>
         )}
       </TouchableOpacity>
@@ -53,6 +64,7 @@ function areEqual(prevProps, nextProps) {
   const roomProps =
     prevProps.item.members === nextProps.item.members &&
     prevProps.item.roomName === nextProps.item.roomName &&
+    prevProps.item.latestMessage === nextProps.item.latestMessage &&
     prevProps.item.status === nextProps.item.status;
 
   try {
@@ -63,14 +75,13 @@ function areEqual(prevProps, nextProps) {
       Object.keys(prevProps.allUsers).length > 0 &&
       nextProps.item.members
     ) {
-      nextProps.item.members.forEach((userId2) => {
+      nextProps.item.members.forEach((userId) => {
+        const prev = prevProps.allUsers[userId];
+        const next = nextProps.allUsers[userId];
         if (
-          prevProps.allUsers[userId2].firstName ===
-            nextProps.allUsers[userId2].firstName &&
-          prevProps.allUsers[userId2].lastName ===
-            nextProps.allUsers[userId2].lastName &&
-          prevProps.allUsers[userId2].displayName ===
-            nextProps.allUsers[userId2].displayName
+          prev.firstName === next.firstName &&
+          prev.lastName === next.lastName &&
+          prev.displayName === next.displayName
         ) {
           result.push("sameProps");
         } else {

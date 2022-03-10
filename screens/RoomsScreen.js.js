@@ -12,7 +12,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket, selectSocket } from "../store/socket";
-import { MemoRoomListItemMain } from "../app/components/RoomListItem";
+import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
 import {
   roomStateCleared,
   selectAllActiveRoomsIds,
