@@ -12,7 +12,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket, selectSocket } from "../store/socket";
-import RoomListItem from "../app/components/RoomListItem";
+import { MemoRoomListItem } from "../app/components/RoomListItem";
 import {
   roomStateCleared,
   selectAllActiveRoomsIds,
@@ -70,17 +70,9 @@ function RoomsScreen({ navigation }) {
 
   const keyExtractor = (id) => id;
   const listItem = ({ item }) => {
-    // if (item.status === "archived" && item.roomCreator !== userId) return;
     return (
-      <RoomListItem
-        // showOnlineIndicator={showOnlineIndicator(
-        //   item,
-        //   usersOnline,
-        //   currentUserId
-        // )}
+      <MemoRoomListItem
         navigation={navigation}
-        // item={item}
-        // allUsers={allUsers}
         roomId={item}
         currentUserId={currentUserId}
       />

@@ -7,7 +7,7 @@ import { MemoRoomListItemChild } from "./RoomListItemChild";
 function RoomListItem({ roomId, navigation, currentUserId }) {
   const item = useSelector(selectRoomDataById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);
-
+  console.log("roomlititem päivittyy");
   return (
     item &&
     allUsers && (
@@ -23,4 +23,17 @@ function RoomListItem({ roomId, navigation, currentUserId }) {
 
 const styles = StyleSheet.create({});
 
-export default RoomListItem;
+function areEqual(prevProps, nextProps) {
+  try {
+    if (prevProps.roomId === nextProps.roomId) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error, "code 99e332");
+  }
+}
+
+export const MemoRoomListItem = React.memo(RoomListItem, areEqual);
+// export default RoomListItem;

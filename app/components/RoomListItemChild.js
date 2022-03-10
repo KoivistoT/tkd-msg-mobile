@@ -6,7 +6,7 @@ import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
 
 function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
-  // console.log("child päivittyy");
+  console.log("child päivittyy");
   return (
     <>
       <TouchableOpacity
@@ -57,7 +57,8 @@ function areEqual(prevProps, nextProps) {
 
   try {
     var result = [];
-    if (prevProps && prevProps.allUsers) {
+    //tähän ovisi laittaa jos allUsers pituus on yli 0
+    if (prevProps && prevProps.allUsers && nextProps.item.members) {
       nextProps.item.members.forEach((userId2) => {
         if (
           prevProps.allUsers[userId2].firstName ===
