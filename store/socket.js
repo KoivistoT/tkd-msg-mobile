@@ -144,7 +144,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         dispatch(connectionError("Socket connection faild"));
       }
 
+      // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);
       getState().auth.currentUser.userRooms.forEach((roomId) => {
+        // console.log("tänne subscripe", roomId);
         socket.emit("subscribe", roomId);
       });
     });

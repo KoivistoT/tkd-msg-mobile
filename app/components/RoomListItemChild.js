@@ -57,8 +57,6 @@ function areEqual(prevProps, nextProps) {
 
   try {
     var result = [];
-    // console.log(Object.keys(prevProps.allUsers).length, "tämä tässä pituus");
-    //tähän ovisi laittaa jos allUsers pituus on yli 0
     if (
       prevProps &&
       prevProps.allUsers &&

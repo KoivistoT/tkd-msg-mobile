@@ -7,6 +7,7 @@ import { MemoRoomListItemChild } from "./RoomListItemChild";
 function RoomListItem({ roomId, navigation, currentUserId }) {
   const item = useSelector(selectRoomDataById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);
+
   return (
     item &&
     Object.keys(allUsers).length > 0 && (
@@ -19,8 +20,6 @@ function RoomListItem({ roomId, navigation, currentUserId }) {
     )
   );
 }
-
-const styles = StyleSheet.create({});
 
 function areEqual(prevProps, nextProps) {
   try {

@@ -1,5 +1,6 @@
 import { errorMessageAdded, successMessageAdded } from "../general";
 import { setRoomLoadingToFalse } from "../rooms";
+import { createSocketConnection } from "../socket";
 
 const toast =
   ({ dispatch, getState }) =>
@@ -14,6 +15,9 @@ const toast =
     // } else return next(action);
 
     switch (action.type) {
+      // case "users/usersResived": // tämä ei ole toastiin kuuluva
+      //   dispatch(createSocketConnection());
+      //   break;
       case "rooms/membersChanged":
         dispatch(successMessageAdded("Users changed"));
         break;

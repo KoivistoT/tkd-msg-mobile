@@ -5,6 +5,7 @@ import settings from "../../config/settings";
 import { useSelector } from "react-redux";
 import { selectCurrentUserToken } from "../currentUser";
 import { errorMessageAdded } from "../general";
+import { createSocketConnection } from "../socket";
 const api =
   ({ dispatch, getState }) =>
   (next) =>
@@ -37,8 +38,9 @@ const api =
       if (onInitSuccess) {
         //tämä voisi olla myös functiolla joka on alhaalla, jotta tämä selkeämpi, tai sitten function on ihan jossain muualla
         // dispatch({ type: onInitSuccess.messages, payload: response.data.messages });
-        dispatch({ type: onInitSuccess.rooms, payload: response.data.rooms });
         dispatch({ type: onInitSuccess.user, payload: response.data.user });
+        dispatch(createSocketConnection()); //tämä jos tulee liian nopeasti ei reagoi huoneisiin laitettaviin viesteihin, eli voi siirtää alas tarvittaessas
+        dispatch({ type: onInitSuccess.rooms, payload: response.data.rooms });
         dispatch({
           type: onInitSuccess.messages,
           payload: response.data.messages,
@@ -51,6 +53,7 @@ const api =
           type: onInitSuccess.users,
           payload: response.data.allUsers,
         });
+
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;
       }
