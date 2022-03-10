@@ -239,5 +239,9 @@ export const selectMessageById = (roomId, messageId) =>
 export const selectRoomMessageIdsByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
-    (msgStore) => [...msgStore.allMessageIds[roomId]].reverse()
+    (msgStore) =>
+      msgStore.allMessageIds[roomId] !== undefined &&
+      msgStore.allMessageIds[roomId].length !== 0
+        ? [...msgStore.allMessageIds[roomId]].reverse()
+        : []
   );
