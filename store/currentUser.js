@@ -54,6 +54,9 @@ const slice = createSlice({
 
       currentUser.userRooms = action.payload.userRooms;
     },
+    lastSeenMessageSumSaved: (currentUser, action) => {
+      console.log("lastSeenMessageSumSaved, tallenna täällä kans");
+    },
     userFetchFaild: (currentUser, action) => {
       console.log(action.payload, "error cod 99991");
     },
@@ -77,16 +80,23 @@ const slice = createSlice({
       currentUser.error = null;
       currentUser.loading = false;
     },
+    currentUserError: (currentUser, action) => {
+      console.log("error täällä code 92992881");
+    },
+    currentUserRequestStarted: (currentUser, action) => {},
   },
 });
 
 export const {
   userLoggedIn,
   userResived,
+  currentUserError,
   loginFailed,
   userLoggedOut,
   errorMessageCleared,
+  currentUserRequestStarted,
   userFetchFaild,
+  lastSeenMessageSumSaved,
 } = slice.actions;
 export default slice.reducer;
 
@@ -125,6 +135,20 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
     })
   );
 };
+
+export const saveLastSeenMessageSum =
+  (currentUserId, roomId, lastSeenMessageSum) => (dispatch, getState) => {
+    return dispatch(
+      apiCallBegan({
+        url: url + "/users/save_last_seen_message_sum",
+        method: "post",
+        data: { currentUserId, roomId, lastSeenMessageSum },
+        onSuccess: currentUserRequestStarted.type,
+        onError: currentUserError.type,
+      })
+    );
+  };
+
 export const logout = () => {
   console.log("tämä suoraan logout siellä missä onkaan");
   userLoggedOut();

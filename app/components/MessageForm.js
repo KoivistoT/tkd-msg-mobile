@@ -43,6 +43,7 @@ import {
 import showOnlineIndicator from "../../utility/showOnlineIndicator";
 import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
+import { saveLastSeenMessageSum } from "../../store/currentUser";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -56,7 +57,7 @@ function MessageForm({ item }) {
   const replyMessageIds = useSelector(selectReplyItemIds);
   const roomMembers = useSelector(selectRoomMembersById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
-  // console.log("päivittää");
+  console.log("päivittää tämä kahdesti, ei ehkä haittaa");
 
   const otherUser =
     roomData.type === "private"
@@ -69,6 +70,10 @@ function MessageForm({ item }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(roomData._id));
+
+    dispatch(
+      saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
+    );
     setHeader();
 
     return () => {
