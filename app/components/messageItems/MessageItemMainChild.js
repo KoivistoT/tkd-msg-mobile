@@ -35,7 +35,8 @@ function MessageItemMainChild({ message, sentBy, allUsers }) {
   const onDeleteMessage = () => {
     dispatch(deleteMessageById(roomId, messageId));
   };
-  console.log("message Child päivittyy---------------------");
+  // console.log("message Child päivittyy---------------------");
+
   return (
     <>
       <TouchableOpacity key={messageId} style={styles[sentBy]}>

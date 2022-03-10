@@ -14,7 +14,9 @@ import { selectAllUsersMinimal } from "../../store/users";
 
 function MessageList({ item }) {
   const store = useStore();
+  const msgListRef = useRef();
   const roomId = item.route.params._id;
+
   // const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
@@ -33,7 +35,26 @@ function MessageList({ item }) {
     />
   );
 
+  useEffect(() => {
+    msgListRef.current.scrollToIndex({ animated: false, index: 0 });
+  }, []);
+
   const keyExtractor = (item) => item;
+
+  const onScrollToIndexFailed = (error) => {
+    msgListRef.current.scrollToOffset({
+      offset: error.averageItemLength * error.index,
+      animated: false,
+    });
+    setTimeout(() => {
+      if (msgListRef.current !== null) {
+        msgListRef.current.scrollToIndex({
+          index: error.index,
+          animated: false,
+        });
+      }
+    }, 10);
+  };
 
   return (
     <>
@@ -47,10 +68,17 @@ function MessageList({ item }) {
       >
         {roomMessageIds && (
           <FlatList
+            ref={msgListRef}
             // data={sortObjectsByfield(roomMessages, "createdAt")}
             data={roomMessageIds}
+            onScrollToIndexFailed={onScrollToIndexFailed}
             keyExtractor={keyExtractor}
             renderItem={messageItem}
+            onEndReachedThreshold={0.7}
+            maxToRenderPerBatch={30} //default 10
+            initialNumToRender={10}
+            windowSize={30}
+            inverted={true}
           />
         )}
       </View>

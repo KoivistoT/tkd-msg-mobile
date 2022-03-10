@@ -128,6 +128,23 @@ function MessageForm({ item }) {
       // console.log(imageURLs, "Täältä tulee");
       console.log("lataus valmis");
     }
+    // var counter = 0;
+    // var i = setInterval(async function () {
+    //   dispatch(
+    //     sendMessage(
+    //       Math.random(),
+    //       roomData._id,
+    //       messageType,
+    //       imageURLs,
+    //       replyMessageId
+    //     )
+    //   );
+
+    //   counter++;
+    //   if (counter === 100) {
+    //     clearInterval(i);
+    //   }
+    // }, 200);
 
     dispatch(
       sendMessage(message, roomData._id, messageType, imageURLs, replyMessageId)

@@ -4,7 +4,7 @@ import { selectMessageById } from "../../../store/msgStore";
 import { MemoMessageItemMainChild } from "./MessageItemMainChild";
 
 function MessageItemMain({ messageId, roomId, currentUserId }) {
-  console.log("message main!!!");
+  // console.log("message main!!!");
   const message = useSelector(selectMessageById(roomId, messageId));
   const store = useStore();
   const sentBy = message.postedByUser === currentUserId ? "me" : "otherUser";
