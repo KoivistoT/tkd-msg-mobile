@@ -19,6 +19,7 @@ import {
   roomNameChanged,
   membersChanged,
   roomMembersChanged,
+  roomLatestMessageChanged,
 } from "./rooms";
 
 import {
@@ -127,6 +128,10 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (type === "membersChanged") {
           dispatch(roomMembersChanged(Object.values(data)[0]));
+        }
+        if (type === "roomLatestMessageChanged") {
+          const requestData = Object.values(data)[0];
+          dispatch(roomLatestMessageChanged(requestData));
         }
         if (type === "messageDeleted") {
           dispatch(messageDeleted(data));

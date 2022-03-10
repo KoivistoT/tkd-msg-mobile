@@ -59,6 +59,12 @@ const slice = createSlice({
     roomNameChanged: (rooms, action) => {
       rooms.allRooms[action.payload._id].roomName = action.payload.newRoomName;
     },
+    roomLatestMessageChanged: (rooms, action) => {
+      rooms.allRooms[action.payload._id].latestMessage =
+        action.payload.latestMessage;
+      console.log(rooms.allRooms);
+    },
+
     roomsResived: (rooms, action) => {
       // action.payload.forEach((item) => {
       //   rooms.allRooms = { [item._id]: item, ...rooms.allRooms };
@@ -123,6 +129,7 @@ export const {
   activeRoomIdResived,
   roomCreated,
   setRoomLoadingToFalse,
+  roomLatestMessageChanged,
   setRoomLoadingToTrue,
   roomStateCleared,
   roomMembersChanged,
