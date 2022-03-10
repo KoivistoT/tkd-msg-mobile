@@ -7,10 +7,9 @@ import { MemoRoomListItemChild } from "./RoomListItemChild";
 function RoomListItem({ roomId, navigation, currentUserId }) {
   const item = useSelector(selectRoomDataById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);
-  console.log("roomlititem päivittyy");
   return (
     item &&
-    allUsers && (
+    Object.keys(allUsers).length > 0 && (
       <MemoRoomListItemChild
         item={item}
         allUsers={allUsers}

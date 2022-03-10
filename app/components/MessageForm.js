@@ -141,10 +141,10 @@ function MessageForm({ item }) {
     //   );
 
     //   counter++;
-    //   if (counter === 100) {
+    //   if (counter === 9000) {
     //     clearInterval(i);
     //   }
-    // }, 200);
+    // }, 100);
 
     dispatch(
       sendMessage(message, roomData._id, messageType, imageURLs, replyMessageId)
