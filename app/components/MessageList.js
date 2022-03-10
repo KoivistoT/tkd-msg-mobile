@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useLayoutEffect } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import MessageItemMain from "./messageItems/MessageItemMain";
+import MessageItemMain, {
+  MemoMessageItemMain,
+} from "./messageItems/MessageItemMain";
 import {
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesByRoomId,
@@ -24,7 +26,7 @@ function MessageList({ item }) {
   //*********** */
 
   const messageItem = ({ item }) => (
-    <MessageItemMain
+    <MemoMessageItemMain
       messageId={item}
       roomId={roomId}
       currentUserId={currentUserId}

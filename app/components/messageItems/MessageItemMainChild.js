@@ -68,11 +68,11 @@ const styles = StyleSheet.create({
 });
 
 function areEqual(prevProps, nextProps) {
-  console.log(
-    prevProps.messageData.is_deleted,
-    nextProps.messageData.is_deleted,
-    prevProps.messageData.is_deleted === nextProps.messageData.is_deleted
-  );
+  // console.log(
+  //   prevProps.messageData.is_deleted,
+  //   nextProps.messageData.is_deleted,
+  //   prevProps.messageData.is_deleted === nextProps.messageData.is_deleted
+  // );
   try {
     if (
       prevProps.messageData.is_deleted === nextProps.messageData.is_deleted &&

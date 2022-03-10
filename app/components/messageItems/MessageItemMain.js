@@ -1,20 +1,15 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import colors from "../../../config/colors";
+import { StyleSheet } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import AppText from "../AppText";
-
-import MessageItemImage from "./MessageItemImage";
 import {
   replyMessageIdCleared,
   replyMessageIdResived,
   selectMessageById,
 } from "../../../store/msgStore";
-import MessageItemReply from "./MessageItemReply";
 import { MemoMessageItemMainChild } from "./MessageItemMainChild";
 
 function MessageItemMain({ messageId, roomId, currentUserId }) {
-  const dispatch = useDispatch();
+  console.log("message main!!!");
   // const { _id: messageId, roomId, postedByUser } = item;
   const messageData = useSelector(selectMessageById(roomId, messageId));
   const store = useStore();
@@ -27,7 +22,7 @@ function MessageItemMain({ messageId, roomId, currentUserId }) {
   //   dispatch(replyMessageIdCleared(roomId));
   //   dispatch(replyMessageIdResived({ messageId, roomId }));
   // };
-  console.log("message main päivittyy");
+
   return (
     <MemoMessageItemMainChild
       messageData={messageData}
@@ -42,4 +37,22 @@ const styles = StyleSheet.create({
   otherUser: { alignItems: "flex-start" },
 });
 
-export default MessageItemMain;
+function areEqual(prevProps, nextProps) {
+  // console.log(
+  //   prevProps.messageData.is_deleted,
+  //   nextProps.messageData.is_deleted,
+  //   prevProps.messageData.is_deleted === nextProps.messageData.is_deleted
+  // );
+  try {
+    if (prevProps.messageId === nextProps.messageId) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error, "code 99e332");
+  }
+}
+
+export const MemoMessageItemMain = React.memo(MessageItemMain, areEqual);
+// export default MessageItemMain;
