@@ -11,7 +11,7 @@ function ControlScreen({ navigation }) {
   const data = [
     { name: "Users", id: "2", onPress: routes.USERS_CONTROL_SCREEN },
   ];
-
+  console.log("control screen päivittyy");
   return (
     <Screen>
       <FlatList
