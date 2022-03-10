@@ -75,15 +75,16 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (msgStore, action) => {
-      const message = Object.values(action.payload)[0];
-      var targetMessages = msgStore.allMessages[message.roomId].messages;
+      const { roomId, _id, type, imageURLs } = Object.values(action.payload)[0];
+
+      var targetMessages = msgStore.allMessages[roomId].messages;
 
       Object.assign(targetMessages, action.payload);
-      msgStore.allMessageIds[message.roomId].push(message._id);
+      msgStore.allMessageIds[roomId].push(_id);
 
-      if (message.type === "image") {
-        message.imageURLs.forEach((url) => {
-          msgStore.images[message.roomId].push(url);
+      if (type === "image" && imageURLs.length > 0) {
+        imageURLs.forEach((url) => {
+          msgStore.images[roomId].push(url);
         });
       }
     },
