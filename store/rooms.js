@@ -62,6 +62,8 @@ const slice = createSlice({
     roomLatestMessageChanged: (rooms, action) => {
       rooms.allRooms[action.payload._id].latestMessage =
         action.payload.latestMessage;
+      rooms.allRooms[action.payload._id].messageSum =
+        rooms.allRooms[action.payload._id].messageSum + 1;
     },
 
     roomsResived: (rooms, action) => {

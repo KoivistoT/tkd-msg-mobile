@@ -65,6 +65,7 @@ function areEqual(prevProps, nextProps) {
     prevProps.item.members === nextProps.item.members &&
     prevProps.item.roomName === nextProps.item.roomName &&
     prevProps.item.latestMessage === nextProps.item.latestMessage &&
+    prevProps.item.messageSum === nextProps.item.messageSum &&
     prevProps.item.status === nextProps.item.status;
 
   try {
