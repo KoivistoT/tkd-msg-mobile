@@ -9,54 +9,58 @@ import {
   deleteMessageById,
   replyMessageIdCleared,
   replyMessageIdResived,
-  selectMessageById,
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
-function MessageItemMainChild({ messageData, sentBy, allUsers }) {
+function MessageItemMainChild({ message, sentBy, allUsers }) {
   const dispatch = useDispatch();
 
+  const {
+    roomId,
+    _id: messageId,
+    is_deleted,
+    postedByUser,
+    messageType,
+    replyMessageId,
+    messageBody,
+  } = message;
   const onReply = () => {
-    dispatch(replyMessageIdCleared(messageData.roomId));
+    dispatch(replyMessageIdCleared(message.roomId));
     dispatch(
       replyMessageIdResived({
-        messageId: messageData._id,
-        roomId: messageData.roomId,
+        messageId: message._id,
+        roomId: message.roomId,
       })
     );
   };
   const onDeleteMessage = () => {
-    dispatch(deleteMessageById(messageData.roomId, messageData._id));
+    dispatch(deleteMessageById(roomId, messageId));
   };
   console.log("message Child päivittyy---------------------");
   return (
     <>
-      <TouchableOpacity key={messageData._id} style={styles[sentBy]}>
+      <TouchableOpacity key={messageId} style={styles[sentBy]}>
         <TouchableOpacity title={"reply"} onPress={onReply}>
           <AppText>Reply</AppText>
         </TouchableOpacity>
         <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
           <AppText>delete</AppText>
         </TouchableOpacity>
-        {messageData.is_deleted && <AppText>TÄMÄ ON DELETOIUTU</AppText>}
+        {is_deleted && <AppText>TÄMÄ ON DELETOIUTU</AppText>}
         <AppText>
           sender:
-          {allUsers
-            ? allUsers[messageData.postedByUser].displayName
-            : "unknown user"}
+          {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
         </AppText>
-        {messageData.messageType === "image" && (
-          <MessageItemImage item={messageData} />
-        )}
-        {messageData.replyMessageId && (
+        {messageType === "image" && <MessageItemImage item={message} />}
+        {replyMessageId && (
           <MessageItemReply
             allUsers={allUsers}
             item={{
-              roomId: messageData.roomId,
-              messageId: messageData.replyMessageId,
+              roomId,
+              replyMessageId,
             }}
           />
         )}
-        <AppText>{messageData.messageBody}</AppText>
+        <AppText>{messageBody}</AppText>
       </TouchableOpacity>
     </>
   );
@@ -69,16 +73,15 @@ const styles = StyleSheet.create({
 
 function areEqual(prevProps, nextProps) {
   // console.log(
-  //   prevProps.messageData.is_deleted,
-  //   nextProps.messageData.is_deleted,
-  //   prevProps.messageData.is_deleted === nextProps.messageData.is_deleted
+  //   prevProps.message.is_deleted,
+  //   nextProps.message.is_deleted,
+  //   prevProps.message.is_deleted === nextProps.message.is_deleted
   // );
   try {
     if (
-      prevProps.messageData.is_deleted === nextProps.messageData.is_deleted &&
-      prevProps.messageData.messageBody === nextProps.messageData.messageBody &&
-      prevProps.messageData.messageStatus ===
-        nextProps.messageData.messageStatus
+      prevProps.message.is_deleted === nextProps.message.is_deleted &&
+      prevProps.message.messageBody === nextProps.message.messageBody &&
+      prevProps.message.messageStatus === nextProps.message.messageStatus
     ) {
       return true;
     } else {

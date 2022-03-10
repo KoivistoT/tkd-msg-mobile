@@ -12,8 +12,8 @@ import {
 } from "../../../store/msgStore";
 import { selectAllUsersMinimal } from "../../../store/users";
 function MessageItemReply({ item, allUsers }) {
-  const { roomId, messageId } = item;
-  const messageData = useSelector(selectMessageById(roomId, messageId));
+  const { roomId, replyMessageId } = item;
+  const messageData = useSelector(selectMessageById(roomId, replyMessageId));
   //   console.log(messageData, "täällä messageItemReply");
 
   return (

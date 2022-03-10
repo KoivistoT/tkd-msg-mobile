@@ -58,14 +58,14 @@ function areEqual(prevProps, nextProps) {
   try {
     var result = [];
     if (prevProps && prevProps.allUsers) {
-      nextProps.item.members.forEach((userId) => {
+      nextProps.item.members.forEach((userId2) => {
         if (
-          prevProps.allUsers[userId].firstName ===
-            nextProps.allUsers[userId].firstName &&
-          prevProps.allUsers[userId].lastName ===
-            nextProps.allUsers[userId].lastName &&
-          prevProps.allUsers[userId].displayName ===
-            nextProps.allUsers[userId].displayName
+          prevProps.allUsers[userId2].firstName ===
+            nextProps.allUsers[userId2].firstName &&
+          prevProps.allUsers[userId2].lastName ===
+            nextProps.allUsers[userId2].lastName &&
+          prevProps.allUsers[userId2].displayName ===
+            nextProps.allUsers[userId2].displayName
         ) {
           result.push("sameProps");
         } else {
@@ -76,7 +76,7 @@ function areEqual(prevProps, nextProps) {
     if (result.includes("notSameProps") || roomProps === false) return false;
     return true;
   } catch (error) {
-    console.log(prevProps.allUsers, userId, "tämä on tässä virheessa");
+    console.log(prevProps.allUsers, "tämä on tässä virheessa");
     console.log(error, "code 9kf92");
   }
 }
