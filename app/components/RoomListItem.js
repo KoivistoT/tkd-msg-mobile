@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectRoomDataById } from "../../store/rooms";
 import { selectAllUsersMinimal } from "../../store/users";
 import { MemoRoomListItemChild } from "./RoomListItemChild";
-function RoomListItem({ roomId, navigation, currentUserId }) {
+function RoomListItemMain({ roomId, navigation, currentUserId }) {
   const item = useSelector(selectRoomDataById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);
 
@@ -33,5 +33,5 @@ function areEqual(prevProps, nextProps) {
   }
 }
 
-export const MemoRoomListItem = React.memo(RoomListItem, areEqual);
+export const MemoRoomListItemMain = React.memo(RoomListItemMain, areEqual);
 // export default RoomListItem;

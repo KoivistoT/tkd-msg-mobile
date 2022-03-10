@@ -82,7 +82,11 @@ function areEqual(prevProps, nextProps) {
     return true;
   } catch (error) {
     console.log(prevProps.allUsers, "tämä on tässä virheessa");
-    console.log(error, "code 9kf92");
+    console.log(
+      error,
+      "code 9kf92",
+      "jos luo uuden käyttäjän saattaa tulla tämä, koska ei löydä edellisessä sitä käyttäjää"
+    );
   }
 }
 

@@ -12,7 +12,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import { userLoggedOut } from "../store/currentUser";
 import { disconnectSocket, selectSocket } from "../store/socket";
-import { MemoRoomListItem } from "../app/components/RoomListItem";
+import { MemoRoomListItemMain } from "../app/components/RoomListItem";
 import {
   roomStateCleared,
   selectAllActiveRoomsIds,
@@ -71,7 +71,7 @@ function RoomsScreen({ navigation }) {
   const keyExtractor = (id) => id;
   const listItem = ({ item }) => {
     return (
-      <MemoRoomListItem
+      <MemoRoomListItemMain
         navigation={navigation}
         roomId={item}
         currentUserId={currentUserId}
