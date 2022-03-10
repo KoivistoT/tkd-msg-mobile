@@ -62,7 +62,6 @@ const slice = createSlice({
     roomLatestMessageChanged: (rooms, action) => {
       rooms.allRooms[action.payload._id].latestMessage =
         action.payload.latestMessage;
-      console.log(rooms.allRooms);
     },
 
     roomsResived: (rooms, action) => {
