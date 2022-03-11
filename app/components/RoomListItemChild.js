@@ -6,24 +6,11 @@ import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
 import { useSelector, useStore } from "react-redux";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
+import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 
 function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
-  const {
-    status,
-    type,
-    members,
-    messageSum,
-    latestMessage,
-    _id: roomId,
-  } = item;
-
-  console.log(
-    "siirrä tämä vielä childiksi, montako luettu, niin ei päivitä kuin kerran"
-  );
-  const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
-
-  const unreadMessages = () => messageSum - lastSeenMessagesNow;
-
+  const { status, type, members, latestMessage } = item;
+  console.log("täällä joo");
   return (
     <>
       <TouchableOpacity
@@ -46,7 +33,7 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
               {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
             </AppText>
             {/* tämä itemlatestMessage tsekkaus voi olla turha jatkoss */}
-            <AppText>{unreadMessages()}</AppText>
+            <MemoUnreadMessagesItem item={item} />
             {latestMessage && (
               <AppText
                 style={{
