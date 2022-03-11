@@ -4,23 +4,38 @@ import routes from "../navigation/routes";
 import roomFuncs from "../../utility/roomFuncs";
 import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
+import { useSelector, useStore } from "react-redux";
+import { selectLastSeenMessagesById } from "../../store/currentUser";
 
 function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
-  console.log("child päivittyy");
+  const store = useStore();
+
+  const {
+    status,
+    type,
+    members,
+    messageSum,
+    latestMessage,
+    _id: roomId,
+  } = item;
+  console.log("child päivittyy", roomId);
+  const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
+
+  console.log(messageSum, lastSeenMessagesNow);
+  const unreadMessages = () => messageSum - lastSeenMessagesNow;
+
   return (
     <>
       <TouchableOpacity
         style={{
           marginBottom: 10,
-          backgroundColor: item.status === "active" ? "lightgrey" : "yellow",
+          backgroundColor: status === "active" ? "lightgrey" : "yellow",
         }}
         onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
       >
         {Object.keys(allUsers).length > 0 && (
           <View style={styles.nameRow}>
-            {item.type === "private" && (
-              <OnlineIndicator members={item.members} />
-            )}
+            {type === "private" && <OnlineIndicator members={members} />}
             <AppText
               style={{
                 color: "black",
@@ -31,7 +46,8 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
               {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
             </AppText>
             {/* tämä itemlatestMessage tsekkaus voi olla turha jatkoss */}
-            {item.latestMessage && (
+            <AppText>{unreadMessages()}</AppText>
+            {latestMessage && (
               <AppText
                 style={{
                   color: "black",
@@ -39,7 +55,7 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
                   padding: 10,
                 }}
               >
-                last: {item.latestMessage.messageBody}
+                last: {latestMessage.messageBody}
               </AppText>
             )}
           </View>

@@ -71,9 +71,12 @@ function MessageForm({ item }) {
   useEffect(() => {
     dispatch(activeRoomIdResived(roomData._id));
 
+    //tähän timout 1000?
+
     dispatch(
       saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
     );
+
     setHeader();
 
     return () => {

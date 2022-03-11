@@ -66,8 +66,7 @@ const slice = createSlice({
 
       index === -1
         ? lastSeeObjectsNow.push(action.payload)
-        : (lastSeeObjectsNow[index].lastSeenMessageSum =
-            lastSeenMessageSum + 1);
+        : (lastSeeObjectsNow[index].lastSeenMessageSum = lastSeenMessageSum);
     },
     userFetchFaild: (currentUser, action) => {
       console.log(action.payload, "error cod 99991");
@@ -183,3 +182,15 @@ export const selectCurrentUserData = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser
 );
+
+export const selectLastSeenMessagesById = (roomId) =>
+  createSelector(
+    (state) => state.auth,
+    (auth) => {
+      return auth.currentUser.last_seen_messages[
+        auth.currentUser.last_seen_messages.findIndex(
+          (object) => object.roomId === roomId
+        )
+      ].lastSeenMessageSum;
+    }
+  );
