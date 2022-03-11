@@ -187,10 +187,12 @@ export const selectLastSeenMessagesById = (roomId) =>
   createSelector(
     (state) => state.auth,
     (auth) => {
-      return auth.currentUser.last_seen_messages[
-        auth.currentUser.last_seen_messages.findIndex(
-          (object) => object.roomId === roomId
-        )
-      ].lastSeenMessageSum;
+      const condition =
+        auth.currentUser.last_seen_messages[
+          auth.currentUser.last_seen_messages.findIndex(
+            (object) => object.roomId === roomId
+          )
+        ];
+      return condition !== undefined ? condition.lastSeenMessageSum : 0;
     }
   );

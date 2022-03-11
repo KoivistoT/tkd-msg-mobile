@@ -8,8 +8,6 @@ import { useSelector, useStore } from "react-redux";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
 
 function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
-  const store = useStore();
-
   const {
     status,
     type,
@@ -18,10 +16,12 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
     latestMessage,
     _id: roomId,
   } = item;
-  console.log("child päivittyy", roomId);
+
+  console.log(
+    "siirrä tämä vielä childiksi, montako luettu, niin ei päivitä kuin kerran"
+  );
   const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
 
-  console.log(messageSum, lastSeenMessagesNow);
   const unreadMessages = () => messageSum - lastSeenMessagesNow;
 
   return (
