@@ -15,12 +15,22 @@ function MessageItemReply({ item, allUsers }) {
   const { roomId, replyMessageId } = item;
   const messageData = useSelector(selectMessageById(roomId, replyMessageId));
   //   console.log(messageData, "täällä messageItemReply");
-
+  const store = useStore();
+  const getIndexNow = () => {
+    const replyMessageIndex = Object.keys(
+      store.getState().entities.msgStore.allMessages[roomId].messages
+    ).findIndex((messageId) => messageId === replyMessageId);
+    console.log(
+      replyMessageIndex,
+      "tämä reply message id sitten scrollfunctioon, joka tulee ylhäältä. ensin pitää muuttaa se, että viesti tulee oikeassa järjestyksessä heti revercena"
+    );
+  };
   return (
     <>
       <TouchableOpacity
         key={messageData._id}
         style={{ backgroundColor: colors.primary }}
+        onPress={getIndexNow}
       >
         <AppText>
           sender:

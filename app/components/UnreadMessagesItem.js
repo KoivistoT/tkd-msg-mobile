@@ -1,10 +1,7 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import routes from "../navigation/routes";
-import roomFuncs from "../../utility/roomFuncs";
+import { StyleSheet } from "react-native";
 import AppText from "./AppText";
-import OnlineIndicator from "./OnlineIndicator";
-import { useSelector, useStore } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
 
 function UnreadMessagesItem({ item }) {
