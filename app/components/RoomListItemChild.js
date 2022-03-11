@@ -10,7 +10,7 @@ import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 
 function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
   const { status, type, members, latestMessage } = item;
-  console.log("täällä joo");
+
   return (
     <>
       <TouchableOpacity
@@ -68,7 +68,6 @@ function areEqual(prevProps, nextProps) {
     prevProps.item.members === nextProps.item.members &&
     prevProps.item.roomName === nextProps.item.roomName &&
     prevProps.item.latestMessage === nextProps.item.latestMessage &&
-    prevProps.item.messageSum === nextProps.item.messageSum &&
     prevProps.item.status === nextProps.item.status;
 
   try {

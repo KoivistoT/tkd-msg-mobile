@@ -22,7 +22,10 @@ function MessageItemReply({ item, allUsers, onScrollToIndex }) {
     ).findIndex((messageId) => messageId === replyMessageId);
     console.log(
       replyMessageIndex,
-      "menee nyt väärään, koska ei tule alunperin reversenä, korjaa se. katso myös highglight"
+      "menee nyt väärään, koska ei tule alunperin reversenä, korjaa se. katso myös highglight."
+    );
+    console.log(
+      "voisiko tämä replymessageindex tulla tänne järkevämmin?, ei se tosin muutu"
     );
     onScrollToIndex(replyMessageIndex);
   };
