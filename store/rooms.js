@@ -256,34 +256,19 @@ export const selectAllActiveRoomsIdsOld = createSelector(
 );
 
 export const selectAllActiveRoomsIds = memoize((state) => {
-  // console.log("laskee ekassa 1111111");
-  // console.log("computingcomputingcomputingcomputingcomputingcomputing");
-  // console.log("laskee ekassa -4-4--4--4--4-4--4-4-4");
-  // console.log(state.entities.rooms.allActiveRoomsIds);
-  const idAndDate = [];
+  const rooms = [];
   state.entities.rooms.allActiveRoomsIds.forEach((roomId) => {
-    if (
-      state.entities.msgStore.allMessages &&
-      state.entities.msgStore.allMessages[roomId] &&
-      state.entities.msgStore.allMessages[roomId].messages &&
-      Object.values(state.entities.msgStore.allMessages[roomId].messages) &&
-      Object.keys(state.entities.msgStore.allMessages[roomId].messages)
-        .length !== 0
-    )
-      idAndDate.push({
-        id: roomId,
-        lastMessage: Object.values(
-          state.entities.msgStore.allMessages[roomId].messages
-        )[
-          Object.keys(state.entities.msgStore.allMessages[roomId].messages)
-            .length - 1
-        ].createdAt,
-      });
+    rooms.push({
+      roomId,
+      lastMessageTimestamp:
+        state.entities.rooms.allRooms[roomId].latestMessage?.createdAt || null,
+    });
   });
 
-  const sorted = idAndDate.sort(function (a, b) {
-    var nameA = a.lastMessage;
-    var nameB = b.lastMessage;
+  //tee sort array by field
+  const sortedRooms = rooms.sort(function (a, b) {
+    var nameA = a.lastMessageTimestamp;
+    var nameB = b.lastMessageTimestamp;
 
     if (nameA > nameB) {
       return -1;
@@ -294,6 +279,5 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     return 0;
   });
 
-  const rightOrder = sorted.map((item) => item.id);
-  return rightOrder;
+  return sortedRooms.map((item) => item.roomId);
 });
