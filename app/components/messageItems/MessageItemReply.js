@@ -11,7 +11,7 @@ import {
   selectMessageById,
 } from "../../../store/msgStore";
 import { selectAllUsersMinimal } from "../../../store/users";
-function MessageItemReply({ item, allUsers }) {
+function MessageItemReply({ item, allUsers, onScrollToIndex }) {
   const { roomId, replyMessageId } = item;
   const messageData = useSelector(selectMessageById(roomId, replyMessageId));
   //   console.log(messageData, "täällä messageItemReply");
@@ -22,8 +22,9 @@ function MessageItemReply({ item, allUsers }) {
     ).findIndex((messageId) => messageId === replyMessageId);
     console.log(
       replyMessageIndex,
-      "tämä reply message id sitten scrollfunctioon, joka tulee ylhäältä. ensin pitää muuttaa se, että viesti tulee oikeassa järjestyksessä heti revercena"
+      "menee nyt väärään, koska ei tule alunperin reversenä, korjaa se. katso myös highglight"
     );
+    onScrollToIndex(replyMessageIndex);
   };
   return (
     <>

@@ -11,7 +11,7 @@ import {
   replyMessageIdResived,
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
-function MessageItemMainChild({ message, sentBy, allUsers }) {
+function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
   const dispatch = useDispatch();
 
   const {
@@ -59,6 +59,7 @@ function MessageItemMainChild({ message, sentBy, allUsers }) {
               roomId,
               replyMessageId,
             }}
+            onScrollToIndex={onScrollToIndex}
           />
         )}
         <AppText>{messageBody}</AppText>

@@ -3,7 +3,12 @@ import { useSelector, useStore } from "react-redux";
 import { selectMessageById } from "../../../store/msgStore";
 import { MemoMessageItemMainChild } from "./MessageItemMainChild";
 
-function MessageItemMain({ messageId, roomId, currentUserId }) {
+function MessageItemMain({
+  messageId,
+  roomId,
+  currentUserId,
+  onScrollToIndex,
+}) {
   // console.log("message main!!!");
   const message = useSelector(selectMessageById(roomId, messageId));
   const store = useStore();
@@ -15,6 +20,7 @@ function MessageItemMain({ messageId, roomId, currentUserId }) {
       message={message}
       sentBy={sentBy}
       allUsers={allUsers}
+      onScrollToIndex={onScrollToIndex}
     />
   );
 }

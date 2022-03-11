@@ -32,6 +32,7 @@ function MessageList({ item }) {
       messageId={item}
       roomId={roomId}
       currentUserId={currentUserId}
+      onScrollToIndex={onScrollToIndex}
     />
   );
 
@@ -40,6 +41,10 @@ function MessageList({ item }) {
       msgListRef.current.scrollToIndex({ animated: false, index: 0 });
     } catch (error) {}
   }, []);
+
+  const onScrollToIndex = (index) => {
+    msgListRef.current.scrollToIndex({ animated: false, index });
+  };
 
   const keyExtractor = (item) => item;
 
