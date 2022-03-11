@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RoomsNavigator from "./RoomsNavigator";
-import RoomsScreen from "../../screens/RoomsScreen.js";
+import RoomsListScreen from "../../screens/RoomsListScreen.js";
 import ControlScreen from "../../screens/ControlScreen";
 import ControlNavigator from "./ControlNavigator";
 import ContactsNavigator from "./ContactsNavigator";

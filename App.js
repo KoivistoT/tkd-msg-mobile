@@ -35,7 +35,7 @@ import ErrorMessage from "./app/components/ErrorMessage";
 import MessageScreen from "./screens/MessageScreen";
 import io from "socket.io-client";
 import settings from "./config/settings";
-import RoomsScreen from "./screens/RoomsScreen.js";
+import RoomsListScreen from "./screens/RoomsListScreen.js";
 
 import {
   saveSocket,

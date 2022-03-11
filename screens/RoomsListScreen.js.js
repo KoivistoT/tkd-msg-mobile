@@ -22,7 +22,7 @@ import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomMo
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import { usersOnlineResived } from "../store/users";
 
-function RoomsScreen({ navigation }) {
+function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const socket = useSelector(selectSocket);
@@ -123,4 +123,4 @@ function RoomsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({});
-export default RoomsScreen;
+export default RoomsListScreen;
