@@ -235,9 +235,7 @@ export const selectRoomMembersById = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
     (rooms) =>
-      rooms.allRooms[roomId] !== undefined
-        ? rooms.allRooms[roomId].members
-        : null
+      rooms.allRooms[roomId] !== undefined ? rooms.allRooms[roomId].members : []
   );
 
 export const selectRoomDataById = (roomId) =>

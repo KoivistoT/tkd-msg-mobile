@@ -33,29 +33,41 @@ const slice = createSlice({
     error: null,
     loggedIn: false,
     userRooms: [],
+    last_seen_messages: [],
   },
   reducers: {
     // action => action handler
     userLoggedIn: (currentUser, action) => {
       const user = action.payload ? jwtDecode(action.payload) : null;
+
       currentUser.error = null;
       currentUser.loading = false;
-      currentUser.token = action.payload;
-      currentUser.email = user.email;
-      currentUser.name = user.name;
-      currentUser._id = user._id;
       currentUser.loggedIn = true;
       currentUser.accountType = user.accountType;
+      currentUser._id = user._id;
+      currentUser.token = action.payload;
 
       // console.log("ei tule backendistä nuo huoneet userRooms");
     },
-    userResived: (currentUser, action) => {
+    currentUserResived: (currentUser, action) => {
       // console.log(action.payload, "tässä käyttäjän tiedot");
-
-      currentUser.userRooms = action.payload.userRooms;
+      const { email, last_seen_messages, userRooms } = action.payload;
+      currentUser.email = email;
+      currentUser.last_seen_messages = last_seen_messages;
+      currentUser.userRooms = userRooms;
     },
-    lastSeenMessageSumSaved: (currentUser, action) => {
-      console.log("lastSeenMessageSumSaved, tallenna täällä kans");
+    lastSeenMessageSumResived: (currentUser, action) => {
+      const lastSeeObjectsNow = currentUser.last_seen_messages;
+      const { roomId, lastSeenMessageSum } = action.payload;
+
+      const index = lastSeeObjectsNow.findIndex(
+        (object) => object.roomId === roomId
+      );
+
+      index === -1
+        ? lastSeeObjectsNow.push(action.payload)
+        : (lastSeeObjectsNow[index].lastSeenMessageSum =
+            lastSeenMessageSum + 1);
     },
     userFetchFaild: (currentUser, action) => {
       console.log(action.payload, "error cod 99991");
@@ -75,6 +87,7 @@ const slice = createSlice({
       currentUser._id = null;
       currentUser.loggedIn = false;
       currentUser.userRooms = [];
+      currentUser.lastSeenMessageSum = [];
     },
     errorMessageCleared: (currentUser, action) => {
       currentUser.error = null;
@@ -89,14 +102,14 @@ const slice = createSlice({
 
 export const {
   userLoggedIn,
-  userResived,
+  currentUserResived,
   currentUserError,
   loginFailed,
   userLoggedOut,
   errorMessageCleared,
   currentUserRequestStarted,
   userFetchFaild,
-  lastSeenMessageSumSaved,
+  lastSeenMessageSumResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -106,7 +119,7 @@ export const getInitialData = apiCallBegan({
   url: url + "/initial",
   onInitSuccess: {
     init: true,
-    user: userResived.type,
+    user: currentUserResived.type,
     rooms: roomsResived.type,
     messages: messagesResived.type,
     images: allImagesResived.type,
@@ -130,7 +143,7 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
   return dispatch(
     apiCallBegan({
       url: url + "/users/" + getState().auth.currentUser._id,
-      onSuccess: userResived.type,
+      onSuccess: currentUserResived.type,
       onError: userFetchFaild.type,
     })
   );
@@ -138,6 +151,7 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
 
 export const saveLastSeenMessageSum =
   (currentUserId, roomId, lastSeenMessageSum) => (dispatch, getState) => {
+    dispatch(lastSeenMessageSumResived({ roomId, lastSeenMessageSum }));
     return dispatch(
       apiCallBegan({
         url: url + "/users/save_last_seen_message_sum",
