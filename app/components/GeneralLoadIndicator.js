@@ -75,7 +75,7 @@ class GeneralLoadIndicator extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.entities.rooms.loading,
+  loading: state.entities.general.loading, //onko oikein
 });
 
 const mapDispatchToProps = (dispatch) => ({

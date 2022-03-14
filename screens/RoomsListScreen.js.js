@@ -112,8 +112,6 @@ function RoomsListScreen({ navigation }) {
       )}
 
       <View>
-        <MemoCreateChannelModal />
-        <MemoNewDirectRoomModal />
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>

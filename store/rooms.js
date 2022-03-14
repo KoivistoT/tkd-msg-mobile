@@ -267,6 +267,11 @@ export const selectUserRooms = createSelector(
   (rooms) => rooms.allRooms
 );
 
+export const selectRoomLoading = createSelector(
+  (state) => state.entities.rooms,
+  (rooms) => rooms.loading
+);
+
 export const selectAllActiveRoomsIdsOld = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allActiveRoomsIds

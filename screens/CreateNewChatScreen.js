@@ -28,7 +28,6 @@ function CreateNewChatScreen({}) {
         onPress={() =>
           navigationRef.current.navigate(routes.CREATE_NEW_CHANNEL_SCREEN)
         }
-        style={{ padding: 20, height: 100, width: 200 }}
       >
         <AppText>TÄSTÄ TEE CHANNEL</AppText>
       </TouchableOpacity>

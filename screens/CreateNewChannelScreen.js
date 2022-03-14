@@ -18,20 +18,7 @@ import AppButton from "../app/components/AppButton";
 import Screen from "../app/components/Screen";
 
 function CreateNewChannelScreen({}) {
-  return (
-    <View>
-      <Screen>
-        <TouchableOpacity
-          onPress={() => setModalVisible(false)}
-          style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
-        >
-          <MaterialCommunityIcons name="close" size={25} color={colors.dark} />
-        </TouchableOpacity>
-
-        <CreateChannelForm closeModal={() => setModalVisible(false)} />
-      </Screen>
-    </View>
-  );
+  return <CreateChannelForm />;
 }
 
 const styles = StyleSheet.create({

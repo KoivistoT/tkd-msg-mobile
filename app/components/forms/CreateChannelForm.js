@@ -1,27 +1,31 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
 import AppForm from "./AppForm";
 import AppFormField from "./AppFormField";
 import SubmitButton from "./SubmitButton";
-import { useDispatch, useStore } from "react-redux";
-import { createChannel, getRoomByName } from "../../../store/rooms";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import {
+  createChannel,
+  getRoomByName,
+  selectRoomLoading,
+} from "../../../store/rooms";
+import AppText from "../AppText";
 
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Channel name"),
   description: Yup.string().label("Description"),
 });
 
-function CreateChannelForm({ closeModal }) {
+function CreateChannelForm() {
   const dispatch = useDispatch();
   const store = useStore();
-
+  const loadingStatus = useSelector(selectRoomLoading);
   const userId = store.getState().auth.currentUser._id;
 
   const handleSubmit = async ({ roomName, description }) => {
     dispatch(createChannel(userId, roomName, description));
-    closeModal();
   };
 
   return (
@@ -52,8 +56,20 @@ function CreateChannelForm({ closeModal }) {
             placeholder="Description"
           />
 
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <SubmitButton title="Create channel" />
+          <View>
+            {loadingStatus ? (
+              <ActivityIndicator
+                animating={true}
+                size="small"
+                style={{
+                  opacity: 1,
+                  marginTop: 20,
+                }}
+                color="#999999"
+              />
+            ) : (
+              <SubmitButton title="Create channel" />
+            )}
           </View>
         </>
       </AppForm>
