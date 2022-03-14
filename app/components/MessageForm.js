@@ -158,6 +158,7 @@ function MessageForm({ item }) {
     //   }
     // }, 1000);
 
+    //en pidä tästä, että kysyy aina
     if (roomData.status === "draft") {
       dispatch(activateDraftRoom(roomData._id, currentUserId));
     }

@@ -20,13 +20,8 @@ function MessageItemReply({ item, allUsers, onScrollToIndex }) {
     const replyMessageIndex = Object.keys(
       store.getState().entities.msgStore.allMessages[roomId].messages
     ).findIndex((messageId) => messageId === replyMessageId);
-    console.log(
-      replyMessageIndex,
-      "menee nyt väärään, koska ei tule alunperin reversenä, korjaa se. katso myös highglight."
-    );
-    console.log(
-      "voisiko tämä replymessageindex tulla tänne järkevämmin?, ei se tosin muutu"
-    );
+    console.log(replyMessageIndex, "tämä on index");
+
     onScrollToIndex(replyMessageIndex);
   };
   return (

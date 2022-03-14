@@ -5,6 +5,7 @@ import MessageItemMain, {
   MemoMessageItemMain,
 } from "./messageItems/MessageItemMain";
 import {
+  messageSelected,
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesByRoomId,
 } from "../../store/msgStore";
@@ -42,8 +43,12 @@ function MessageList({ item }) {
     } catch (error) {}
   }, []);
 
-  const onScrollToIndex = (index) => {
-    msgListRef.current.scrollToIndex({ animated: false, index });
+  const onScrollToIndex = (replyMessageIndex) => {
+    msgListRef.current.scrollToIndex({
+      animated: true, // tämä voisi olla false
+      index: replyMessageIndex,
+      viewPosition: 1,
+    });
   };
 
   const keyExtractor = (item) => item;
@@ -82,7 +87,7 @@ function MessageList({ item }) {
             keyExtractor={keyExtractor}
             renderItem={messageItem}
             onEndReachedThreshold={0.7}
-            maxToRenderPerBatch={30} //default 10
+            maxToRenderPerBatch={10}
             initialNumToRender={10}
             windowSize={30}
             inverted={true}
