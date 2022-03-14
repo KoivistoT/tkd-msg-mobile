@@ -45,7 +45,7 @@ function ContactsScreen({ navigation }) {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
+        // onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
       >
         <View
           style={{

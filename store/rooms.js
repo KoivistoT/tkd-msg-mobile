@@ -106,7 +106,10 @@ const slice = createSlice({
       rooms.loading = false;
     },
     roomAdded: (rooms, action) => {
-      // console.log(action.payload);
+      if (rooms.allRooms[Object.keys(action.payload)] !== undefined) {
+        console.log("löytyy jo");
+        return;
+      }
 
       Object.assign(rooms.allRooms, action.payload);
 
@@ -258,10 +261,11 @@ export const selectAllActiveRoomsIdsOld = createSelector(
 export const selectAllActiveRoomsIds = memoize((state) => {
   const rooms = [];
   state.entities.rooms.allActiveRoomsIds.forEach((roomId) => {
+    //latest message kysymysmerkki voi olla pois, jos aina on alussa viesti?
     rooms.push({
       roomId,
       lastMessageTimestamp:
-        state.entities.rooms.allRooms[roomId].latestMessage?.createdAt || null,
+        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || null,
     });
   });
 

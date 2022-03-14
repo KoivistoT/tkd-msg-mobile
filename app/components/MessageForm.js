@@ -55,6 +55,7 @@ function MessageForm({ item }) {
 
   const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const replyMessageIds = useSelector(selectReplyItemIds);
+
   const roomMembers = useSelector(selectRoomMembersById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
   console.log("päivittää tämä kahdesti, ei ehkä haittaa");
@@ -77,6 +78,7 @@ function MessageForm({ item }) {
       saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
     );
 
+    //onko tähän parempi ratkaisu
     setHeader();
 
     return () => {
