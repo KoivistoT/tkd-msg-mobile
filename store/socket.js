@@ -69,8 +69,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
       socket.on("updates", (type, data) => {
         if (type === "roomAdded") {
-          const roomId = Object.keys(data);
-          const roomData = Object.values(data)[0];
+          const { _id: roomId } = data;
           dispatch(roomAdded(data));
           dispatch(getMessagesbyId(roomId));
           dispatch(getRoomImages(roomId));
@@ -78,12 +77,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           const userId = getState().auth.currentUser._id;
 
           //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
-          if (roomData.roomCreator === userId) {
-            navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+          if (data.roomCreator === userId) {
+            navigationRef.current.navigate(routes.MESSAGE_SCREEN, data);
           }
         }
         if (type === "roomRemoved") {
-          const roomId = Object.keys(data);
+          const roomId = data;
           socket.emit("unsubscribe", roomId);
           dispatch(roomRemoved(roomId));
           dispatch(messagesRemoved(roomId));
@@ -92,53 +91,47 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(newUserResived(data));
         }
         if (type === "userDeleted") {
-          const userId = Object.keys(data);
-
+          const userId = data;
           dispatch(userDeleted(userId));
         }
         if (type === "userTemporaryDeleted") {
-          const userId = Object.keys(data);
-
+          const userId = data;
           dispatch(userTemporaryDeleted(userId));
         }
         if (type === "userArchived") {
-          const userId = Object.keys(data);
+          const userId = data;
           dispatch(userArchived(userId));
         }
         if (type === "roomArchived") {
-          const roomId = Object.keys(data);
+          const roomId = data;
           dispatch(roomArchived(roomId));
         }
         if (type === "roomNameChanged") {
-          const requestData = Object.values(data)[0];
-          dispatch(roomNameChanged(requestData));
+          dispatch(roomNameChanged(data));
         }
         if (type === "userDataEdited") {
-          const requestData = Object.values(data)[0];
-          dispatch(userDataEdited(requestData));
+          dispatch(userDataEdited(data));
         }
         if (type === "userActivated") {
-          const userId = Object.keys(data);
+          const userId = data;
           dispatch(userActivated(userId));
         }
         if (type === "roomActivated") {
-          const roomId = Object.keys(data);
+          const roomId = data;
           dispatch(roomActivated(roomId));
         }
 
         if (type === "membersChanged") {
-          dispatch(roomMembersChanged(Object.values(data)[0]));
+          dispatch(roomMembersChanged(data));
         }
         if (type === "roomLatestMessageChanged") {
-          const requestData = Object.values(data)[0];
-          dispatch(roomLatestMessageChanged(requestData));
+          dispatch(roomLatestMessageChanged(data));
         }
         if (type === "messageDeleted") {
           dispatch(messageDeleted(data));
         }
 
         if (type === "new message") {
-          // console.log(data);
           dispatch(newMessageResived(data));
         }
       });

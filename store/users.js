@@ -33,6 +33,8 @@ const slice = createSlice({
       // );
     },
     userActivated: (users, action) => {
+      const userId = action.payload;
+      console.log("activoi tämä", userId);
       users.allUsers[action.payload].status = "active";
     },
     usersOnlineResived: (users, action) => {
@@ -44,10 +46,12 @@ const slice = createSlice({
       // console.log(users.myTestArray);
     },
     newUserResived: (users, action) => {
-      Object.assign(users.allUsers, action.payload);
+      const { _id: userId } = action.payload;
+      Object.assign(users.allUsers, { [userId]: action.payload });
     },
     userDeleted: (users, action) => {
-      delete users.allUsers[action.payload];
+      const userId = action.payload;
+      delete users.allUsers[userId];
     },
     userCreated: (users, action) => {
       console.log(action.payload, "User lisätty");
@@ -70,17 +74,23 @@ const slice = createSlice({
       //   return;
       // } else {
       //   console.log("eivät ole samoja");
-      users.allUsers[action.payload._id] = action.payload.newUserData;
+
+      const { _id: userId } = action.payload;
+      users.allUsers[userId] = action.payload;
       // }
     },
     requestSuccess: (users, action) => {
       users.loading = false;
     },
     userArchived: (users, action) => {
-      users.allUsers[action.payload].status = "archived";
+      const userId = action.payload;
+      console.log("Arkistoi tämä", userId);
+      users.allUsers[userId].status = "archived";
     },
     userTemporaryDeleted: (users, action) => {
-      users.allUsers[action.payload].status = "deleted";
+      const userId = action.payload;
+      console.log(userId);
+      users.allUsers[userId].status = "deleted";
     },
     usersError: (users, action) => {
       users.errorMessage = action.payload;

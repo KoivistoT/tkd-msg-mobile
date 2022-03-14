@@ -51,23 +51,23 @@ const slice = createSlice({
     },
 
     oneRoomMessagesResived: (msgStore, action) => {
+      const { _id: roomId, messages } = action.payload;
+
       if (msgStore.allMessages) {
-        msgStore.allMessages = Object.assign(
-          msgStore.allMessages,
-          action.payload
-        );
+        msgStore.allMessages = Object.assign(msgStore.allMessages, {
+          [roomId]: action.payload,
+        });
 
         //tätä ei testattu
-        const roomId = Object.keys(action.payload);
+        // const roomId = Object.keys(action.payload);
         msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
-          [roomId]: Object.keys(action.payload[roomId].messages),
+          [roomId]: Object.keys(messages),
         });
       } else {
-        msgStore.allMessages = action.payload;
+        msgStore.allMessages = { [roomId]: action.payload };
 
-        const roomId = Object.keys(action.payload);
         msgStore.allMessageIds = {
-          [roomId]: Object.keys(action.payload[roomId].messages),
+          [roomId]: Object.keys(messages),
         };
       }
     },
@@ -75,12 +75,7 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (msgStore, action) => {
-      const {
-        roomId,
-        _id: messageId,
-        type,
-        imageURLs,
-      } = Object.values(action.payload)[0];
+      const { roomId, _id: messageId, type, imageURLs } = action.payload;
 
       var targetMessages = msgStore.allMessages[roomId].messages;
 
@@ -90,7 +85,7 @@ const slice = createSlice({
         return;
       }
 
-      Object.assign(targetMessages, action.payload);
+      Object.assign(targetMessages, { [messageId]: action.payload });
       msgStore.allMessageIds[roomId].push(messageId);
 
       if (type === "image" && imageURLs.length > 0) {
@@ -114,19 +109,19 @@ const slice = createSlice({
       //   msgStore.allMessages.messages.push(action.payload.message);
     },
     messagesRemoved: (msgStore, action) => {
-      delete msgStore.allMessages[action.payload];
-      delete msgStore.images[action.payload];
-      delete msgStore.allMessageIds[action.payload];
+      const currentRoomId = action.payload;
+      delete msgStore.allMessages[currentRoomId];
+      delete msgStore.images[currentRoomId];
+      delete msgStore.allMessageIds[currentRoomId];
     },
 
     messageDeleted: (msgStore, action) => {
       // console.log(
       //   "täällä pitää vielä tämä tehdä ja sit, että näyttää messagen is deleted messagelistalla"
       // );
+      const { roomId, messageId } = action.payload;
 
-      msgStore.allMessages[Object.keys(action.payload)].messages[
-        Object.values(action.payload)[0].messageId
-      ].is_deleted = true;
+      msgStore.allMessages[roomId].messages[messageId].is_deleted = true;
 
       // msgStore.allMessages[Object.keys(action.payload)];
       // .messages[

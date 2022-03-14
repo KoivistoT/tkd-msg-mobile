@@ -46,23 +46,25 @@ const slice = createSlice({
     },
 
     roomArchived: (rooms, action) => {
-      rooms.allRooms[action.payload].status = "archived";
+      const currentRoomId = action.payload;
+      rooms.allRooms[currentRoomId].status = "archived";
       rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
-        (roomId) => roomId !== action.payload
+        (roomId) => roomId !== currentRoomId
       );
     },
     roomActivated: (rooms, action) => {
-      rooms.allRooms[action.payload].status = "active";
-      rooms.allActiveRoomsIds.push(action.payload);
+      const currentRoomId = action.payload;
+      rooms.allRooms[currentRoomId].status = "active";
+      rooms.allActiveRoomsIds.push(currentRoomId);
     },
     roomNameChanged: (rooms, action) => {
-      rooms.allRooms[action.payload._id].roomName = action.payload.newRoomName;
+      rooms.allRooms[action.payload.roomId].roomName =
+        action.payload.newRoomName;
     },
     roomLatestMessageChanged: (rooms, action) => {
-      rooms.allRooms[action.payload._id].latestMessage =
-        action.payload.latestMessage;
-      rooms.allRooms[action.payload._id].messageSum =
-        rooms.allRooms[action.payload._id].messageSum + 1;
+      const { roomId } = action.payload;
+      rooms.allRooms[roomId].latestMessage = action.payload;
+      rooms.allRooms[roomId].messageSum = rooms.allRooms[roomId].messageSum + 1;
     },
 
     roomsResived: (rooms, action) => {
@@ -105,22 +107,24 @@ const slice = createSlice({
       rooms.loading = false;
     },
     roomAdded: (rooms, action) => {
-      if (rooms.allRooms[Object.keys(action.payload)] !== undefined) {
+      const { _id: roomId, status } = action.payload;
+      if (rooms.allRooms[roomId] !== undefined) {
         console.log("löytyy jo");
         return;
       }
       console.log("huone tuli");
-      Object.assign(rooms.allRooms, action.payload);
+      Object.assign(rooms.allRooms, { [roomId]: action.payload });
 
-      if (Object.values(action.payload)[0].status !== "draft") {
-        rooms.allActiveRoomsIds.push(Object.keys(action.payload));
+      if (status !== "draft") {
+        rooms.allActiveRoomsIds.push(roomId);
       }
       // console.log(rooms.allRooms, "now");
     },
     roomRemoved: (rooms, action) => {
-      delete rooms.allRooms[action.payload];
+      const currentRoomId = action.payload;
+      delete rooms.allRooms[currentRoomId];
       rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
-        (roomId) => roomId !== action.payload
+        (roomId) => roomId !== currentRoomId
       );
     },
   },

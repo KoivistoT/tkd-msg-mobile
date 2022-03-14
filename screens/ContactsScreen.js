@@ -8,6 +8,7 @@ import Screen from "../app/components/Screen";
 import {
   allUsers,
   selectAllUsers,
+  selectAllUsersMedium,
   selectAllUsersMinimal,
   selectUsersOnline,
 } from "../store/users";
@@ -27,7 +28,7 @@ function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsersMinimal);
+  const allUsers = useSelector(selectAllUsersMedium);
   const usersOnline = useSelector(selectUsersOnline);
   const allRooms = useSelector(selectUserRooms);
   // console.log(usersOnline, "userit online");
