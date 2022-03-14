@@ -19,6 +19,7 @@ import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import AppText from "../app/components/AppText";
+import ContactsScreen from "./ContactsScreen";
 
 function CreateNewChatScreen({}) {
   return (
@@ -32,7 +33,7 @@ function CreateNewChatScreen({}) {
         <AppText>TÄSTÄ TEE CHANNEL</AppText>
       </TouchableOpacity>
 
-      <AppButton>tähän kontaktit</AppButton>
+      <ContactsScreen></ContactsScreen>
     </Screen>
   );
 }

@@ -89,7 +89,7 @@ function App() {
       <AppSuccessToast />
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
-      {accountType === "admin" && <AppNavigator />}
+      {accountType === "admin" && <AdminNavigator />}
       {accountType && accountType !== "admin" && <AppNavigator />}
 
       {/* <AppNavigator /> */}

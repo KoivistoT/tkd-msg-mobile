@@ -1,50 +1,31 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import RoomsNavigator from "./RoomsNavigator";
-import RoomsListScreen from "../../screens/RoomsListScreen.js";
-import ControlScreen from "../../screens/ControlScreen";
-import ControlNavigator from "./ControlNavigator";
-import ContactsNavigator from "./ContactsNavigator";
+import { createStackNavigator } from "@react-navigation/stack";
+import TabNavigator from "./TabNavigator";
+import CreateChatNavigator from "./CreateChatNavigator";
+import AdminTabNavigator from "./AdminTabNavigator";
+const Stack = createStackNavigator();
 
-const Tab = createBottomTabNavigator();
-
-const AdminNavigator = () => {
+const AppNavigator = () => {
   return (
-    <Tab.Navigator
-      screenOptions={({ route, navigation }) => ({
+    <Stack.Navigator
+      screenOptions={{
         headerShown: false,
-      })}
+      }}
     >
-      <Tab.Screen
-        name="RoomsNavigator"
-        component={RoomsNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ContactsNavigator"
-        component={ContactsNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ControlNavigator"
-        component={ControlNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      <Stack.Group>
+        <Stack.Screen
+          name="admin_tab_navigator"
+          component={AdminTabNavigator}
+        />
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen
+          name="create_chat_navigator"
+          component={CreateChatNavigator}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
   );
 };
 
-export default AdminNavigator;
+export default AppNavigator;
