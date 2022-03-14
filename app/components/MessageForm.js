@@ -55,7 +55,7 @@ function MessageForm({ item }) {
 
   const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const replyMessageIds = useSelector(selectReplyItemIds);
-
+  //tässä tuleekin ongelma, jos ei ole roomData objectia, kun se on null, niin objectista ei saa _id:tä
   const roomMembers = useSelector(selectRoomMembersById(roomData._id));
   const usersOnline = useSelector(selectUsersOnline);
   console.log("päivittää tämä kahdesti, ei ehkä haittaa");

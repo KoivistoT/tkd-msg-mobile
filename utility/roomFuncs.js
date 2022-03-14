@@ -20,9 +20,14 @@ const getRoomActiveMembersSum = (roomMembers, allUsers) => {
 };
 
 const getPrivateRoomTitle = (members, currentUserId, allUsers) => {
-  const otherUserId = members.filter((user) => user !== currentUserId)[0];
-  const selectedUser = otherUserId ? otherUserId : currentUserId;
-  return `${allUsers[selectedUser].firstName} ${allUsers[selectedUser].lastName}`;
+  try {
+    const otherUserId = members.filter((user) => user !== currentUserId)[0];
+    const selectedUser = otherUserId ? otherUserId : currentUserId;
+    return `${allUsers[selectedUser].firstName} ${allUsers[selectedUser].lastName}`;
+  } catch (error) {
+    console.log(error, "code 993id");
+    return "";
+  }
 };
 
 const getPrivateRoomOtherUserName = (members, currentUserId, allUsers) => {
@@ -32,8 +37,13 @@ const getPrivateRoomOtherUserName = (members, currentUserId, allUsers) => {
 };
 
 const getPrivateRoomOtherUserId = (members, currentUserId) => {
-  const otherUserId = members.filter((user) => user !== currentUserId)[0];
-  return otherUserId ? otherUserId : currentUserId;
+  try {
+    const otherUserId = members.filter((user) => user !== currentUserId)[0];
+    return otherUserId ? otherUserId : currentUserId;
+  } catch (error) {
+    console.log(error, "code 2883882");
+    return null;
+  }
 };
 
 const getDirectRoomTitle = (roomMembers, allUsersList) => {
