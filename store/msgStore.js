@@ -18,6 +18,18 @@ const slice = createSlice({
     allImagesResived: (msgStore, action) => {
       msgStore.images = action.payload;
     },
+    readByRecepientsAdded: (msgStore, action) => {
+      action.payload.forEach((item) => {
+        msgStore.allMessages[item.roomId].messages[
+          item.messageId
+        ].readByRecipients = item.readByRecipients;
+        console.log("näyttää jo täällä lukeneet");
+        // console.log(
+        //   msgStore.allMessages[item.roomId].messages[item.messageId]
+        //     .readByRecipients
+        // );
+      });
+    },
     replyMessageIdResived: (msgStore, action) => {
       msgStore.replyMessageIds.push(action.payload);
       // console.log(msgStore.replyMessageIds);
@@ -156,6 +168,7 @@ export const {
   allImagesResived,
   replyMessageIdResived,
   replyMessageIdCleared,
+  readByRecepientsAdded,
 } = slice.actions;
 export default slice.reducer;
 

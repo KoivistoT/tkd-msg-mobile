@@ -10,6 +10,7 @@ import {
   messageDeleted,
   messagesRemoved,
   newMessageResived,
+  readByRecepientsAdded,
 } from "./msgStore";
 import {
   roomAdded,
@@ -114,7 +115,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(userDataEdited(data));
         }
         if (type === "readByRecepientsResived") {
-          console.log(data, "tämä sitten sinne read by juttuun storessa");
+          dispatch(readByRecepientsAdded(data));
         }
         if (type === "userActivated") {
           const userId = data;
