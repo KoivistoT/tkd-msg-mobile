@@ -9,6 +9,8 @@ import {
   setRoomLoadingToTrue,
   selectRoomDataById,
   selectRoomMembersById,
+  activateRoom,
+  activateDraftRoom,
 } from "../../store/rooms";
 import {
   replyMessageIdCleared,
@@ -156,6 +158,9 @@ function MessageForm({ item }) {
     //   }
     // }, 1000);
 
+    if (roomData.status === "draft") {
+      dispatch(activateDraftRoom(roomData._id, currentUserId));
+    }
     dispatch(
       sendMessage(message, roomData._id, messageType, imageURLs, replyMessageId)
     );

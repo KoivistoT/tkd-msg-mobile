@@ -53,7 +53,6 @@ const slice = createSlice({
     },
     roomActivated: (rooms, action) => {
       rooms.allRooms[action.payload].status = "active";
-
       rooms.allActiveRoomsIds.push(action.payload);
     },
     roomNameChanged: (rooms, action) => {
@@ -110,10 +109,12 @@ const slice = createSlice({
         console.log("löytyy jo");
         return;
       }
-
+      console.log("huone tuli");
       Object.assign(rooms.allRooms, action.payload);
 
-      rooms.allActiveRoomsIds.push(Object.keys(action.payload));
+      if (Object.values(action.payload)[0].status !== "draft") {
+        rooms.allActiveRoomsIds.push(Object.keys(action.payload));
+      }
       // console.log(rooms.allRooms, "now");
     },
     roomRemoved: (rooms, action) => {
@@ -227,6 +228,15 @@ export const leave_room = (roomId, userId) =>
 export const activateRoom = (roomId, userId) =>
   apiCallBegan({
     url: url + "/rooms/activate_room/",
+    method: "post",
+    data: { roomId, userId },
+    onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
+    onError: roomsError.type,
+  });
+export const activateDraftRoom = (roomId, userId) =>
+  apiCallBegan({
+    url: url + "/rooms/activate_draft_room/",
     method: "post",
     data: { roomId, userId },
     onStart: requestStarted.type,

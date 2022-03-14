@@ -143,7 +143,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
       });
 
-      socket.emit("identity", getState().auth.currentUser._id, accountType); //hard code pois
+      socket.emit("identity", getState().auth.currentUser._id, accountType);
 
       if (!socket.connected) {
         dispatch(connectionError("Socket connection faild"));
@@ -156,7 +156,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       });
     });
   } catch (error) {
-    dispatch(connectionError("Something faild"));
+    dispatch(connectionError(error));
   }
 };
 
