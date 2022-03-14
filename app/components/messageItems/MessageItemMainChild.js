@@ -19,10 +19,11 @@ function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
     _id: messageId,
     is_deleted,
     postedByUser,
-    messageType,
+    type: messageType,
     replyMessageId,
     messageBody,
   } = message;
+
   const onReply = () => {
     dispatch(replyMessageIdCleared(message.roomId));
     dispatch(

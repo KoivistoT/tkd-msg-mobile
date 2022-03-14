@@ -85,12 +85,15 @@ const slice = createSlice({
         return;
       }
 
-      Object.assign(targetMessages, { [messageId]: action.payload });
-      msgStore.allMessageIds[roomId].push(messageId);
+      msgStore.allMessages[roomId].messages = Object.assign(
+        { [messageId]: action.payload },
+        targetMessages
+      );
+      msgStore.allMessageIds[roomId].unshift(messageId);
 
       if (type === "image" && imageURLs.length > 0) {
         imageURLs.forEach((url) => {
-          msgStore.images[roomId].push(url);
+          msgStore.images[roomId].unshift(url);
         });
       }
     },
@@ -250,6 +253,6 @@ export const selectRoomMessageIdsByRoomId = (roomId) =>
       //tämä tsekkaus on turha sitten jos alussa sinne luodaan heti viesti
       msgStore.allMessageIds[roomId] !== undefined &&
       msgStore.allMessageIds[roomId].length !== 0
-        ? [...msgStore.allMessageIds[roomId]].reverse()
+        ? [...msgStore.allMessageIds[roomId]]
         : []
   );

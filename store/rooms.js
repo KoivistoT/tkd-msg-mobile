@@ -243,7 +243,7 @@ export const activateDraftRoom = (roomId, userId) =>
     url: url + "/rooms/activate_draft_room/",
     method: "post",
     data: { roomId, userId },
-    onStart: requestStarted.type,
+    // onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });

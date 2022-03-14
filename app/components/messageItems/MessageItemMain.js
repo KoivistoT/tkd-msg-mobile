@@ -12,6 +12,7 @@ function MessageItemMain({
   // console.log("message main!!!");
   const message = useSelector(selectMessageById(roomId, messageId));
   const store = useStore();
+
   const sentBy = message.postedByUser === currentUserId ? "me" : "otherUser";
   const allUsers = store.getState().entities.users.allUsers;
 
