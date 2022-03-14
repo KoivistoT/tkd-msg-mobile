@@ -75,12 +75,23 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
     newMessageResived: (msgStore, action) => {
-      const { roomId, _id, type, imageURLs } = Object.values(action.payload)[0];
+      const {
+        roomId,
+        _id: messageId,
+        type,
+        imageURLs,
+      } = Object.values(action.payload)[0];
 
       var targetMessages = msgStore.allMessages[roomId].messages;
 
+      //tämä ehkä turha
+      if (msgStore.allMessages[roomId].messages[messageId] !== undefined) {
+        console.log("löytyy jo viesti");
+        return;
+      }
+
       Object.assign(targetMessages, action.payload);
-      msgStore.allMessageIds[roomId].push(_id);
+      msgStore.allMessageIds[roomId].push(messageId);
 
       if (type === "image" && imageURLs.length > 0) {
         imageURLs.forEach((url) => {
