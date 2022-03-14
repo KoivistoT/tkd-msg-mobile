@@ -21,12 +21,14 @@ function AppCheckBox({
         setChecked(!isChecked);
       }}
     >
-      <Checkbox
+      {/* <Checkbox
         style={styles.checkbox}
         value={isChecked}
         color={isChecked ? "#4630EB" : undefined}
-      />
-
+      /> */}
+      {isChecked && (
+        <AppText style={{ backgroundColor: "red" }}>valittu</AppText>
+      )}
       <AppText style={styles.name}>{label}</AppText>
     </TouchableOpacity>
   );

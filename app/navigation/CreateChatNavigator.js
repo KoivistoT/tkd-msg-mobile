@@ -2,7 +2,8 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { MemoCreateNewChatScreen } from "../../screens/CreateNewChatScreen.js";
-import { MemoCreateNewChannelScreen } from "../../screens/CreateNewChannelScreen.js";
+import { MemoCreateChannelScreen } from "../../screens/CreateChannelScreen.js";
+import { MemoCreateDirectGroupScreen } from "../../screens/CreateDirectGroupScreen.js";
 
 const Stack = createStackNavigator();
 
@@ -18,8 +19,12 @@ const CreateChatNavigator = () => (
         component={MemoCreateNewChatScreen}
       />
       <Stack.Screen
-        name="create_new_channel_screen"
-        component={MemoCreateNewChannelScreen}
+        name="create_channel_screen"
+        component={MemoCreateChannelScreen}
+      />
+      <Stack.Screen
+        name="create_direct_group_screen"
+        component={MemoCreateDirectGroupScreen}
       />
     </Stack.Group>
   </Stack.Navigator>

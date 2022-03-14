@@ -17,7 +17,7 @@ import CreateChannelForm from "../app/components/forms/CreateChannelForm";
 import AppButton from "../app/components/AppButton";
 import Screen from "../app/components/Screen";
 
-function CreateNewChannelScreen({}) {
+function CreateChannelScreen({}) {
   return <CreateChannelForm />;
 }
 
@@ -30,7 +30,7 @@ function areEqual(prevProps, nextProps) {
   return true;
 }
 
-export const MemoCreateNewChannelScreen = React.memo(
-  CreateNewChannelScreen,
+export const MemoCreateChannelScreen = React.memo(
+  CreateChannelScreen,
   areEqual
 );

@@ -26,10 +26,17 @@ function CreateNewChatScreen({}) {
     <Screen>
       <TouchableOpacity
         onPress={() =>
-          navigationRef.current.navigate(routes.CREATE_NEW_CHANNEL_SCREEN)
+          navigationRef.current.navigate(routes.CREATE_CHANNEL_SCREEN)
         }
       >
         <AppText>TÄSTÄ TEE CHANNEL</AppText>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          navigationRef.current.navigate(routes.CREATE_DIRECT_GROUP_SCREEN)
+        }
+      >
+        <AppText>TÄSTÄ TEE group</AppText>
       </TouchableOpacity>
 
       <ContactsScreen></ContactsScreen>
