@@ -149,13 +149,19 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
 };
 
 export const saveLastSeenMessageSum =
-  (currentUserId, roomId, lastSeenMessageSum) => (dispatch, getState) => {
+  (currentUserId, roomId, lastSeenMessageSum, readByMessagesIds) =>
+  (dispatch, getState) => {
     dispatch(lastSeenMessageSumResived({ roomId, lastSeenMessageSum }));
     return dispatch(
       apiCallBegan({
         url: url + "/users/save_last_seen_message_sum",
         method: "post",
-        data: { currentUserId, roomId, lastSeenMessageSum },
+        data: {
+          currentUserId,
+          roomId,
+          lastSeenMessageSum,
+          readByMessagesIds,
+        },
         onSuccess: currentUserRequestStarted.type,
         onError: currentUserError.type,
       })

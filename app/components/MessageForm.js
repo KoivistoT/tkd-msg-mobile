@@ -45,7 +45,10 @@ import {
 import showOnlineIndicator from "../../utility/showOnlineIndicator";
 import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
-import { saveLastSeenMessageSum } from "../../store/currentUser";
+import {
+  saveLastSeenMessageSum,
+  selectLastSeenMessagesById,
+} from "../../store/currentUser";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -75,9 +78,32 @@ function MessageForm({ item }) {
     dispatch(activeRoomIdResived(roomData._id));
 
     //tähän timout 1000?
+    const lastSeenMessagesNow =
+      store.getState().auth.currentUser.last_seen_messages[
+        store
+          .getState()
+          .auth.currentUser.last_seen_messages.findIndex(
+            (object) => object.roomId === roomData._id
+          )
+      ].lastSeenMessageSum;
+
+    const readByLastMessages = roomData.messageSum - lastSeenMessagesNow;
+    const readByMessagesIds = [];
+    for (let i = 0; i < readByLastMessages; i++) {
+      readByMessagesIds.push(
+        Object.values(
+          store.getState().entities.msgStore.allMessages[roomData._id].messages
+        )[i]._id
+      );
+    }
 
     dispatch(
-      saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
+      saveLastSeenMessageSum(
+        currentUserId,
+        roomData._id,
+        roomData.messageSum,
+        readByMessagesIds
+      )
     );
 
     //onko tähän parempi ratkaisu

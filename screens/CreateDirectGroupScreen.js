@@ -66,15 +66,6 @@ function CreateDirectGroupScreen() {
 
   return (
     <Screen style={styles.modal}>
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(false);
-          setSelectedUsers([currentUserId]);
-        }}
-        style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
-      >
-        <MaterialCommunityIcons name="close" size={25} color={colors.dark} />
-      </TouchableOpacity>
       <AppButton title="Create room" onPress={onCreateRoom} />
       <View>
         {Object.keys(allUsers).length !== 0 &&

@@ -58,6 +58,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
   try {
     const socket = io(settings.baseUrl, {
+      //nämä arvot on erittäin tärkeitä,
       transports: ["websocket"],
       // jsonp: false,
     });
@@ -111,6 +112,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (type === "userDataEdited") {
           dispatch(userDataEdited(data));
+        }
+        if (type === "readByRecepientsResived") {
+          console.log(data, "tämä sitten sinne read by juttuun storessa");
         }
         if (type === "userActivated") {
           const userId = data;
