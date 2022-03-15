@@ -19,6 +19,9 @@ const slice = createSlice({
       msgStore.images = action.payload;
     },
     readByRecepientsAdded: (msgStore, action) => {
+      console.log(
+        "miten tämä voisi päivittää vain kerran?, vai voiko edes. tarviiko?"
+      );
       action.payload.forEach((item) => {
         msgStore.allMessages[item.roomId].messages[
           item.messageId
