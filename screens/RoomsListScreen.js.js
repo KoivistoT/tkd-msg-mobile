@@ -32,7 +32,7 @@ import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomMo
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import { usersOnlineResived } from "../store/users";
 import { newMessageResived } from "../store/msgStore";
-
+import messagesApi from "../api/messages";
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
@@ -88,7 +88,7 @@ function RoomsListScreen({ navigation }) {
       }
 
       // userOnline();
-    } else if (newState === "background") {
+    } else if (newState === "background" || newState === "inactive") {
       // userOffline();
       // if (socket) {
       dispatch(disconnectSocket());
@@ -96,7 +96,12 @@ function RoomsListScreen({ navigation }) {
     }
   };
 
+  const addListener = async () => {
+    const result = await messagesApi.addMessageListener();
+    console.log(result);
+  };
   useEffect(() => {
+    // addListener();
     // if (socket) {
     // handleChange(AppState.currentState);
     var appStateListener = AppState.addEventListener("change", handleChange);

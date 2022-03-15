@@ -1,6 +1,6 @@
 import client from "./client";
 
-const endpoint = "/messages/send_message2";
+const endpoint = "/messages/";
 const getMessages = () => client.get(endpoint);
 const addMessageListener = () => client.get(endpoint + "/addMsgListener");
 

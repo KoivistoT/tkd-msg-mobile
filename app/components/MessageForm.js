@@ -169,7 +169,7 @@ function MessageForm({ item }) {
     // var i = setInterval(async function () {
     //   dispatch(
     //     sendMessage(
-    //       Math.random(),
+    //       counter,
     //       roomData._id,
     //       messageType,
     //       imageURLs,
@@ -178,10 +178,10 @@ function MessageForm({ item }) {
     //   );
 
     //   counter++;
-    //   if (counter === 50) {
+    //   if (counter === 300) {
     //     clearInterval(i);
     //   }
-    // }, 1000);
+    // }, 100);
 
     //en pidä tästä, että kysyy aina
     if (roomData.status === "draft") {
