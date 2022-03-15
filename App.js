@@ -50,6 +50,7 @@ import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
+import DispatchHandler from "./app/components/DispatchHandler";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -87,6 +88,7 @@ function App() {
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppErrorToast />
       <AppSuccessToast />
+      <DispatchHandler />
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}

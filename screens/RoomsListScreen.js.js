@@ -40,25 +40,25 @@ function RoomsListScreen({ navigation }) {
   const currentUserId = store.getState().auth.currentUser._id;
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
-  const changeBucket = useSelector(selectChangeBucket);
+  // const changeBucket = useSelector(selectChangeBucket);
 
-  if (changeBucket && changeBucket.length !== 0) {
-    console.log(changeBucket);
-    if (changeBucket && changeBucket.length !== 0) {
-      console.log("täällä nyt toimii");
-      changeBucket.forEach((element) => {
-        const { action: type, data } = element;
-        console.log(type, "tämä on type");
-        if (type === "new message") {
-          dispatch(newMessageResived(data));
-        }
-        if (type === "roomLatestMessageChanged") {
-          dispatch(roomLatestMessageChanged(data));
-        }
-      });
-      dispatch(bucketCleared());
-    }
-  }
+  // if (changeBucket && changeBucket.length !== 0) {
+  //   console.log(changeBucket);
+  //   if (changeBucket && changeBucket.length !== 0) {
+  //     console.log("täällä nyt toimii");
+  //     changeBucket.forEach((element) => {
+  //       const { type, data } = element;
+  //       console.log(type, "tämä on type");
+  //       if (type === "new message") {
+  //         dispatch(newMessageResived(data));
+  //       }
+  //       if (type === "roomLatestMessageChanged") {
+  //         dispatch(roomLatestMessageChanged(data));
+  //       }
+  //     });
+  //     dispatch(bucketCleared());
+  //   }
+  // }
   const logout = () => {
     // userOffline();
 
