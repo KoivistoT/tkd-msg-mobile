@@ -30,6 +30,7 @@ import {
   userActivated,
   userTemporaryDeleted,
   userDataEdited,
+  usersOnlineResived,
 } from "./users";
 
 const slice = createSlice({
@@ -43,6 +44,7 @@ const slice = createSlice({
     },
     socketDisconnected: (socket, action) => {
       socket.connection = null;
+      // console.log("täällä kävi laittaa nulliksi");
       // console.log(action.payload, "appCode 12312593");
     },
     connectionError: (socket, action) => {
@@ -68,8 +70,14 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
       } else {
+        console.log("socket connection error");
         dispatch(connectionError("Socket connection faild"));
       }
+    });
+
+    socket.emit("userOnline", getState().auth.currentUser._id);
+    socket.on("userOnline", (data) => {
+      dispatch(usersOnlineResived(data));
     });
 
     socket.on("updates", (type, data) => {
@@ -160,15 +168,20 @@ export const disconnectSocket = (userId) => {
   return async (dispatch, getState) => {
     // console.log(action.payload, "tästä tuli1");
     //saako nämä jotenkin nätemmin
+    const socket = getState().entities.socket.connection;
+
+    socket.emit("userOffline", getState().auth.currentUser._id);
+    socket.off("userOnline");
+
     await getState().auth.currentUser.userRooms.forEach((roomId) => {
-      getState().entities.socket.connection.emit("unsubscribe", roomId);
+      socket.emit("unsubscribe", roomId);
+      socket.off("subscribe", roomId);
+      // console.log("poistui täältä", roomId);
     });
-    getState().entities.socket.connection.disconnect();
+    socket.disconnect();
     dispatch(socketDisconnected("Socket disconnected"));
   };
 };
-
-export const saveSocket = (socket) => {};
 
 export const selectSocket = createSelector(
   (state) => state.entities.socket,

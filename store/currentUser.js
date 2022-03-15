@@ -17,7 +17,11 @@ import { apiCallBegan, apiCallFailed, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { requestStarted, roomsResived } from "./rooms";
-import { allImagesResived, messagesResived } from "./msgStore";
+import {
+  allImagesResived,
+  messagesResived,
+  newMessageResived,
+} from "./msgStore";
 import { usersResived } from "./users";
 // import { createSelector } from "reselect";
 
@@ -34,6 +38,7 @@ const slice = createSlice({
     loggedIn: false,
     userRooms: [],
     last_seen_messages: [],
+    changeBucket: [],
   },
   reducers: {
     // action => action handler
@@ -72,11 +77,15 @@ const slice = createSlice({
       console.log(action.payload, "error cod 99991");
     },
     changeBucketResived: (currentUser, action) => {
-      // console.log(action.payload, "täältä tulee tämä");
+      // console.log(action.payload.changes, "täältä tulee tämä");
+      currentUser.changeBucket = action.payload.changes;
     },
     loginFailed: (currentUser, action) => {
       currentUser.token = null;
       currentUser.error = action.payload;
+    },
+    bucketCleared: (currentUser, action) => {
+      currentUser.changeBucket = [];
     },
     userLoggedOut: (currentUser, action) => {
       //tämä ei ehkä oikea tapa tehdä tätä
@@ -112,6 +121,7 @@ export const {
   currentUserRequestStarted,
   userFetchFaild,
   changeBucketResived,
+  bucketCleared,
   lastSeenMessageSumResived,
 } = slice.actions;
 export default slice.reducer;
@@ -140,13 +150,22 @@ export const login = (email, password) =>
     onError: loginFailed.type,
   });
 
-export const getChangeBucket = () => (dispatch, getState) => {
+export const getChangeBucket = (currentUserId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä
   return dispatch(
     apiCallBegan({
-      url:
-        url + "/buckets/get_change_bucket/" + getState().auth.currentUser._id,
+      url: url + "/buckets/get_change_bucket/" + currentUserId,
       onSuccess: changeBucketResived.type,
+      onError: loginFailed.type,
+    })
+  );
+};
+export const clearBucket = (currentUserId) => (dispatch, getState) => {
+  //pitääkö olla et katsoo onko jo käuyttäjä
+  return dispatch(
+    apiCallBegan({
+      url: url + "/buckets/clear_bucket/" + currentUserId,
+      onSuccess: bucketCleared.type,
       onError: loginFailed.type,
     })
   );
@@ -218,3 +237,8 @@ export const selectLastSeenMessagesById = (roomId) =>
       return condition !== undefined ? condition.lastSeenMessageSum : 0;
     }
   );
+
+export const selectChangeBucket = createSelector(
+  (state) => state.auth,
+  (auth) => auth.currentUser.changeBucket
+);

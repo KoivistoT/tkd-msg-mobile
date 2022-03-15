@@ -10,10 +10,20 @@ import {
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import { getChangeBucket, userLoggedOut } from "../store/currentUser";
-import { disconnectSocket, selectSocket } from "../store/socket";
+import {
+  bucketCleared,
+  getChangeBucket,
+  selectChangeBucket,
+  userLoggedOut,
+} from "../store/currentUser";
+import {
+  createSocketConnection,
+  disconnectSocket,
+  selectSocket,
+} from "../store/socket";
 import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
 import {
+  roomLatestMessageChanged,
   roomStateCleared,
   selectAllActiveRoomsIds,
   selectAllActiveRoomsIdsOld,
@@ -21,6 +31,7 @@ import {
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import { usersOnlineResived } from "../store/users";
+import { newMessageResived } from "../store/msgStore";
 
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -29,9 +40,27 @@ function RoomsListScreen({ navigation }) {
   const currentUserId = store.getState().auth.currentUser._id;
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
+  const changeBucket = useSelector(selectChangeBucket);
 
+  if (changeBucket && changeBucket.length !== 0) {
+    console.log(changeBucket);
+    if (changeBucket && changeBucket.length !== 0) {
+      console.log("täällä nyt toimii");
+      changeBucket.forEach((element) => {
+        const { action: type, data } = element;
+        console.log(type, "tämä on type");
+        if (type === "new message") {
+          dispatch(newMessageResived(data));
+        }
+        if (type === "roomLatestMessageChanged") {
+          dispatch(roomLatestMessageChanged(data));
+        }
+      });
+      dispatch(bucketCleared());
+    }
+  }
   const logout = () => {
-    userOffline();
+    // userOffline();
 
     dispatch(disconnectSocket());
     dispatch(roomStateCleared());
@@ -52,22 +81,30 @@ function RoomsListScreen({ navigation }) {
 
   const handleChange = (newState) => {
     if (newState === "active") {
-      userOnline();
-      dispatch(getChangeBucket());
+      dispatch(getChangeBucket(currentUserId));
+
+      if (!socket) {
+        dispatch(createSocketConnection());
+      }
+
+      // userOnline();
     } else if (newState === "background") {
-      userOffline();
+      // userOffline();
+      // if (socket) {
+      dispatch(disconnectSocket());
+      // }
     }
   };
 
   useEffect(() => {
-    if (socket) {
-      handleChange(AppState.currentState);
-      var appStateListener = AppState.addEventListener("change", handleChange);
-    }
+    // if (socket) {
+    // handleChange(AppState.currentState);
+    var appStateListener = AppState.addEventListener("change", handleChange);
+    // }
     return () => {
       appStateListener?.remove();
     };
-  }, [socket]);
+  }, []);
 
   const keyExtractor = (id) => id;
   const listItem = ({ item }) => {
@@ -98,11 +135,13 @@ function RoomsListScreen({ navigation }) {
   // sortRoomsByLastMessage();
   return (
     <Screen>
-      {!socket && (
+      {/* {!socket && ( */}
+      {!allActiveRoomsIds && (
         <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
       )}
       {/* ehkä ei tarpeen olla kaikki varmistukset, ei päivitä alussa roomListItemiä niin montaa kertaa, mutta ehkä ei haittaa... */}
-      {socket && allActiveRoomsIds && (
+      {/* {socket && allActiveRoomsIds && ( */}
+      {allActiveRoomsIds && (
         <FlatList
           // data={sortObjectsByfield(userRooms, "roomName")}
 
