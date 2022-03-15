@@ -95,10 +95,10 @@ const slice = createSlice({
       var targetMessages = msgStore.allMessages[roomId].messages;
 
       //tämä ehkä turha
-      if (msgStore.allMessages[roomId].messages[messageId] !== undefined) {
-        console.log("löytyy jo viesti");
-        return;
-      }
+      // if (msgStore.allMessages[roomId].messages[messageId] !== undefined) {
+      //   console.log("löytyy jo viesti");
+      //   return;
+      // }
 
       msgStore.allMessages[roomId].messages = Object.assign(
         { [messageId]: action.payload },

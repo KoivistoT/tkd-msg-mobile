@@ -13,10 +13,10 @@
 // ekana tee auth logini tähän
 
 import { createSlice, createSelector, current } from "@reduxjs/toolkit";
-import { apiCallBegan, currentUserInit } from "./actions";
+import { apiCallBegan, apiCallFailed, currentUserInit } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
-import { roomsResived } from "./rooms";
+import { requestStarted, roomsResived } from "./rooms";
 import { allImagesResived, messagesResived } from "./msgStore";
 import { usersResived } from "./users";
 // import { createSelector } from "reselect";
@@ -71,6 +71,9 @@ const slice = createSlice({
     userFetchFaild: (currentUser, action) => {
       console.log(action.payload, "error cod 99991");
     },
+    changeBucketResived: (currentUser, action) => {
+      // console.log(action.payload, "täältä tulee tämä");
+    },
     loginFailed: (currentUser, action) => {
       currentUser.token = null;
       currentUser.error = action.payload;
@@ -108,6 +111,7 @@ export const {
   errorMessageCleared,
   currentUserRequestStarted,
   userFetchFaild,
+  changeBucketResived,
   lastSeenMessageSumResived,
 } = slice.actions;
 export default slice.reducer;
@@ -135,6 +139,18 @@ export const login = (email, password) =>
     onSuccess: userLoggedIn.type,
     onError: loginFailed.type,
   });
+
+export const getChangeBucket = () => (dispatch, getState) => {
+  //pitääkö olla et katsoo onko jo käuyttäjä
+  return dispatch(
+    apiCallBegan({
+      url:
+        url + "/buckets/get_change_bucket/" + getState().auth.currentUser._id,
+      onSuccess: changeBucketResived.type,
+      onError: loginFailed.type,
+    })
+  );
+};
 
 export const getCurrentUserById = (userId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä

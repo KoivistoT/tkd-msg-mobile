@@ -67,91 +67,89 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     socket.on("connect", () => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
-      }
-
-      socket.on("updates", (type, data) => {
-        if (type === "roomAdded") {
-          const { _id: roomId } = data;
-          dispatch(roomAdded(data));
-          dispatch(getMessagesbyId(roomId));
-          dispatch(getRoomImages(roomId));
-          socket.emit("subscribe", roomId);
-          const userId = getState().auth.currentUser._id;
-
-          //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
-          if (data.roomCreator === userId) {
-            navigationRef.current.navigate(routes.MESSAGE_SCREEN, data);
-          }
-        }
-        if (type === "roomRemoved") {
-          const roomId = data;
-          socket.emit("unsubscribe", roomId);
-          dispatch(roomRemoved(roomId));
-          dispatch(messagesRemoved(roomId));
-        }
-        if (type === "newUser") {
-          dispatch(newUserResived(data));
-        }
-        if (type === "userDeleted") {
-          const userId = data;
-          dispatch(userDeleted(userId));
-        }
-        if (type === "userTemporaryDeleted") {
-          const userId = data;
-          dispatch(userTemporaryDeleted(userId));
-        }
-        if (type === "userArchived") {
-          const userId = data;
-          dispatch(userArchived(userId));
-        }
-        if (type === "roomArchived") {
-          const roomId = data;
-          dispatch(roomArchived(roomId));
-        }
-        if (type === "roomNameChanged") {
-          dispatch(roomNameChanged(data));
-        }
-        if (type === "userDataEdited") {
-          dispatch(userDataEdited(data));
-        }
-        if (type === "readByRecepientsResived") {
-          dispatch(readByRecepientsAdded(data));
-        }
-        if (type === "userActivated") {
-          const userId = data;
-          dispatch(userActivated(userId));
-        }
-        if (type === "roomActivated") {
-          const roomId = data;
-          dispatch(roomActivated(roomId));
-        }
-
-        if (type === "membersChanged") {
-          dispatch(roomMembersChanged(data));
-        }
-        if (type === "roomLatestMessageChanged") {
-          dispatch(roomLatestMessageChanged(data));
-        }
-        if (type === "messageDeleted") {
-          dispatch(messageDeleted(data));
-        }
-
-        if (type === "new message") {
-          dispatch(newMessageResived(data));
-        }
-      });
-
-      socket.emit("identity", getState().auth.currentUser._id, accountType);
-
-      if (!socket.connected) {
+      } else {
         dispatch(connectionError("Socket connection faild"));
       }
+    });
 
-      // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);
-      getState().auth.currentUser.userRooms.forEach((roomId) => {
-        // console.log("tänne subscripe", roomId);
+    socket.on("updates", (type, data) => {
+      if (type === "roomAdded") {
+        const { _id: roomId } = data;
+        dispatch(roomAdded(data));
+        dispatch(getMessagesbyId(roomId));
+        dispatch(getRoomImages(roomId));
         socket.emit("subscribe", roomId);
-      });
+        const userId = getState().auth.currentUser._id;
+
+        //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
+        if (data.roomCreator === userId) {
+          navigationRef.current.navigate(routes.MESSAGE_SCREEN, data);
+        }
+      }
+      if (type === "roomRemoved") {
+        const roomId = data;
+        socket.emit("unsubscribe", roomId);
+        dispatch(roomRemoved(roomId));
+        dispatch(messagesRemoved(roomId));
+      }
+      if (type === "newUser") {
+        dispatch(newUserResived(data));
+      }
+      if (type === "userDeleted") {
+        const userId = data;
+        dispatch(userDeleted(userId));
+      }
+      if (type === "userTemporaryDeleted") {
+        const userId = data;
+        dispatch(userTemporaryDeleted(userId));
+      }
+      if (type === "userArchived") {
+        const userId = data;
+        dispatch(userArchived(userId));
+      }
+      if (type === "roomArchived") {
+        const roomId = data;
+        dispatch(roomArchived(roomId));
+      }
+      if (type === "roomNameChanged") {
+        dispatch(roomNameChanged(data));
+      }
+      if (type === "userDataEdited") {
+        dispatch(userDataEdited(data));
+      }
+      if (type === "readByRecepientsResived") {
+        dispatch(readByRecepientsAdded(data));
+      }
+      if (type === "userActivated") {
+        const userId = data;
+        dispatch(userActivated(userId));
+      }
+      if (type === "roomActivated") {
+        const roomId = data;
+        dispatch(roomActivated(roomId));
+      }
+
+      if (type === "membersChanged") {
+        dispatch(roomMembersChanged(data));
+      }
+      if (type === "roomLatestMessageChanged") {
+        dispatch(roomLatestMessageChanged(data));
+      }
+      if (type === "messageDeleted") {
+        dispatch(messageDeleted(data));
+      }
+
+      if (type === "new message") {
+        dispatch(newMessageResived(data));
+      }
+    });
+
+    socket.emit("identity", getState().auth.currentUser._id, accountType);
+
+    // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);
+    getState().auth.currentUser.userRooms.forEach((roomId) => {
+      // console.log("tänne subscripe", roomId);
+      socket.emit("subscribe", roomId);
     });
   } catch (error) {
     dispatch(connectionError(error));

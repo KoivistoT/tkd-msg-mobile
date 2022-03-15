@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import { userLoggedOut } from "../store/currentUser";
+import { getChangeBucket, userLoggedOut } from "../store/currentUser";
 import { disconnectSocket, selectSocket } from "../store/socket";
 import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
 import {
@@ -53,6 +53,7 @@ function RoomsListScreen({ navigation }) {
   const handleChange = (newState) => {
     if (newState === "active") {
       userOnline();
+      dispatch(getChangeBucket());
     } else if (newState === "background") {
       userOffline();
     }

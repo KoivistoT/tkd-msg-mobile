@@ -77,7 +77,7 @@ const slice = createSlice({
       Object.keys(action.payload).forEach((id) => {
         if (action.payload[id].status === "active") {
           if (!rooms.allActiveRoomsIds.includes(id)) {
-            console.log("ei ole");
+            // console.log("ei ole");
             rooms.allActiveRoomsIds.push(id);
           }
         }
