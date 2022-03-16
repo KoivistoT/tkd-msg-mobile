@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -79,19 +79,24 @@ function RoomsListScreen({ navigation }) {
     socket.off("userOnline");
   };
 
+  const socketConnection = useRef(false);
   const handleChange = (newState) => {
     if (newState === "active") {
       dispatch(getChangeBucket(currentUserId));
 
       if (!socket) {
         dispatch(createSocketConnection());
+        socketConnection.current = true;
       }
 
       // userOnline();
     } else if (newState === "background" || newState === "inactive") {
       // userOffline();
       // if (socket) {
-      dispatch(disconnectSocket());
+      if (socketConnection.current) {
+        dispatch(disconnectSocket());
+        socketConnection.current = false;
+      }
       // }
     }
   };
