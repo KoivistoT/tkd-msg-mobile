@@ -79,7 +79,7 @@ function RoomsListScreen({ navigation }) {
     socket.off("userOnline");
   };
 
-  const socketConnection = useRef(false);
+  const socketConnection = useRef(true);
   const handleChange = (newState) => {
     if (newState === "active") {
       dispatch(getChangeBucket(currentUserId));

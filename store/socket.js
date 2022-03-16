@@ -83,6 +83,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
     socket.on("updates", (type, data) => {
       if (type === "roomAdded") {
+        console.log("ei täällä");
         const { _id: roomId } = data;
         dispatch(roomAdded(data));
         dispatch(getMessagesbyId(roomId));
