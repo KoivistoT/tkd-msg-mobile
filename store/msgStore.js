@@ -26,7 +26,7 @@ const slice = createSlice({
       action.payload.forEach((item) => {
         msgStore.allMessages[item.roomId].messages[item._id].readByRecipients =
           item.readByRecipients;
-        console.log("näyttää jo täällä lukeneet");
+
         // console.log(
         //   msgStore.allMessages[item.roomId].messages[item.messageId]
         //     .readByRecipients
@@ -271,4 +271,11 @@ export const selectRoomMessageIdsByRoomId = (roomId) =>
       msgStore.allMessageIds[roomId].length !== 0
         ? [...msgStore.allMessageIds[roomId]]
         : []
+  );
+
+export const selectMessageReadByRecepients = (roomId, messageId) =>
+  createSelector(
+    (state) => state.entities.msgStore,
+    (msgStore) =>
+      msgStore.allMessages[roomId].messages[messageId].readByRecipients
   );

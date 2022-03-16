@@ -77,32 +77,8 @@ function MessageForm({ item }) {
   useEffect(() => {
     dispatch(activeRoomIdResived(roomData._id));
 
-    // const lastSeenMessagesNow =
-    //   store.getState().auth.currentUser.last_seen_messages[
-    //     store
-    //       .getState()
-    //       .auth.currentUser.last_seen_messages.findIndex(
-    //         (object) => object.roomId === roomData._id
-    //       )
-    //   ].lastSeenMessageSum;
-
-    // const readByLastMessages = roomData.messageSum - lastSeenMessagesNow;
-    // const readByMessagesIds = [];
-    // for (let i = 0; i < readByLastMessages; i++) {
-    //   readByMessagesIds.push(
-    //     Object.values(
-    //       store.getState().entities.msgStore.allMessages[roomData._id].messages
-    //     )[i]._id
-    //   );
-    // }
-
     dispatch(
-      saveLastSeenMessageSum(
-        currentUserId,
-        roomData._id,
-        roomData.messageSum
-        // readByMessagesIds
-      )
+      saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
     );
 
     //onko tähän parempi ratkaisu
