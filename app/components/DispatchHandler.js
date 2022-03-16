@@ -115,7 +115,7 @@ function DispatchHandler() {
           dispatch(newMessageResived(data));
         }
       });
-      dispatch(bucketCleared());
+      // dispatch(bucketCleared());
     }
   }, [changeBucket, socket]);
 

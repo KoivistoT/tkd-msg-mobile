@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
+import { removeBucketItemById } from "./currentUser";
 import {
   getMessagesbyId,
   getRoomImages,
@@ -81,7 +82,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       dispatch(usersOnlineResived(data));
     });
 
-    socket.on("updates", (type, data) => {
+    socket.on("updates", (type, data, bucketId) => {
       if (type === "roomAdded") {
         console.log("ei täällä");
         const { _id: roomId } = data;
@@ -152,6 +153,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (type === "new message") {
         dispatch(newMessageResived(data));
       }
+      dispatch(removeBucketItemById(getState().auth.currentUser._id, bucketId));
     });
 
     // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);

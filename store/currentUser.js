@@ -149,6 +149,15 @@ export const login = (email, password) =>
     onSuccess: userLoggedIn.type,
     onError: loginFailed.type,
   });
+export const removeBucketItemById = (currentUserId, bucketId) =>
+  //pitääkö olla et katsoo onko jo käuyttäjä
+  apiCallBegan({
+    url: url + "/buckets/remove_bucket_item",
+    method: "post",
+    data: { currentUserId, bucketId },
+    // onSuccess: userLoggedIn.type,
+    onError: currentUserError.type,
+  });
 
 export const getChangeBucket = (currentUserId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä
