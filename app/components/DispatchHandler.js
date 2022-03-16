@@ -3,6 +3,8 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import {
   bucketCleared,
   clearBucket,
+  doneBucketIdResived,
+  removeBucketItemById,
   selectChangeBucket,
 } from "../../store/currentUser";
 import {
@@ -43,7 +45,20 @@ function DispatchHandler() {
     if (socket && changeBucket && changeBucket.length !== 0) {
       //   dispatch(clearBucket(currentUserId));
       changeBucket.forEach((element) => {
-        const { type, data } = element;
+        const { type, data, bucketId } = element;
+
+        if (
+          store.getState().auth.currentUser.doneBucketIds.includes(bucketId)
+        ) {
+          console.log("on siellä jo tehty dispatchhandler");
+          dispatch(
+            removeBucketItemById(
+              store.getState().auth.currentUser._id,
+              bucketId
+            )
+          );
+          return;
+        }
 
         if (type === "roomAdded") {
           const { _id: roomId } = data;
@@ -114,6 +129,8 @@ function DispatchHandler() {
         if (type === "new message") {
           dispatch(newMessageResived(data));
         }
+        dispatch(doneBucketIdResived(bucketId));
+        dispatch(removeBucketItemById(currentUserId, bucketId));
       });
       // dispatch(bucketCleared());
     }

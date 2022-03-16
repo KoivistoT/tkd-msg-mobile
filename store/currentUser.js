@@ -39,6 +39,7 @@ const slice = createSlice({
     userRooms: [],
     last_seen_messages: [],
     changeBucket: [],
+    doneBucketIds: [],
   },
   reducers: {
     // action => action handler
@@ -87,6 +88,9 @@ const slice = createSlice({
     bucketCleared: (currentUser, action) => {
       currentUser.changeBucket = [];
     },
+    doneBucketIdResived: (currentUser, action) => {
+      currentUser.doneBucketIds.push(action.payload);
+    },
     userLoggedOut: (currentUser, action) => {
       //tämä ei ehkä oikea tapa tehdä tätä
       currentUser.accountType = null;
@@ -107,6 +111,9 @@ const slice = createSlice({
     currentUserError: (currentUser, action) => {
       console.log("error täällä code 92992881");
     },
+    lastSaveError: (currentUser, action) => {
+      console.log("error täällä code 22");
+    },
     currentUserRequestStarted: (currentUser, action) => {},
   },
 });
@@ -115,6 +122,7 @@ export const {
   userLoggedIn,
   currentUserResived,
   currentUserError,
+  lastSaveError,
   loginFailed,
   userLoggedOut,
   errorMessageCleared,
@@ -122,6 +130,7 @@ export const {
   userFetchFaild,
   changeBucketResived,
   bucketCleared,
+  doneBucketIdResived,
   lastSeenMessageSumResived,
 } = slice.actions;
 export default slice.reducer;
@@ -207,7 +216,7 @@ export const saveLastSeenMessageSum =
           readByMessagesIds,
         },
         onSuccess: currentUserRequestStarted.type,
-        onError: currentUserError.type,
+        onError: lastSaveError.type,
       })
     );
   };
@@ -250,4 +259,9 @@ export const selectLastSeenMessagesById = (roomId) =>
 export const selectChangeBucket = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser.changeBucket
+);
+
+export const selectDoneBucketIds = createSelector(
+  (state) => state.auth,
+  (auth) => auth.currentUser.doneBucketIds
 );

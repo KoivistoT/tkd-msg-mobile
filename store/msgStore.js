@@ -19,19 +19,36 @@ const slice = createSlice({
       msgStore.images = action.payload;
     },
     readByRecepientsAdded: (msgStore, action) => {
-      console.log(
-        "miten tämä voisi päivittää vain kerran?, vai voiko edes. tarviiko?"
-      );
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // console.log(
+      //   "miten tämä voisi päivittää vain kerran?, vai voiko edes. tarviiko?"
+      // );
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-      action.payload.forEach((item) => {
-        msgStore.allMessages[item.roomId].messages[item._id].readByRecipients =
-          item.readByRecipients;
+      try {
+        action.payload.forEach((item) => {
+          msgStore.allMessages[item.roomId].messages[
+            item._id
+          ].readByRecipients = item.readByRecipients;
+        });
+      } catch (error) {
+        console.log(error, "ei ollut viestiä");
+      }
 
-        // console.log(
-        //   msgStore.allMessages[item.roomId].messages[item.messageId]
-        //     .readByRecipients
-        // );
-      });
+      // console.log(
+      //   msgStore.allMessages[item.roomId].messages[item.messageId]
+      //     .readByRecipients
+      // );
     },
     replyMessageIdResived: (msgStore, action) => {
       msgStore.replyMessageIds.push(action.payload);
