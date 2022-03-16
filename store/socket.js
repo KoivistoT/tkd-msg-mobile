@@ -69,6 +69,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     socket.on("connect", () => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
+        socket.emit("identity", getState().auth.currentUser._id, accountType);
       } else {
         console.log("socket connection error");
         dispatch(connectionError("Socket connection faild"));
@@ -151,8 +152,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         dispatch(newMessageResived(data));
       }
     });
-
-    socket.emit("identity", getState().auth.currentUser._id, accountType);
 
     // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);
     getState().auth.currentUser.userRooms.forEach((roomId) => {
