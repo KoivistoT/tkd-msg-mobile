@@ -79,9 +79,19 @@ function RoomsListScreen({ navigation }) {
     socket.off("userOnline");
   };
 
+  // var counter = 0;
+  // var i = setInterval(async function () {
+  //   dispatch(getChangeBucket(currentUserId));
+  //   counter++;
+  //   if (counter === 100) {
+  //     clearInterval(i);
+  //   }
+  // }, 5000);
+
   const socketConnection = useRef(true);
   const handleChange = (newState) => {
     if (newState === "active") {
+      console.log("taas actiivinen");
       dispatch(getChangeBucket(currentUserId));
 
       if (!socket) {

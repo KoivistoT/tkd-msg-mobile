@@ -160,8 +160,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (type === "new message") {
         dispatch(newMessageResived(data));
       }
-      dispatch(doneBucketIdResived(bucketId));
+
       dispatch(removeBucketItemById(getState().auth.currentUser._id, bucketId));
+      dispatch(doneBucketIdResived(bucketId));
     });
 
     // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);

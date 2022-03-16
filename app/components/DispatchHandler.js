@@ -129,8 +129,9 @@ function DispatchHandler() {
         if (type === "new message") {
           dispatch(newMessageResived(data));
         }
-        dispatch(doneBucketIdResived(bucketId));
+
         dispatch(removeBucketItemById(currentUserId, bucketId));
+        dispatch(doneBucketIdResived(bucketId));
       });
       // dispatch(bucketCleared());
     }

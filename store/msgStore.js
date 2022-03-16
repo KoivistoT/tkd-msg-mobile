@@ -111,11 +111,11 @@ const slice = createSlice({
 
       var targetMessages = msgStore.allMessages[roomId].messages;
 
-      //tämä ehkä turha
-      // if (msgStore.allMessages[roomId].messages[messageId] !== undefined) {
-      //   console.log("löytyy jo viesti");
-      //   return;
-      // }
+      // tämä ehkä turha
+      if (msgStore.allMessages[roomId].messages[messageId] !== undefined) {
+        // console.log("löytyy jo viesti");
+        return;
+      }
 
       msgStore.allMessages[roomId].messages = Object.assign(
         { [messageId]: action.payload },
@@ -282,12 +282,19 @@ export const selectMessageById = (roomId, messageId) =>
 export const selectRoomMessageIdsByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
-    (msgStore) =>
+    (msgStore) => {
       //tämä tsekkaus on turha sitten jos alussa sinne luodaan heti viesti
-      msgStore.allMessageIds[roomId] !== undefined &&
-      msgStore.allMessageIds[roomId].length !== 0
-        ? [...msgStore.allMessageIds[roomId]]
-        : []
+
+      const messages = sortObjectsByfield(
+        msgStore.allMessages[roomId].messages,
+        "createdAt"
+      );
+      return messages.map((message) => message._id);
+    }
+    // msgStore.allMessageIds[roomId] !== undefined &&
+    // msgStore.allMessageIds[roomId].length !== 0
+    //   ? [...msgStore.allMessageIds[roomId]]
+    //   : []
   );
 
 export const selectMessageReadByRecepients = (roomId, messageId) =>

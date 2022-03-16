@@ -77,9 +77,11 @@ function MessageForm({ item }) {
   useEffect(() => {
     dispatch(activeRoomIdResived(roomData._id));
 
-    dispatch(
-      saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
-    );
+    setTimeout(() => {
+      dispatch(
+        saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
+      );
+    }, 1000);
 
     //onko tähän parempi ratkaisu
     setHeader();
@@ -154,7 +156,7 @@ function MessageForm({ item }) {
       );
 
       counter++;
-      if (counter === 300) {
+      if (counter === 100) {
         clearInterval(i);
       }
     }, 100);
