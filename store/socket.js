@@ -126,7 +126,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (type === "userDataEdited") {
         dispatch(userDataEdited(data));
       }
-      if (type === "readByRecepientsResived") {
+      if (type === "readByRecepientsAdded") {
         dispatch(readByRecepientsAdded(data));
       }
       if (type === "userActivated") {

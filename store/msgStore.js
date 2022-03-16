@@ -22,10 +22,10 @@ const slice = createSlice({
       console.log(
         "miten tämä voisi päivittää vain kerran?, vai voiko edes. tarviiko?"
       );
+
       action.payload.forEach((item) => {
-        msgStore.allMessages[item.roomId].messages[
-          item.messageId
-        ].readByRecipients = item.readByRecipients;
+        msgStore.allMessages[item.roomId].messages[item._id].readByRecipients =
+          item.readByRecipients;
         console.log("näyttää jo täällä lukeneet");
         // console.log(
         //   msgStore.allMessages[item.roomId].messages[item.messageId]
