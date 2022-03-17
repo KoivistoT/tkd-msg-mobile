@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import {
   bucketCleared,
@@ -43,12 +43,14 @@ function TaskHandler() {
   const socket = useSelector(selectSocket);
 
   useEffect(() => {
+    // console.log("tämä taas");
     handleTask();
   }, [tasks]);
 
   const handleTask = () => {
     if (!tasks) return;
     // console.log(tasks.oldestId);
+
     if (tasks.newest.type === "new message") {
       dispatch(newMessageResived(tasks.newest));
     }
@@ -56,6 +58,36 @@ function TaskHandler() {
       dispatch(roomLatestMessageChanged(tasks.newest));
     }
   };
+
+  // const sortTasks = (tasks) => {
+  //   return Object.values(tasks).sort(function (a, b) {
+  //     var nameA = a.taskId;
+  //     var nameB = b.taskId;
+
+  //     if (nameA > nameB) {
+  //       return 1;
+  //     }
+  //     if (nameA < nameB) {
+  //       return -1;
+  //     }
+  //     return 0;
+  //   });
+  // };
+  // const handleTask = () => {
+  //   if (!tasks) return;
+  //   // console.log(tasks.oldestId);
+  //   const sortedTasks = sortTasks(tasks);
+  //   // console.log(sortedTasks);
+
+  //   sortedTasks.forEach((task) => {
+  //     if (task.type === "new message") {
+  //       dispatch(newMessageResived(task));
+  //     }
+  //     if (task.type === "roomLatestMessageChanged") {
+  //       dispatch(roomLatestMessageChanged(task));
+  //     }
+  //   });
+  // };
 
   // const msgNewBucketTasks = useSelector(msgNewBucketTasks);
   // const currentUserId = store.getState().auth.currentUser._id;

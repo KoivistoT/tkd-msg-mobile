@@ -27,7 +27,7 @@ function MessageList({ item }) {
   // const allUsers = useSelector(selectAllUsersMinimal); // tämä ei tarvinne olla selector, voi tehdä raskaaksi
   //*********** */
   //*********** */
-
+  // console.log("MessageList päivittyy");
   const messageItem = ({ item }) => (
     <MemoMessageItemMain
       messageId={item}

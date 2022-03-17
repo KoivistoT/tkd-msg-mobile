@@ -159,7 +159,7 @@ function MessageForm({ item }) {
       if (counter === 100) {
         clearInterval(i);
       }
-    }, 100);
+    }, 1000);
 
     //en pidä tästä, että kysyy aina
     if (roomData.status === "draft") {

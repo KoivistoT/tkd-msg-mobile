@@ -139,9 +139,7 @@ const slice = createSlice({
         });
       }
 
-      setTimeout(() => {
-        delete msgStore.newTasks[action.payload.taskId];
-      }, 100);
+      delete msgStore.newTasks[action.payload.taskId];
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -297,19 +295,21 @@ export const selectMessageById = (roomId, messageId) =>
 export const selectRoomMessageIdsByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
-    (msgStore) => {
-      //tämä tsekkaus on turha sitten jos alussa sinne luodaan heti viesti
-
-      const messages = sortObjectsByfield(
-        msgStore.allMessages[roomId].messages,
-        "createdAt"
-      );
-      return messages.map((message) => message._id);
-    }
-    // msgStore.allMessageIds[roomId] !== undefined &&
-    // msgStore.allMessageIds[roomId].length !== 0
-    //   ? [...msgStore.allMessageIds[roomId]]
-    //   : []
+    (msgStore) =>
+      //  {
+      //   //tämä tsekkaus on turha sitten jos alussa sinne luodaan heti viesti
+      //   console.log("computing");
+      //   const messages = sortObjectsByfield(
+      //     msgStore.allMessages[roomId].messages,
+      //     "createdAt"
+      //   );
+      //   return messages.map((message) => message._id);
+      // }
+      // msgStore.allMessageIds[roomId] !== undefined &&
+      // msgStore.allMessageIds[roomId].length !== 0
+      //   ? [...msgStore.allMessageIds[roomId]]
+      //   : []
+      msgStore.allMessageIds[roomId]
   );
 
 export const selectMessageReadByRecepients = (roomId, messageId) =>
@@ -322,21 +322,24 @@ export const selectMessageReadByRecepients = (roomId, messageId) =>
 export const selectNewTasksCompinedOldest = createSelector(
   (state) => state.entities.msgStore,
   (state) => state.entities.rooms,
-  (msgStore, rooms) => {
-    let allTasks = Object.assign(
-      { ...msgStore.newTasks },
-      { ...rooms.newTasks }
-    );
-    // console.log(allTasks);
-    if (Object.keys(allTasks).length !== 0) {
-      const sortedKeys = sortArray(Object.keys(allTasks));
+  (msgStore, rooms) =>
+    // Object.assign({ ...msgStore.newTasks }, { ...rooms.newTasks })
 
-      return {
-        newest: allTasks[sortedKeys[0]],
-        oldestId: sortedKeys[sortedKeys.length - 1],
-      };
-    } else {
-      return null;
+    {
+      let allTasks = Object.assign(
+        { ...msgStore.newTasks },
+        { ...rooms.newTasks }
+      );
+      // console.log(allTasks);
+      if (Object.keys(allTasks).length !== 0) {
+        const sortedKeys = sortArray(Object.keys(allTasks));
+
+        return {
+          newest: allTasks[sortedKeys[0]],
+          oldestId: sortedKeys[sortedKeys.length - 1],
+        };
+      } else {
+        return null;
+      }
     }
-  }
 );

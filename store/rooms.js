@@ -74,9 +74,8 @@ const slice = createSlice({
       rooms.allRooms[roomId].latestMessage = action.payload.data;
       rooms.allRooms[roomId].messageSum = rooms.allRooms[roomId].messageSum + 1;
       // console.log(rooms.newTasks);
-      setTimeout(() => {
-        delete rooms.newTasks[action.payload.taskId];
-      }, 100);
+
+      delete rooms.newTasks[action.payload.taskId];
     },
 
     roomsResived: (rooms, action) => {

@@ -90,7 +90,7 @@ function App() {
       <AppErrorToast />
       <AppSuccessToast />
       <TaskHandler />
-      <NewTasks />
+      {/* <NewTasks /> */}
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}
