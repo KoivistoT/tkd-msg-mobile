@@ -106,8 +106,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(roomNewTasksResived(item));
         }
         i++;
-        console.log(i, tasks.length);
+
         if (i === tasks.length) {
+          console.log(i, tasks.length, "nyt poistaa");
           //voiko olla niin, että task ei ole vielä storess, mutta tekee jo, tämän. teoriassa kyllä?
           dispatch(
             removeOlderTasksItemsById(getState().auth.currentUser._id, taskId)

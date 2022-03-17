@@ -48,7 +48,7 @@ function TaskHandler() {
 
   const handleTask = () => {
     if (!tasks) return;
-    console.log(tasks.oldestId);
+    // console.log(tasks.oldestId);
     if (tasks.newest.type === "new message") {
       dispatch(newMessageResived(tasks.newest));
     }

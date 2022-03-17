@@ -92,7 +92,7 @@ function RoomsListScreen({ navigation }) {
   const handleChange = (newState) => {
     if (newState === "active") {
       console.log("taas actiivinen");
-      dispatch(getTasks(currentUserId));
+      // dispatch(getTasks(currentUserId));
 
       if (!socket) {
         dispatch(createSocketConnection());
