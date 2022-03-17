@@ -87,6 +87,7 @@ function RoomsListScreen({ navigation }) {
   //     clearInterval(i);
   //   }
   // }, 5000);
+  // console.log("tämä päivittyy kanssa");
 
   const socketConnection = useRef(true);
   const handleChange = (newState) => {

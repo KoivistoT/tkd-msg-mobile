@@ -20,8 +20,8 @@ const slice = createSlice({
       msgStore.images = action.payload;
     },
     msgNewTasksResived: (msgStore, action) => {
-      if (Object.keys(msgStore.newTasks).includes(action.payload.taskId))
-        return;
+      // if (Object.keys(msgStore.newTasks).includes(action.payload.taskId))
+      //   return;
 
       msgStore.newTasks = Object.assign(msgStore.newTasks, {
         [action.payload.taskId]: action.payload,
@@ -139,7 +139,9 @@ const slice = createSlice({
         });
       }
 
-      delete msgStore.newTasks[action.payload.taskId];
+      setTimeout(() => {
+        delete msgStore.newTasks[action.payload.taskId];
+      }, 100);
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");

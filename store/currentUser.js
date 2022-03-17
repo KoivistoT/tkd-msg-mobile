@@ -78,8 +78,8 @@ const slice = createSlice({
       console.log(action.payload, "error cod 99991");
     },
     tasksResived: (currentUser, action) => {
-      // console.log(action.payload.changes, "täältä tulee tämä");
-      currentUser.tasks = action.payload.changes;
+      // console.log("täällä mennään");
+      currentUser.tasks = action.payload.tasks;
     },
     loginFailed: (currentUser, action) => {
       currentUser.token = null;

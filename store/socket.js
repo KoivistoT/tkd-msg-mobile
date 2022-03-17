@@ -4,7 +4,12 @@ import io from "socket.io-client";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
-import { removeOlderTasksItemsById, removeTaskItemById } from "./currentUser";
+import {
+  getTasks,
+  removeOlderTasksItemsById,
+  removeTaskItemById,
+} from "./currentUser";
+
 import {
   getMessagesbyId,
   getRoomImages,
@@ -15,6 +20,7 @@ import {
   readByRecepientsAdded,
   selectMsgNewTasks,
 } from "./msgStore";
+import { startLoad, endLoad } from "./general";
 import {
   roomAdded,
   roomRemoved,
@@ -74,6 +80,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
         socket.emit("identity", getState().auth.currentUser._id, accountType);
+        // dispatch(getTasks(getState().auth.currentUser._id, accountType));
       } else {
         console.log("socket connection error");
         dispatch(connectionError("Socket connection faild"));
@@ -86,6 +93,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     });
 
     socket.on("updates", (tasks) => {
+      // console.log("Nyt sai vastaan taskit", tasks.length);
       // if (getState().entities.general.doneTasksIds.includes(taskId)) {
       //   console.log("on siellä jo tehty socket");
       //   dispatch(
@@ -96,6 +104,11 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
       // tässä jaottelee
       let i = 0;
+      if (tasks.length > 40) {
+        dispatch(startLoad());
+        // console.log("oli yli");
+        // return;
+      }
       tasks.forEach((item) => {
         const { type, taskId } = item;
 
@@ -108,11 +121,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         i++;
 
         if (i === tasks.length) {
-          console.log(i, tasks.length, "nyt poistaa");
+          // console.log(i, tasks.length, "nyt poistaa");
           //voiko olla niin, että task ei ole vielä storess, mutta tekee jo, tämän. teoriassa kyllä?
           dispatch(
             removeOlderTasksItemsById(getState().auth.currentUser._id, taskId)
           );
+          dispatch(endLoad());
         }
       });
 

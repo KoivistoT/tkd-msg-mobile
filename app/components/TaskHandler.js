@@ -149,7 +149,7 @@ function TaskHandler() {
   //   // }
   // }, [msgNewBucketTasks, socket]);
 
-  return <></>;
+  return null;
 }
 
 export default TaskHandler;

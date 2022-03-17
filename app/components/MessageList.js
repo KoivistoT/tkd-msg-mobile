@@ -17,7 +17,7 @@ function MessageList({ item }) {
   const store = useStore();
   const msgListRef = useRef();
   const roomId = item.route.params._id;
-
+  // console.log("tämä päivittyy myös");
   // const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));

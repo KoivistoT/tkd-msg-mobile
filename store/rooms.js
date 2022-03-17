@@ -19,7 +19,7 @@ const slice = createSlice({
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
-      if (Object.keys(rooms.newTasks).includes(action.payload.taskId)) return;
+      // if (Object.keys(rooms.newTasks).includes(action.payload.taskId)) return;
 
       rooms.newTasks = Object.assign(rooms.newTasks, {
         [action.payload.taskId]: action.payload,
@@ -74,7 +74,9 @@ const slice = createSlice({
       rooms.allRooms[roomId].latestMessage = action.payload.data;
       rooms.allRooms[roomId].messageSum = rooms.allRooms[roomId].messageSum + 1;
       // console.log(rooms.newTasks);
-      delete rooms.newTasks[action.payload.taskId];
+      setTimeout(() => {
+        delete rooms.newTasks[action.payload.taskId];
+      }, 100);
     },
 
     roomsResived: (rooms, action) => {

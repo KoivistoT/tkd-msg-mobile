@@ -9,6 +9,7 @@ const slice = createSlice({
     errorMessageVisibleTime: 3000,
     successMessageVisibleTime: 3000,
     doneTasksIds: [],
+    loading: false,
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -31,11 +32,19 @@ const slice = createSlice({
     successMessageCleared: (general, action) => {
       general.successMessage = null;
     },
+    startLoad: (general, action) => {
+      general.loading = true;
+    },
+    endLoad: (general, action) => {
+      general.loading = false;
+    },
   },
 });
 
 export const {
   errorMessageAdded,
+  startLoad,
+  endLoad,
   errorMessageCleared,
   successMessageAdded,
   successMessageCleared,
