@@ -4,7 +4,7 @@ import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
 import { requestStarted, requestSucceed } from "./rooms";
-
+import sortArray from "../utility/sortArray";
 const slice = createSlice({
   name: "msgStore",
   initialState: {
@@ -14,20 +14,18 @@ const slice = createSlice({
     images: {},
     replyMessageIds: [],
     newTasks: {},
-    doneTask: null,
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
       msgStore.images = action.payload;
     },
     msgNewTasksResived: (msgStore, action) => {
-      //aina foreach check
-      if (msgStore.newTasks.includes(action.payload)) return;
+      if (Object.keys(msgStore.newTasks).includes(action.payload.taskId))
+        return;
 
       msgStore.newTasks = Object.assign(msgStore.newTasks, {
-        [action.payload.taskId]: Object.keys(messages),
+        [action.payload.taskId]: action.payload,
       });
-      msgStore.newTasks.push(action.payload);
     },
     adByRecepientsAdded: (msgStore, action) => {
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -119,7 +117,7 @@ const slice = createSlice({
     },
 
     newMessageResived: (msgStore, action) => {
-      const { roomId, _id: messageId, type, imageURLs } = action.payload;
+      const { roomId, _id: messageId, type, imageURLs } = action.payload.data;
 
       var targetMessages = msgStore.allMessages[roomId].messages;
 
@@ -130,7 +128,7 @@ const slice = createSlice({
       }
 
       msgStore.allMessages[roomId].messages = Object.assign(
-        { [messageId]: action.payload },
+        { [messageId]: action.payload.data },
         targetMessages
       );
       msgStore.allMessageIds[roomId].unshift(messageId);
@@ -141,7 +139,7 @@ const slice = createSlice({
         });
       }
 
-      // msgStore.doneTask = "tässä task numero";
+      delete msgStore.newTasks[action.payload.taskId];
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -319,12 +317,24 @@ export const selectMessageReadByRecepients = (roomId, messageId) =>
       msgStore.allMessages[roomId].messages[messageId].readByRecipients
   );
 
-export const selectMsgNewTasks = createSelector(
+export const selectNewTasksCompinedOldest = createSelector(
   (state) => state.entities.msgStore,
-  (msgStore) => msgStore.newTasks
-);
+  (state) => state.entities.rooms,
+  (msgStore, rooms) => {
+    let allTasks = Object.assign(
+      { ...msgStore.newTasks },
+      { ...rooms.newTasks }
+    );
+    // console.log(allTasks);
+    if (Object.keys(allTasks).length !== 0) {
+      const sortedKeys = sortArray(Object.keys(allTasks));
 
-export const selectMsgDoneTask = createSelector(
-  (state) => state.entities.msgStore,
-  (msgStore) => msgStore.doneTask
+      return {
+        newest: allTasks[sortedKeys[0]],
+        oldestId: sortedKeys[sortedKeys.length - 1],
+      };
+    } else {
+      return null;
+    }
+  }
 );

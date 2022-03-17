@@ -15,8 +15,16 @@ const slice = createSlice({
     activeRoomId: null,
     errorMessage: null,
     successMessage: null,
+    newTasks: {},
   },
   reducers: {
+    roomNewTasksResived: (rooms, action) => {
+      if (Object.keys(rooms.newTasks).includes(action.payload.taskId)) return;
+
+      rooms.newTasks = Object.assign(rooms.newTasks, {
+        [action.payload.taskId]: action.payload,
+      });
+    },
     // action => action handler
     activeRoomIdResived: (rooms, action) => {
       rooms.activeRoomId = action.payload;
@@ -62,9 +70,11 @@ const slice = createSlice({
         action.payload.newRoomName;
     },
     roomLatestMessageChanged: (rooms, action) => {
-      const { roomId } = action.payload;
-      rooms.allRooms[roomId].latestMessage = action.payload;
+      const { roomId } = action.payload.data;
+      rooms.allRooms[roomId].latestMessage = action.payload.data;
       rooms.allRooms[roomId].messageSum = rooms.allRooms[roomId].messageSum + 1;
+      // console.log(rooms.newTasks);
+      delete rooms.newTasks[action.payload.taskId];
     },
 
     roomsResived: (rooms, action) => {
@@ -144,7 +154,7 @@ export const {
   setRoomLoadingToTrue,
   roomStateCleared,
   roomMembersChanged,
-
+  roomNewTasksResived,
   roomAdded,
   roomRemoved,
   roomActivated,

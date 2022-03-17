@@ -168,6 +168,16 @@ export const removeTasksItemById = (currentUserId, taskId) =>
     onError: currentUserError.type,
   });
 
+export const removeOlderTasksItemsById = (currentUserId, taskId) =>
+  //pitääkö olla et katsoo onko jo käuyttäjä
+  apiCallBegan({
+    url: url + "/tasks/remove_older_tasks_items",
+    method: "post",
+    data: { currentUserId, taskId },
+    // onSuccess: userLoggedIn.type,
+    onError: currentUserError.type,
+  });
+
 export const getTasks = (currentUserId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä
   return dispatch(

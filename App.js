@@ -50,7 +50,7 @@ import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
-import DispatchHandler from "./app/components/DispatchHandler";
+import TaskHandler from "./app/components/TaskHandler";
 import DoneTasks from "./app/components/DoneTasks";
 
 if (!__DEV__) {
@@ -89,7 +89,7 @@ function App() {
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppErrorToast />
       <AppSuccessToast />
-      <DispatchHandler />
+      <TaskHandler />
       <DoneTasks />
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}

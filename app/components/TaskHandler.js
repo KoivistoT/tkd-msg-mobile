@@ -14,6 +14,7 @@ import {
   messagesRemoved,
   newMessageResived,
   readByRecepientsAdded,
+  selectNewTasksCompinedOldest,
 } from "../../store/msgStore";
 import {
   roomActivated,
@@ -21,6 +22,7 @@ import {
   roomLatestMessageChanged,
   roomMembersChanged,
   roomNameChanged,
+  roomNewTasksResived,
   roomRemoved,
 } from "../../store/rooms";
 import { selectSocket } from "../../store/socket";
@@ -34,14 +36,30 @@ import {
 } from "../../store/users";
 import { navigationRef } from "../navigation/rootNavigation";
 
-function DispatchHandler() {
-  // const changeBucket = useSelector(selectChangeBucket);
-  // const dispatch = useDispatch();
-  // const store = useStore();
+function TaskHandler() {
+  const tasks = useSelector(selectNewTasksCompinedOldest);
+  const dispatch = useDispatch();
+  const store = useStore();
+  const socket = useSelector(selectSocket);
+
+  useEffect(() => {
+    handleTask();
+  }, [tasks]);
+
+  const handleTask = () => {
+    if (!tasks) return;
+    console.log(tasks.oldestId);
+    if (tasks.newest.type === "new message") {
+      dispatch(newMessageResived(tasks.newest));
+    }
+    if (tasks.newest.type === "roomLatestMessageChanged") {
+      dispatch(roomLatestMessageChanged(tasks.newest));
+    }
+  };
 
   // const msgNewBucketTasks = useSelector(msgNewBucketTasks);
   // const currentUserId = store.getState().auth.currentUser._id;
-  // const socket = useSelector(selectSocket);
+
   // useEffect(() => {
   //   // if (socket && changeBucket && changeBucket.length !== 0) {
   //   //   //   dispatch(clearBucket(currentUserId));
@@ -134,4 +152,4 @@ function DispatchHandler() {
   return <></>;
 }
 
-export default DispatchHandler;
+export default TaskHandler;

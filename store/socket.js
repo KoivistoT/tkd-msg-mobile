@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
-import { removeTaskItemById } from "./currentUser";
+import { removeOlderTasksItemsById, removeTaskItemById } from "./currentUser";
 import {
   getMessagesbyId,
   getRoomImages,
@@ -24,6 +24,7 @@ import {
   membersChanged,
   roomMembersChanged,
   roomLatestMessageChanged,
+  roomNewTasksResived,
 } from "./rooms";
 
 import {
@@ -94,11 +95,23 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       // }
 
       // tässä jaottelee
+      let i = 0;
       tasks.forEach((item) => {
-        const { type } = item;
+        const { type, taskId } = item;
 
         if (type === "new message") {
           dispatch(msgNewTasksResived(item));
+        }
+        if (type === "roomLatestMessageChanged") {
+          dispatch(roomNewTasksResived(item));
+        }
+        i++;
+        console.log(i, tasks.length);
+        if (i === tasks.length) {
+          //voiko olla niin, että task ei ole vielä storess, mutta tekee jo, tämän. teoriassa kyllä?
+          dispatch(
+            removeOlderTasksItemsById(getState().auth.currentUser._id, taskId)
+          );
         }
       });
 

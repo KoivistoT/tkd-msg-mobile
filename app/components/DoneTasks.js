@@ -8,7 +8,6 @@ import {
   messagesRemoved,
   newMessageResived,
   readByRecepientsAdded,
-  selectMsgDoneTask,
 } from "../../store/msgStore";
 import {
   roomActivated,
@@ -30,7 +29,6 @@ import {
 import { navigationRef } from "../navigation/rootNavigation";
 
 function DoneTasks() {
-  const msgDoneTask = useSelector(selectMsgDoneTask);
   const dispatch = useDispatch();
   const store = useStore();
 
@@ -39,12 +37,12 @@ function DoneTasks() {
 
   let msgPreviousDoneTask = useRef(null);
   useEffect(() => {
-    if (msgDoneTask && msgDoneTask !== msgPreviousDoneTask) {
-      //milloin voi laittaa nulliksi msdDoneTAskin siellä storessa?, ettei vain laita työn alla olevaa nulliksi, vai pitäisikö sen olla array?
-      dispatch(removeTaskItemById(currentUserId, msgDoneTask));
-      // eiku tämä poistaa sen taskin sieltä,
-    }
-  }, [msgDoneTask]);
+    // if (msgDoneTask && msgDoneTask !== msgPreviousDoneTask) {
+    //   //milloin voi laittaa nulliksi msdDoneTAskin siellä storessa?, ettei vain laita työn alla olevaa nulliksi, vai pitäisikö sen olla array?
+    //   dispatch(removeTaskItemById(currentUserId, msgDoneTask));
+    //   // eiku tämä poistaa sen taskin sieltä,
+    // }
+  }, []);
 
   return <></>;
 }
