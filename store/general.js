@@ -8,8 +8,12 @@ const slice = createSlice({
     successMessage: null,
     errorMessageVisibleTime: 3000,
     successMessageVisibleTime: 3000,
+    doneTasksIds: [],
   },
   reducers: {
+    doneTaskIdResived: (general, action) => {
+      general.doneTasksIds.push(action.payload);
+    },
     errorMessageAdded: (general, action) => {
       // console.log(action.payload, "Tämä viesti menee toastiin!");
       general.errorMessageVisibleTime = 3000;
@@ -35,6 +39,7 @@ export const {
   errorMessageCleared,
   successMessageAdded,
   successMessageCleared,
+  doneTaskIdResived,
 } = slice.actions;
 
 export default slice.reducer;

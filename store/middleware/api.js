@@ -3,7 +3,7 @@ import * as actions from "../actions";
 
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
-import { clearBucket, selectCurrentUserToken } from "../currentUser";
+import { clearTasks, selectCurrentUserToken } from "../currentUser";
 import { errorMessageAdded } from "../general";
 import { createSocketConnection } from "../socket";
 const api =
@@ -54,7 +54,7 @@ const api =
           type: onInitSuccess.users,
           payload: response.data.allUsers,
         });
-        dispatch(clearBucket(getState().auth.currentUser._id));
+        dispatch(clearTasks(getState().auth.currentUser._id));
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;
       }

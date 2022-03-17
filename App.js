@@ -51,6 +51,7 @@ import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
 import DispatchHandler from "./app/components/DispatchHandler";
+import DoneTasks from "./app/components/DoneTasks";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -89,6 +90,7 @@ function App() {
       <AppErrorToast />
       <AppSuccessToast />
       <DispatchHandler />
+      <DoneTasks />
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}

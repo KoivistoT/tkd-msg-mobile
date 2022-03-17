@@ -4,14 +4,16 @@ import io from "socket.io-client";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
-import { doneBucketIdResived, removeBucketItemById } from "./currentUser";
+import { removeTaskItemById } from "./currentUser";
 import {
   getMessagesbyId,
   getRoomImages,
   messageDeleted,
   messagesRemoved,
+  msgNewTasksResived,
   newMessageResived,
   readByRecepientsAdded,
+  selectMsgNewTasks,
 } from "./msgStore";
 import {
   roomAdded,
@@ -82,14 +84,26 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       dispatch(usersOnlineResived(data));
     });
 
-    socket.on("updates", (type, data, bucketId) => {
-      if (getState().auth.currentUser.doneBucketIds.includes(bucketId)) {
-        console.log("on siellä jo tehty socket");
-        dispatch(
-          removeBucketItemById(getState().auth.currentUser._id, bucketId)
-        );
-        return;
-      }
+    socket.on("updates", (tasks) => {
+      // if (getState().entities.general.doneTasksIds.includes(taskId)) {
+      //   console.log("on siellä jo tehty socket");
+      //   dispatch(
+      //     removeTaskItemById(getState().auth.currentUser._id, taskId)
+      //   );
+      //   return;
+      // }
+
+      // tässä jaottelee
+      tasks.forEach((item) => {
+        const { type } = item;
+
+        if (type === "new message") {
+          dispatch(msgNewTasksResived(item));
+        }
+      });
+
+      // jaottelu loppuu
+      return;
       if (type === "roomAdded") {
         console.log("ei täällä");
         const { _id: roomId } = data;
@@ -157,12 +171,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         dispatch(messageDeleted(data));
       }
 
-      if (type === "new message") {
-        dispatch(newMessageResived(data));
-      }
-
-      dispatch(removeBucketItemById(getState().auth.currentUser._id, bucketId));
-      dispatch(doneBucketIdResived(bucketId));
+      // if (type === "new message") {
+      //   dispatch(newMessageResived(data));
+      // }
     });
 
     // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);

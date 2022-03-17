@@ -11,9 +11,9 @@ import {
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import {
-  bucketCleared,
-  getChangeBucket,
-  selectChangeBucket,
+  tasksCleared,
+  getTasks,
+  selectTasks,
   userLoggedOut,
 } from "../store/currentUser";
 import {
@@ -40,13 +40,13 @@ function RoomsListScreen({ navigation }) {
   const currentUserId = store.getState().auth.currentUser._id;
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
-  // const changeBucket = useSelector(selectChangeBucket);
+  // const tasks = useSelector(selecttasks);
 
-  // if (changeBucket && changeBucket.length !== 0) {
-  //   console.log(changeBucket);
-  //   if (changeBucket && changeBucket.length !== 0) {
+  // if (tasks && tasks.length !== 0) {
+  //   console.log(tasks);
+  //   if (tasks && tasks.length !== 0) {
   //     console.log("täällä nyt toimii");
-  //     changeBucket.forEach((element) => {
+  //     tasks.forEach((element) => {
   //       const { type, data } = element;
   //       console.log(type, "tämä on type");
   //       if (type === "new message") {
@@ -56,7 +56,7 @@ function RoomsListScreen({ navigation }) {
   //         dispatch(roomLatestMessageChanged(data));
   //       }
   //     });
-  //     dispatch(bucketCleared());
+  //     dispatch(tasksCleared());
   //   }
   // }
   const logout = () => {
@@ -81,7 +81,7 @@ function RoomsListScreen({ navigation }) {
 
   // var counter = 0;
   // var i = setInterval(async function () {
-  //   dispatch(getChangeBucket(currentUserId));
+  //   dispatch(getTasks(currentUserId));
   //   counter++;
   //   if (counter === 100) {
   //     clearInterval(i);
@@ -92,7 +92,7 @@ function RoomsListScreen({ navigation }) {
   const handleChange = (newState) => {
     if (newState === "active") {
       console.log("taas actiivinen");
-      dispatch(getChangeBucket(currentUserId));
+      dispatch(getTasks(currentUserId));
 
       if (!socket) {
         dispatch(createSocketConnection());

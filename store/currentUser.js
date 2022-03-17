@@ -38,8 +38,8 @@ const slice = createSlice({
     loggedIn: false,
     userRooms: [],
     last_seen_messages: [],
-    changeBucket: [],
-    doneBucketIds: [],
+    tasks: [],
+    doneTasksIds: [],
   },
   reducers: {
     // action => action handler
@@ -77,19 +77,19 @@ const slice = createSlice({
     userFetchFaild: (currentUser, action) => {
       console.log(action.payload, "error cod 99991");
     },
-    changeBucketResived: (currentUser, action) => {
+    tasksResived: (currentUser, action) => {
       // console.log(action.payload.changes, "täältä tulee tämä");
-      currentUser.changeBucket = action.payload.changes;
+      currentUser.tasks = action.payload.changes;
     },
     loginFailed: (currentUser, action) => {
       currentUser.token = null;
       currentUser.error = action.payload;
     },
-    bucketCleared: (currentUser, action) => {
-      currentUser.changeBucket = [];
+    tasksCleared: (currentUser, action) => {
+      currentUser.tasks = [];
     },
-    doneBucketIdResived: (currentUser, action) => {
-      currentUser.doneBucketIds.push(action.payload);
+    doneTaskResived: (currentUser, action) => {
+      currentUser.doneTasksIds.push(action.payload);
     },
     userLoggedOut: (currentUser, action) => {
       //tämä ei ehkä oikea tapa tehdä tätä
@@ -128,9 +128,9 @@ export const {
   errorMessageCleared,
   currentUserRequestStarted,
   userFetchFaild,
-  changeBucketResived,
-  bucketCleared,
-  doneBucketIdResived,
+  tasksResived,
+  tasksCleared,
+  doneTaskResived,
   lastSeenMessageSumResived,
 } = slice.actions;
 export default slice.reducer;
@@ -158,32 +158,32 @@ export const login = (email, password) =>
     onSuccess: userLoggedIn.type,
     onError: loginFailed.type,
   });
-export const removeBucketItemById = (currentUserId, bucketId) =>
+export const removeTasksItemById = (currentUserId, taskId) =>
   //pitääkö olla et katsoo onko jo käuyttäjä
   apiCallBegan({
-    url: url + "/buckets/remove_bucket_item",
+    url: url + "/tasks/remove_tasks_item",
     method: "post",
-    data: { currentUserId, bucketId },
+    data: { currentUserId, taskId },
     // onSuccess: userLoggedIn.type,
     onError: currentUserError.type,
   });
 
-export const getChangeBucket = (currentUserId) => (dispatch, getState) => {
+export const getTasks = (currentUserId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä
   return dispatch(
     apiCallBegan({
-      url: url + "/buckets/get_change_bucket/" + currentUserId,
-      onSuccess: changeBucketResived.type,
+      url: url + "/tasks/get_tasks/" + currentUserId,
+      onSuccess: tasksResived.type,
       onError: loginFailed.type,
     })
   );
 };
-export const clearBucket = (currentUserId) => (dispatch, getState) => {
+export const clearTasks = (currentUserId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä
   return dispatch(
     apiCallBegan({
-      url: url + "/buckets/clear_bucket/" + currentUserId,
-      onSuccess: bucketCleared.type,
+      url: url + "/tasks/clear_tasks/" + currentUserId,
+      onSuccess: tasksCleared.type,
       onError: loginFailed.type,
     })
   );
@@ -256,12 +256,12 @@ export const selectLastSeenMessagesById = (roomId) =>
     }
   );
 
-export const selectChangeBucket = createSelector(
+export const selectTasks = createSelector(
   (state) => state.auth,
-  (auth) => auth.currentUser.changeBucket
+  (auth) => auth.currentUser.tasks
 );
 
-export const selectDoneBucketIds = createSelector(
+export const selectDoneTasksIds = createSelector(
   (state) => state.auth,
-  (auth) => auth.currentUser.doneBucketIds
+  (auth) => auth.currentUser.doneTasksIds
 );

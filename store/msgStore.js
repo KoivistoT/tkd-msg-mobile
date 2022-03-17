@@ -13,12 +13,23 @@ const slice = createSlice({
     allMessageIds: {},
     images: {},
     replyMessageIds: [],
+    newTasks: {},
+    doneTask: null,
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
       msgStore.images = action.payload;
     },
-    readByRecepientsAdded: (msgStore, action) => {
+    msgNewTasksResived: (msgStore, action) => {
+      //aina foreach check
+      if (msgStore.newTasks.includes(action.payload)) return;
+
+      msgStore.newTasks = Object.assign(msgStore.newTasks, {
+        [action.payload.taskId]: Object.keys(messages),
+      });
+      msgStore.newTasks.push(action.payload);
+    },
+    adByRecepientsAdded: (msgStore, action) => {
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -106,6 +117,7 @@ const slice = createSlice({
     messagesError: (msgStore, action) => {
       console.log("epännoistu2");
     },
+
     newMessageResived: (msgStore, action) => {
       const { roomId, _id: messageId, type, imageURLs } = action.payload;
 
@@ -128,6 +140,8 @@ const slice = createSlice({
           msgStore.images[roomId].unshift(url);
         });
       }
+
+      // msgStore.doneTask = "tässä task numero";
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -176,6 +190,7 @@ const slice = createSlice({
 
 export const {
   messagesResived,
+  msgNewTasksResived,
   oneRoomMessagesResived,
   messageSendError,
   messageDeleted,
@@ -303,3 +318,13 @@ export const selectMessageReadByRecepients = (roomId, messageId) =>
     (msgStore) =>
       msgStore.allMessages[roomId].messages[messageId].readByRecipients
   );
+
+export const selectMsgNewTasks = createSelector(
+  (state) => state.entities.msgStore,
+  (msgStore) => msgStore.newTasks
+);
+
+export const selectMsgDoneTask = createSelector(
+  (state) => state.entities.msgStore,
+  (msgStore) => msgStore.doneTask
+);
