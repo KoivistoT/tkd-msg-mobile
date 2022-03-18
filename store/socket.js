@@ -112,10 +112,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       //   // console.log("oli yli");
       //   // return;
       // }
-
-      // console.log(taskGroups, "taski groupit");
-      // var start = +new Date();
-
+      console.log(taskGroups);
       taskGroups.forEach((group) => {
         // console.log(group, "tässä gorup");
         const { taskGroupType, data } = group;
@@ -146,13 +143,13 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           dispatch(userTasksResived(data));
         }
       });
-      console.log("tähän vielä viimeisin id");
-      dispatch(
-        removeOlderTasksItemsById(
-          getState().auth.currentUser._id,
-          taskGroups[0].lastTaskId
-        )
-      );
+      // console.log("tähän vielä viimeisin id");
+      // dispatch(
+      //   removeOlderTasksItemsById(
+      //     getState().auth.currentUser._id,
+      //     taskGroups[0].lastTaskId
+      //   )
+      // );
       // var end = +new Date();
       // var diff = end - start;
       // console.log(diff, "kului aikaa alussa");

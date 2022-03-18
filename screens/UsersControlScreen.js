@@ -11,7 +11,7 @@ import UserControlListItem from "../app/components/UserControlListItem";
 
 function UsersControlScreen({ navigation }) {
   const allUsers = useSelector(selectAllUsersAllData);
-  console.log("User control screen päivittyy");
+  // console.log("User control screen päivittyy");
   const listKeyExtractor = (data) => data._id;
 
   const listItem = ({ item }) =>
