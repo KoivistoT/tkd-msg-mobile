@@ -17,7 +17,7 @@ const api =
 
     if (onStart) dispatch({ type: onStart });
     next(action);
-    console.log(onStart);
+    // console.log(onStart);
     try {
       axios.defaults.headers.common["x-auth-token"] = selectCurrentUserToken(
         getState()
