@@ -89,7 +89,7 @@ function App() {
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <AppErrorToast />
       <AppSuccessToast />
-      <TaskHandler />
+      {/* <TaskHandler /> */}
       {/* <NewTasks /> */}
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}

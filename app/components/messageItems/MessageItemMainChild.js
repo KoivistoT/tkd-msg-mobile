@@ -13,7 +13,7 @@ import {
 import MessageItemReply from "./MessageItemReply";
 function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
   const dispatch = useDispatch();
-
+  // console.log("child päivittyy ---");
   const {
     roomId,
     _id: messageId,

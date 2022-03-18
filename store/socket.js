@@ -16,6 +16,7 @@ import {
   messageDeleted,
   messagesRemoved,
   msgNewTasksResived,
+  msgTasksResived,
   newMessageResived,
   readByRecepientsAdded,
   selectMsgNewTasks,
@@ -92,7 +93,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       dispatch(usersOnlineResived(data));
     });
 
-    socket.on("updates", (tasks) => {
+    socket.on("updates", (taskGroups) => {
       // console.log("Nyt sai vastaan taskit", tasks.length);
       // if (getState().entities.general.doneTasksIds.includes(taskId)) {
       //   console.log("on siellä jo tehty socket");
@@ -104,32 +105,49 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
       // tässä jaottelee
       let i = 0;
-      if (tasks.length > 40) {
-        dispatch(startLoad());
-        // console.log("oli yli");
-        // return;
-      }
-      tasks.forEach((item) => {
-        const { type, taskId } = item;
+      // if (tasks.length > 40) {
+      //   dispatch(startLoad());
+      //   // console.log("oli yli");
+      //   // return;
+      // }
 
-        if (type === "new message") {
-          dispatch(msgNewTasksResived(item));
-        }
-        if (type === "roomLatestMessageChanged") {
-          dispatch(roomNewTasksResived(item));
-        }
-        i++;
+      // console.log(taskGroups, "taski groupit");
+      // var start = +new Date();
+      taskGroups.forEach((group) => {
+        const { taskGroupType, data } = group;
 
-        if (i === tasks.length) {
-          // console.log(i, tasks.length, "nyt poistaa");
-          //voiko olla niin, että task ei ole vielä storess, mutta tekee jo, tämän. teoriassa kyllä?
-          dispatch(
-            removeOlderTasksItemsById(getState().auth.currentUser._id, taskId)
-          );
-          dispatch(endLoad());
+        if (taskGroupType === "msg") {
+          dispatch(msgTasksResived(data));
         }
+        // const { type, taskId } = group;
+
+        // if (type === "new message") {
+        //   // dispatch(msgNewTasksResived(item));
+        //   dispatch(newMessageResived(item));
+        // }
+        // // if (type === "roomLatestMessageChanged") {
+        // //   dispatch(roomNewTasksResived(item));
+        // // }
+        // i++;
+
+        // if (i === tasks.length) {
+        //   // console.log(i, tasks.length, "nyt poistaa");
+        //   //voiko olla niin, että task ei ole vielä storess, mutta tekee jo, tämän. teoriassa kyllä?
+        //   dispatch(
+        //     removeOlderTasksItemsById(getState().auth.currentUser._id, taskId)
+        //   );
+        //   dispatch(endLoad());
+        // }
       });
-
+      dispatch(
+        removeOlderTasksItemsById(
+          getState().auth.currentUser._id,
+          taskGroups[0].lastTaskId
+        )
+      );
+      // var end = +new Date();
+      // var diff = end - start;
+      // console.log(diff, "kului aikaa alussa");
       // jaottelu loppuu
       return;
       if (type === "roomAdded") {

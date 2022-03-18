@@ -116,30 +116,51 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
 
-    newMessageResived: (msgStore, action) => {
-      const { roomId, _id: messageId, type, imageURLs } = action.payload.data;
+    msgTasksResived: (msgStore, action) => {
+      let newStore = { ...msgStore };
 
-      var targetMessages = msgStore.allMessages[roomId].messages;
+      //varmista että taskit tulee aikajärjestyksessä
+      //varmista että taskit tulee aikajärjestyksessä
+      //varmista että taskit tulee aikajärjestyksessä
+      // var start = +new Date();
+      action.payload.forEach((task) => {
+        const { taskType, data } = task;
 
-      // tämä ehkä turha
-      if (msgStore.allMessages[roomId].messages[messageId] !== undefined) {
-        // console.log("löytyy jo viesti");
-        return;
-      }
+        if (taskType === "new message") {
+          const { roomId, _id: messageId, type, imageURLs } = data;
 
-      msgStore.allMessages[roomId].messages = Object.assign(
-        { [messageId]: action.payload.data },
-        targetMessages
-      );
-      msgStore.allMessageIds[roomId].unshift(messageId);
+          if (newStore.allMessages[roomId].messages[messageId] !== undefined) {
+            // console.log("löytyy jo viesti");
+            return;
+          }
 
-      if (type === "image" && imageURLs.length > 0) {
-        imageURLs.forEach((url) => {
-          msgStore.images[roomId].unshift(url);
-        });
-      }
+          newStore.allMessages[roomId].messages = Object.assign(
+            { [messageId]: data },
+            newStore.allMessages[roomId].messages
+          );
 
-      delete msgStore.newTasks[action.payload.taskId];
+          newStore.allMessageIds[roomId].unshift(messageId);
+
+          if (type === "image" && imageURLs.length > 0) {
+            imageURLs.forEach((url) => {
+              newStore.images[roomId].unshift(url);
+            });
+          }
+        }
+
+        //onko viestiä
+      });
+      // var end = +new Date();
+      // var diff = end - start;
+      // console.log(diff, "kului aikaa");
+      //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
+      //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
+      //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
+      msgStore = newStore;
+
+      // var targetMessages = msgStore.allMessages[roomId].messages;
+
+      // delete msgStore.newTasks[action.payload.taskId];
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -195,7 +216,7 @@ export const {
   messageSent,
   messagesError,
   messageSendErrorCleared,
-  newMessageResived,
+  msgTasksResived,
   messagesRemoved,
   oneRoomImagesResived,
   allImagesResived,
