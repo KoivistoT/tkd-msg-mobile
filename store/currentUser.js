@@ -82,6 +82,7 @@ const slice = createSlice({
       currentUser.tasks = action.payload.tasks;
     },
     loginFailed: (currentUser, action) => {
+      console.log("ei onnistu", action.payload);
       currentUser.token = null;
       currentUser.error = action.payload;
     },
@@ -109,7 +110,7 @@ const slice = createSlice({
       currentUser.loading = false;
     },
     currentUserError: (currentUser, action) => {
-      console.log("error täällä code 92992881");
+      console.log("error täällä code 92992881", action.payload);
     },
     lastSaveError: (currentUser, action) => {
       console.log("error täällä code 22");
@@ -139,6 +140,7 @@ const url = settings.apiUrl;
 
 export const getInitialData = apiCallBegan({
   url: url + "/initial",
+  onStart: currentUserRequestStarted.type,
   onInitSuccess: {
     init: true,
     user: currentUserResived.type,
@@ -147,6 +149,8 @@ export const getInitialData = apiCallBegan({
     images: allImagesResived.type,
     users: usersResived.type,
   },
+
+  onError: currentUserError.type,
 });
 
 export const login = (email, password) =>
@@ -155,6 +159,7 @@ export const login = (email, password) =>
     url: url + "/auth",
     method: "post",
     data: { email, password },
+    onStart: currentUserRequestStarted.type,
     onSuccess: userLoggedIn.type,
     onError: loginFailed.type,
   });

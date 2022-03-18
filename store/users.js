@@ -22,7 +22,7 @@ const slice = createSlice({
   reducers: {
     // action => action handler
     usersResived: (users, action) => {
-      // console.log("users resived");
+      // console.log("users resived", action.payload);
       users.allUsers = action.payload;
       users.allUsersId = Object.keys(action.payload);
 

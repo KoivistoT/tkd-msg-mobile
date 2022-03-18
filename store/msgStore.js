@@ -122,7 +122,7 @@ const slice = createSlice({
       //varmista että taskit tulee aikajärjestyksessä
       //varmista että taskit tulee aikajärjestyksessä
       //varmista että taskit tulee aikajärjestyksessä
-      // var start = +new Date();
+      var start = +new Date();
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
@@ -158,9 +158,9 @@ const slice = createSlice({
 
         //onko viestiä
       });
-      // var end = +new Date();
-      // var diff = end - start;
-      // console.log(diff, "kului aikaa");
+      var end = +new Date();
+      var diff = end - start;
+      alert(diff, "kului aikaa");
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa

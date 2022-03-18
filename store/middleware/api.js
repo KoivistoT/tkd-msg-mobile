@@ -17,7 +17,7 @@ const api =
 
     if (onStart) dispatch({ type: onStart });
     next(action);
-
+    console.log(onStart);
     try {
       axios.defaults.headers.common["x-auth-token"] = selectCurrentUserToken(
         getState()
@@ -62,7 +62,7 @@ const api =
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));
-      console.log(error, "täältä tulee error1", onSuccess);
+      console.log(error, "täältä tulee error1");
       if (onError) {
         dispatch({
           type: onError,
