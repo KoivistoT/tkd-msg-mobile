@@ -32,6 +32,7 @@ import {
   roomMembersChanged,
   roomLatestMessageChanged,
   roomNewTasksResived,
+  roomTasksResived,
 } from "./rooms";
 
 import {
@@ -42,6 +43,7 @@ import {
   userTemporaryDeleted,
   userDataEdited,
   usersOnlineResived,
+  userTasksResived,
 } from "./users";
 
 const slice = createSlice({
@@ -113,32 +115,38 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
       // console.log(taskGroups, "taski groupit");
       // var start = +new Date();
+
       taskGroups.forEach((group) => {
+        // console.log(group, "tässä gorup");
         const { taskGroupType, data } = group;
+        // console.log(taskGroupType);
+        if (taskGroupType === "roomAdded") {
+          data.forEach((room) => {
+            const { _id: roomId, roomCreator } = room.data;
+            dispatch(roomAdded(room.data));
+            dispatch(getMessagesbyId(roomId));
+            dispatch(getRoomImages(roomId));
+            socket.emit("subscribe", roomId);
+            const userId = getState().auth.currentUser._id;
+            //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
+            //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
+            if (roomCreator === userId) {
+              navigationRef.current.navigate(routes.MESSAGE_SCREEN, room.data);
+            }
+          });
+        }
 
         if (taskGroupType === "msg") {
           dispatch(msgTasksResived(data));
         }
-        // const { type, taskId } = group;
-
-        // if (type === "new message") {
-        //   // dispatch(msgNewTasksResived(item));
-        //   dispatch(newMessageResived(item));
-        // }
-        // // if (type === "roomLatestMessageChanged") {
-        // //   dispatch(roomNewTasksResived(item));
-        // // }
-        // i++;
-
-        // if (i === tasks.length) {
-        //   // console.log(i, tasks.length, "nyt poistaa");
-        //   //voiko olla niin, että task ei ole vielä storess, mutta tekee jo, tämän. teoriassa kyllä?
-        //   dispatch(
-        //     removeOlderTasksItemsById(getState().auth.currentUser._id, taskId)
-        //   );
-        //   dispatch(endLoad());
-        // }
+        if (taskGroupType === "room") {
+          dispatch(roomTasksResived(data));
+        }
+        if (taskGroupType === "user") {
+          dispatch(userTasksResived(data));
+        }
       });
+      console.log("tähän vielä viimeisin id");
       dispatch(
         removeOlderTasksItemsById(
           getState().auth.currentUser._id,

@@ -32,11 +32,7 @@ const slice = createSlice({
       //   users.allUsers["61e6a7f6b30d002e91d67b50"].email
       // );
     },
-    userActivated: (users, action) => {
-      const userId = action.payload;
-      console.log("activoi tämä", userId);
-      users.allUsers[action.payload].status = "active";
-    },
+
     usersOnlineResived: (users, action) => {
       users.usersOnline = action.payload;
       // console.log(users.myTestArray);
@@ -45,14 +41,7 @@ const slice = createSlice({
       users.myTestArray[0].a = 2 * users.myTestArray[0].a;
       // console.log(users.myTestArray);
     },
-    newUserResived: (users, action) => {
-      const { _id: userId } = action.payload;
-      Object.assign(users.allUsers, { [userId]: action.payload });
-    },
-    userDeleted: (users, action) => {
-      const userId = action.payload;
-      delete users.allUsers[userId];
-    },
+
     userCreated: (users, action) => {
       console.log(action.payload, "User lisätty");
     },
@@ -74,24 +63,46 @@ const slice = createSlice({
       //   return;
       // } else {
       //   console.log("eivät ole samoja");
-
-      const { _id: userId } = action.payload;
-      users.allUsers[userId] = action.payload;
       // }
     },
     requestSuccess: (users, action) => {
       users.loading = false;
     },
-    userArchived: (users, action) => {
-      const userId = action.payload;
-      console.log("Arkistoi tämä", userId);
-      users.allUsers[userId].status = "archived";
+    userTasksResived: (users, action) => {
+      let newState = { ...users };
+
+      action.payload.forEach((task) => {
+        const { taskType, data } = task;
+
+        if (taskType === "userArchived") {
+          const userId = data;
+          newState.allUsers[userId].status = "archived";
+        }
+        if (taskType === "userActivated") {
+          const userId = data;
+          newState.allUsers[userId].status = "active";
+        }
+        if (taskType === "newUser") {
+          const { _id: userId } = data;
+          Object.assign(newState.allUsers, { [userId]: data });
+        }
+        if (taskType === "userDeleted") {
+          // tätä ei kaiketi enää käytetä
+          const userId = data;
+          delete newState.allUsers[userId];
+        }
+        if (taskType === "userTemporaryDeleted") {
+          const userId = data;
+          newState.allUsers[userId].status = "deleted";
+        }
+        if (taskType === "userDataEdited") {
+          const { _id: userId } = data;
+          newState.allUsers[userId] = data;
+        }
+      });
+      users = newState;
     },
-    userTemporaryDeleted: (users, action) => {
-      const userId = action.payload;
-      console.log(userId);
-      users.allUsers[userId].status = "deleted";
-    },
+
     usersError: (users, action) => {
       users.errorMessage = action.payload;
 
@@ -111,15 +122,14 @@ export const {
   usersError,
   userCreated,
   usersOnlineResived,
-  newUserResived,
-  userDeleted,
+
   channelsResived,
-  userActivated,
+
   usersErrorCleared,
-  userDataEdited,
+
   requestSuccess,
-  userTemporaryDeleted,
-  userArchived,
+
+  userTasksResived,
   itemAdded,
 } = slice.actions;
 export default slice.reducer;

@@ -117,7 +117,7 @@ const slice = createSlice({
     },
 
     msgTasksResived: (msgStore, action) => {
-      let newStore = { ...msgStore };
+      let newState = { ...msgStore };
 
       //varmista että taskit tulee aikajärjestyksessä
       //varmista että taskit tulee aikajärjestyksessä
@@ -129,23 +129,31 @@ const slice = createSlice({
         if (taskType === "new message") {
           const { roomId, _id: messageId, type, imageURLs } = data;
 
-          if (newStore.allMessages[roomId].messages[messageId] !== undefined) {
-            // console.log("löytyy jo viesti");
+          if (
+            newState.allMessages[roomId].messages[messageId] !== undefined ||
+            newState.allMessages[roomId] === undefined
+          ) {
+            // console.log("löytyy jo viesti, tai huonetta ei ole");
             return;
           }
 
-          newStore.allMessages[roomId].messages = Object.assign(
+          newState.allMessages[roomId].messages = Object.assign(
             { [messageId]: data },
-            newStore.allMessages[roomId].messages
+            newState.allMessages[roomId].messages
           );
 
-          newStore.allMessageIds[roomId].unshift(messageId);
+          newState.allMessageIds[roomId].unshift(messageId);
 
           if (type === "image" && imageURLs.length > 0) {
             imageURLs.forEach((url) => {
-              newStore.images[roomId].unshift(url);
+              newState.images[roomId].unshift(url);
             });
           }
+        }
+
+        if (taskType === "messageDeleted") {
+          const { roomId, messageId } = data;
+          newState.allMessages[roomId].messages[messageId].is_deleted = true;
         }
 
         //onko viestiä
@@ -156,7 +164,7 @@ const slice = createSlice({
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
-      msgStore = newStore;
+      msgStore = newState;
 
       // var targetMessages = msgStore.allMessages[roomId].messages;
 
@@ -212,7 +220,7 @@ export const {
   msgNewTasksResived,
   oneRoomMessagesResived,
   messageSendError,
-  messageDeleted,
+
   messageSent,
   messagesError,
   messageSendErrorCleared,

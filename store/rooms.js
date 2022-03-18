@@ -53,21 +53,44 @@ const slice = createSlice({
       rooms.loading = false;
     },
 
-    roomArchived: (rooms, action) => {
-      const currentRoomId = action.payload;
-      rooms.allRooms[currentRoomId].status = "archived";
-      rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
-        (roomId) => roomId !== currentRoomId
-      );
-    },
-    roomActivated: (rooms, action) => {
-      const currentRoomId = action.payload;
-      rooms.allRooms[currentRoomId].status = "active";
-      rooms.allActiveRoomsIds.push(currentRoomId);
-    },
-    roomNameChanged: (rooms, action) => {
-      rooms.allRooms[action.payload.roomId].roomName =
-        action.payload.newRoomName;
+    roomTasksResived: (rooms, action) => {
+      let newState = { ...rooms };
+
+      action.payload.forEach((task) => {
+        const { taskType, data } = task;
+
+        if (taskType === "roomNameChanged") {
+          newState.allRooms[data.roomId].roomName = data.newRoomName;
+        }
+        if (taskType === "membersChanged") {
+          try {
+            newState.allRooms[data._id].members = data.members;
+          } catch (error) {
+            console.log(error, "code 39922");
+          }
+        }
+        if (taskType === "roomRemoved") {
+          const currentRoomId = data;
+          delete newState.allRooms[currentRoomId];
+          newState.allActiveRoomsIds = newState.allActiveRoomsIds.filter(
+            (roomId) => roomId !== currentRoomId
+          );
+        }
+        if (taskType === "roomArchived") {
+          const currentRoomId = data;
+          newState.allRooms[currentRoomId].status = "archived";
+          newState.allActiveRoomsIds = newState.allActiveRoomsIds.filter(
+            (roomId) => roomId !== currentRoomId
+          );
+        }
+        if (taskType === "roomActivated") {
+          const currentRoomId = data;
+          newState.allRooms[currentRoomId].status = "active";
+          newState.allActiveRoomsIds.push(currentRoomId);
+        }
+      });
+
+      rooms = newState;
     },
     roomLatestMessageChanged: (rooms, action) => {
       const { roomId } = action.payload.data;
@@ -99,18 +122,6 @@ const slice = createSlice({
       // );
     },
 
-    roomMembersChanged: (rooms, action) => {
-      try {
-        // console.log(action.payload, "tässä memberit");
-        rooms.allRooms[action.payload._id].members = action.payload.members;
-        // console.log(
-        //   rooms.allRooms[action.payload._id].members,
-        //   "täältä huoneen"
-        // );
-      } catch (error) {
-        console.log(error, "code 39922");
-      }
-    },
     roomsError: (rooms, action) => {
       rooms.errorMessage = action.payload;
       rooms.loading = false;
@@ -133,13 +144,6 @@ const slice = createSlice({
       }
       // console.log(rooms.allRooms, "now");
     },
-    roomRemoved: (rooms, action) => {
-      const currentRoomId = action.payload;
-      delete rooms.allRooms[currentRoomId];
-      rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
-        (roomId) => roomId !== currentRoomId
-      );
-    },
   },
 });
 
@@ -154,14 +158,13 @@ export const {
   roomLatestMessageChanged,
   setRoomLoadingToTrue,
   roomStateCleared,
-  roomMembersChanged,
+
   roomNewTasksResived,
   roomAdded,
-  roomRemoved,
-  roomActivated,
+
   requestSucceed,
-  roomArchived,
-  roomNameChanged,
+
+  roomTasksResived,
   requestStarted,
 } = slice.actions;
 export default slice.reducer;
