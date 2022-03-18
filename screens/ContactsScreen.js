@@ -53,11 +53,11 @@ function ContactsScreen({ navigation }) {
             backgroundColor: item.status === "archived" ? "yellow" : "white",
           }}
         >
-          {usersOnline &&
+          {/* {usersOnline &&
             Object.keys(usersOnline).length === 0 &&
             usersOnline.includes(item._id) && (
               <AppText style={styles.onlineIndicator}>Online</AppText>
-            )}
+            )} */}
           <View>
             <AppText style={styles.name}>{item.firstName}</AppText>
           </View>

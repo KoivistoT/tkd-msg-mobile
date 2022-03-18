@@ -56,7 +56,7 @@ const slice = createSlice({
       // console.log("ei tule backendistä nuo huoneet userRooms");
     },
     currentUserResived: (currentUser, action) => {
-      // console.log(action.payload, "tässä käyttäjän tiedot");
+      console.log(action.payload, "tässä käyttäjän tiedot");
       const { email, last_seen_messages, userRooms } = action.payload;
       currentUser.email = email;
       currentUser.last_seen_messages = last_seen_messages;

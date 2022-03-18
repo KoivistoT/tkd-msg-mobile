@@ -3,7 +3,7 @@ import Constants from "expo-constants";
 const settings = {
   dev: {
     apiUrl: "https://tk-msg-backend.herokuapp.com/api",
-    baseUrl: "https://tk-msg-backend.herokuapp.com/api",
+    baseUrl: "https://tk-msg-backend.herokuapp.com",
   },
   staging: {
     apiUrl: "http://192.168.1.101:3000/api",
