@@ -144,12 +144,14 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
       });
       // console.log("tähän vielä viimeisin id");
-      dispatch(
-        removeOlderTasksItemsById(
-          getState().auth.currentUser._id,
-          taskGroups.latestTaskId
-        )
-      );
+      if (taskGroups.latestTaskId) {
+        dispatch(
+          removeOlderTasksItemsById(
+            getState().auth.currentUser._id,
+            taskGroups.latestTaskId
+          )
+        );
+      }
       // var end = +new Date();
       // var diff = end - start;
       // console.log(diff, "kului aikaa alussa");
