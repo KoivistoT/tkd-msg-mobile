@@ -129,13 +129,26 @@ const slice = createSlice({
         if (taskType === "new message") {
           const { roomId, _id: messageId, type, imageURLs } = data;
 
-          if (
-            newState.allMessages[roomId].messages[messageId] !== undefined ||
-            newState.allMessages[roomId] === undefined
-          ) {
-            // console.log("löytyy jo viesti, tai huonetta ei ole");
-            return;
-          }
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // if (
+          //   newState.allMessages[roomId].messages[messageId] !== undefined ||
+          //   newState.allMessages[roomId] === undefined
+          // ) {
+          //   // console.log("löytyy jo viesti, tai huonetta ei ole");
+          //   return;
+          // }
+
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
+          // TESTAILE TÄTÄ
 
           newState.allMessages[roomId].messages = Object.assign(
             { [messageId]: data },

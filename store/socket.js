@@ -113,37 +113,78 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       //   // return;
       // }
       // console.log(taskGroups);
+
       taskGroups.data.forEach((group) => {
         // console.log(group, "tässä gorup");
         const { taskGroupType, data } = group;
-        // console.log(taskGroupType);
-        if (taskGroupType === "roomAdded") {
-          data.forEach((room) => {
-            const { _id: roomId, roomCreator } = room.data;
-            dispatch(roomAdded(room.data));
-            dispatch(getMessagesbyId(roomId));
-            dispatch(getRoomImages(roomId));
-            socket.emit("subscribe", roomId);
-            const userId = getState().auth.currentUser._id;
-            //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
-            //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
-            if (roomCreator === userId) {
-              navigationRef.current.navigate(routes.MESSAGE_SCREEN, room.data);
+
+        if (data.length > 50) {
+          dispatch(startLoad());
+          setTimeout(() => {
+            if (taskGroupType === "roomAdded") {
+              data.forEach((room) => {
+                const { _id: roomId, roomCreator } = room.data;
+                dispatch(roomAdded(room.data));
+                dispatch(getMessagesbyId(roomId));
+                dispatch(getRoomImages(roomId));
+                socket.emit("subscribe", roomId);
+                const userId = getState().auth.currentUser._id;
+                //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
+                //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
+                if (roomCreator === userId) {
+                  navigationRef.current.navigate(
+                    routes.MESSAGE_SCREEN,
+                    room.data
+                  );
+                }
+              });
             }
-          });
+
+            if (taskGroupType === "msg") {
+              dispatch(msgTasksResived(data));
+            }
+            if (taskGroupType === "room") {
+              dispatch(roomTasksResived(data));
+            }
+            if (taskGroupType === "user") {
+              dispatch(userTasksResived(data));
+            }
+          }, 100);
+        } else {
+          if (taskGroupType === "roomAdded") {
+            data.forEach((room) => {
+              const { _id: roomId, roomCreator } = room.data;
+              dispatch(roomAdded(room.data));
+              dispatch(getMessagesbyId(roomId));
+              dispatch(getRoomImages(roomId));
+              socket.emit("subscribe", roomId);
+              const userId = getState().auth.currentUser._id;
+              //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
+              //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
+              if (roomCreator === userId) {
+                navigationRef.current.navigate(
+                  routes.MESSAGE_SCREEN,
+                  room.data
+                );
+              }
+            });
+          }
+
+          if (taskGroupType === "msg") {
+            dispatch(msgTasksResived(data));
+          }
+          if (taskGroupType === "room") {
+            dispatch(roomTasksResived(data));
+          }
+          if (taskGroupType === "user") {
+            dispatch(userTasksResived(data));
+          }
         }
 
-        if (taskGroupType === "msg") {
-          dispatch(msgTasksResived(data));
-        }
-        if (taskGroupType === "room") {
-          dispatch(roomTasksResived(data));
-        }
-        if (taskGroupType === "user") {
-          dispatch(userTasksResived(data));
-        }
+        // console.log(taskGroupType);
       });
       // console.log("tähän vielä viimeisin id");
+      dispatch(endLoad());
       if (taskGroups.latestTaskId) {
         dispatch(
           removeOlderTasksItemsById(

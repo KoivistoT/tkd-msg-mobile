@@ -156,10 +156,10 @@ function MessageForm({ item }) {
     //   );
 
     //   counter++;
-    //   if (counter === 200) {
+    //   if (counter === 5000) {
     //     clearInterval(i);
     //   }
-    // }, 100);
+    // }, 10);
 
     //en pidä tästä, että kysyy aina
     if (roomData.status === "draft") {
