@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -116,6 +116,17 @@ function RoomsListScreen({ navigation }) {
     const result = await messagesApi.addMessageListener();
     console.log(result);
   };
+
+  const [summa, setSumma] = useState(0);
+  const getSum = () => {
+    setSumma(
+      Object.keys(
+        store.getState().entities.msgStore.allMessages[
+          "62357ebf9fdfe524a837c4b4"
+        ].messages
+      ).length
+    );
+  };
   useEffect(() => {
     // addListener();
     // if (socket) {
@@ -173,6 +184,14 @@ function RoomsListScreen({ navigation }) {
       )}
 
       <View>
+        <TouchableOpacity onPress={() => getSum()}>
+          <Text>ota summa</Text>
+        </TouchableOpacity>
+
+        <Text style={{ width: 200, height: 100, backgroundColor: "red" }}>
+          {summa}
+        </Text>
+
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>

@@ -75,11 +75,12 @@ function App() {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
 
     dispatch(getInitialData);
-
-    // const item = {
-    //   _id: "6214ebe20f8502580b0e19a1",
-    // };
-    // navigationRef.current.navigate(routes.MESSAGE_SCREEN, item);
+    // setTimeout(() => {
+    //   const item = {
+    //     _id: "62357ebf9fdfe524a837c4b4",
+    //   };
+    //   navigationRef.current.navigate(routes.MESSAGE_SCREEN, item);
+    // }, 2000);
   };
 
   const accountType = useSelector(selectAccountType);

@@ -122,7 +122,11 @@ const slice = createSlice({
       //varmista että taskit tulee aikajärjestyksessä
       //varmista että taskit tulee aikajärjestyksessä
       //varmista että taskit tulee aikajärjestyksessä
-      // var start = +new Date();
+      var start = null;
+      if (action.payload.length > 50) {
+        start = +new Date();
+      }
+
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
@@ -135,13 +139,13 @@ const slice = createSlice({
           // TESTAILE TÄTÄ
           // TESTAILE TÄTÄ
           // TESTAILE TÄTÄ
-          // if (
-          //   newState.allMessages[roomId].messages[messageId] !== undefined ||
-          //   newState.allMessages[roomId] === undefined
-          // ) {
-          //   // console.log("löytyy jo viesti, tai huonetta ei ole");
-          //   return;
-          // }
+          if (
+            newState.allMessages[roomId].messages[messageId] !== undefined ||
+            newState.allMessages[roomId] === undefined
+          ) {
+            // console.log("löytyy jo viesti, tai huonetta ei ole");
+            return;
+          }
 
           // TESTAILE TÄTÄ
           // TESTAILE TÄTÄ
@@ -171,9 +175,12 @@ const slice = createSlice({
 
         //onko viestiä
       });
-      // var end = +new Date();
-      // var diff = end - start;
-      // alert(diff, "kului aikaa");
+      if (start) {
+        var end = +new Date();
+        var diff = end - start;
+        alert(diff, "kului aikaa");
+      }
+
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa

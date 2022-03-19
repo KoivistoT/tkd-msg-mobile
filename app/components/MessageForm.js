@@ -57,31 +57,36 @@ function MessageForm({ item }) {
   const currentUserId = store.getState().auth.currentUser._id;
   const [photos, setPhotos] = useState([]);
   const roomData = useSelector(selectRoomDataById(item.route.params._id));
-
+  const {
+    _id: currentRoomId,
+    type: currentRoomType,
+    status: currentRoomStatus,
+    members: currentRoomMembers,
+  } = roomData || "null";
   const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const replyMessageIds = useSelector(selectReplyItemIds);
   //tässä tuleekin ongelma, jos ei ole roomData objectia, kun se on null, niin objectista ei saa _id:tä
-  const roomMembers = useSelector(selectRoomMembersById(roomData._id));
+  const roomMembers = useSelector(selectRoomMembersById(currentRoomId));
   const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää tämä kahdesti, ei ehkä haittaa");
 
   const otherUser =
-    roomData.type === "private"
+    currentRoomType === "private"
       ? roomFuncs.getPrivateRoomOtherUserName(
-          roomData.members,
+          currentRoomMembers,
           currentUserId,
           allUsers
         )
       : "";
 
   useEffect(() => {
-    dispatch(activeRoomIdResived(roomData._id));
+    dispatch(activeRoomIdResived(currentRoomId));
 
-    setTimeout(() => {
-      dispatch(
-        saveLastSeenMessageSum(currentUserId, roomData._id, roomData.messageSum)
-      );
-    }, 1000);
+    // setTimeout(() => {
+    //   dispatch(
+    //     saveLastSeenMessageSum(currentUserId, currentRoomId, roomData.messageSum)
+    //   );
+    // }, 1000);
 
     //onko tähän parempi ratkaisu
     setHeader();
@@ -93,7 +98,7 @@ function MessageForm({ item }) {
 
   const getSubTitle = () => {
     if (!roomMembers) return;
-    if (roomData.type === "private") return "View details";
+    if (currentRoomType === "private") return "View details";
     return `Members ${roomFuncs.getRoomActiveMembersSum(
       roomMembers,
       allUsers
@@ -108,7 +113,7 @@ function MessageForm({ item }) {
           subTitle={getSubTitle()}
           showOnlineIndicator={showOnlineIndicator(
             usersOnline,
-            roomData.members,
+            currentRoomMembers,
             currentUserId
           )}
           action={() =>
@@ -121,7 +126,7 @@ function MessageForm({ item }) {
 
   const handleSubmit = async ({ message }, { resetForm }) => {
     try {
-      store.getState().entities.msgStore.allMessages[roomData._id].messages;
+      store.getState().entities.msgStore.allMessages[currentRoomId].messages;
     } catch (error) {
       console.log(error, "code 99292292");
       navigationRef.current.goBack();
@@ -148,7 +153,7 @@ function MessageForm({ item }) {
     //   dispatch(
     //     sendMessage(
     //       counter,
-    //       roomData._id,
+    //       currentRoomId,
     //       messageType,
     //       imageURLs,
     //       replyMessageId
@@ -156,19 +161,25 @@ function MessageForm({ item }) {
     //   );
 
     //   counter++;
-    //   if (counter === 5000) {
+    //   if (counter === 1000) {
     //     clearInterval(i);
     //   }
     // }, 10);
 
     //en pidä tästä, että kysyy aina
-    if (roomData.status === "draft") {
-      dispatch(activateDraftRoom(roomData._id, currentUserId));
+    if (currentRoomStatus === "draft") {
+      dispatch(activateDraftRoom(currentRoomId, currentUserId));
     }
     dispatch(
-      sendMessage(message, roomData._id, messageType, imageURLs, replyMessageId)
+      sendMessage(
+        message,
+        currentRoomId,
+        messageType,
+        imageURLs,
+        replyMessageId
+      )
     );
-    dispatch(replyMessageIdCleared(roomData._id));
+    dispatch(replyMessageIdCleared(currentRoomId));
     resetForm();
     Keyboard.dismiss();
   };
@@ -193,13 +204,13 @@ function MessageForm({ item }) {
   };
 
   const getReplyItem = () => {
-    return roomFuncs.isReplyItem(replyMessageIds, roomData._id);
+    return roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
   };
 
   return (
     <>
       {getReplyItem() && <ReplyItem item={getReplyItem()} />}
-      {roomData.status !== "archived" &&
+      {currentRoomStatus !== "archived" &&
         otherUser.status !== "deleted" &&
         otherUser.status !== "archived" && (
           <View
@@ -241,7 +252,7 @@ function MessageForm({ item }) {
             <Button title={"test"} onPress={testi}></Button>
           </View>
         )}
-      {roomData.status === "archived" && (
+      {currentRoomStatus === "archived" && (
         <AppText>
           Huone on arkistoitu. Aktivoi huone lähettääksesi viestejä.
         </AppText>
