@@ -169,6 +169,24 @@ const slice = createSlice({
       console.log("epännoistu2");
     },
 
+    messagesFromStorageFetched: (msgStore, action) => {
+      const currentRoomId = action.payload;
+      msgStore.allMessages[currentRoomId].messages = Object.assign(
+        msgStore.allMessages[currentRoomId].messages,
+        msgStore.messageStorage[currentRoomId].messages
+      );
+
+      console.log(currentRoomId);
+      console.log(
+        Object.keys(msgStore.messageStorage[currentRoomId].messages).length
+      );
+      //deletoi storagesta
+
+      msgStore.allMessageIds[currentRoomId] = [
+        ...msgStore.allMessageIds[currentRoomId],
+        ...Object.keys(msgStore.messageStorage[currentRoomId].messages),
+      ];
+    },
     msgTasksResived: (msgStore, action) => {
       let newState = { ...msgStore };
 
@@ -353,7 +371,7 @@ export const {
   msgNewTasksResived,
   oneRoomMessagesResived,
   messageSendError,
-
+  messagesFromStorageFetched,
   messageSent,
   messagesError,
   messageSendErrorCleared,

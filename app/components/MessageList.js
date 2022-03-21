@@ -6,6 +6,7 @@ import MessageItemMain, {
 } from "./messageItems/MessageItemMain";
 import {
   messageSelected,
+  messagesFromStorageFetched,
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesByRoomId,
 } from "../../store/msgStore";
@@ -15,6 +16,7 @@ import { selectAllUsersMinimal } from "../../store/users";
 
 function MessageList({ item }) {
   const store = useStore();
+  const dispatch = useDispatch();
   const msgListRef = useRef();
   const roomId = item.route.params._id;
   // console.log("tämä päivittyy myös");
@@ -51,6 +53,10 @@ function MessageList({ item }) {
     });
   };
 
+  onGetMoreMessages = () => {
+    console.log("hakee tässä");
+    dispatch(messagesFromStorageFetched(roomId));
+  };
   const keyExtractor = (item) => item;
 
   const onScrollToIndexFailed = (error) => {
@@ -87,6 +93,7 @@ function MessageList({ item }) {
             keyExtractor={keyExtractor}
             renderItem={messageItem}
             onEndReachedThreshold={0.7}
+            onEndReached={() => onGetMoreMessages()}
             maxToRenderPerBatch={10}
             initialNumToRender={10}
             windowSize={30}
