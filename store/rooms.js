@@ -11,7 +11,6 @@ const slice = createSlice({
     allRooms: [],
     allActiveRoomsIds: [],
     loading: false,
-
     activeRoomId: null,
     errorMessage: null,
     successMessage: null,
@@ -105,6 +104,7 @@ const slice = createSlice({
       // action.payload.forEach((item) => {
       //   rooms.allRooms = { [item._id]: item, ...rooms.allRooms };
       // });
+      // console.log(action.payload, "tääll");
       rooms.allRooms = action.payload;
 
       Object.keys(action.payload).forEach((id) => {
@@ -115,7 +115,7 @@ const slice = createSlice({
           }
         }
       });
-
+      // console.log(rooms.allActiveRoomsIds, "actiivit");
       // console.log(
       //   rooms.allRooms["61e6a80eb30d002e91d67b5a"],
       //   "huoneet vastaanotettu, tässä yksi id:llä"

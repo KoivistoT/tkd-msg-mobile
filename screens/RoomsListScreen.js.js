@@ -122,7 +122,7 @@ function RoomsListScreen({ navigation }) {
     setSumma(
       Object.keys(
         store.getState().entities.msgStore.allMessages[
-          "62357ebf9fdfe524a837c4b4"
+          "62358b939fdfe524a838af49"
         ].messages
       ).length
     );
@@ -165,6 +165,7 @@ function RoomsListScreen({ navigation }) {
   //   });
   // };
   // sortRoomsByLastMessage();
+
   return (
     <Screen>
       {/* {!socket && ( */}

@@ -29,6 +29,7 @@ import {
   selectAccountType,
   selectToken,
   userLoggedOut,
+  clearTasks,
 } from "./store/currentUser";
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
@@ -52,6 +53,9 @@ import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
 import TaskHandler from "./app/components/TaskHandler";
 import NewTasks from "./app/components/NewTasks";
+import asyncStorageFuncs from "./utility/asyncStorageFuncs";
+import { roomsResived } from "./store/rooms";
+import { usersResived } from "./store/users";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -71,10 +75,17 @@ export default function AppWrapper() {
 function App() {
   const dispatch = useDispatch();
   const store = useStore();
-  const onLogin = () => {
+  const onLogin = async () => {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
-
+    dispatch(clearTasks(store.getState().auth.currentUser._id));
+    const value = await asyncStorageFuncs.getData("roomState");
+    const value2 = await asyncStorageFuncs.getData("userState");
+    // console.log(value, "tämä on joo json aik");
+    dispatch(roomsResived(value));
+    dispatch(usersResived(value2));
     dispatch(getInitialData);
+
+    // ei tarvi mennä kuin huoneeseen, niin sitten siellä näyttää viestit, kun ne tulee
     // setTimeout(() => {
     //   const item = {
     //     _id: "62357ebf9fdfe524a837c4b4",

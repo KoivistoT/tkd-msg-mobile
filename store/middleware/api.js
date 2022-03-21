@@ -54,7 +54,6 @@ const api =
           type: onInitSuccess.users,
           payload: response.data.allUsers,
         });
-        dispatch(clearTasks(getState().auth.currentUser._id));
 
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;
