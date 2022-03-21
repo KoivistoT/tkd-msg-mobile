@@ -20,5 +20,8 @@
     "preview3": {
       "developmentClient": true
     }
+  },
+  "cli": {
+    "version": ">= 0.47.0"
   }
 }

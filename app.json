@@ -27,7 +27,7 @@
 
     "android": {
       "useNextNotificationsApi": true,
-      "package": "fi.prohoiva.carechat",
+      "package": "fi.msg.tkdev",
       "foregroundImage": "./assets/adaptive-icon.png",
       "backgroundColor": "#FFFFFF",
       "versionCode": 1,
