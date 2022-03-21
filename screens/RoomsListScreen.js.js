@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -16,6 +16,7 @@ import {
   selectTasks,
   userLoggedOut,
 } from "../store/currentUser";
+import { useIsFocused } from "@react-navigation/native";
 import {
   createSocketConnection,
   disconnectSocket,
@@ -31,12 +32,17 @@ import {
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import { usersOnlineResived } from "../store/users";
-import { newMessageResived } from "../store/msgStore";
+import {
+  messagesFromStorageFetched,
+  newMessageResived,
+  roomMessagesMoveToStorage,
+} from "../store/msgStore";
 import messagesApi from "../api/messages";
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const socket = useSelector(selectSocket);
+  const isFocused = useIsFocused();
   const currentUserId = store.getState().auth.currentUser._id;
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
@@ -137,6 +143,12 @@ function RoomsListScreen({ navigation }) {
       appStateListener?.remove();
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (isFocused) {
+      dispatch(roomMessagesMoveToStorage());
+    }
+  }, [isFocused]);
 
   const keyExtractor = (id) => id;
   const listItem = ({ item }) => {

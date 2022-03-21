@@ -95,50 +95,6 @@ const slice = createSlice({
           [roomId]: { messages: {} },
         });
       });
-
-      Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
-        if (
-          msgStore.allMessageIds[currentRoomId].length > 200 &&
-          msgStore.activeRoomId !== currentRoomId
-        ) {
-          const toStorage = Object.entries(
-            msgStore.allMessages[currentRoomId].messages
-          ).slice(
-            100,
-            Object.keys(msgStore.allMessages[currentRoomId].messages).length
-          );
-
-          const leave = Object.entries(
-            msgStore.allMessages[currentRoomId].messages
-          ).slice(0, 100);
-
-          msgStore.messageStorage[currentRoomId].messages = Object.assign(
-            msgStore.messageStorage[currentRoomId].messages,
-            toStorage.reduce((newObject, item) => {
-              newObject[item[0]] = item[1];
-              return newObject;
-            }, {})
-          );
-
-          msgStore.allMessages[currentRoomId].messages = leave.reduce(
-            (newObject, item) => {
-              newObject[item[0]] = item[1];
-              return newObject;
-            },
-            {}
-          );
-
-          const leaveIds = msgStore.allMessageIds[currentRoomId].slice(0, 100);
-
-          msgStore.allMessageIds[currentRoomId] = leaveIds;
-        }
-      });
-      // console.log(msgStore.allMessageIds["6228a42601768b0dea508e41"]);
-      // console.log(
-      //   action.payload["61e6a80eb30d002e91d67b5a"].messages,
-      //   "tässä kaikki viestit"
-      // );
-      // console.log(msgStore.messages.messages, "messagesResived");
     },
 
     oneRoomMessagesResived: (msgStore, action) => {
@@ -276,10 +232,16 @@ const slice = createSlice({
 
       msgStore = newState;
 
+      // var targetMessages = msgStore.allMessages[roomId].messages;
+
+      // delete msgStore.newTasks[action.payload.taskId];
+    },
+    roomMessagesMoveToStorage: (msgStore, action) => {
       Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
         if (
-          msgStore.allMessageIds[currentRoomId].length > 200 &&
-          msgStore.activeRoomId !== currentRoomId
+          msgStore.allMessageIds[currentRoomId].length > 200
+          // &&
+          // msgStore.activeRoomId !== currentRoomId
         ) {
           const toStorage = Object.entries(
             msgStore.allMessages[currentRoomId].messages
@@ -312,10 +274,12 @@ const slice = createSlice({
 
           msgStore.allMessageIds[currentRoomId] = leaveIds;
         }
+        // console.log(
+        //   msgStore.allMessageIds[currentRoomId].length,
+        //   Object.keys(msgStore.messageStorage[currentRoomId].messages).length,
+        //   Object.keys(msgStore.allMessages[currentRoomId].messages).length
+        // );
       });
-      // var targetMessages = msgStore.allMessages[roomId].messages;
-
-      // delete msgStore.newTasks[action.payload.taskId];
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -365,6 +329,7 @@ const slice = createSlice({
 
 export const {
   messagesResived,
+  roomMessagesMoveToStorage,
   msgNewTasksResived,
   oneRoomMessagesResived,
   messageSendError,

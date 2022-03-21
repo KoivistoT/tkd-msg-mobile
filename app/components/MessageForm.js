@@ -84,7 +84,7 @@ function MessageForm({ item }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
-    dispatch(msgStoreActiveRoomIdResived(currentRoomId));
+    // dispatch(msgStoreActiveRoomIdResived(currentRoomId));
     // console.log("nyt käy täällä");
     // setTimeout(() => {
     dispatch(
