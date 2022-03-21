@@ -28,8 +28,6 @@
     "android": {
       "useNextNotificationsApi": true,
       "package": "fi.msg.tkdev",
-      "foregroundImage": "./assets/adaptive-icon.png",
-      "backgroundColor": "#FFFFFF",
       "versionCode": 1,
       "permissions": [
         "READ_EXTERNAL_STORAGE",

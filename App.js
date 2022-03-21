@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -8,6 +8,8 @@ import {
   View,
   LogBox,
 } from "react-native";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
@@ -158,8 +160,27 @@ function App() {
     };
   }, []);
 
+  const restoreUser = async () => {
+    await Font.loadAsync({
+      Avenir: require("./assets/fonts/Avenir.ttf"),
+    });
+    // const userData = await authStorage.getUser();
+
+    // if (userData) setUserData(userData);
+  };
+
   const accountType = useSelector(selectAccountType);
   accountType ? onLogin() : {};
+
+  const [isReady, setIsReady] = useState(false);
+  if (!isReady)
+    return (
+      <AppLoading
+        startAsync={restoreUser}
+        onFinish={() => setIsReady(true)}
+        onError={console.warn}
+      />
+    );
 
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
