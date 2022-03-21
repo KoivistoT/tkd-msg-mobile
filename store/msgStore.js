@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
 import { requestStarted, requestSucceed } from "./rooms";
 import sortArray from "../utility/sortArray";
+import sortObjectsByfield from "../utility/sortObjectsByfield";
 const slice = createSlice({
   name: "msgStore",
   initialState: {
@@ -15,6 +16,7 @@ const slice = createSlice({
     replyMessageIds: [],
     newTasks: {},
     messageStorage: {},
+    messageIdStorage: {},
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
@@ -89,31 +91,38 @@ const slice = createSlice({
       });
 
       Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
-        if (
-          Object.keys(msgStore.allMessages[currentRoomId].messages).length > 500
-        ) {
-          const toStorage = Object.fromEntries(
-            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
-              400,
-              Object.keys(msgStore.allMessages[currentRoomId].messages).length
-            )
+        if (msgStore.allMessageIds[currentRoomId].length > 200) {
+          const toStorage = Object.entries(
+            msgStore.allMessages[currentRoomId].messages
+          ).slice(
+            100,
+            Object.keys(msgStore.allMessages[currentRoomId].messages).length
           );
-          const leave = Object.fromEntries(
-            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
-              0,
-              400
-            )
-          );
+
+          const leave = Object.entries(
+            msgStore.allMessages[currentRoomId].messages
+          ).slice(0, 100);
+
           msgStore.messageStorage[currentRoomId].messages = Object.assign(
             msgStore.messageStorage[currentRoomId].messages,
-            toStorage
+            toStorage.reduce((newObject, item) => {
+              newObject[item[0]] = item[1];
+              return newObject;
+            }, {})
           );
-          msgStore.allMessages[currentRoomId].messages = leave;
+
+          msgStore.allMessages[currentRoomId].messages = leave.reduce(
+            (newObject, item) => {
+              newObject[item[0]] = item[1];
+              return newObject;
+            },
+            {}
+          );
+
+          const leaveIds = msgStore.allMessageIds[currentRoomId].slice(0, 100);
+
+          msgStore.allMessageIds[currentRoomId] = leaveIds;
         }
-        console.log(
-          Object.keys(msgStore.allMessages[currentRoomId].messages).length,
-          Object.keys(msgStore.messageStorage[currentRoomId].messages).length
-        );
       });
       // console.log(msgStore.allMessageIds["6228a42601768b0dea508e41"]);
       // console.log(
@@ -194,7 +203,32 @@ const slice = createSlice({
             newState.allMessages[roomId].messages
           );
 
-          newState.allMessageIds[roomId].unshift(messageId);
+          const sortedMessages = Object.entries(
+            newState.allMessages[roomId].messages
+          ).sort(function (a, b) {
+            var nameA = a[1].createdAt;
+            var nameB = b[1].createdAt;
+
+            if (nameA > nameB) {
+              return -1;
+            }
+            if (nameA < nameB) {
+              return 1;
+            }
+            return 0;
+          });
+
+          newState.allMessages[roomId].messages = sortedMessages.reduce(
+            (newObject, item) => {
+              newObject[item[0]] = item[1];
+              return newObject;
+            },
+            {}
+          );
+
+          newState.allMessageIds[roomId] = sortedMessages.map(
+            (item) => item[0]
+          );
 
           if (type === "image" && imageURLs.length > 0) {
             imageURLs.forEach((url) => {
@@ -216,38 +250,41 @@ const slice = createSlice({
         alert(diff, "kului aikaa");
       }
 
-      //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
-      //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
-      //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
-
       msgStore = newState;
 
       Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
-        if (
-          Object.keys(msgStore.allMessages[currentRoomId].messages).length > 500
-        ) {
-          const toStorage = Object.fromEntries(
-            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
-              400,
-              Object.keys(msgStore.allMessages[currentRoomId].messages).length
-            )
+        if (msgStore.allMessageIds[currentRoomId].length > 200) {
+          const toStorage = Object.entries(
+            msgStore.allMessages[currentRoomId].messages
+          ).slice(
+            100,
+            Object.keys(msgStore.allMessages[currentRoomId].messages).length
           );
-          const leave = Object.fromEntries(
-            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
-              0,
-              400
-            )
-          );
+
+          const leave = Object.entries(
+            msgStore.allMessages[currentRoomId].messages
+          ).slice(0, 100);
+
           msgStore.messageStorage[currentRoomId].messages = Object.assign(
             msgStore.messageStorage[currentRoomId].messages,
-            toStorage
+            toStorage.reduce((newObject, item) => {
+              newObject[item[0]] = item[1];
+              return newObject;
+            }, {})
           );
-          msgStore.allMessages[currentRoomId].messages = leave;
+
+          msgStore.allMessages[currentRoomId].messages = leave.reduce(
+            (newObject, item) => {
+              newObject[item[0]] = item[1];
+              return newObject;
+            },
+            {}
+          );
+
+          const leaveIds = msgStore.allMessageIds[currentRoomId].slice(0, 100);
+
+          msgStore.allMessageIds[currentRoomId] = leaveIds;
         }
-        console.log(
-          Object.keys(msgStore.allMessages[currentRoomId].messages).length,
-          Object.keys(msgStore.messageStorage[currentRoomId].messages).length
-        );
       });
       // var targetMessages = msgStore.allMessages[roomId].messages;
 
