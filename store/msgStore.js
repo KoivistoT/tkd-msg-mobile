@@ -262,7 +262,10 @@ const slice = createSlice({
       msgStore = newState;
 
       Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
-        if (msgStore.allMessageIds[currentRoomId].length > 200) {
+        if (
+          msgStore.allMessageIds[currentRoomId].length > 200 &&
+          msgStore.activeRoomId !== currentRoomId
+        ) {
           const toStorage = Object.entries(
             msgStore.allMessages[currentRoomId].messages
           ).slice(
