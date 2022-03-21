@@ -20,6 +20,7 @@ function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
     is_deleted,
     postedByUser,
     type: messageType,
+    createdAt,
     replyMessageId,
     messageBody,
   } = message;
@@ -41,6 +42,9 @@ function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
   return (
     <>
       <TouchableOpacity key={messageId} style={styles[sentBy]}>
+        <AppText style={{ backgroundColor: "red" }}>
+          {createdAt.slice(11, 19)}
+        </AppText>
         <TouchableOpacity title={"reply"} onPress={onReply}>
           <AppText>Reply</AppText>
         </TouchableOpacity>

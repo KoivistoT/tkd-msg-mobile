@@ -17,6 +17,7 @@ const slice = createSlice({
     newTasks: {},
     messageStorage: {},
     messageIdStorage: {},
+    activeRoomId: null,
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
@@ -76,7 +77,12 @@ const slice = createSlice({
       const { imageURLs, roomId } = action.payload;
       msgStore.images[roomId] = imageURLs;
     },
-
+    msgStoreActiveRoomIdCleared: (msgStore, action) => {
+      msgStore.activeRoomId = null;
+    },
+    msgStoreActiveRoomIdResived: (msgStore, action) => {
+      msgStore.activeRoomId = action.payload;
+    },
     messagesResived: (msgStore, action) => {
       msgStore.allMessages = action.payload;
 
@@ -91,7 +97,10 @@ const slice = createSlice({
       });
 
       Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
-        if (msgStore.allMessageIds[currentRoomId].length > 200) {
+        if (
+          msgStore.allMessageIds[currentRoomId].length > 200 &&
+          msgStore.activeRoomId !== currentRoomId
+        ) {
           const toStorage = Object.entries(
             msgStore.allMessages[currentRoomId].messages
           ).slice(
@@ -352,7 +361,10 @@ export const {
   replyMessageIdResived,
   replyMessageIdCleared,
   readByRecepientsAdded,
+  msgStoreActiveRoomIdCleared,
+  msgStoreActiveRoomIdResived,
 } = slice.actions;
+
 export default slice.reducer;
 
 const url = settings.apiUrl;

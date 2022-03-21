@@ -13,6 +13,8 @@ import {
   activateDraftRoom,
 } from "../../store/rooms";
 import {
+  msgStoreActiveRoomIdCleared,
+  msgStoreActiveRoomIdResived,
   replyMessageIdCleared,
   selectReplyItemIds,
   sendMessage,
@@ -81,6 +83,7 @@ function MessageForm({ item }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
+    dispatch(msgStoreActiveRoomIdResived(currentRoomId));
     // console.log("nyt käy täällä");
     // setTimeout(() => {
     dispatch(
@@ -93,6 +96,7 @@ function MessageForm({ item }) {
 
     return () => {
       dispatch(activeRoomIdCleared());
+      dispatch(msgStoreActiveRoomIdCleared());
     };
   }, [roomMembers, roomData, allUsers]);
 
