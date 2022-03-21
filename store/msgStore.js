@@ -14,6 +14,7 @@ const slice = createSlice({
     images: {},
     replyMessageIds: [],
     newTasks: {},
+    messageStorage: {},
   },
   reducers: {
     allImagesResived: (msgStore, action) => {
@@ -82,6 +83,37 @@ const slice = createSlice({
         msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
           [roomId]: Object.keys(action.payload[roomId].messages),
         });
+        msgStore.messageStorage = Object.assign(msgStore.messageStorage, {
+          [roomId]: { messages: {} },
+        });
+      });
+
+      Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
+        if (
+          Object.keys(msgStore.allMessages[currentRoomId].messages).length > 500
+        ) {
+          const toStorage = Object.fromEntries(
+            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
+              400,
+              Object.keys(msgStore.allMessages[currentRoomId].messages).length
+            )
+          );
+          const leave = Object.fromEntries(
+            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
+              0,
+              400
+            )
+          );
+          msgStore.messageStorage[currentRoomId].messages = Object.assign(
+            msgStore.messageStorage[currentRoomId].messages,
+            toStorage
+          );
+          msgStore.allMessages[currentRoomId].messages = leave;
+        }
+        console.log(
+          Object.keys(msgStore.allMessages[currentRoomId].messages).length,
+          Object.keys(msgStore.messageStorage[currentRoomId].messages).length
+        );
       });
       // console.log(msgStore.allMessageIds["6228a42601768b0dea508e41"]);
       // console.log(
@@ -103,6 +135,9 @@ const slice = createSlice({
         // const roomId = Object.keys(action.payload);
         msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
           [roomId]: Object.keys(messages),
+        });
+        msgStore.messageStorage = Object.assign(msgStore.messageStorage, {
+          [roomId]: { messages: {} },
         });
       } else {
         msgStore.allMessages = { [roomId]: action.payload };
@@ -184,8 +219,36 @@ const slice = createSlice({
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
       //heitetäänkö koko store, vai pitäisikö osata katsoa vain osa
+
       msgStore = newState;
 
+      Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
+        if (
+          Object.keys(msgStore.allMessages[currentRoomId].messages).length > 500
+        ) {
+          const toStorage = Object.fromEntries(
+            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
+              400,
+              Object.keys(msgStore.allMessages[currentRoomId].messages).length
+            )
+          );
+          const leave = Object.fromEntries(
+            Object.entries(msgStore.allMessages[currentRoomId].messages).slice(
+              0,
+              400
+            )
+          );
+          msgStore.messageStorage[currentRoomId].messages = Object.assign(
+            msgStore.messageStorage[currentRoomId].messages,
+            toStorage
+          );
+          msgStore.allMessages[currentRoomId].messages = leave;
+        }
+        console.log(
+          Object.keys(msgStore.allMessages[currentRoomId].messages).length,
+          Object.keys(msgStore.messageStorage[currentRoomId].messages).length
+        );
+      });
       // var targetMessages = msgStore.allMessages[roomId].messages;
 
       // delete msgStore.newTasks[action.payload.taskId];
@@ -209,6 +272,7 @@ const slice = createSlice({
       delete msgStore.allMessages[currentRoomId];
       delete msgStore.images[currentRoomId];
       delete msgStore.allMessageIds[currentRoomId];
+      delete msgStore.messageStorage[currentRoomId];
     },
 
     messageDeleted: (msgStore, action) => {
