@@ -177,11 +177,6 @@ const slice = createSlice({
         msgStore.messageStorage[currentRoomId].messages
       );
 
-      console.log(
-        Object.keys(msgStore.messageStorage[currentRoomId].messages).length,
-        "viestejä tuli"
-      );
-
       msgStore.allMessageIds[currentRoomId] = [
         ...msgStore.allMessageIds[currentRoomId],
         ...Object.keys(msgStore.messageStorage[currentRoomId].messages),

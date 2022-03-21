@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
 import authApi from "./api/auth";
+import * as Notifications from "expo-notifications";
 import configureStore from "./store/configureStore";
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -57,6 +58,7 @@ import NewTasks from "./app/components/NewTasks";
 import asyncStorageFuncs from "./utility/asyncStorageFuncs";
 import { roomsResived } from "./store/rooms";
 import { usersResived } from "./store/users";
+import pushNotificationFuncs from "./utility/pushNotificationFuncs";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -76,17 +78,24 @@ export default function AppWrapper() {
 function App() {
   const dispatch = useDispatch();
   const store = useStore();
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
   const onLogin = async () => {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     dispatch(clearTasks(store.getState().auth.currentUser._id));
-    const value = await asyncStorageFuncs.getData("roomState");
-    const value2 = await asyncStorageFuncs.getData("userState");
-    const value3 = await asyncStorageFuncs.getData("userLastSeenMessages");
+    const roomState = await asyncStorageFuncs.getData("roomState");
+    const userState = await asyncStorageFuncs.getData("userState");
+    const userLastSeenMessages = await asyncStorageFuncs.getData(
+      "userLastSeenMessages"
+    );
     // console.log(value, "tämä on joo json aik");
-    dispatch(roomsResived(value));
-    dispatch(usersResived(value2));
-    dispatch(currentUserLastSeenMessagesResived(value3));
+    dispatch(roomsResived(roomState));
+    dispatch(usersResived(userState));
+    dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
     dispatch(getInitialData);
+    pushNotificationFuncs.registerForPushNotificationsAsync();
 
     // ei tarvi mennä kuin huoneeseen, niin sitten siellä näyttää viestit, kun ne tulee
     // setTimeout(() => {
@@ -96,6 +105,58 @@ function App() {
     //   navigationRef.current.navigate(routes.MESSAGE_SCREEN, item);
     // }, 2000);
   };
+
+  const handleResponse = (responseRoomId) => {
+    try {
+      const currentRoomId = response.notification.request.content.data.roomId;
+      const roomData = store.getState().entities.rooms.allRooms[currentRoomId];
+      alert("täällä menee");
+      // navigationRef.current.navigate(routes.MESSAGE_SCREEN);
+    } catch (error) {
+      console.log(error, "app.js responselistener");
+    }
+  };
+
+  useEffect(() => {
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        // console.log(notification.request);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        // console.log(
+        //   response.notification.request.content.data.roomId,
+        //   "tämä response"
+        // );
+        const currentRoomId = response.notification.request.content.data.roomId;
+        const roomData =
+          store.getState().entities.rooms.allRooms[currentRoomId];
+        navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+      });
+
+    try {
+      if (
+        lastNotificationResponse &&
+        lastNotificationResponse.notification.request.content.data.roomId
+      ) {
+        const responseRoomId =
+          lastNotificationResponse.notification.request.content.data.roomId;
+        // alert(  lastNotificationResponse.notification.request.content.data);
+
+        handleResponse(responseRoomId);
+      }
+    } catch (error) {
+      alert(error, "code 2777218");
+    }
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   const accountType = useSelector(selectAccountType);
   accountType ? onLogin() : {};

@@ -40,7 +40,9 @@
     "react-redux": "^7.2.6",
     "socket.io-client": "^4.4.0",
     "yup": "^0.32.11",
-    "expo-updates": "~0.11.6"
+    "expo-updates": "~0.11.6",
+    "expo-device": "~4.1.0",
+    "expo-notifications": "~0.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

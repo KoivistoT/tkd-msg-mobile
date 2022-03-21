@@ -64,6 +64,7 @@ function MessageForm({ item }) {
     type: currentRoomType,
     status: currentRoomStatus,
     members: currentRoomMembers,
+    messageSum: currentRoomMessageSum,
   } = roomData || "null";
   const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
   const replyMessageIds = useSelector(selectReplyItemIds);
@@ -87,7 +88,11 @@ function MessageForm({ item }) {
     // console.log("nyt käy täällä");
     // setTimeout(() => {
     dispatch(
-      saveLastSeenMessageSum(currentUserId, currentRoomId, roomData.messageSum)
+      saveLastSeenMessageSum(
+        currentUserId,
+        currentRoomId,
+        currentRoomMessageSum
+      )
     );
     // }, 10);
 

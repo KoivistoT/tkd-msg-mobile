@@ -54,7 +54,6 @@ function MessageList({ item }) {
   };
 
   onGetMoreMessages = () => {
-    console.log("hakee tässä");
     dispatch(messagesFromStorageFetched(roomId));
   };
   const keyExtractor = (item) => item;
