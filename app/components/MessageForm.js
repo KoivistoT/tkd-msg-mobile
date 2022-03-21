@@ -81,14 +81,14 @@ function MessageForm({ item }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
-
+    // console.log("nyt käy täällä");
     // setTimeout(() => {
-    //   dispatch(
-    //     saveLastSeenMessageSum(currentUserId, currentRoomId, roomData.messageSum)
-    //   );
-    // }, 1000);
+    dispatch(
+      saveLastSeenMessageSum(currentUserId, currentRoomId, roomData.messageSum)
+    );
+    // }, 10);
 
-    //onko tähän parempi ratkaisu
+    //onko tähän parempi ratkaisu, tämän pitää olla muualla
     setHeader();
 
     return () => {

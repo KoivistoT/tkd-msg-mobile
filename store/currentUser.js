@@ -23,6 +23,7 @@ import {
   newMessageResived,
 } from "./msgStore";
 import { usersResived } from "./users";
+import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 // import { createSelector } from "reselect";
 
 const slice = createSlice({
@@ -54,6 +55,11 @@ const slice = createSlice({
       currentUser.token = action.payload;
 
       // console.log("ei tule backendistä nuo huoneet userRooms");
+    },
+    currentUserLastSeenMessagesResived: (currentUser, action) => {
+      if (action.payload) {
+        currentUser.last_seen_messages = action.payload;
+      }
     },
     currentUserResived: (currentUser, action) => {
       // console.log(action.payload, "tässä käyttäjän tiedot");
@@ -133,6 +139,7 @@ export const {
   tasksCleared,
   doneTaskResived,
   lastSeenMessageSumResived,
+  currentUserLastSeenMessagesResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -220,6 +227,10 @@ export const saveLastSeenMessageSum =
   (currentUserId, roomId, lastSeenMessageSum, readByMessagesIds) =>
   (dispatch, getState) => {
     dispatch(lastSeenMessageSumResived({ roomId, lastSeenMessageSum }));
+    asyncStorageFuncs.setData(
+      "userLastSeenMessages",
+      getState().auth.currentUser.last_seen_messages
+    );
     return dispatch(
       apiCallBegan({
         url: url + "/users/save_last_seen_message_sum",

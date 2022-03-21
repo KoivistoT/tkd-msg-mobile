@@ -135,6 +135,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (taskGroupType === "msg") {
           dispatch(msgTasksResived(data));
+          // if (data.some((task) => task.taskType === "new message")) {
+
+          // }
         }
         if (taskGroupType === "room") {
           dispatch(roomTasksResived(data));

@@ -30,6 +30,7 @@ import {
   selectToken,
   userLoggedOut,
   clearTasks,
+  currentUserLastSeenMessagesResived,
 } from "./store/currentUser";
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
@@ -80,9 +81,11 @@ function App() {
     dispatch(clearTasks(store.getState().auth.currentUser._id));
     const value = await asyncStorageFuncs.getData("roomState");
     const value2 = await asyncStorageFuncs.getData("userState");
+    const value3 = await asyncStorageFuncs.getData("userLastSeenMessages");
     // console.log(value, "tämä on joo json aik");
     dispatch(roomsResived(value));
     dispatch(usersResived(value2));
+    dispatch(currentUserLastSeenMessagesResived(value3));
     dispatch(getInitialData);
 
     // ei tarvi mennä kuin huoneeseen, niin sitten siellä näyttää viestit, kun ne tulee

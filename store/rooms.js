@@ -87,6 +87,12 @@ const slice = createSlice({
           newState.allRooms[currentRoomId].status = "active";
           newState.allActiveRoomsIds.push(currentRoomId);
         }
+        if (taskType === "roomLatestMessageChanged") {
+          const { roomId } = data;
+          newState.allRooms[roomId].latestMessage = data;
+          newState.allRooms[roomId].messageSum =
+            newState.allRooms[roomId].messageSum + 1;
+        }
       });
 
       rooms = newState;
