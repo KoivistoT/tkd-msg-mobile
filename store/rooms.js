@@ -141,13 +141,14 @@ const slice = createSlice({
       if (rooms.allRooms[roomId] !== undefined) {
         console.log("löytyy jo");
         return;
-      }
-      console.log("huone tuli");
-      Object.assign(rooms.allRooms, { [roomId]: action.payload });
+      } else {
+        Object.assign(rooms.allRooms, { [roomId]: action.payload });
 
-      if (status !== "draft") {
-        rooms.allActiveRoomsIds.push(roomId);
+        if (status !== "draft" && !rooms.allActiveRoomsIds.includes(roomId)) {
+          rooms.allActiveRoomsIds.push(roomId);
+        }
       }
+
       // console.log(rooms.allRooms, "now");
     },
   },

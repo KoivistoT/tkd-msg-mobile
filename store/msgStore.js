@@ -144,6 +144,7 @@ const slice = createSlice({
     oneRoomMessagesResived: (msgStore, action) => {
       const { _id: roomId, messages } = action.payload;
 
+      //tässä ei leikkaa viestejä storageen, jos niitä on paljon
       if (msgStore.allMessages) {
         msgStore.allMessages = Object.assign(msgStore.allMessages, {
           [roomId]: action.payload,
@@ -176,16 +177,17 @@ const slice = createSlice({
         msgStore.messageStorage[currentRoomId].messages
       );
 
-      console.log(currentRoomId);
       console.log(
-        Object.keys(msgStore.messageStorage[currentRoomId].messages).length
+        Object.keys(msgStore.messageStorage[currentRoomId].messages).length,
+        "viestejä tuli"
       );
-      //deletoi storagesta
 
       msgStore.allMessageIds[currentRoomId] = [
         ...msgStore.allMessageIds[currentRoomId],
         ...Object.keys(msgStore.messageStorage[currentRoomId].messages),
       ];
+
+      msgStore.messageStorage[currentRoomId].messages = {};
     },
     msgTasksResived: (msgStore, action) => {
       let newState = { ...msgStore };
