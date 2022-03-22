@@ -179,15 +179,15 @@ function App() {
   const accountType = useSelector(selectAccountType);
   accountType ? onLogin() : {};
 
-  const [isReady, setIsReady] = useState(false);
-  if (!isReady)
-    return (
-      <AppLoading
-        startAsync={restoreUser}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    );
+  // const [isReady, setIsReady] = useState(false);
+  // if (!isReady)
+  //   return (
+  //     <AppLoading
+  //       startAsync={restoreUser}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   );
 
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
