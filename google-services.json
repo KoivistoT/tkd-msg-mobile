@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "313163594040",
+    "firebase_url": "https://test2-6663b.firebaseio.com",
+    "project_id": "test2-6663b",
+    "storage_bucket": "test2-6663b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313163594040:android:1ecf60ecb4da3fff37e9cd",
+        "android_client_info": {
+          "package_name": "fi.msg.tkdev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313163594040-37k27orf7bjhelva07druv8173b0hhsa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAacRxnLASc8_S9GlhWAdk-X5Yfk6ZmlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313163594040-37k27orf7bjhelva07druv8173b0hhsa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "313163594040-491r5loidd8aovmd9hq7posfovijhp8h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "rapp.test.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313163594040:android:35eb98997ad3b6df37e9cd",
+        "android_client_info": {
+          "package_name": "rapp.test.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313163594040-37k27orf7bjhelva07druv8173b0hhsa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAacRxnLASc8_S9GlhWAdk-X5Yfk6ZmlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313163594040-37k27orf7bjhelva07druv8173b0hhsa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "313163594040-491r5loidd8aovmd9hq7posfovijhp8h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "rapp.test.com"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

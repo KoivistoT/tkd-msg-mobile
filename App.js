@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -71,7 +72,7 @@ firebaseLogin();
 export default function AppWrapper() {
   const store = configureStore();
   return (
-    <Provider store={store}>
+    <Provider style={{ flex: 1 }} store={store}>
       <App />
     </Provider>
   );
@@ -179,30 +180,34 @@ function App() {
   const accountType = useSelector(selectAccountType);
   accountType ? onLogin() : {};
 
-  // const [isReady, setIsReady] = useState(false);
-  // if (!isReady)
-  //   return (
-  //     <AppLoading
-  //       startAsync={restoreUser}
-  //       onFinish={() => setIsReady(true)}
-  //       onError={console.warn}
-  //     />
-  //   );
+  const [isReady, setIsReady] = useState(false);
+  if (!isReady)
+    return (
+      <AppLoading
+        startAsync={restoreUser}
+        onFinish={() => setIsReady(true)}
+        onError={console.warn}
+      />
+    );
 
   return (
-    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-      <AppErrorToast />
-      <AppSuccessToast />
-      {/* <TaskHandler /> */}
-      {/* <NewTasks /> */}
-      <GeneralLoadIndicator />
-      {!accountType && <AuthNavigator />}
-      {accountType === "admin" && <AdminNavigator />}
-      {accountType && accountType !== "admin" && <AppNavigator />}
+    <View style={{ flex: 1 }}>
+      <NavigationContainer
+        style={{ flex: 1 }}
+        ref={navigationRef}
+        theme={navigationTheme}
+      >
+        <StatusBar style="dark" />
 
-      {/* <AppNavigator /> */}
-      <StatusBar style="auto" />
-    </NavigationContainer>
+        <AppErrorToast />
+        <AppSuccessToast />
+
+        <GeneralLoadIndicator />
+        {!accountType && <AuthNavigator />}
+        {accountType === "admin" && <AdminNavigator />}
+        {accountType && accountType !== "admin" && <AppNavigator />}
+      </NavigationContainer>
+    </View>
   );
 }
 

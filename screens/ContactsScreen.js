@@ -54,7 +54,7 @@ function ContactsScreen({ navigation }) {
           }}
         >
           {usersOnline &&
-            Object.keys(usersOnline).length === 0 &&
+            Object.keys(usersOnline).length !== 0 &&
             usersOnline.includes(item._id) && (
               <AppText style={styles.onlineIndicator}>Online</AppText>
             )}

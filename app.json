@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -26,16 +25,10 @@
     },
 
     "android": {
+      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
       "package": "fi.msg.tkdev",
-      "versionCode": 1,
-      "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
-        "CAMERA",
-        "INTERNET",
-        "RECEIVE_BOOT_COMPLETED"
-      ]
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

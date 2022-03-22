@@ -157,23 +157,23 @@ function MessageForm({ item }) {
       // console.log(imageURLs, "Täältä tulee");
       console.log("lataus valmis");
     }
-    // var counter = 0;
-    // var i = setInterval(async function () {
-    //   dispatch(
-    //     sendMessage(
-    //       counter,
-    //       currentRoomId,
-    //       messageType,
-    //       imageURLs,
-    //       replyMessageId
-    //     )
-    //   );
+    var counter = 0;
+    var i = setInterval(async function () {
+      dispatch(
+        sendMessage(
+          counter,
+          currentRoomId,
+          messageType,
+          imageURLs,
+          replyMessageId
+        )
+      );
 
-    //   counter++;
-    //   if (counter === 1000) {
-    //     clearInterval(i);
-    //   }
-    // }, 10);
+      counter++;
+      if (counter === 100) {
+        clearInterval(i);
+      }
+    }, 10);
 
     //en pidä tästä, että kysyy aina
     if (currentRoomStatus === "draft") {
