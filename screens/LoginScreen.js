@@ -84,7 +84,7 @@ function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    paddingTop: 200,
+    // paddingTop: 200,
     marginHorizontal: 10,
     flex: 1,
   },

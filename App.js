@@ -87,15 +87,21 @@ function App() {
   const onLogin = async () => {
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     dispatch(clearTasks(store.getState().auth.currentUser._id));
-    const roomState = await asyncStorageFuncs.getData("roomState");
-    const userState = await asyncStorageFuncs.getData("userState");
-    const userLastSeenMessages = await asyncStorageFuncs.getData(
-      "userLastSeenMessages"
-    );
-    // console.log(value, "tämä on joo json aik");
-    dispatch(roomsResived(roomState));
-    dispatch(usersResived(userState));
-    dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+
+    try {
+      const roomState = await asyncStorageFuncs.getData("roomState");
+      const userState = await asyncStorageFuncs.getData("userState");
+      const userLastSeenMessages = await asyncStorageFuncs.getData(
+        "userLastSeenMessages"
+      );
+      // console.log(value, "tämä on joo json aik");
+      dispatch(roomsResived(roomState));
+      dispatch(usersResived(userState));
+      dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+    } catch (error) {
+      console.log(error, "code 9929918");
+    }
+
     dispatch(getInitialData);
     pushNotificationFuncs.registerForPushNotificationsAsync();
 
@@ -164,6 +170,7 @@ function App() {
     await Font.loadAsync({
       Avenir: require("./assets/fonts/Avenir.ttf"),
     });
+    // setIsReady(true); // ei kuuluisi olla tässä, mut testaan
     // const userData = await authStorage.getUser();
 
     // if (userData) setUserData(userData);
