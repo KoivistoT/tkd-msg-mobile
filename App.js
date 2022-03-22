@@ -196,7 +196,7 @@ function App() {
         ref={navigationRef}
         theme={navigationTheme}
       >
-        {/* <StatusBar style="dark" />
+        <StatusBar style="dark" />
 
         <AppErrorToast />
         <AppSuccessToast />
@@ -204,8 +204,8 @@ function App() {
         <GeneralLoadIndicator />
         {!accountType && <AuthNavigator />}
         {accountType === "admin" && <AdminNavigator />}
-        {accountType && accountType !== "admin" && <AppNavigator />} */}
-        <AuthNavigator />
+        {accountType && accountType !== "admin" && <AppNavigator />}
+        {/* <AuthNavigator /> */}
       </NavigationContainer>
     </View>
   );
