@@ -39,7 +39,6 @@ import {
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
 import MessageScreen from "./screens/MessageScreen";
-import io from "socket.io-client";
 import settings from "./config/settings";
 import RoomsListScreen from "./screens/RoomsListScreen.js";
 
@@ -197,7 +196,7 @@ function App() {
         ref={navigationRef}
         theme={navigationTheme}
       >
-        <StatusBar style="dark" />
+        {/* <StatusBar style="dark" />
 
         <AppErrorToast />
         <AppSuccessToast />
@@ -205,7 +204,8 @@ function App() {
         <GeneralLoadIndicator />
         {!accountType && <AuthNavigator />}
         {accountType === "admin" && <AdminNavigator />}
-        {accountType && accountType !== "admin" && <AppNavigator />}
+        {accountType && accountType !== "admin" && <AppNavigator />} */}
+        <AuthNavigator />
       </NavigationContainer>
     </View>
   );
