@@ -38,6 +38,7 @@ const slice = createSlice({
     error: null,
     loggedIn: false,
     userRooms: [],
+    userPushNotificationToken: null,
     last_seen_messages: [],
     tasks: [],
     doneTasksIds: [],
@@ -51,6 +52,7 @@ const slice = createSlice({
       currentUser.loading = false;
       currentUser.loggedIn = true;
       currentUser.accountType = user.accountType;
+      currentUser.userPushNotificationToken = user.pushNotificationToken;
       currentUser._id = user._id;
       currentUser.token = action.payload;
 

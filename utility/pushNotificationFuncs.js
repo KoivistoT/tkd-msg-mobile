@@ -2,7 +2,10 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import asyncStorageFuncs from "./asyncStorageFuncs";
 
-const registerForPushNotificationsAsync = async (dispatchFunction) => {
+const registerForPushNotificationsAsync = async (
+  dispatchFunction,
+  currentUserPushTokenNow
+) => {
   if (Device.isDevice) {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
@@ -16,18 +19,14 @@ const registerForPushNotificationsAsync = async (dispatchFunction) => {
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
+    alert(token, "tässä token");
 
-    let currentPushToken = null;
     try {
-      currentPushToken = await asyncStorageFuncs.getData(
-        "currentUserPushToken"
-      );
-
-      if (token === currentPushToken.token) return;
+      if (token === currentUserPushTokenNow) return;
 
       try {
+        alert("tallentaa tokenia");
         dispatchFunction(token);
-        asyncStorageFuncs.setData("currentUserPushToken", { token });
       } catch (error) {
         console.log(error, "code 777421");
       }
@@ -47,8 +46,6 @@ const registerForPushNotificationsAsync = async (dispatchFunction) => {
     });
   }
 };
-
-const addNotificationListeners = () => {};
 
 export default {
   registerForPushNotificationsAsync,

@@ -107,9 +107,13 @@ function App() {
     }
 
     dispatch(getInitialData);
+    const currentUserPushTokenNow =
+      store.getState().auth.currentUser.userPushNotificationToken;
+
     pushNotificationFuncs.registerForPushNotificationsAsync(
       (currentUserPushToken) =>
-        dispatch(saveCurrentUserPushToken(currentUserPushToken))
+        dispatch(saveCurrentUserPushToken(currentUserPushToken)),
+      currentUserPushTokenNow
     );
 
     // ei tarvi mennä kuin huoneeseen, niin sitten siellä näyttää viestit, kun ne tulee
