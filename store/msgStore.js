@@ -245,6 +245,7 @@ const slice = createSlice({
       }
 
       const newMessages = {};
+      const editedRooms = [];
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
@@ -273,6 +274,10 @@ const slice = createSlice({
             imageURLs.forEach((url) => {
               newState.images[roomId].unshift(url);
             });
+          }
+
+          if (!editedRooms.includes(roomId)) {
+            editedRooms.push(roomId);
           }
         }
       });
@@ -333,12 +338,15 @@ const slice = createSlice({
 
           newState2.allMessages[roomId].messages[messageId].is_deleted = true;
         }
+        if (!editedRooms.includes(data.roomId)) {
+          editedRooms.push(data.roomId);
+        }
       });
 
       msgStore = newState2;
 
       //siirrä tallennettavaksi
-      Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
+      editedRooms.forEach((currentRoomId) => {
         const toStorage = Object.entries(
           msgStore.allMessages[currentRoomId].messages
         ).slice(0, 30);
