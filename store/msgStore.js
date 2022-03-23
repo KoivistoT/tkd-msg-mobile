@@ -86,6 +86,14 @@ const slice = createSlice({
     messagesResived: (msgStore, action) => {
       msgStore.allMessages = action.payload;
 
+      // console.log(action.payload);
+      // Object.keys(action.payload).forEach((roomId) => {
+      //   msgStore.allMessages[roomId].messages = Object.assign(
+      //     action.payload[roomId].messages,
+      //     msgStore.allMessages[roomId].messages
+      //   );
+      // });
+
       Object.keys(action.payload).forEach((roomId) => {
         // rooms.allActiveRoomsIds.push(id);
         msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
@@ -346,12 +354,13 @@ const slice = createSlice({
       msgStore = newState2;
 
       //siirrä tallennettavaksi
+      let newState3 = { ...msgStore.messageStorage };
       editedRooms.forEach((currentRoomId) => {
         const toStorage = Object.entries(
           msgStore.allMessages[currentRoomId].messages
         ).slice(0, 30);
 
-        msgStore.messageStorage[currentRoomId].messages = toStorage.reduce(
+        newState3[currentRoomId].messages = toStorage.reduce(
           (newObject, item) => {
             newObject[item[0]] = item[1];
             return newObject;
@@ -359,7 +368,7 @@ const slice = createSlice({
           {}
         );
       });
-
+      msgStore.messageIdStorage = newState3;
       // var targetMessages = msgStore.allMessages[roomId].messages;
 
       // delete msgStore.newTasks[action.payload.taskId];

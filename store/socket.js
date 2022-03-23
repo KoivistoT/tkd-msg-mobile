@@ -85,6 +85,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
         socket.emit("identity", getState().auth.currentUser._id, accountType);
+
         // dispatch(getTasks(getState().auth.currentUser._id, accountType));
       } else {
         console.log("socket connection error");

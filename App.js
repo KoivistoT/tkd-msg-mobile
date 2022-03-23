@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
 import * as Notifications from "expo-notifications";
+
 import configureStore from "./store/configureStore";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Provider } from "react-redux";
@@ -35,6 +36,7 @@ import { roomsResived } from "./store/rooms";
 import { usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
 import { messagesResived } from "./store/msgStore";
+import { createSocketConnection } from "./store/socket";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -59,6 +61,7 @@ function App() {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   const onLogin = async () => {
+    // dispatch(createSocketConnection())
     isLoggedIn.current = true;
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     dispatch(clearTasks(store.getState().auth.currentUser._id));
@@ -70,6 +73,7 @@ function App() {
         "userLastSeenMessages"
       );
       const messageState = await asyncStorageFuncs.getData("messageState");
+      console.log(messageState);
       // console.log(value, "tämä on joo json aik");
       dispatch(roomsResived(roomState));
       dispatch(usersResived(userState));
@@ -80,6 +84,10 @@ function App() {
     }
 
     dispatch(getInitialData);
+
+    if (lastNotificationResponseRoomId.current) {
+      handleResponse();
+    }
     const currentUserPushTokenNow =
       store.getState().auth.currentUser.userPushNotificationToken;
 
@@ -90,15 +98,12 @@ function App() {
     );
   };
 
-  const handleResponse = (lastNotificationResponse) => {
+  const handleResponse = () => {
     try {
-      const currentRoomId =
-        lastNotificationResponse.response.notification.request.content.data
-          .roomId;
+      const currentRoomId = lastNotificationResponseRoomId.current;
       const roomData = store.getState().entities.rooms.allRooms[currentRoomId];
-      alert("täällä menee");
-      alert("menee joo ", currentRoomId);
-      // navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+
+      navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
     } catch (error) {
       console.log(error, "app.js responselistener");
     }
@@ -107,7 +112,7 @@ function App() {
   useEffect(() => {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        alert("viesti huoneeseen:", notification.request.content.data.roomId);
+        // alert("viesti huoneeseen:", notification.request.content.data.roomId);
         // const currentRoomId = notification.request.content.data.roomId;
         // const roomData =
         //   store.getState().entities.rooms.allRooms[currentRoomId];
@@ -125,24 +130,6 @@ function App() {
         navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
       });
 
-    try {
-      if (
-        lastNotificationResponse &&
-        lastNotificationResponse.notification.request.content.data.roomId
-      ) {
-        const responseRoomId =
-          lastNotificationResponse.notification.request.content.data.roomId;
-        alert(
-          "tämä tuli:",
-          lastNotificationResponse.notification.request.content.data
-        );
-
-        handleResponse(lastNotificationResponse);
-      }
-    } catch (error) {
-      alert(error, "code 2777218");
-    }
-
     return () => {
       Notifications.removeNotificationSubscription(
         notificationListener.current
@@ -150,6 +137,23 @@ function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
+  let lastNotificationResponseRoomId = useRef(null);
+  useEffect(() => {
+    try {
+      if (
+        lastNotificationResponse &&
+        lastNotificationResponse.notification.request.content.data.roomId
+        // && lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
+      ) {
+        lastNotificationResponseRoomId.current =
+          lastNotificationResponse.notification.request.content.data.roomId;
+      }
+    } catch (error) {
+      // alert(error, "code 2777218");
+      alert("Something went wrong!");
+    }
+  }, [lastNotificationResponse]);
 
   const restoreUser = async () => {
     await Font.loadAsync({
@@ -165,7 +169,7 @@ function App() {
   let isLoggedIn = useRef(false);
   accountType && !isLoggedIn.current ? onLogin() : {};
   if (!accountType) isLoggedIn.current = false;
-  console.log("app päivittyy");
+
   const [isReady, setIsReady] = useState(false);
   if (!isReady)
     return (
