@@ -35,6 +35,7 @@ import {
   userLoggedOut,
   clearTasks,
   currentUserLastSeenMessagesResived,
+  saveCurrentUserPushToken,
 } from "./store/currentUser";
 import LoginScreen from "./screens/LoginScreen";
 import ErrorMessage from "./app/components/ErrorMessage";
@@ -106,7 +107,10 @@ function App() {
     }
 
     dispatch(getInitialData);
-    pushNotificationFuncs.registerForPushNotificationsAsync();
+    pushNotificationFuncs.registerForPushNotificationsAsync(
+      (currentUserPushToken) =>
+        dispatch(saveCurrentUserPushToken(currentUserPushToken))
+    );
 
     // ei tarvi mennä kuin huoneeseen, niin sitten siellä näyttää viestit, kun ne tulee
     // setTimeout(() => {

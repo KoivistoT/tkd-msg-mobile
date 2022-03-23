@@ -1,7 +1,8 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import asyncStorageFuncs from "./asyncStorageFuncs";
 
-const registerForPushNotificationsAsync = async () => {
+const registerForPushNotificationsAsync = async (dispatchFunction) => {
   if (Device.isDevice) {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
@@ -15,7 +16,24 @@ const registerForPushNotificationsAsync = async () => {
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    alert(token);
+
+    let currentPushToken = null;
+    try {
+      currentPushToken = await asyncStorageFuncs.getData(
+        "currentUserPushToken"
+      );
+
+      if (token === currentPushToken.token) return;
+
+      try {
+        dispatchFunction(token);
+        asyncStorageFuncs.setData("currentUserPushToken", { token });
+      } catch (error) {
+        console.log(error, "code 777421");
+      }
+    } catch (error) {
+      console.log(error, "code 277719");
+    }
   } else {
     // alert("Must use physical device for Push Notifications");
   }
