@@ -144,11 +144,11 @@ function RoomsListScreen({ navigation }) {
     };
   }, []);
 
-  useLayoutEffect(() => {
-    if (isFocused) {
-      dispatch(roomMessagesMoveToStorage());
-    }
-  }, [isFocused]);
+  // useLayoutEffect(() => {
+  //   if (isFocused) {
+  //     dispatch(roomMessagesMoveToStorage());
+  //   }
+  // }, [isFocused]);
 
   const keyExtractor = (id) => id;
   const listItem = ({ item }) => {
