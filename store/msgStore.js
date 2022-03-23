@@ -239,15 +239,13 @@ const slice = createSlice({
     msgTasksResived: (msgStore, action) => {
       let newState = { ...msgStore };
 
-      //varmista että taskit tulee aikajärjestyksessä
-      //varmista että taskit tulee aikajärjestyksessä
-      //varmista että taskit tulee aikajärjestyksessä
       var start = null;
       if (action.payload.length > 50) {
         start = +new Date();
       }
+
       const newMessages = {};
-      action.payload.forEach((task) => {
+      action.payload.forEach((task, index) => {
         const { taskType, data } = task;
 
         if (taskType === "new message") {
@@ -276,36 +274,7 @@ const slice = createSlice({
               newState.images[roomId].unshift(url);
             });
           }
-          // const sortedMessages = Object.entries(
-          //   newState.allMessages[roomId].messages
-          // ).sort(function (a, b) {
-          //   var nameA = a[1].createdAt;
-          //   var nameB = b[1].createdAt;
-
-          //   if (nameA > nameB) {
-          //     return -1;
-          //   }
-          //   if (nameA < nameB) {
-          //     return 1;
-          //   }
-          //   return 0;
-          // });
-
-          // newState.allMessages[roomId].messages = sortedMessages.reduce(
-          //   (newObject, item) => {
-          //     newObject[item[0]] = item[1];
-          //     return newObject;
-          //   },
-          //   {}
-          // );
         }
-
-        if (taskType === "messageDeleted") {
-          const { roomId, messageId } = data;
-          newState.allMessages[roomId].messages[messageId].is_deleted = true;
-        }
-
-        //onko viestiä
       });
 
       Object.keys(newMessages).forEach((roomId) => {
@@ -314,11 +283,45 @@ const slice = createSlice({
           newState.allMessages[roomId].messages
         );
 
-        newState.allMessageIds[roomId] = Object.keys(
+        const sortedMessages = Object.entries(
           newState.allMessages[roomId].messages
+        ).sort(function (a, b) {
+          var nameA = a[1].createdAt;
+          var nameB = b[1].createdAt;
+
+          if (nameA > nameB) {
+            return -1;
+          }
+          if (nameA < nameB) {
+            return 1;
+          }
+          return 0;
+        });
+
+        newState.allMessages[roomId].messages = sortedMessages.reduce(
+          (newObject, item) => {
+            newObject[item[0]] = item[1];
+            return newObject;
+          },
+          {}
         );
+
+        newState.allMessageIds[roomId] = sortedMessages.map((item) => item[0]);
+        // newState.allMessageIds[roomId] = Object.keys(
+        //   newState.allMessages[roomId].messages
+        // );
       });
 
+      //tämä pitää tehdä uusiksi, koska
+      action.payload.forEach((task) => {
+        const { taskType, data } = task;
+
+        if (taskType === "messageDeleted") {
+          const { roomId, messageId } = data;
+
+          newState.allMessages[roomId].messages[messageId].is_deleted = true;
+        }
+      });
       if (start) {
         var end = +new Date();
         var diff = end - start;

@@ -71,7 +71,7 @@ firebaseLogin();
 export default function AppWrapper() {
   const store = configureStore();
   return (
-    <Provider style={{ flex: 1 }} store={store}>
+    <Provider store={store}>
       <App />
     </Provider>
   );
@@ -190,24 +190,18 @@ function App() {
     );
 
   return (
-    <View style={{ flex: 1 }}>
-      <NavigationContainer
-        style={{ flex: 1 }}
-        ref={navigationRef}
-        theme={navigationTheme}
-      >
-        <StatusBar style="dark" />
+    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+      <StatusBar style="dark" />
 
-        <AppErrorToast />
-        <AppSuccessToast />
+      <AppErrorToast />
+      <AppSuccessToast />
 
-        <GeneralLoadIndicator />
-        {!accountType && <AuthNavigator />}
-        {accountType === "admin" && <AdminNavigator />}
-        {accountType && accountType !== "admin" && <AppNavigator />}
-        {/* <AuthNavigator /> */}
-      </NavigationContainer>
-    </View>
+      <GeneralLoadIndicator />
+      {!accountType && <AuthNavigator />}
+      {accountType === "admin" && <AdminNavigator />}
+      {accountType && accountType !== "admin" && <AppNavigator />}
+      {/* <AuthNavigator /> */}
+    </NavigationContainer>
   );
 }
 

@@ -170,7 +170,7 @@ function MessageForm({ item }) {
     //   );
 
     //   counter++;
-    //   if (counter === 100) {
+    //   if (counter === 1000) {
     //     clearInterval(i);
     //   }
     // }, 10);

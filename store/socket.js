@@ -172,7 +172,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       dispatch(endLoad());
 
       if (taskGroups.latestTaskId) {
-        console.log("käy täällä", taskGroups);
+        // console.log("käy täällä", taskGroups);
         dispatch(
           removeOlderTasksItemsById(
             getState().auth.currentUser._id,
