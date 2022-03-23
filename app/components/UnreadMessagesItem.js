@@ -7,8 +7,8 @@ import { selectLastSeenMessagesById } from "../../store/currentUser";
 function UnreadMessagesItem({ item }) {
   const { messageSum, _id: roomId } = item;
   const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
-
-  return <AppText>{messageSum - lastSeenMessagesNow}</AppText>;
+  const unreadMessages = messageSum - lastSeenMessagesNow;
+  return <AppText>{unreadMessages < 0 ? 0 : unreadMessages}</AppText>;
 }
 
 const styles = StyleSheet.create({});

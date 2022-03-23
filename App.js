@@ -1,54 +1,27 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  AppState,
-  Text,
-  View,
-  LogBox,
-} from "react-native";
+import { StyleSheet } from "react-native";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
-import authApi from "./api/auth";
 import * as Notifications from "expo-notifications";
 import configureStore from "./store/configureStore";
-import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Provider } from "react-redux";
 import AppErrorToast from "./app/components/AppErrorToast";
 import GeneralLoadIndicator from "./app/components/GeneralLoadIndicator";
-import Login from "./app/components/Login";
 
 import {
-  getCurrentUser,
-  getCurrentUserById,
   getInitialData,
-  selectIsCurrentUserLoggedIn,
-  logout,
   selectAccountType,
-  selectToken,
-  userLoggedOut,
   clearTasks,
   currentUserLastSeenMessagesResived,
   saveCurrentUserPushToken,
 } from "./store/currentUser";
-import LoginScreen from "./screens/LoginScreen";
-import ErrorMessage from "./app/components/ErrorMessage";
-import MessageScreen from "./screens/MessageScreen";
-import settings from "./config/settings";
-import RoomsListScreen from "./screens/RoomsListScreen.js";
 
-import {
-  saveSocket,
-  socketConnected,
-  createSocketConnection,
-  selectSocket,
-} from "./store/socket";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
 
@@ -56,8 +29,7 @@ import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
-import TaskHandler from "./app/components/TaskHandler";
-import NewTasks from "./app/components/NewTasks";
+
 import asyncStorageFuncs from "./utility/asyncStorageFuncs";
 import { roomsResived } from "./store/rooms";
 import { usersResived } from "./store/users";
@@ -87,6 +59,7 @@ function App() {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   const onLogin = async () => {
+    isLoggedIn.current = true;
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     dispatch(clearTasks(store.getState().auth.currentUser._id));
 
@@ -115,14 +88,6 @@ function App() {
         dispatch(saveCurrentUserPushToken(currentUserPushToken)),
       currentUserPushTokenNow
     );
-
-    // ei tarvi mennä kuin huoneeseen, niin sitten siellä näyttää viestit, kun ne tulee
-    // setTimeout(() => {
-    //   const item = {
-    //     _id: "62357ebf9fdfe524a837c4b4",
-    //   };
-    //   navigationRef.current.navigate(routes.MESSAGE_SCREEN, item);
-    // }, 2000);
   };
 
   const handleResponse = (lastNotificationResponse) => {
@@ -197,8 +162,10 @@ function App() {
   };
 
   const accountType = useSelector(selectAccountType);
-  accountType ? onLogin() : {};
-
+  let isLoggedIn = useRef(false);
+  accountType && !isLoggedIn.current ? onLogin() : {};
+  if (!accountType) isLoggedIn.current = false;
+  console.log("app päivittyy");
   const [isReady, setIsReady] = useState(false);
   if (!isReady)
     return (

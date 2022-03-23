@@ -118,37 +118,12 @@ function RoomsListScreen({ navigation }) {
     }
   };
 
-  const addListener = async () => {
-    const result = await messagesApi.addMessageListener();
-    console.log(result);
-  };
-
-  const [summa, setSumma] = useState(0);
-  const getSum = () => {
-    setSumma(
-      Object.keys(
-        store.getState().entities.msgStore.allMessages[
-          "62358b939fdfe524a838af49"
-        ].messages
-      ).length
-    );
-  };
   useEffect(() => {
-    // addListener();
-    // if (socket) {
-    // handleChange(AppState.currentState);
     var appStateListener = AppState.addEventListener("change", handleChange);
-    // }
     return () => {
       appStateListener?.remove();
     };
   }, []);
-
-  // useLayoutEffect(() => {
-  //   if (isFocused) {
-  //     dispatch(roomMessagesMoveToStorage());
-  //   }
-  // }, [isFocused]);
 
   const keyExtractor = (id) => id;
   const listItem = ({ item }) => {
@@ -160,23 +135,6 @@ function RoomsListScreen({ navigation }) {
       />
     );
   };
-
-  // const sortRoomsByLastMessage = () => {
-  //   allActiveRoomsIds.sort(function (a, b) {
-  //     console.log(a, b);
-  //     var nameA = a[field];
-  //     var nameB = b[field];
-
-  //     if (nameA > nameB) {
-  //       return 1;
-  //     }
-  //     if (nameA < nameB) {
-  //       return -1;
-  //     }
-  //     return 0;
-  //   });
-  // };
-  // sortRoomsByLastMessage();
 
   return (
     <Screen>
@@ -197,14 +155,6 @@ function RoomsListScreen({ navigation }) {
       )}
 
       <View>
-        <TouchableOpacity onPress={() => getSum()}>
-          <Text>ota summa</Text>
-        </TouchableOpacity>
-
-        <Text style={{ width: 200, height: 100, backgroundColor: "red" }}>
-          {summa}
-        </Text>
-
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>

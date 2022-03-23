@@ -19,13 +19,13 @@ const registerForPushNotificationsAsync = async (
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    alert(token, "tässä token");
+    // alert(token, "tässä token");
 
     try {
       if (token === currentUserPushTokenNow) return;
 
       try {
-        alert("tallentaa tokenia");
+        // alert("tallentaa tokenia");
         dispatchFunction(token);
       } catch (error) {
         console.log(error, "code 777421");
