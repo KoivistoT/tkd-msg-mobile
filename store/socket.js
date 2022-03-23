@@ -138,20 +138,30 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           // if (data.some((task) => task.taskType === "new message")) {
 
           // }
+          setTimeout(() => {
+            asyncStorageFuncs.setData(
+              "messageState",
+              getState().entities.msgStore.messageStorage
+            );
+          }, 1500);
         }
         if (taskGroupType === "room") {
           dispatch(roomTasksResived(data));
-          asyncStorageFuncs.setData(
-            "roomState",
-            getState().entities.rooms.allRooms
-          );
+          setTimeout(() => {
+            asyncStorageFuncs.setData(
+              "roomState",
+              getState().entities.rooms.allRooms
+            );
+          }, 1500);
         }
         if (taskGroupType === "user") {
           dispatch(userTasksResived(data));
-          asyncStorageFuncs.setData(
-            "userState",
-            getState().entities.users.allUsers
-          );
+          setTimeout(() => {
+            asyncStorageFuncs.setData(
+              "userState",
+              getState().entities.users.allUsers
+            );
+          }, 1500);
         }
       };
 

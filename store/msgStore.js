@@ -245,7 +245,7 @@ const slice = createSlice({
       }
 
       const newMessages = {};
-      action.payload.forEach((task, index) => {
+      action.payload.forEach((task) => {
         const { taskType, data } = task;
 
         if (taskType === "new message") {
@@ -312,16 +312,6 @@ const slice = createSlice({
         // );
       });
 
-      //tämä pitää tehdä uusiksi, koska
-      action.payload.forEach((task) => {
-        const { taskType, data } = task;
-
-        if (taskType === "messageDeleted") {
-          const { roomId, messageId } = data;
-
-          newState.allMessages[roomId].messages[messageId].is_deleted = true;
-        }
-      });
       if (start) {
         var end = +new Date();
         var diff = end - start;
@@ -329,6 +319,38 @@ const slice = createSlice({
       }
 
       msgStore = newState;
+
+      //tämä, jotta menee nopeammin uudet viestit
+      let newState2 = { ...msgStore };
+
+      //tämä pitää tehdä uusiksi, koska
+      //tähän myös edited message
+      action.payload.forEach((task) => {
+        const { taskType, data } = task;
+
+        if (taskType === "messageDeleted") {
+          const { roomId, messageId } = data;
+
+          newState2.allMessages[roomId].messages[messageId].is_deleted = true;
+        }
+      });
+
+      msgStore = newState2;
+
+      //siirrä tallennettavaksi
+      Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
+        const toStorage = Object.entries(
+          msgStore.allMessages[currentRoomId].messages
+        ).slice(0, 30);
+
+        msgStore.messageStorage[currentRoomId].messages = toStorage.reduce(
+          (newObject, item) => {
+            newObject[item[0]] = item[1];
+            return newObject;
+          },
+          {}
+        );
+      });
 
       // var targetMessages = msgStore.allMessages[roomId].messages;
 

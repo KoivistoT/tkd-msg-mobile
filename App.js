@@ -61,6 +61,7 @@ import asyncStorageFuncs from "./utility/asyncStorageFuncs";
 import { roomsResived } from "./store/rooms";
 import { usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
+import { messagesResived } from "./store/msgStore";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -94,10 +95,12 @@ function App() {
       const userLastSeenMessages = await asyncStorageFuncs.getData(
         "userLastSeenMessages"
       );
+      const messageState = await asyncStorageFuncs.getData("messageState");
       // console.log(value, "tämä on joo json aik");
       dispatch(roomsResived(roomState));
       dispatch(usersResived(userState));
       dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+      dispatch(messagesResived(messageState));
     } catch (error) {
       console.log(error, "code 9929918");
     }

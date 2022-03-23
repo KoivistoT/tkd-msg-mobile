@@ -54,7 +54,8 @@ function MessageList({ item }) {
   };
 
   onGetMoreMessages = () => {
-    dispatch(messagesFromStorageFetched(roomId));
+    //tämä ei enää ole olellinen, jos kaikki on samassa paikassa, ja nyt tuo on ihan muut viestit
+    // dispatch(messagesFromStorageFetched(roomId));
   };
   const keyExtractor = (item) => item;
 
