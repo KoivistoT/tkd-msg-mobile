@@ -121,12 +121,15 @@ function App() {
     // }, 2000);
   };
 
-  const handleResponse = (responseRoomId) => {
+  const handleResponse = (lastNotificationResponse) => {
     try {
-      const currentRoomId = response.notification.request.content.data.roomId;
+      const currentRoomId =
+        lastNotificationResponse.response.notification.request.content.data
+          .roomId;
       const roomData = store.getState().entities.rooms.allRooms[currentRoomId];
       alert("täällä menee");
-      // navigationRef.current.navigate(routes.MESSAGE_SCREEN);
+      alert("menee joo ", currentRoomId);
+      // navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
     } catch (error) {
       console.log(error, "app.js responselistener");
     }
@@ -135,18 +138,21 @@ function App() {
   useEffect(() => {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        // console.log(notification.request);
+        alert("viesti huoneeseen:", notification.request.content.data.roomId);
+        // const currentRoomId = notification.request.content.data.roomId;
+        // const roomData =
+        //   store.getState().entities.rooms.allRooms[currentRoomId];
+        // navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
       });
 
+    // tämä jos ei sovelluksessa
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        // console.log(
-        //   response.notification.request.content.data.roomId,
-        //   "tämä response"
-        // );
         const currentRoomId = response.notification.request.content.data.roomId;
+
         const roomData =
           store.getState().entities.rooms.allRooms[currentRoomId];
+
         navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
       });
 
@@ -157,9 +163,12 @@ function App() {
       ) {
         const responseRoomId =
           lastNotificationResponse.notification.request.content.data.roomId;
-        // alert(  lastNotificationResponse.notification.request.content.data);
+        alert(
+          "tämä tuli:",
+          lastNotificationResponse.notification.request.content.data
+        );
 
-        handleResponse(responseRoomId);
+        handleResponse(lastNotificationResponse);
       }
     } catch (error) {
       alert(error, "code 2777218");
