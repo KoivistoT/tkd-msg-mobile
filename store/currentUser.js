@@ -154,7 +154,7 @@ export const getInitialData = apiCallBegan({
     init: true,
     user: currentUserResived.type,
     rooms: roomsResived.type,
-    messages: messagesResived.type,
+    messages: messagesResived.type, // tällä hakee vain vähän alkuun kaikkiin
     images: allImagesResived.type,
     users: usersResived.type,
   },

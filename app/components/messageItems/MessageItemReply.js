@@ -26,22 +26,25 @@ function MessageItemReply({ item, allUsers, onScrollToIndex }) {
   };
   return (
     <>
-      <TouchableOpacity
-        key={messageData._id}
-        style={{ backgroundColor: colors.primary }}
-        onPress={getIndexNow}
-      >
-        <AppText>
-          sender:
-          {allUsers
-            ? allUsers[messageData.postedByUser].displayName
-            : "unknown user"}
-        </AppText>
-        {messageData.type === "image" && (
-          <MessageItemImage item={messageData} />
-        )}
-        <AppText>{messageData.messageBody}</AppText>
-      </TouchableOpacity>
+      {!messageData && <AppText>Loading reply message....</AppText>}
+      {messageData && (
+        <TouchableOpacity
+          key={messageData._id}
+          style={{ backgroundColor: colors.primary }}
+          onPress={getIndexNow}
+        >
+          <AppText>
+            sender:
+            {allUsers
+              ? allUsers[messageData.postedByUser].displayName
+              : "unknown user"}
+          </AppText>
+          {messageData.type === "image" && (
+            <MessageItemImage item={messageData} />
+          )}
+          <AppText>{messageData.messageBody}</AppText>
+        </TouchableOpacity>
+      )}
     </>
   );
 }
