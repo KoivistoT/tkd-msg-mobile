@@ -96,12 +96,33 @@ const slice = createSlice({
 
       Object.keys(action.payload).forEach((roomId) => {
         // rooms.allActiveRoomsIds.push(id);
+
         msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
           [roomId]: Object.keys(action.payload[roomId].messages),
         });
         msgStore.messageStorage = Object.assign(msgStore.messageStorage, {
           [roomId]: { messages: {} },
         });
+      });
+    },
+    restMessagesResived: (msgStore, action) => {
+      // console.log(action.payload);
+
+      Object.keys(action.payload).forEach((currentRoomId) => {
+        const newObject = Object.assign(
+          msgStore.allMessages[currentRoomId].messages,
+          action.payload[currentRoomId].messages
+        );
+        msgStore.allMessages[currentRoomId].messages = newObject;
+      });
+
+      Object.keys(action.payload).forEach((currentRoomId) => {
+        // rooms.allActiveRoomsIds.push(id);
+
+        msgStore.allMessageIds[currentRoomId] = [
+          ...msgStore.allMessageIds[currentRoomId],
+          ...Object.keys(action.payload[currentRoomId].messages),
+        ];
       });
     },
 
@@ -478,6 +499,7 @@ export const {
   messagesRemoved,
   oneRoomImagesResived,
   allImagesResived,
+  restMessagesResived,
   replyMessageIdResived,
   replyMessageIdCleared,
   readByRecepientsAdded,
@@ -548,6 +570,14 @@ export const getRoomImages = (id) =>
   apiCallBegan({
     url: url + "/messages/room_images/" + id,
     onSuccess: oneRoomImagesResived.type,
+    onError: messagesError.type,
+  });
+export const getRestMessages = (object) =>
+  apiCallBegan({
+    url: url + "/initial/rest_messages/",
+    method: "post",
+    data: object,
+    onSuccess: restMessagesResived.type,
     onError: messagesError.type,
   });
 

@@ -22,7 +22,7 @@ function SendButton() {
       onPress={handleSubmit}
       color="primary"
       activeOpacity={0.5}
-      disabled={socket}
+      // disabled={socket}
     >
       <MaterialCommunityIcons
         name="send"

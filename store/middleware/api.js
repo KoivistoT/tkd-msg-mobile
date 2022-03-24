@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { clearTasks, selectCurrentUserToken } from "../currentUser";
 import { errorMessageAdded } from "../general";
 import { createSocketConnection } from "../socket";
+import { getRestMessages } from "../msgStore";
 const api =
   ({ dispatch, getState }) =>
   (next) =>
@@ -46,6 +47,12 @@ const api =
           type: onInitSuccess.messages,
           payload: response.data.messages,
         });
+        dispatch(
+          getRestMessages({
+            currentUserId: getState().auth.currentUser._id,
+            roomsNow: response.data.rooms,
+          })
+        );
         dispatch({
           type: onInitSuccess.images,
           payload: response.data.allImages,

@@ -110,7 +110,7 @@ const slice = createSlice({
       // action.payload.forEach((item) => {
       //   rooms.allRooms = { [item._id]: item, ...rooms.allRooms };
       // });
-      // console.log(action.payload, "tääll");
+
       rooms.allRooms = action.payload;
 
       Object.keys(action.payload).forEach((id) => {
@@ -211,6 +211,13 @@ export const deleteRoom = (roomId) =>
     url: url + "/rooms/delete_room/" + roomId,
     onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
+    onError: roomsError.type,
+  });
+export const getUserRoomsByUserId = (currentUserId) =>
+  apiCallBegan({
+    url: url + "/rooms/all_user_rooms/" + currentUserId,
+    onStart: requestStarted.type,
+    onSuccess: roomsResived.type,
     onError: roomsError.type,
   });
 

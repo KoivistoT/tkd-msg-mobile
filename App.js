@@ -21,6 +21,7 @@ import {
   clearTasks,
   currentUserLastSeenMessagesResived,
   saveCurrentUserPushToken,
+  getCurrentUserById,
 } from "./store/currentUser";
 
 import AuthNavigator from "./app/navigation/AuthNavigator";
@@ -32,10 +33,10 @@ import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
 
 import asyncStorageFuncs from "./utility/asyncStorageFuncs";
-import { roomsResived } from "./store/rooms";
-import { usersResived } from "./store/users";
+import { getUserRoomsByUserId, roomsResived } from "./store/rooms";
+import { getAllUsers, usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
-import { messagesResived } from "./store/msgStore";
+import { getRestMessages, messagesResived } from "./store/msgStore";
 import { createSocketConnection } from "./store/socket";
 
 if (!__DEV__) {
@@ -64,7 +65,8 @@ function App() {
     // dispatch(createSocketConnection());
     isLoggedIn.current = true;
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
-    dispatch(clearTasks(store.getState().auth.currentUser._id));
+    const currentUserId = store.getState().auth.currentUser._id;
+    dispatch(clearTasks(currentUserId));
 
     try {
       const roomState = await asyncStorageFuncs.getData("roomState");
@@ -75,16 +77,20 @@ function App() {
       const messageState = await asyncStorageFuncs.getData("messageState");
       // console.log(messageState);
       // console.log(value, "tämä on joo json aik");
-      dispatch(roomsResived(roomState));
-      dispatch(usersResived(userState));
-      dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
-
-      dispatch(messagesResived(messageState));
+      // dispatch(roomsResived(roomState));
+      // dispatch(usersResived(userState));
+      // dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+      // dispatch(messagesResived(messageState));
     } catch (error) {
       console.log(error, "code 9929918");
     }
 
+    // dispatch(getCurrentUserById(currentUserId));
+    // dispatch(getAllUsers());
+    // dispatch(getUserRoomsByUserId(currentUserId));
+
     dispatch(getInitialData);
+    // dispatch(getRestMessages(currentUserId));
 
     if (lastNotificationResponseRoomId.current) {
       handleResponse();
