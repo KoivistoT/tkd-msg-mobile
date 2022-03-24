@@ -50,7 +50,7 @@ const api =
         dispatch(
           getRestMessages({
             currentUserId: getState().auth.currentUser._id,
-            roomsNow: response.data.rooms,
+            messagesNow: response.data.messages,
           })
         );
         dispatch({

@@ -85,58 +85,62 @@ const slice = createSlice({
     },
     messagesResived: (msgStore, action) => {
       // msgStore.allMessages = action.payload;
+      let stateNow = { ...msgStore };
 
       Object.keys(action.payload).forEach((roomId) => {
-        if (msgStore.allMessages[roomId]) {
-          msgStore.allMessages[roomId].messages = Object.assign(
-            msgStore.allMessages[roomId].messages,
+        if (stateNow.allMessages[roomId]) {
+          stateNow.allMessages[roomId].messages = Object.assign(
+            stateNow.allMessages[roomId].messages,
             action.payload[roomId].messages
           );
         } else {
-          msgStore.allMessages[roomId] = action.payload[roomId];
+          stateNow.allMessages[roomId] = action.payload[roomId];
         }
       });
 
       Object.keys(action.payload).forEach((roomId) => {
         // rooms.allActiveRoomsIds.push(id);
-        if (msgStore.allMessageIds[roomId]) {
-          msgStore.allMessageIds[roomId] = [
-            ...Object.keys(msgStore.allMessages[roomId].messages),
+        if (stateNow.allMessageIds[roomId]) {
+          stateNow.allMessageIds[roomId] = [
+            ...Object.keys(stateNow.allMessages[roomId].messages),
           ];
         } else {
-          msgStore.allMessageIds[roomId] = Object.keys(
+          stateNow.allMessageIds[roomId] = Object.keys(
             action.payload[roomId].messages
           );
         }
       });
 
       Object.keys(action.payload).forEach((roomId) => {
-        if (!msgStore.messageStorage[roomId]) {
-          msgStore.messageStorage = Object.assign(msgStore.messageStorage, {
+        if (!stateNow.messageStorage[roomId]) {
+          stateNow.messageStorage = Object.assign(stateNow.messageStorage, {
             [roomId]: { messages: {} },
           });
         }
       });
+      msgStore = stateNow;
     },
     restMessagesResived: (msgStore, action) => {
       // console.log(action.payload);
-
+      let stateNow = { ...msgStore };
       Object.keys(action.payload).forEach((currentRoomId) => {
         const newObject = Object.assign(
-          msgStore.allMessages[currentRoomId].messages,
+          stateNow.allMessages[currentRoomId].messages,
           action.payload[currentRoomId].messages
         );
-        msgStore.allMessages[currentRoomId].messages = newObject;
+        stateNow.allMessages[currentRoomId].messages = newObject;
       });
 
       Object.keys(action.payload).forEach((currentRoomId) => {
         // rooms.allActiveRoomsIds.push(id);
 
-        msgStore.allMessageIds[currentRoomId] = [
-          ...msgStore.allMessageIds[currentRoomId],
+        stateNow.allMessageIds[currentRoomId] = [
+          ...stateNow.allMessageIds[currentRoomId],
           ...Object.keys(action.payload[currentRoomId].messages),
         ];
       });
+
+      msgStore = stateNow;
     },
 
     oneRoomMessagesResived: (msgStore, action) => {
