@@ -62,7 +62,7 @@ function App() {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   const onLogin = async () => {
-    // dispatch(createSocketConnection());
+    dispatch(createSocketConnection());
     isLoggedIn.current = true;
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     const currentUserId = store.getState().auth.currentUser._id;
@@ -77,9 +77,10 @@ function App() {
       const messageState = await asyncStorageFuncs.getData("messageState");
       // console.log(messageState);
       // console.log(value, "tämä on joo json aik");
-      // dispatch(roomsResived(roomState));
-      // dispatch(usersResived(userState));
-      // dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+      dispatch(roomsResived(roomState));
+      dispatch(usersResived(userState));
+      dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+      // ei voi käyttää tätä
       // dispatch(messagesResived(messageState));
     } catch (error) {
       console.log(error, "code 9929918");

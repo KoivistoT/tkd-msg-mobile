@@ -139,12 +139,12 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           // if (data.some((task) => task.taskType === "new message")) {
 
           // }
-          setTimeout(() => {
-            asyncStorageFuncs.setData(
-              "messageState",
-              getState().entities.msgStore.messageStorage
-            );
-          }, 1500);
+          // setTimeout(() => {
+          //   asyncStorageFuncs.setData(
+          //     "messageState",
+          //     getState().entities.msgStore.messageStorage
+          //   );
+          // }, 1500);
         }
         if (taskGroupType === "room") {
           dispatch(roomTasksResived(data));

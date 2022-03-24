@@ -84,25 +84,39 @@ const slice = createSlice({
       msgStore.activeRoomId = action.payload;
     },
     messagesResived: (msgStore, action) => {
-      msgStore.allMessages = action.payload;
+      // msgStore.allMessages = action.payload;
 
-      // console.log(action.payload);
-      // Object.keys(action.payload).forEach((roomId) => {
-      //   msgStore.allMessages[roomId].messages = Object.assign(
-      //     action.payload[roomId].messages,
-      //     msgStore.allMessages[roomId].messages
-      //   );
-      // });
+      console.log(action.payload);
+      Object.keys(action.payload).forEach((roomId) => {
+        if (msgStore.allMessages[roomId]) {
+          msgStore.allMessages[roomId].messages = Object.assign(
+            msgStore.allMessages[roomId].messages,
+            action.payload[roomId].messages
+          );
+        } else {
+          msgStore.allMessages[roomId] = action.payload[roomId];
+        }
+      });
 
       Object.keys(action.payload).forEach((roomId) => {
         // rooms.allActiveRoomsIds.push(id);
+        if (msgStore.allMessageIds[roomId]) {
+          msgStore.allMessageIds[roomId] = [
+            ...Object.keys(msgStore.allMessages[roomId].messages),
+          ];
+        } else {
+          msgStore.allMessageIds[roomId] = Object.keys(
+            action.payload[roomId].messages
+          );
+        }
+      });
 
-        msgStore.allMessageIds = Object.assign(msgStore.allMessageIds, {
-          [roomId]: Object.keys(action.payload[roomId].messages),
-        });
-        msgStore.messageStorage = Object.assign(msgStore.messageStorage, {
-          [roomId]: { messages: {} },
-        });
+      Object.keys(action.payload).forEach((roomId) => {
+        if (!msgStore.messageStorage[roomId]) {
+          msgStore.messageStorage = Object.assign(msgStore.messageStorage, {
+            [roomId]: { messages: {} },
+          });
+        }
       });
     },
     restMessagesResived: (msgStore, action) => {
