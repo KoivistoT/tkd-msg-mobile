@@ -51,6 +51,7 @@ import {
   saveLastSeenMessageSum,
   selectLastSeenMessagesById,
 } from "../../store/currentUser";
+import { selectSocket } from "../../store/socket";
 
 function MessageForm({ item }) {
   const nav = useNavigation();

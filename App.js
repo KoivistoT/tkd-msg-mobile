@@ -61,7 +61,7 @@ function App() {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   const onLogin = async () => {
-    // dispatch(createSocketConnection())
+    // dispatch(createSocketConnection());
     isLoggedIn.current = true;
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     dispatch(clearTasks(store.getState().auth.currentUser._id));
@@ -78,6 +78,7 @@ function App() {
       dispatch(roomsResived(roomState));
       dispatch(usersResived(userState));
       dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+
       dispatch(messagesResived(messageState));
     } catch (error) {
       console.log(error, "code 9929918");
