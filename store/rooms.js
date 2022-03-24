@@ -68,13 +68,13 @@ const slice = createSlice({
             console.log(error, "code 39922");
           }
         }
-        if (taskType === "roomRemoved") {
-          const currentRoomId = data;
-          delete newState.allRooms[currentRoomId];
-          newState.allActiveRoomsIds = newState.allActiveRoomsIds.filter(
-            (roomId) => roomId !== currentRoomId
-          );
-        }
+        // if (taskType === "roomRemoved") {
+        //   const currentRoomId = data;
+        //   delete newState.allRooms[currentRoomId];
+        //   newState.allActiveRoomsIds = newState.allActiveRoomsIds.filter(
+        //     (roomId) => roomId !== currentRoomId
+        //   );
+        // }
         if (taskType === "roomArchived") {
           const currentRoomId = data;
           newState.allRooms[currentRoomId].status = "archived";
@@ -132,6 +132,14 @@ const slice = createSlice({
       rooms.errorMessage = action.payload;
       rooms.loading = false;
     },
+    roomRemoved: (rooms, action) => {
+      const currentRoomId = action.payload;
+
+      delete rooms.allRooms[currentRoomId];
+      rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
+        (roomId) => roomId !== currentRoomId
+      );
+    },
 
     roomCreated: (rooms, action) => {
       rooms.loading = false;
@@ -165,7 +173,7 @@ export const {
   roomLatestMessageChanged,
   setRoomLoadingToTrue,
   roomStateCleared,
-
+  roomRemoved,
   roomNewTasksResived,
   roomAdded,
 

@@ -85,7 +85,7 @@ const slice = createSlice({
     },
     messagesResived: (msgStore, action) => {
       msgStore.allMessages = action.payload;
-
+      // console.log(action.payload, "actioni");
       // console.log(action.payload);
       // Object.keys(action.payload).forEach((roomId) => {
       //   msgStore.allMessages[roomId].messages = Object.assign(

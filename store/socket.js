@@ -164,6 +164,16 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             );
           }, 1500);
         }
+
+        if (taskGroupType === "roomRemoved") {
+          data.forEach((room) => {
+            const currentRoomId = room.data;
+
+            dispatch(roomRemoved(currentRoomId));
+            dispatch(messagesRemoved(currentRoomId));
+            socket.emit("unsubscribe", currentRoomId);
+          });
+        }
       };
 
       taskGroups.data.forEach((group) => {
