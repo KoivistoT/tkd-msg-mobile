@@ -15,6 +15,7 @@ const slice = createSlice({
     errorMessage: null,
     successMessage: null,
     newTasks: {},
+    roomsFetched: false,
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
@@ -121,6 +122,8 @@ const slice = createSlice({
           }
         }
       });
+
+      rooms.roomsFetched = true;
       // console.log(rooms.allActiveRoomsIds, "actiivit");
       // console.log(
       //   rooms.allRooms["61e6a80eb30d002e91d67b5a"],
@@ -303,6 +306,11 @@ export const selectRoomDataById = (roomId) =>
 export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms
+);
+
+export const selectRoomsFetched = createSelector(
+  (state) => state.entities.rooms,
+  (rooms) => rooms.roomsFetched
 );
 
 export const selectRoomLoading = createSelector(

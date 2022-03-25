@@ -28,6 +28,7 @@ import {
   roomStateCleared,
   selectAllActiveRoomsIds,
   selectAllActiveRoomsIdsOld,
+  selectRoomsFetched,
 } from "../store/rooms";
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
 import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
@@ -38,14 +39,17 @@ import {
   roomMessagesMoveToStorage,
 } from "../store/msgStore";
 import messagesApi from "../api/messages";
+import AppText from "../app/components/AppText";
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const socket = useSelector(selectSocket);
   const isFocused = useIsFocused();
   const currentUserId = store.getState().auth.currentUser._id;
+  const currentUserRooms = store.getState().auth.currentUser.userRooms;
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
+  const roomsFetched = useSelector(selectRoomsFetched);
   // const tasks = useSelector(selecttasks);
 
   // if (tasks && tasks.length !== 0) {
@@ -139,8 +143,11 @@ function RoomsListScreen({ navigation }) {
   return (
     <Screen>
       {/* {!socket && ( */}
-      {!allActiveRoomsIds && (
-        <ActivityIndicator style={{ flex: 1, justifyContent: "center" }} />
+      {!roomsFetched && (
+        <View style={styles.loadingChats}>
+          <ActivityIndicator />
+          <AppText style={styles.loadingChatsText}>Loading chats</AppText>
+        </View>
       )}
       {/* ehkä ei tarpeen olla kaikki varmistukset, ei päivitä alussa roomListItemiä niin montaa kertaa, mutta ehkä ei haittaa... */}
       {/* {socket && allActiveRoomsIds && ( */}
@@ -163,5 +170,13 @@ function RoomsListScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loadingChats: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  loadingChatsText: { marginLeft: 10 },
+});
 export default RoomsListScreen;
