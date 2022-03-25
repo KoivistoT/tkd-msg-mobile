@@ -18,6 +18,7 @@ import {
   messagesRemoved,
   msgNewTasksResived,
   msgTasksResived,
+  newCurrentUserMessageResived,
   newMessageResived,
   readByRecepientsAdded,
   selectMsgNewTasks,
@@ -97,6 +98,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     socket.on("userOnline", (data) => {
       dispatch(usersOnlineResived(data));
     });
+    socket.on("currentUserMessage", (data) => {
+      dispatch(newCurrentUserMessageResived(data));
+    });
 
     socket.on("updates", (taskGroups) => {
       // console.log("Nyt sai vastaan taskit", tasks.length);
@@ -148,21 +152,21 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         }
         if (taskGroupType === "room") {
           dispatch(roomTasksResived(data));
-          setTimeout(() => {
-            asyncStorageFuncs.setData(
-              "roomState",
-              getState().entities.rooms.allRooms
-            );
-          }, 1500);
+          // setTimeout(() => {
+          //   asyncStorageFuncs.setData(
+          //     "roomState",
+          //     getState().entities.rooms.allRooms
+          //   );
+          // }, 1500);
         }
         if (taskGroupType === "user") {
           dispatch(userTasksResived(data));
-          setTimeout(() => {
-            asyncStorageFuncs.setData(
-              "userState",
-              getState().entities.users.allUsers
-            );
-          }, 1500);
+          // setTimeout(() => {
+          //   asyncStorageFuncs.setData(
+          //     "userState",
+          //     getState().entities.users.allUsers
+          //   );
+          // }, 1500);
         }
 
         if (taskGroupType === "roomRemoved") {

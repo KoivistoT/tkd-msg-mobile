@@ -366,7 +366,7 @@ const slice = createSlice({
       if (start) {
         var end = +new Date();
         var diff = end - start;
-        alert(diff, "kului aikaa");
+        // alert(diff, "kului aikaa");
       }
 
       msgStore = newState;
@@ -391,22 +391,28 @@ const slice = createSlice({
 
       msgStore = newState2;
 
-      //siirrä tallennettavaksi
-      let newState3 = { ...msgStore.messageStorage };
-      editedRooms.forEach((currentRoomId) => {
-        const toStorage = Object.entries(
-          msgStore.allMessages[currentRoomId].messages
-        ).slice(0, 30);
+      //siirrä tallennettavaksi alkaa
+      //siirrä tallennettavaksi alkaa
+      //siirrä tallennettavaksi alkaa
+      // let newState3 = { ...msgStore.messageStorage };
+      // editedRooms.forEach((currentRoomId) => {
+      //   const toStorage = Object.entries(
+      //     msgStore.allMessages[currentRoomId].messages
+      //   ).slice(0, 30);
 
-        newState3[currentRoomId].messages = toStorage.reduce(
-          (newObject, item) => {
-            newObject[item[0]] = item[1];
-            return newObject;
-          },
-          {}
-        );
-      });
-      msgStore.messageIdStorage = newState3;
+      //   newState3[currentRoomId].messages = toStorage.reduce(
+      //     (newObject, item) => {
+      //       newObject[item[0]] = item[1];
+      //       return newObject;
+      //     },
+      //     {}
+      //   );
+      // });
+      // msgStore.messageIdStorage = newState3;
+      //siirrä tallennettavaksi loppu
+      //siirrä tallennettavaksi loppu
+      //siirrä tallennettavaksi loppu
+
       // var targetMessages = msgStore.allMessages[roomId].messages;
 
       // delete msgStore.newTasks[action.payload.taskId];
@@ -455,6 +461,41 @@ const slice = createSlice({
         //   Object.keys(msgStore.allMessages[currentRoomId].messages).length
         // );
       });
+    },
+    newCurrentUserMessageResived: (msgStore, action) => {
+      // console.log(action.payload, "oma viesti");
+
+      const {
+        roomId: currentRoomId,
+        _id: messageId,
+        type,
+        imageURLs,
+      } = action.payload;
+
+      // if (
+      //   newState.allMessages[currentRoomId].messages[messageId] !== undefined ||
+      //   newState.allMessages[currentRoomId] === undefined
+      // ) {
+      //   // console.log("löytyy jo viesti, tai huonetta ei ole");
+      //   return;
+      // }
+
+      try {
+        msgStore.allMessages[currentRoomId].messages = Object.assign(
+          msgStore.allMessages[currentRoomId].messages,
+          { [messageId]: action.payload }
+        );
+
+        if (type === "image" && imageURLs.length > 0) {
+          imageURLs.forEach((url) => {
+            msgStore.images[currentRoomId].unshift(url);
+          });
+        }
+
+        msgStore.allMessageIds[currentRoomId].unshift(messageId);
+      } catch (error) {
+        console.log(error, "code 9827661");
+      }
     },
     messageSent: (msgStore, action) => {
       // console.log("message lähetetty");
@@ -522,6 +563,7 @@ export const {
   readByRecepientsAdded,
   msgStoreActiveRoomIdCleared,
   msgStoreActiveRoomIdResived,
+  newCurrentUserMessageResived,
 } = slice.actions;
 
 export default slice.reducer;
