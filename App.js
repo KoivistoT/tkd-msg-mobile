@@ -77,10 +77,10 @@ function App() {
       const messageState = await asyncStorageFuncs.getData("messageState");
       // console.log(messageState);
       // console.log(value, "tämä on joo json aik");
-      dispatch(roomsResived(roomState));
-      dispatch(usersResived(userState));
-      dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
-      // ei voi käyttää tätä
+      // dispatch(roomsResived(roomState));
+      // dispatch(usersResived(userState));
+      // dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
+      // // ei voi käyttää tätä
       // dispatch(messagesResived(messageState));
     } catch (error) {
       console.log(error, "code 9929918");
