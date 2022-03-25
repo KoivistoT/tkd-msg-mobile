@@ -73,7 +73,7 @@ function MessageForm({ item }) {
   const roomMembers = useSelector(selectRoomMembersById(currentRoomId));
   const usersOnline = useSelector(selectUsersOnline);
   // console.log("päivittää tämä kahdesti, ei ehkä haittaa");
-
+  const socket = useSelector(selectSocket);
   const otherUser =
     currentRoomType === "private"
       ? roomFuncs.getPrivateRoomOtherUserName(
@@ -135,19 +135,26 @@ function MessageForm({ item }) {
   };
 
   const handleSubmit = async ({ message }, { resetForm }) => {
-    try {
-      store.getState().entities.msgStore.allMessages[currentRoomId].messages;
-    } catch (error) {
-      console.log(error, "code 99292292");
-      navigationRef.current.goBack();
-      alert("tämä paremmin, huonetta ei ole enää");
-    }
+    // !! katso tämä vielä kuntoon
+    // !! katso tämä vielä kuntoon
+    // !! katso tämä vielä kuntoon
+    // try {
+    //   store.getState().entities.msgStore.allMessages[currentRoomId].messages;
+    // } catch (error) {
+    //   console.log(error, "code 99292292");
+    //   navigationRef.current.goBack();
+    //   alert("tämä paremmin, huonetta ei ole enää");
+    // }
+    // !! katso tämä vielä kuntoon
+    // !! katso tämä vielä kuntoon
+    // !! katso tämä vielä kuntoon
 
     const { messageId } = getReplyItem();
     const replyMessageId = messageId ? messageId : null;
 
     let messageType = "text";
     let imageURLs = null;
+
     if (photos.length !== 0) {
       messageType = "image";
       const downloadUris = await imageFuncs.saveImagesToFirebase(
@@ -177,20 +184,32 @@ function MessageForm({ item }) {
     // }, 10);
 
     //en pidä tästä, että kysyy aina
+
+    // dispatch(
+    //   sendMessage(
+    // message,
+    // currentRoomId,
+    // messageType,
+    // imageURLs,
+    // replyMessageId
+    //   )
+    // );
+    socket.emit("newChatMessage", {
+      message,
+      currentRoomId,
+      messageType,
+      imageURLs,
+      replyMessageId,
+      currentUserId,
+    });
+    dispatch(replyMessageIdCleared(currentRoomId));
+
+    resetForm();
+
     if (currentRoomStatus === "draft") {
       dispatch(activateDraftRoom(currentRoomId, currentUserId));
     }
-    dispatch(
-      sendMessage(
-        message,
-        currentRoomId,
-        messageType,
-        imageURLs,
-        replyMessageId
-      )
-    );
-    dispatch(replyMessageIdCleared(currentRoomId));
-    resetForm();
+
     Keyboard.dismiss();
   };
 
