@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
@@ -41,7 +41,7 @@ function LoginScreen({ navigation }) {
     dispatch(login(userName, password));
   };
 
-  const isAutoLoginChecked = useRef(false);
+  const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
   useEffect(() => {
     checkAutologin();
   }, []);
@@ -51,17 +51,19 @@ function LoginScreen({ navigation }) {
     try {
       const autoLogin = await asyncStorageFuncs.getData("autoLogin");
       const loginData = await asyncStorageFuncs.getData("loginData");
+
       if (autoLogin && loginData) {
         handleSubmit(loginData);
-      } else {
-        isAutoLoginChecked.current = true;
+      }
+      if (!autoLogin) {
+        setIsAutoLoginChecked(true);
       }
     } catch (error) {}
   };
 
   return (
     <Screen style={styles.container}>
-      {!isAutoLoginChecked.current && (
+      {!isAutoLoginChecked && (
         // tämä componentti voi olla yleinen, teksti vain muuttujana siinä
         <View
           style={{
@@ -73,7 +75,7 @@ function LoginScreen({ navigation }) {
           <AppText>TÄSSÄ SPLASH SCREEN</AppText>
         </View>
       )}
-      {isAutoLoginChecked.current && (
+      {isAutoLoginChecked && (
         <AppKeyboardDismiss>
           <AppForm
             initialValues={{ userName: "timon@posti.fi", password: "12345" }}
