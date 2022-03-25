@@ -24,10 +24,12 @@ import {
 } from "../store/socket";
 import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
 import {
+  notificationResponseCleared,
   roomLatestMessageChanged,
   roomStateCleared,
   selectAllActiveRoomsIds,
   selectAllActiveRoomsIdsOld,
+  selectNotificationResponse,
   selectRoomsFetched,
 } from "../store/rooms";
 import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
@@ -50,6 +52,7 @@ function RoomsListScreen({ navigation }) {
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
   const roomsFetched = useSelector(selectRoomsFetched);
+
   // const tasks = useSelector(selecttasks);
 
   // if (tasks && tasks.length !== 0) {
@@ -69,6 +72,7 @@ function RoomsListScreen({ navigation }) {
   //     dispatch(tasksCleared());
   //   }
   // }
+
   const logout = () => {
     // userOffline();
 

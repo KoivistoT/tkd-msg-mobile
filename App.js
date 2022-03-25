@@ -33,7 +33,11 @@ import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
 
 import asyncStorageFuncs from "./utility/asyncStorageFuncs";
-import { getUserRoomsByUserId, roomsResived } from "./store/rooms";
+import {
+  getUserRoomsByUserId,
+  notificationResponseResived,
+  roomsResived,
+} from "./store/rooms";
 import { getAllUsers, usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
 import { getRestMessages, messagesResived } from "./store/msgStore";
@@ -93,9 +97,8 @@ function App() {
     dispatch(getInitialData);
     // dispatch(getRestMessages(currentUserId));
 
-    if (lastNotificationResponseRoomId.current) {
-      handleResponse();
-    }
+    //tämä pitää siirtää roomslistalle, selectorilla,
+
     const currentUserPushTokenNow =
       store.getState().auth.currentUser.userPushNotificationToken;
 
@@ -104,17 +107,6 @@ function App() {
         dispatch(saveCurrentUserPushToken(currentUserPushToken)),
       currentUserPushTokenNow
     );
-  };
-
-  const handleResponse = () => {
-    try {
-      const currentRoomId = lastNotificationResponseRoomId.current;
-      const roomData = store.getState().entities.rooms.allRooms[currentRoomId];
-
-      navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
-    } catch (error) {
-      console.log(error, "app.js responselistener");
-    }
   };
 
   useEffect(() => {
@@ -146,7 +138,6 @@ function App() {
     };
   }, []);
 
-  let lastNotificationResponseRoomId = useRef(null);
   useEffect(() => {
     try {
       if (
@@ -154,8 +145,11 @@ function App() {
         lastNotificationResponse.notification.request.content.data.roomId
         // && lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
       ) {
-        lastNotificationResponseRoomId.current =
-          lastNotificationResponse.notification.request.content.data.roomId;
+        dispatch(
+          notificationResponseResived(
+            lastNotificationResponse.notification.request.content.data.roomId
+          )
+        );
       }
     } catch (error) {
       // alert(error, "code 2777218");

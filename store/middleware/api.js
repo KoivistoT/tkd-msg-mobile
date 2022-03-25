@@ -1,12 +1,14 @@
 import axios from "axios";
 import * as actions from "../actions";
-
+import { navigationRef } from "../../app/navigation/rootNavigation";
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
 import { clearTasks, selectCurrentUserToken } from "../currentUser";
 import { errorMessageAdded } from "../general";
 import { createSocketConnection } from "../socket";
 import { getRestMessages } from "../msgStore";
+import routes from "../../app/navigation/routes";
+import { notificationResponseCleared } from "../rooms";
 const api =
   ({ dispatch, getState }) =>
   (next) =>
@@ -61,6 +63,19 @@ const api =
           type: onInitSuccess.users,
           payload: response.data.allUsers,
         });
+
+        //tästä ainakin osa voi olla jossain funcissa
+        const responseRoomId =
+          getState().entities.rooms.lastNotificationResponseRoomId;
+        if (responseRoomId) {
+          try {
+            const roomData = getState().entities.rooms.allRooms[responseRoomId];
+            navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+            dispatch(notificationResponseCleared());
+          } catch (error) {
+            console.log(error, "app.js responselistener");
+          }
+        }
 
         // dispatch({ type: onInitSuccess.members, payload: response.data.members });
         return;

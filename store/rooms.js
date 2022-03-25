@@ -16,6 +16,7 @@ const slice = createSlice({
     successMessage: null,
     newTasks: {},
     roomsFetched: false,
+    lastNotificationResponseRoomId: null,
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
@@ -24,6 +25,12 @@ const slice = createSlice({
       rooms.newTasks = Object.assign(rooms.newTasks, {
         [action.payload.taskId]: action.payload,
       });
+    },
+    notificationResponseResived: (rooms, action) => {
+      rooms.lastNotificationResponseRoomId = action.payload;
+    },
+    notificationResponseCleared: (rooms, action) => {
+      rooms.lastNotificationResponseRoomId = null;
     },
     // action => action handler
     activeRoomIdResived: (rooms, action) => {
@@ -179,7 +186,8 @@ export const {
   roomRemoved,
   roomNewTasksResived,
   roomAdded,
-
+  notificationResponseResived,
+  notificationResponseCleared,
   requestSucceed,
 
   roomTasksResived,
@@ -306,6 +314,10 @@ export const selectRoomDataById = (roomId) =>
 export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms
+);
+export const selectNotificationResponse = createSelector(
+  (state) => state.entities.rooms,
+  (rooms) => rooms.lastNotificationResponseRoomId
 );
 
 export const selectRoomsFetched = createSelector(
