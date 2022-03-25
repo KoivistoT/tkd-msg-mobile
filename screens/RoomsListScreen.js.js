@@ -42,6 +42,7 @@ import {
 } from "../store/msgStore";
 import messagesApi from "../api/messages";
 import AppText from "../app/components/AppText";
+import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
@@ -76,6 +77,7 @@ function RoomsListScreen({ navigation }) {
   const logout = () => {
     // userOffline();
 
+    asyncStorageFuncs.setData("autoLogin", false);
     dispatch(disconnectSocket());
     dispatch(roomStateCleared());
     dispatch(userLoggedOut());

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
@@ -16,6 +16,8 @@ import {
   login,
 } from "../store/currentUser";
 import { createSocketConnection } from "../store/socket";
+import asyncStorageFuncs from "../utility/asyncStorageFuncs";
+import AppText from "../app/components/AppText";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
@@ -32,52 +34,87 @@ function LoginScreen({ navigation }) {
 
   const handleSubmit = async ({ userName, password }) => {
     // dispatch(errorMessageCleared()); // tämän voisti tehdä onStart:issa
+    asyncStorageFuncs.setData("autoLogin", true);
+    asyncStorageFuncs.setData("loginData", { userName, password });
+
     setLoading(true);
     dispatch(login(userName, password));
   };
 
+  const isAutoLoginChecked = useRef(false);
+  useEffect(() => {
+    checkAutologin();
+  }, []);
+
+  // tämä voi olla muualla
+  const checkAutologin = async () => {
+    try {
+      const autoLogin = await asyncStorageFuncs.getData("autoLogin");
+      const loginData = await asyncStorageFuncs.getData("loginData");
+      if (autoLogin && loginData) {
+        handleSubmit(loginData);
+      } else {
+        isAutoLoginChecked.current = true;
+      }
+    } catch (error) {}
+  };
+
   return (
     <Screen style={styles.container}>
-      <AppKeyboardDismiss>
-        <AppForm
-          initialValues={{ userName: "timon@posti.fi", password: "12345" }}
-          // initialValues={{ userName: "joo@joo.fi", password: "111111" }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+      {!isAutoLoginChecked.current && (
+        // tämä componentti voi olla yleinen, teksti vain muuttujana siinä
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            justifyContent: "center",
+          }}
         >
-          <>
-            <AppFormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="account-outline"
-              keyboardType="email-address"
-              name="userName"
-              placeholder="Username/email"
-            />
+          <AppText>TÄSSÄ SPLASH SCREEN</AppText>
+        </View>
+      )}
+      {isAutoLoginChecked.current && (
+        <AppKeyboardDismiss>
+          <AppForm
+            initialValues={{ userName: "timon@posti.fi", password: "12345" }}
+            // initialValues={{ userName: "joo@joo.fi", password: "111111" }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <>
+              <AppFormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="account-outline"
+                keyboardType="email-address"
+                name="userName"
+                placeholder="Username/email"
+              />
 
-            <AppFormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
-            <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
-            {/* <TouchableOpacity
+              <AppFormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+              <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
+              {/* <TouchableOpacity
             style={{ alignSelf: "flex-start", marginRight: 10 }}
             onPress={() => navigation.navigate("Reset_password")}
           >
             <AppText>Reset password</AppText>
           </TouchableOpacity> */}
-            <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-              {loading && !isLoginFailed && <AppLoadIndicator />}
-              <SubmitButton title="LOGIN" />
-            </View>
-          </>
-        </AppForm>
-      </AppKeyboardDismiss>
+              <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+                {loading && !isLoginFailed && <AppLoadIndicator />}
+                <SubmitButton title="LOGIN" />
+              </View>
+            </>
+          </AppForm>
+        </AppKeyboardDismiss>
+      )}
     </Screen>
   );
 }

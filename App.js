@@ -73,12 +73,12 @@ function App() {
     dispatch(clearTasks(currentUserId));
 
     try {
-      const roomState = await asyncStorageFuncs.getData("roomState");
-      const userState = await asyncStorageFuncs.getData("userState");
-      const userLastSeenMessages = await asyncStorageFuncs.getData(
-        "userLastSeenMessages"
-      );
-      const messageState = await asyncStorageFuncs.getData("messageState");
+      // const roomState = await asyncStorageFuncs.getData("roomState");
+      // const userState = await asyncStorageFuncs.getData("userState");
+      // const userLastSeenMessages = await asyncStorageFuncs.getData(
+      //   "userLastSeenMessages"
+      // );
+      // const messageState = await asyncStorageFuncs.getData("messageState");
       // console.log(messageState);
       // console.log(value, "tämä on joo json aik");
       // dispatch(roomsResived(roomState));
