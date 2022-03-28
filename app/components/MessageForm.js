@@ -88,13 +88,33 @@ function MessageForm({ item }) {
     // dispatch(msgStoreActiveRoomIdResived(currentRoomId));
     // console.log("nyt käy täällä");
     // setTimeout(() => {
-    dispatch(
-      saveLastSeenMessageSum(
-        currentUserId,
-        currentRoomId,
-        currentRoomMessageSum
-      )
-    );
+
+    const lastSeenObject =
+      store.getState().auth.currentUser.last_seen_messages[
+        store
+          .getState()
+          .auth.currentUser.last_seen_messages.findIndex(
+            (object) => object.roomId === currentRoomId
+          )
+      ];
+    const lastSeenSumBefore = lastSeenObject.lastSeenMessageSum;
+    const unreadMessagesSum = currentRoomMessageSum - lastSeenSumBefore;
+    const firstAlreadySeenMessageId =
+      store.getState().entities.msgStore.allMessageIds[currentRoomId][
+        unreadMessagesSum
+      ];
+
+    if (unreadMessagesSum !== 0) {
+      dispatch(
+        saveLastSeenMessageSum(
+          currentUserId,
+          currentRoomId,
+          currentRoomMessageSum,
+          firstAlreadySeenMessageId
+        )
+      );
+    }
+
     // }, 10);
 
     //onko tähän parempi ratkaisu, tämän pitää olla muualla
