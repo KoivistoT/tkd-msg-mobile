@@ -12,4 +12,5 @@ export default {
   CREATE_CHAT_NAVIGATOR: "create_chat_navigator",
   TAB_NAVIGATOR: "tab_navigator",
   ADMIN_TAB_NAVIGATOR: "admin_tab_navigator",
+  READ_BY_LIST: "Read_by_list",
 };

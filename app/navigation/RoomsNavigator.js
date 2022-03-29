@@ -7,6 +7,7 @@ import RoomSetupScreen from "../../screens/RoomSetupScreen.js";
 import { Entypo } from "@expo/vector-icons";
 import { navigationRef } from "./rootNavigation.js";
 import routes from "./routes.js";
+import { MemoReadByList } from "../components/messageItems/ReadByList.js";
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,7 @@ const RoomsNavigator = () => (
       />
       <Stack.Screen name="Message_screen" component={MessageScreen} />
       <Stack.Screen name="Room_setup_screen" component={RoomSetupScreen} />
+      <Stack.Screen name="Read_by_list" component={MemoReadByList} />
     </Stack.Group>
   </Stack.Navigator>
 );

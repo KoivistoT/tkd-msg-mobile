@@ -7,7 +7,7 @@ function MessageItemMain({
   messageId,
   roomId,
   currentUserId,
-  onScrollToIndex,
+  onScrollToIndex = null,
 }) {
   // console.log("message main!!!");
   const message = useSelector(selectMessageById(roomId, messageId));

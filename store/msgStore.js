@@ -31,7 +31,7 @@ const slice = createSlice({
         [action.payload.taskId]: action.payload,
       });
     },
-    adByRecepientsAdded: (msgStore, action) => {
+    readByRecepientsAdded: (msgStore, action) => {
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -83,6 +83,7 @@ const slice = createSlice({
     msgStoreActiveRoomIdResived: (msgStore, action) => {
       msgStore.activeRoomId = action.payload;
     },
+
     messagesResived: (msgStore, action) => {
       // msgStore.allMessages = action.payload;
       let stateNow = { ...msgStore };
@@ -518,6 +519,16 @@ const slice = createSlice({
       delete msgStore.allMessageIds[currentRoomId];
       delete msgStore.messageStorage[currentRoomId];
     },
+    oneMessageResived: (msgStore, action) => {
+      const { _id: currentMessageId, roomId } = action.payload;
+
+      try {
+        msgStore.allMessages[roomId].messages[currentMessageId] =
+          action.payload;
+      } catch (error) {
+        console.log(error, "code 766322");
+      }
+    },
 
     messageDeleted: (msgStore, action) => {
       // console.log(
@@ -561,6 +572,7 @@ export const {
   replyMessageIdResived,
   replyMessageIdCleared,
   readByRecepientsAdded,
+  oneMessageResived,
   msgStoreActiveRoomIdCleared,
   msgStoreActiveRoomIdResived,
   newCurrentUserMessageResived,
@@ -574,6 +586,18 @@ export const getMessagesbyId = (id) =>
   apiCallBegan({
     url: url + "/messages/" + id,
     onSuccess: oneRoomMessagesResived.type,
+    onError: messagesError.type,
+  });
+
+export const getOneMessageById = (roomId, messageId) =>
+  apiCallBegan({
+    url: url + "/messages/get_one_message/",
+    method: "post",
+    data: {
+      roomId,
+      messageId,
+    },
+    onSuccess: oneMessageResived.type,
     onError: messagesError.type,
   });
 

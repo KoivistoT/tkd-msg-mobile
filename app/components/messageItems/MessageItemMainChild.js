@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
-
+import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
 import {
   deleteMessageById,
@@ -11,9 +11,12 @@ import {
   replyMessageIdResived,
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
+import { navigationRef } from "../../navigation/rootNavigation";
+
 function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
   const dispatch = useDispatch();
   // console.log("child päivittyy ---");
+
   const {
     roomId,
     _id: messageId,
@@ -41,7 +44,13 @@ function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
 
   return (
     <>
-      <TouchableOpacity key={messageId} style={styles[sentBy]}>
+      <TouchableOpacity
+        key={messageId}
+        style={styles[sentBy]}
+        onLongPress={() =>
+          navigationRef.current.navigate(routes.READ_BY_LIST, message)
+        }
+      >
         <AppText style={{ backgroundColor: "red" }}>
           {createdAt.slice(11, 19)}
         </AppText>
