@@ -243,9 +243,9 @@ export const saveLastSeenMessageSum =
   (
     currentUserId,
     roomId,
-    lastSeenMessageSum,
+    lastSeenMessageSum
 
-    firstAlreadySeenMessageId
+    // firstAlreadySeenMessageId
   ) =>
   (dispatch, getState) => {
     dispatch(lastSeenMessageSumResived({ roomId, lastSeenMessageSum }));
@@ -262,7 +262,7 @@ export const saveLastSeenMessageSum =
           roomId,
           lastSeenMessageSum,
 
-          firstAlreadySeenMessageId,
+          // firstAlreadySeenMessageId,
         },
         onSuccess: currentUserRequestStarted.type,
         onError: lastSaveError.type,

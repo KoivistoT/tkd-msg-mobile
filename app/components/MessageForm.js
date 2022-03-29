@@ -97,20 +97,16 @@ function MessageForm({ item }) {
             (object) => object.roomId === currentRoomId
           )
       ];
-    const lastSeenSumBefore = lastSeenObject.lastSeenMessageSum;
+    const lastSeenSumBefore = lastSeenObject?.lastSeenMessageSum || 0;
     const unreadMessagesSum = currentRoomMessageSum - lastSeenSumBefore;
-    const firstAlreadySeenMessageId =
-      store.getState().entities.msgStore.allMessageIds[currentRoomId][
-        unreadMessagesSum
-      ];
 
     if (unreadMessagesSum !== 0) {
       dispatch(
         saveLastSeenMessageSum(
           currentUserId,
           currentRoomId,
-          currentRoomMessageSum,
-          firstAlreadySeenMessageId
+          currentRoomMessageSum
+          // firstAlreadySeenMessageId
         )
       );
     }
