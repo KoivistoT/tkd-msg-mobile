@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Image,
+  AppState,
 } from "react-native";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -18,6 +19,7 @@ import { selectAllUsersMinimal } from "../../../store/users";
 import Screen from "../Screen";
 import { selectRoomMembersById } from "../../../store/rooms";
 import { getOneMessageById, selectMessageById } from "../../../store/msgStore";
+import { selectSocket } from "../../../store/socket";
 function ReadByList(item) {
   const { _id: messageId, roomId, messageBody } = item.route.params;
 
@@ -27,10 +29,26 @@ function ReadByList(item) {
   const roomMemebers = useSelector(selectRoomMembersById(roomId));
   const allUsersData = useSelector(selectAllUsersMinimal);
   const currentMessage = useSelector(selectMessageById(roomId, messageId));
+  const socket = useSelector(selectSocket);
 
   useEffect(() => {
+    if (!socket) return;
+
+    socket.emit("subscribe_read_at", roomId);
+
+    socket.on("subscribe_read_at", () => {
+      getMessageData();
+    });
+
+    return () => {
+      socket.emit("unsubscribe_read_at", roomId);
+      socket.off("subscribe_read_at");
+    };
+  }, [socket]);
+
+  const getMessageData = () => {
     dispatch(getOneMessageById(roomId, messageId));
-  }, []);
+  };
 
   const getIsSeenData = (userId) => {
     const index = currentMessage.readByRecipients.findIndex(
@@ -44,7 +62,7 @@ function ReadByList(item) {
     if (item === currentUserId) return;
 
     return (
-      <View style={{ flexDirection: "row" }} key={item.id}>
+      <View style={{ flexDirection: "row" }} key={item}>
         {allUsersData && (
           <Text
             style={{
@@ -94,7 +112,7 @@ function ReadByList(item) {
       <AppText>kukas lukenut</AppText>
       <FlatList
         data={roomMemebers}
-        keyExtractor={(member) => member._id}
+        keyExtractor={(member) => member}
         renderItem={listItem}
       />
     </Screen>
