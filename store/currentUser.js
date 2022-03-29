@@ -240,19 +240,9 @@ export const saveCurrentUserPushToken =
   };
 
 export const saveLastSeenMessageSum =
-  (
-    currentUserId,
-    roomId,
-    lastSeenMessageSum
-
-    // firstAlreadySeenMessageId
-  ) =>
-  (dispatch, getState) => {
+  (currentUserId, roomId, lastSeenMessageSum) => (dispatch, getState) => {
     dispatch(lastSeenMessageSumResived({ roomId, lastSeenMessageSum }));
-    // asyncStorageFuncs.setData(
-    //   "userLastSeenMessages",
-    //   getState().auth.currentUser.last_seen_messages
-    // );
+
     return dispatch(
       apiCallBegan({
         url: url + "/users/save_last_seen_message_sum",
@@ -261,8 +251,6 @@ export const saveLastSeenMessageSum =
           currentUserId,
           roomId,
           lastSeenMessageSum,
-
-          // firstAlreadySeenMessageId,
         },
         onSuccess: currentUserRequestStarted.type,
         onError: lastSaveError.type,

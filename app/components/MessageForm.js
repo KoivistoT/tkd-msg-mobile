@@ -85,9 +85,6 @@ function MessageForm({ item }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
-    // dispatch(msgStoreActiveRoomIdResived(currentRoomId));
-    // console.log("nyt käy täällä");
-    // setTimeout(() => {
 
     const lastSeenObject =
       store.getState().auth.currentUser.last_seen_messages[
@@ -106,7 +103,6 @@ function MessageForm({ item }) {
           currentUserId,
           currentRoomId,
           currentRoomMessageSum
-          // firstAlreadySeenMessageId
         )
       );
     }
