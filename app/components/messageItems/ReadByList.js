@@ -40,55 +40,62 @@ function ReadByList(item) {
     else return currentMessage.readByRecipients[index].readAt;
   };
 
+  const listItem = ({ item }) => {
+    if (item === currentUserId) return;
+
+    return (
+      <View style={{ flexDirection: "row" }} key={item.id}>
+        {allUsersData && (
+          <Text
+            style={{
+              color: "black",
+              backgroundColor: "green",
+            }}
+          >
+            {allUsersData
+              ? `${allUsersData[item].firstName} ${allUsersData[item].lastName}`
+              : "unknown user"}
+          </Text>
+        )}
+        {currentMessage ? (
+          <Text
+            style={{
+              color: "black",
+              backgroundColor: "blue",
+            }}
+            key={item.id}
+          >
+            {getIsSeenData(item)}
+          </Text>
+        ) : (
+          <ActivityIndicator
+            animating={true}
+            size="small"
+            style={{
+              opacity: 1,
+              marginTop: 20,
+            }}
+            color="#999999"
+          />
+        )}
+      </View>
+    );
+  };
+
   return (
     <Screen>
       <AppText>
         Tähän paremmin tämä, kun selkeä, millainen on viesti ja sit poistaa
         tietyt ominaisuudet, jos näkyy, kuten delete message
       </AppText>
-      <AppText>oma tieto pois omista viesteistä</AppText>
-      <AppText style={{ backgroundColor: "red" }}>{messageBody}</AppText>
+      <AppText style={{ backgroundColor: "red" }}>
+        Tämä on viesti: {messageBody}
+      </AppText>
       <AppText>kukas lukenut</AppText>
       <FlatList
         data={roomMemebers}
         keyExtractor={(member) => member._id}
-        renderItem={({ item }) => (
-          <View style={{ flexDirection: "row" }} key={item.id}>
-            {allUsersData && (
-              <Text
-                style={{
-                  color: "black",
-                  backgroundColor: "green",
-                }}
-              >
-                {allUsersData
-                  ? `${allUsersData[item].firstName} ${allUsersData[item].lastName}`
-                  : "unknown user"}
-              </Text>
-            )}
-            {currentMessage ? (
-              <Text
-                style={{
-                  color: "black",
-                  backgroundColor: "blue",
-                }}
-                key={item.id}
-              >
-                {getIsSeenData(item)}
-              </Text>
-            ) : (
-              <ActivityIndicator
-                animating={true}
-                size="small"
-                style={{
-                  opacity: 1,
-                  marginTop: 20,
-                }}
-                color="#999999"
-              />
-            )}
-          </View>
-        )}
+        renderItem={listItem}
       />
     </Screen>
   );
