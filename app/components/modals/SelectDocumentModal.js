@@ -14,15 +14,18 @@ import * as DocumentPicker from "expo-document-picker";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
 import { ActivityIndicator } from "react-native";
+
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector, useStore } from "react-redux";
 import { selectRoomImagesByRoomId } from "../../../store/msgStore";
 import { WebView } from "react-native-webview";
+
 function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
   const [modalVisible, setModalVisible] = useState(false);
 
+  //nämä file funcsiin!!!
   const pickDocument = async () => {
     if (documentURL.current) {
       setModalVisible(true);
@@ -31,8 +34,11 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
     try {
       let result = await DocumentPicker.getDocumentAsync({
         // type: "application/pdf",
+        // copyToCacheDirectory: false,
       });
+
       if (result.type !== "cancel") {
+        console.log(result, "Tässä resultti");
         documentURL.current = result.uri;
         setDocumentName(result.name);
         // const nameWithTime = name + " " + dayjs().format("DD.MM HH:mm:ss");
@@ -65,10 +71,13 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
         </View>
 
         <WebView
-          originWhitelist={["*"]}
-          style={styles.container}
+          originWhitelist={["file://"]}
+          style={{ flex: 1, backgroundColor: "red" }}
+          allowUniversalAccessFromFileURLs={true}
+          allowFileAccess={true}
           source={{
-            url: documentURL.current,
+            url: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540dev_koivisto%252Fmsg-mobile/DocumentPicker/9e3dfe2d-f1f4-4aed-8592-1b58f3f1b192.pdf",
+            // url: documentURL.current,
           }}
         />
 

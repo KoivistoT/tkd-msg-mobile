@@ -21,6 +21,8 @@ import * as ImagePicker from "expo-image-picker";
 import { useSelector, useStore } from "react-redux";
 import { selectRoomImagesByRoomId } from "../../../store/msgStore";
 import { WebView } from "react-native-webview";
+import AppButton from "../AppButton";
+import fileFuncs from "../../../utility/fileFuncs";
 function ShowDocumentModal({ name, url }) {
   const [modalVisible, setModalVisible] = useState(false);
   const onClose = () => {
@@ -46,6 +48,9 @@ function ShowDocumentModal({ name, url }) {
       <Modal animationType="slide" visible={modalVisible}>
         <View style={styles.header}>
           <AppText>{name}</AppText>
+          <AppButton onPress={() => fileFuncs.saveFileToPhone(url, name)}>
+            Save file
+          </AppButton>
         </View>
 
         <WebView
