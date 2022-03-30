@@ -63,7 +63,7 @@ function MessageForm({ item }) {
   const currentUserId = store.getState().auth.currentUser._id;
   const [photos, setPhotos] = useState([]);
   let documentURL = useRef(null);
-  let documentName = useRef(null);
+  const [documentName, setDocumentName] = useState(null);
 
   const roomData = useSelector(selectRoomDataById(item.route.params._id));
   const {
@@ -186,15 +186,15 @@ function MessageForm({ item }) {
     }
 
     let documentDownloadURL = null;
-    let documentDbName = null;
+    let documentDisplayName = null;
     if (documentURL.current) {
       dispatch(startLoad());
       messageType = "document";
       documentDownloadURL = await fileFuncs.uploadDocumentToFireBase(
         documentURL.current,
-        documentName.current
+        documentName
       );
-      documentDbName = documentName.current;
+      documentDisplayName = documentName;
     }
 
     // var counter = 0;
@@ -235,7 +235,7 @@ function MessageForm({ item }) {
       replyMessageId,
       currentUserId,
       documentDownloadURL,
-      documentDbName,
+      documentDisplayName,
     });
     dispatch(replyMessageIdCleared(currentRoomId));
 
@@ -282,15 +282,20 @@ function MessageForm({ item }) {
               marginBottom: Platform.OS == "ios" ? 10 : 0,
             }}
           >
-            <ImageInputList
-              imageUris={photos.map((photo) => photo.uri)}
-              onRemoveImage={handleRemove}
-              onAddImage={handleAdd}
-            />
-            <SelectDocumentModal
-              documentURL={documentURL}
-              documentName={documentName}
-            />
+            {!documentURL.current && (
+              <ImageInputList
+                imageUris={photos.map((photo) => photo.uri)}
+                onRemoveImage={handleRemove}
+                onAddImage={handleAdd}
+              />
+            )}
+            {documentURL.current && <AppText>{documentName}</AppText>}
+            {photos.length === 0 && (
+              <SelectDocumentModal
+                documentURL={documentURL}
+                setDocumentName={setDocumentName}
+              />
+            )}
             <AppForm
               initialValues={{ message: "" }}
               onSubmit={handleSubmit}

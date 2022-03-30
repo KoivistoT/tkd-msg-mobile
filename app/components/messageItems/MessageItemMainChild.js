@@ -12,6 +12,7 @@ import {
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
 import { navigationRef } from "../../navigation/rootNavigation";
+import ShowDocumentModal from "../modals/ShowDocumentModal";
 
 function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
     createdAt,
     replyMessageId,
     messageBody,
+    documentData,
   } = message;
 
   const onReply = () => {
@@ -66,6 +68,12 @@ function MessageItemMainChild({ message, sentBy, allUsers, onScrollToIndex }) {
           {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
         </AppText>
         {messageType === "image" && <MessageItemImage item={message} />}
+        {messageType === "document" && (
+          <ShowDocumentModal
+            name={documentData.documentDisplayName}
+            url={documentData.documentDownloadURL}
+          />
+        )}
         {replyMessageId && (
           <MessageItemReply
             allUsers={allUsers}

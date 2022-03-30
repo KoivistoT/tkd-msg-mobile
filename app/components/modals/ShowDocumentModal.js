@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   StyleSheet,
@@ -7,68 +7,54 @@ import {
   View,
   Modal,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
 import Constants from "expo-constants";
 import * as DocumentPicker from "expo-document-picker";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
-import { ActivityIndicator } from "react-native";
+
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector, useStore } from "react-redux";
 import { selectRoomImagesByRoomId } from "../../../store/msgStore";
 import { WebView } from "react-native-webview";
-function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
+function ShowDocumentModal({ name, url }) {
   const [modalVisible, setModalVisible] = useState(false);
-
-  const pickDocument = async () => {
-    if (documentURL.current) {
-      setModalVisible(true);
-      return;
-    }
-    try {
-      let result = await DocumentPicker.getDocumentAsync({
-        // type: "application/pdf",
-      });
-      if (result.type !== "cancel") {
-        documentURL.current = result.uri;
-        setDocumentName(result.name);
-        // const nameWithTime = name + " " + dayjs().format("DD.MM HH:mm:ss");
-        // setDocumentName(nameWithTime);
-        setModalVisible(true);
-      }
-    } catch (error) {
-      console.log(error, "pdfviewer error");
-    }
-  };
-
-  const onCancel = () => {
-    documentURL.current = null;
-    setDocumentName(null);
-    setModalVisible(false);
-
-    setTimeout(() => {
-      pickDocument();
-    }, 800);
-  };
-  const onAddDocument = () => {
+  const onClose = () => {
     setModalVisible(false);
   };
+
+  const Spinner = () => (
+    <View style={{ flex: 1, alignItems: "center" }}>
+      <ActivityIndicator
+        animating={true}
+        size="small"
+        style={{
+          opacity: 1,
+          marginTop: 20,
+        }}
+        color="#999999"
+      />
+    </View>
+  );
 
   return (
     <View>
       <Modal animationType="slide" visible={modalVisible}>
         <View style={styles.header}>
-          <AppText>{documentName}</AppText>
+          <AppText>{name}</AppText>
         </View>
 
         <WebView
           originWhitelist={["*"]}
           style={styles.container}
+          renderLoading={Spinner}
+          startInLoadingState={true}
           source={{
-            url: documentURL.current,
+            uri: url,
           }}
         />
 
@@ -76,29 +62,20 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              onAddDocument();
+              onClose();
             }}
           >
-            <AppText style={styles.text}>Add</AppText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              onCancel();
-            }}
-          >
-            <AppText style={styles.text}>Cancel</AppText>
+            <AppText style={styles.text}>close</AppText>
           </TouchableOpacity>
         </View>
       </Modal>
 
       <TouchableOpacity
         activeOpacity="0.8"
-        // onPress={() => setModalVisible(true)}
-        onPress={() => pickDocument()}
+        onPress={() => setModalVisible(true)}
       >
         <View>
-          <AppText style={{ padding: 20 }}>doc</AppText>
+          <AppText style={{ padding: 20 }}>{name}</AppText>
         </View>
       </TouchableOpacity>
     </View>
@@ -164,4 +141,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
 });
-export default SelectDocumentModal;
+export default ShowDocumentModal;
