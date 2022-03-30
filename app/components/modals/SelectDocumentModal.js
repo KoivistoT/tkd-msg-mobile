@@ -33,7 +33,6 @@ function SelectDocumentModal({ documentURL, documentName }) {
         // type: "application/pdf",
       });
       if (result.type !== "cancel") {
-        console.log(result.name);
         documentURL.current = result.uri;
         documentName.current = result.name;
         // const nameWithTime = name + " " + dayjs().format("DD.MM HH:mm:ss");

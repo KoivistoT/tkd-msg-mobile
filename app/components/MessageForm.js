@@ -54,6 +54,7 @@ import {
 import { selectSocket } from "../../store/socket";
 import AppButton from "./AppButton";
 import SelectDocumentModal from "./modals/SelectDocumentModal";
+import { endLoad, startLoad } from "../../store/general";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -173,6 +174,7 @@ function MessageForm({ item }) {
     let imageURLs = null;
 
     if (photos.length !== 0) {
+      dispatch(startLoad());
       messageType = "image";
       const downloadUris = await fileFuncs.saveImagesToFirebase(
         photos.map((photo) => photo.uri)
@@ -186,6 +188,7 @@ function MessageForm({ item }) {
     let documentDownloadURL = null;
     let documentDbName = null;
     if (documentURL.current) {
+      dispatch(startLoad());
       messageType = "document";
       documentDownloadURL = await fileFuncs.uploadDocumentToFireBase(
         documentURL.current,
@@ -223,6 +226,7 @@ function MessageForm({ item }) {
     // replyMessageId
     //   )
     // );
+
     socket.emit("newChatMessage", {
       message,
       currentRoomId,
@@ -236,7 +240,7 @@ function MessageForm({ item }) {
     dispatch(replyMessageIdCleared(currentRoomId));
 
     resetForm();
-
+    dispatch(endLoad());
     if (currentRoomStatus === "draft") {
       dispatch(activateDraftRoom(currentRoomId, currentUserId));
     }

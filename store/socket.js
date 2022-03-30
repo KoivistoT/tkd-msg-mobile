@@ -99,7 +99,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       dispatch(usersOnlineResived(data));
     });
     socket.on("currentUserMessage", (data) => {
-      console.log(data, "Tästä ");
       dispatch(newCurrentUserMessageResived(data));
     });
 
