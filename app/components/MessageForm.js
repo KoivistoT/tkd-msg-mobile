@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, Keyboard, Button } from "react-native";
 import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
@@ -25,7 +25,7 @@ import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
 import SendButton from "./SendButton";
 import ImageInputList from "./imageComponents/ImageInputList";
-import imageFuncs from "../../utility/imageFuncs";
+import fileFuncs from "../../utility/fileFuncs";
 import { navigationRef } from "../../app/navigation/rootNavigation";
 
 import AppText from "./AppText";
@@ -52,6 +52,8 @@ import {
   selectLastSeenMessagesById,
 } from "../../store/currentUser";
 import { selectSocket } from "../../store/socket";
+import AppButton from "./AppButton";
+import SelectDocumentModal from "./modals/SelectDocumentModal";
 
 function MessageForm({ item }) {
   const nav = useNavigation();
@@ -59,6 +61,9 @@ function MessageForm({ item }) {
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
   const [photos, setPhotos] = useState([]);
+  let documentURL = useRef(null);
+  let documentName = useRef(null);
+
   const roomData = useSelector(selectRoomDataById(item.route.params._id));
   const {
     _id: currentRoomId,
@@ -169,7 +174,7 @@ function MessageForm({ item }) {
 
     if (photos.length !== 0) {
       messageType = "image";
-      const downloadUris = await imageFuncs.saveImagesToFirebase(
+      const downloadUris = await fileFuncs.saveImagesToFirebase(
         photos.map((photo) => photo.uri)
       );
 
@@ -177,6 +182,18 @@ function MessageForm({ item }) {
       // console.log(imageURLs, "Täältä tulee");
       console.log("lataus valmis");
     }
+
+    let documentDownloadURL = null;
+    let documentDbName = null;
+    if (documentURL.current) {
+      messageType = "document";
+      documentDownloadURL = await fileFuncs.uploadDocumentToFireBase(
+        documentURL.current,
+        documentName.current
+      );
+      documentDbName = documentName.current;
+    }
+
     // var counter = 0;
     // var i = setInterval(async function () {
     //   dispatch(
@@ -213,6 +230,8 @@ function MessageForm({ item }) {
       imageURLs,
       replyMessageId,
       currentUserId,
+      documentDownloadURL,
+      documentDbName,
     });
     dispatch(replyMessageIdCleared(currentRoomId));
 
@@ -264,6 +283,10 @@ function MessageForm({ item }) {
               onRemoveImage={handleRemove}
               onAddImage={handleAdd}
             />
+            <SelectDocumentModal
+              documentURL={documentURL}
+              documentName={documentName}
+            />
             <AppForm
               initialValues={{ message: "" }}
               onSubmit={handleSubmit}
@@ -272,7 +295,6 @@ function MessageForm({ item }) {
               <View
                 style={{
                   marginLeft: 0,
-
                   flexDirection: "row",
                   width: "75%",
                 }}

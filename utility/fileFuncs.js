@@ -20,7 +20,8 @@ const saveImagesToFirebase = async (images) => {
         const id = dayjs().format("DD.MM HH:mm:ss") + Math.random();
         const { uri: compressUri } = await compressImage(uri);
         const blob = await uriToBlob(compressUri);
-        const downloadUri = await uploadToFirebase(blob, id);
+        const folder = "msg-chatImages/";
+        const downloadUri = await uploadToFirebase(blob, folder, id);
         downloadUris.push({ appUri: uri, downloadUri });
         i++;
         if (images.length === i) resolve();
@@ -71,9 +72,9 @@ const uriToBlob = (uri) => {
 };
 
 const a = [];
-const uploadToFirebase = async (blob, id) => {
+const uploadToFirebase = async (blob, folder, id) => {
   try {
-    const storageRef = ref(storage, "msg-chatImages/" + id);
+    const storageRef = ref(storage, folder + id);
     let downloadUri = await uploadBytes(storageRef, blob).then(
       async (snapshot) => {
         return getDownloadURL(snapshot.ref);
@@ -114,6 +115,23 @@ const uploadToFirebase = async (blob, id) => {
   }
 };
 
+const uploadDocumentToFireBase = async (documentURL, documentName) => {
+  try {
+    // setLoadingVisible(true);
+
+    const blob = await uriToBlob(documentURL);
+
+    const id = documentName + dayjs().format("DD.MM HH:mm:ss") + Math.random();
+    const folder = "msg-files/";
+    const downloadURL = await uploadToFirebase(blob, folder, id);
+    return downloadURL;
+  } catch (error) {
+    // setLoadingVisible(false);
+    alert("Something faild.");
+  }
+};
+
 export default {
   saveImagesToFirebase,
+  uploadDocumentToFireBase,
 };

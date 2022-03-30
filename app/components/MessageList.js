@@ -80,7 +80,7 @@ function MessageList({ item }) {
         style={{
           borderWidth: 1,
           width: "100%",
-          height: 400,
+          height: 300,
           color: "black",
         }}
       >

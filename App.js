@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
 import * as Notifications from "expo-notifications";
+import { LogBox } from "react-native";
 
 import configureStore from "./store/configureStore";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -46,7 +47,9 @@ import { createSocketConnection } from "./store/socket";
 if (!__DEV__) {
   console.log = () => null;
 }
-
+LogBox.ignoreLogs([
+  "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
+]);
 firebaseLogin();
 
 export default function AppWrapper() {

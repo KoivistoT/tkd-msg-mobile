@@ -10,12 +10,14 @@ import {
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
+import * as DocumentPicker from "expo-document-picker";
 import {
   tasksCleared,
   getTasks,
   selectTasks,
   userLoggedOut,
 } from "../store/currentUser";
+import { WebView } from "react-native-webview";
 import { useIsFocused } from "@react-navigation/native";
 import {
   createSocketConnection,
@@ -40,9 +42,11 @@ import {
   newMessageResived,
   roomMessagesMoveToStorage,
 } from "../store/msgStore";
+import { LogBox } from "react-native";
 import messagesApi from "../api/messages";
 import AppText from "../app/components/AppText";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
+import ShowDocumentModal from "../app/components/modals/SelectDocumentModal";
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
@@ -149,6 +153,7 @@ function RoomsListScreen({ navigation }) {
   return (
     <Screen>
       {/* {!socket && ( */}
+      {/* <ShowDocumentModal /> */}
       {!roomsFetched && (
         <View style={styles.loadingChats}>
           <ActivityIndicator />
