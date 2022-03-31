@@ -46,10 +46,22 @@ function MessageItemMainChild({
     messageBody,
     documentData,
   } = message;
+  const store = useStore();
 
   const onReply = () => {
-    dispatch(messageFormFocusAdded());
+    const selectedMessageId = Object.keys(
+      store.getState().entities.msgStore.allMessages[roomId].messages
+    ).findIndex((message_id) => message_id === messageId);
+
+    setTimeout(
+      () => {
+        onScrollToIndex(selectedMessageId);
+      },
+      Platform.OS == "ios" ? 100 : 1000
+    );
+
     dispatch(replyMessageIdCleared(message.roomId));
+    dispatch(messageFormFocusAdded());
     dispatch(
       replyMessageIdResived({
         messageId: message._id,
@@ -62,6 +74,7 @@ function MessageItemMainChild({
   };
   // console.log("message Child päivittyy---------------------");
   const messageRef = useRef();
+
   return (
     <Swipeable
       ref={messageRef}
@@ -75,7 +88,7 @@ function MessageItemMainChild({
     >
       <TouchableOpacity
         key={messageId}
-        style={styles[sentBy]}
+        style={[styles[sentBy]]}
         onLongPress={() =>
           navigationRef.current.navigate(routes.READ_BY_LIST, message)
         }
