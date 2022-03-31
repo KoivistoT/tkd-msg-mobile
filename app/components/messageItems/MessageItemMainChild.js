@@ -33,7 +33,7 @@ function MessageItemMainChild({
   searchWord,
 }) {
   const dispatch = useDispatch();
-  // console.log("child päivittyy ---");
+  console.log("child päivittyy ---");
 
   const {
     roomId,
@@ -49,16 +49,20 @@ function MessageItemMainChild({
   const store = useStore();
 
   const onReply = () => {
-    const selectedMessageId = Object.keys(
-      store.getState().entities.msgStore.allMessages[roomId].messages
-    ).findIndex((message_id) => message_id === messageId);
+    const messageIndex = store
+      .getState()
+      .entities.msgStore.allMessageIds[roomId].findIndex(
+        (message_id) => message_id === messageId
+      );
 
-    setTimeout(
-      () => {
-        onScrollToIndex(selectedMessageId);
-      },
-      Platform.OS == "ios" ? 100 : 1000
-    );
+    if (messageIndex !== -1) {
+      setTimeout(
+        () => {
+          onScrollToIndex(messageIndex);
+        },
+        Platform.OS == "ios" ? 100 : 1000
+      );
+    }
 
     dispatch(replyMessageIdCleared(message.roomId));
     dispatch(messageFormFocusAdded());
@@ -72,7 +76,7 @@ function MessageItemMainChild({
   const onDeleteMessage = () => {
     dispatch(deleteMessageById(roomId, messageId));
   };
-  // console.log("message Child päivittyy---------------------");
+
   const messageRef = useRef();
 
   return (
@@ -84,57 +88,104 @@ function MessageItemMainChild({
           messageRef.current.close();
         }, 50);
       }}
+      overshootRight
       renderLeftActions={() => <View style={{ width: 50 }}></View>}
+      onSwipeableRightOpen={() =>
+        navigationRef.current.navigate(routes.READ_BY_LIST, message)
+      }
+      renderRightActions={() => <View style={{ width: 1 }}></View>}
     >
-      <TouchableOpacity
-        key={messageId}
-        style={[styles[sentBy]]}
-        onLongPress={() =>
-          navigationRef.current.navigate(routes.READ_BY_LIST, message)
-        }
-      >
-        <AppText style={{ backgroundColor: "red" }}>
-          {createdAt.slice(11, 19)}
-        </AppText>
-        <TouchableOpacity title={"reply"} onPress={onReply}>
-          <AppText>Reply</AppText>
+      <View style={[styles[sentBy]]}>
+        <TouchableOpacity
+
+        // onLongPress={() =>
+        //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
+        // }
+        >
+          <View style={styles.messageHeader}>
+            <AppText style={styles.senderName}>
+              {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
+            </AppText>
+          </View>
+          <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
+            <AppText>delete</AppText>
+          </TouchableOpacity>
+          {messageType === "image" && <MessageItemImage item={message} />}
+          {messageType === "document" && (
+            <ShowDocumentModal
+              name={documentData.documentDisplayName}
+              url={documentData.documentDownloadURL}
+            />
+          )}
+          {replyMessageId && (
+            <MessageItemReply
+              allUsers={allUsers}
+              item={{
+                roomId,
+                replyMessageId,
+              }}
+              onScrollToIndex={onScrollToIndex}
+            />
+          )}
+          {is_deleted && <AppText>Message deleted</AppText>}
+          {!is_deleted && (
+            <AppText>
+              {messageFuncs.autolinkText(messageBody, null, searchWord)}
+            </AppText>
+          )}
+          <AppText style={styles.messageTimestamp}>
+            {createdAt.slice(11, 16)}
+          </AppText>
         </TouchableOpacity>
-        <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
-          <AppText>delete</AppText>
-        </TouchableOpacity>
-        {is_deleted && <AppText>TÄMÄ ON DELETOIUTU</AppText>}
-        <AppText>
-          sender:
-          {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
-        </AppText>
-        {messageType === "image" && <MessageItemImage item={message} />}
-        {messageType === "document" && (
-          <ShowDocumentModal
-            name={documentData.documentDisplayName}
-            url={documentData.documentDownloadURL}
-          />
-        )}
-        {replyMessageId && (
-          <MessageItemReply
-            allUsers={allUsers}
-            item={{
-              roomId,
-              replyMessageId,
-            }}
-            onScrollToIndex={onScrollToIndex}
-          />
-        )}
-        <AppText>
-          {messageFuncs.autolinkText(messageBody, null, searchWord)}
-        </AppText>
-      </TouchableOpacity>
+      </View>
     </Swipeable>
   );
 }
 
 const styles = StyleSheet.create({
-  me: { alignItems: "flex-end" },
-  otherUser: { alignItems: "flex-start" },
+  me: {
+    marginTop: 4,
+    marginBottom: 4,
+    alignSelf: "flex-end",
+    backgroundColor: colors.light,
+    padding: 10,
+    borderTopRightRadius: 5,
+    maxWidth: "82%",
+    borderBottomRightRadius: 5,
+    // shadowColor: "#000",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  senderName: { paddingRight: 10 },
+  messageTimestamp: { fontSize: 12, alignSelf: "center" },
+  messageHeader: { flexDirection: "row" },
+  otherUser: {
+    marginTop: 4,
+    marginBottom: 4,
+    alignSelf: "flex-start",
+    backgroundColor: colors.light,
+    padding: 10,
+    borderTopRightRadius: 5,
+    maxWidth: "82%",
+    borderBottomRightRadius: 5,
+    // shadowColor: "#000",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
 });
 
 function areEqual(prevProps, nextProps) {

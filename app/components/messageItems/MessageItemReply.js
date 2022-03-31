@@ -17,10 +17,11 @@ function MessageItemReply({ item, allUsers, onScrollToIndex }) {
   //   console.log(messageData, "täällä messageItemReply");
   const store = useStore();
   const getIndexNow = () => {
-    const replyMessageIndex = Object.keys(
-      store.getState().entities.msgStore.allMessages[roomId].messages
-    ).findIndex((messageId) => messageId === replyMessageId);
-    console.log(replyMessageIndex, "tämä on index");
+    const replyMessageIndex = store
+      .getState()
+      .entities.msgStore.allMessageIds[roomId].findIndex(
+        (message_id) => message_id === replyMessageId
+      );
 
     onScrollToIndex(replyMessageIndex);
   };
