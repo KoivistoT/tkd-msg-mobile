@@ -67,6 +67,7 @@ import ShowSearchBarButton from "./ShowSearchBarButton";
 import AppCloseButton from "./AppCloseButton";
 import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
+import messageFuncs from "../../utility/messageFuncs";
 
 function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
@@ -86,13 +87,13 @@ function MessageForm({ item, setShowSearchBar }) {
     members: currentRoomMembers,
     messageSum: currentRoomMessageSum,
   } = roomData || "null";
-  const allUsers = useSelector(selectAllUsersMedium); // tämä auttaa, jos henkilön tiedot muuttuu, ehkä voi olla selector, kun ei ne usein muutu
+
+  const allUsers = useSelector(selectAllUsersMedium);
   const replyMessageIds = useSelector(selectReplyItemIds);
-  //tässä tuleekin ongelma, jos ei ole roomData objectia, kun se on null, niin objectista ei saa _id:tä
   const roomMembers = useSelector(selectRoomMembersById(currentRoomId));
   const usersOnline = useSelector(selectUsersOnline);
-  // console.log("päivittää tämä kahdesti, ei ehkä haittaa");
   const socket = useSelector(selectSocket);
+
   const otherUser =
     currentRoomType === "private"
       ? roomFuncs.getPrivateRoomOtherUserName(
@@ -104,29 +105,7 @@ function MessageForm({ item, setShowSearchBar }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
-
-    const lastSeenObject =
-      store.getState().auth.currentUser.last_seen_messages[
-        store
-          .getState()
-          .auth.currentUser.last_seen_messages.findIndex(
-            (object) => object.roomId === currentRoomId
-          )
-      ];
-    const lastSeenSumBefore = lastSeenObject?.lastSeenMessageSum || 0;
-    const unreadMessagesSum = currentRoomMessageSum - lastSeenSumBefore;
-
-    if (unreadMessagesSum !== 0) {
-      dispatch(
-        saveLastSeenMessageSum(
-          currentUserId,
-          currentRoomId,
-          currentRoomMessageSum
-        )
-      );
-    }
-
-    // }, 10);
+    saveMessageSum();
 
     //onko tähän parempi ratkaisu, tämän pitää olla muualla
     setHeader();
@@ -165,6 +144,23 @@ function MessageForm({ item, setShowSearchBar }) {
     });
   };
 
+  const saveMessageSum = () => {
+    const unreadMessagesSum = messageFuncs.getLastSeenMessage(
+      store.getState(),
+      currentRoomId,
+      currentRoomMessageSum
+    );
+
+    if (unreadMessagesSum !== 0) {
+      dispatch(
+        saveLastSeenMessageSum(
+          currentUserId,
+          currentRoomId,
+          currentRoomMessageSum
+        )
+      );
+    }
+  };
   const handleSubmit = async ({ message }, { resetForm }) => {
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
@@ -179,12 +175,17 @@ function MessageForm({ item, setShowSearchBar }) {
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
+    if (message.length === 0 && photos.length === 0 && !documentURL.current) {
+      return;
+    }
 
     const { messageId } = getReplyItem();
     const replyMessageId = messageId ? messageId : null;
 
     let messageType = "text";
     let imageURLs = null;
+    let documentDownloadURL = null;
+    let documentDisplayName = null;
 
     if (photos.length !== 0) {
       dispatch(startLoad());
@@ -194,12 +195,8 @@ function MessageForm({ item, setShowSearchBar }) {
       );
 
       imageURLs = downloadUris.map((image) => image.downloadUri);
-      // console.log(imageURLs, "Täältä tulee");
-      console.log("lataus valmis");
     }
 
-    let documentDownloadURL = null;
-    let documentDisplayName = null;
     if (documentURL.current) {
       dispatch(startLoad());
       messageType = "document";
@@ -248,23 +245,27 @@ function MessageForm({ item, setShowSearchBar }) {
       documentDownloadURL,
       documentDisplayName,
     });
-    dispatch(replyMessageIdCleared(currentRoomId));
 
     resetForm();
-    setDocumentName(null);
-    documentURL.current = null;
-    setPhotos([]);
-    setShowOptions(false);
+    clearStates();
     dispatch(endLoad());
+
     if (currentRoomStatus === "draft") {
       dispatch(activateDraftRoom(currentRoomId, currentUserId));
     }
-
-    Keyboard.dismiss();
   };
 
   const getReplyItem = () => {
     return roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
+  };
+
+  const clearStates = () => {
+    dispatch(replyMessageIdCleared(currentRoomId));
+    setDocumentName(null);
+    documentURL.current = null;
+    setPhotos([]);
+    setShowOptions(false);
+    Keyboard.dismiss();
   };
 
   return (
@@ -336,7 +337,7 @@ function MessageForm({ item, setShowSearchBar }) {
 }
 
 const validationSchema = Yup.object().shape({
-  message: Yup.string().required().min(1).label("Message"),
+  message: Yup.string().label("Message"),
 });
 
 const styles = StyleSheet.create({});

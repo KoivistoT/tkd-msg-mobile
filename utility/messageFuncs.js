@@ -64,6 +64,20 @@ const autolinkText = (messageBody, style, searchWord) => {
   );
 };
 
+const getLastSeenMessage = (state, currentRoomId, currentRoomMessageSum) => {
+  const lastSeenObject =
+    state.auth.currentUser.last_seen_messages[
+      state.auth.currentUser.last_seen_messages.findIndex(
+        (object) => object.roomId === currentRoomId
+      )
+    ];
+
+  const lastSeenSumBefore = lastSeenObject?.lastSeenMessageSum || 0;
+
+  return currentRoomMessageSum - lastSeenSumBefore;
+};
+
 export default {
   autolinkText,
+  getLastSeenMessage,
 };
