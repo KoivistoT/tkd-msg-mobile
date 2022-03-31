@@ -14,7 +14,7 @@ import * as DocumentPicker from "expo-document-picker";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
 import { ActivityIndicator } from "react-native";
-
+import { StorageAccessFramework } from "expo-file-system";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
@@ -31,10 +31,11 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
       setModalVisible(true);
       return;
     }
+
     try {
       let result = await DocumentPicker.getDocumentAsync({
-        // type: "application/pdf",
-        // copyToCacheDirectory: false,
+        type: "application/pdf",
+        copyToCacheDirectory: false,
       });
 
       if (result.type !== "cancel") {
@@ -69,15 +70,24 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
         <View style={styles.header}>
           <AppText>{documentName}</AppText>
         </View>
-
+        {/* 
         <WebView
-          originWhitelist={["file://"]}
-          style={{ flex: 1, backgroundColor: "red" }}
-          allowUniversalAccessFromFileURLs={true}
-          allowFileAccess={true}
+          originWhitelist={["*"]}
+          style={styles.container}
+          // renderLoading={Spinner}
+          // startInLoadingState={true}
           source={{
-            url: "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540dev_koivisto%252Fmsg-mobile/DocumentPicker/9e3dfe2d-f1f4-4aed-8592-1b58f3f1b192.pdf",
-            // url: documentURL.current,
+            uri: "https://firebasestorage.googleapis.com/v0/b/test2-6663b.appspot.com/o/msg-files%2Fexercise.txt30.03%2011%3A59%3A280.8865077095855219?alt=media&token=42ac90dc-3d4a-4934-87c3-3a50f3b3fe36",
+          }}
+        /> */}
+        <WebView
+          originWhitelist={["*"]}
+          style={{ flex: 1 }}
+          // renderLoading={Spinner}
+          // startInLoadingState={true}
+          source={{
+            url: documentURL.current,
+            // url: "file://content://com.android.providers.downloads.documents/document/5625",
           }}
         />
 

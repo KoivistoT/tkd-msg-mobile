@@ -9,6 +9,8 @@ import {
 import { firebaseStorage } from "../api/firebaseClient";
 import * as FileSystem from "expo-file-system";
 const storage = firebaseStorage();
+import { Alert } from "react-native";
+import * as MediaLibrary from "expo-media-library";
 import * as Sharing from "expo-sharing";
 const saveImagesToFirebase = async (images) => {
   try {
@@ -117,22 +119,18 @@ const uploadToFirebase = async (blob, folder, id) => {
 
 const uploadDocumentToFireBase = async (documentURL, documentName) => {
   try {
-    // setLoadingVisible(true);
-
     const blob = await uriToBlob(documentURL);
-
     const id = documentName + dayjs().format("DD.MM HH:mm:ss") + Math.random();
     const folder = "msg-files/";
     const downloadURL = await uploadToFirebase(blob, folder, id);
     return downloadURL;
   } catch (error) {
-    // setLoadingVisible(false);
     alert("Something faild.");
   }
 };
 
 const saveFileToPhone = async (url, name) => {
-  if (Platform.OS !== "android") {
+  if (Platform.OS == "ios") {
     try {
       const { uri } = await downloadResumable(url, name).downloadAsync();
       await Sharing.shareAsync(uri);
@@ -140,16 +138,11 @@ const saveFileToPhone = async (url, name) => {
       console.log(error);
     }
   } else {
-    // setLoading(true);
-
     try {
       const { uri } = await downloadResumable(url, name).downloadAsync();
-      // console.log("Finished downloading to ", uri);
-      const url = url;
-      saveFileAsync(url);
+      saveFileAsync(url, name);
     } catch (e) {
       console.error(e);
-      // setLoading(false);
     }
   }
 };
@@ -158,7 +151,6 @@ const callback = (downloadProgress) => {
   const progress =
     downloadProgress.totalBytesWritten /
     downloadProgress.totalBytesExpectedToWrite;
-  // setProgress(progress / 100);
 };
 
 const downloadResumable = (url, name) =>
@@ -169,15 +161,11 @@ const downloadResumable = (url, name) =>
     callback
   );
 
-const saveFileAsync = async (url) => {
-  let path = url.split("/");
-  const file_name = path[path.length - 1];
+const saveFileAsync = async (url, name) => {
   FileSystem.downloadAsync(url, FileSystem.documentDirectory + name)
     .then(({ uri }) => {
-      // console.log("Finished downloading to ", uri);
       MediaLibrary.createAssetAsync(uri).then((asset) => {
-        // console.log("asset", asset);
-        MediaLibrary.createAlbumAsync("myfolder", asset)
+        MediaLibrary.createAlbumAsync("msgAppFiles", asset)
           .then(() => {
             // console.log({
             //   message: "general.success",
@@ -187,6 +175,7 @@ const saveFileAsync = async (url) => {
           })
           .catch((error) => {
             console.log({
+              error,
               message: "general.success",
               description: "download.failed",
               type: "danger",
@@ -195,13 +184,11 @@ const saveFileAsync = async (url) => {
       });
     })
     .then(() => {
-      setLoading(false);
-      Alert.alert("Success", "File: " + name + " saved!", [{ text: "OK" }], {
+      Alert.alert("", "File: " + name + " saved!", [{ text: "OK" }], {
         cancelable: false,
       });
     })
     .catch((error) => {
-      setLoading(false);
       Alert.alert(
         "Error",
         "File: " + name + " couldn't be saved!",

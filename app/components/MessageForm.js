@@ -290,7 +290,7 @@ function MessageForm({ item }) {
               />
             )}
             {documentURL.current && <AppText>{documentName}</AppText>}
-            {photos.length === 0 && (
+            {Platform.OS == "ios" && photos.length === 0 && (
               <SelectDocumentModal
                 documentURL={documentURL}
                 setDocumentName={setDocumentName}
