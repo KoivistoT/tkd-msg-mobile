@@ -34,12 +34,11 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
 
     try {
       let result = await DocumentPicker.getDocumentAsync({
-        type: "application/pdf",
-        copyToCacheDirectory: false,
+        // type: "application/pdf",
+        // copyToCacheDirectory: false,
       });
 
       if (result.type !== "cancel") {
-        console.log(result, "Tässä resultti");
         documentURL.current = result.uri;
         setDocumentName(result.name);
         // const nameWithTime = name + " " + dayjs().format("DD.MM HH:mm:ss");
@@ -84,6 +83,7 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
           originWhitelist={["*"]}
           style={{ flex: 1 }}
           // renderLoading={Spinner}
+          javaScriptEnabled={true}
           // startInLoadingState={true}
           source={{
             url: documentURL.current,

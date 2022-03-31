@@ -14,6 +14,7 @@ import Constants from "expo-constants";
 import * as DocumentPicker from "expo-document-picker";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
+import AutoHeightWebView from "react-native-autoheight-webview";
 
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
@@ -53,7 +54,8 @@ function ShowDocumentModal({ name, url }) {
           </AppButton>
         </View>
 
-        <WebView
+        {/* <WebView
+          
           originWhitelist={["*"]}
           style={styles.container}
           renderLoading={Spinner}
@@ -61,6 +63,25 @@ function ShowDocumentModal({ name, url }) {
           source={{
             uri: url,
           }}
+        /> */}
+        <AutoHeightWebView
+          style={{
+            width: Dimensions.get("window").width - 15,
+            marginTop: 20,
+            marginHorizontal: 10,
+          }}
+          files={[
+            {
+              href: "cssfileaddress",
+              type: "text/css",
+              rel: "stylesheet",
+            },
+          ]}
+          source={{
+            uri: url,
+          }}
+          scalesPageToFit={true}
+          viewportContent={"width=device-width, user-scalable=no"}
         />
 
         <View style={styles.buttons}>
