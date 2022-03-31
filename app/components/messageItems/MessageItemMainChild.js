@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -13,6 +13,7 @@ import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
 import Autolink from "react-native-autolink";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 import {
   deleteMessageById,
   replyMessageIdCleared,
@@ -22,6 +23,7 @@ import MessageItemReply from "./MessageItemReply";
 import { navigationRef } from "../../navigation/rootNavigation";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
 import messageFuncs from "../../../utility/messageFuncs";
+import { messageFormFocusAdded } from "../../../store/general";
 
 function MessageItemMainChild({
   message,
@@ -46,6 +48,7 @@ function MessageItemMainChild({
   } = message;
 
   const onReply = () => {
+    dispatch(messageFormFocusAdded());
     dispatch(replyMessageIdCleared(message.roomId));
     dispatch(
       replyMessageIdResived({
@@ -58,9 +61,18 @@ function MessageItemMainChild({
     dispatch(deleteMessageById(roomId, messageId));
   };
   // console.log("message Child päivittyy---------------------");
-
+  const messageRef = useRef();
   return (
-    <>
+    <Swipeable
+      ref={messageRef}
+      onSwipeableLeftWillOpen={() => {
+        setTimeout(() => {
+          onReply();
+          messageRef.current.close();
+        }, 50);
+      }}
+      renderLeftActions={() => <View style={{ width: 50 }}></View>}
+    >
       <TouchableOpacity
         key={messageId}
         style={styles[sentBy]}
@@ -103,7 +115,7 @@ function MessageItemMainChild({
           {messageFuncs.autolinkText(messageBody, null, searchWord)}
         </AppText>
       </TouchableOpacity>
-    </>
+    </Swipeable>
   );
 }
 

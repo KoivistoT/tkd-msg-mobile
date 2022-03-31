@@ -10,6 +10,7 @@ const slice = createSlice({
     successMessageVisibleTime: 3000,
     doneTasksIds: [],
     loading: false,
+    messageFormFocus: false,
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -38,11 +39,19 @@ const slice = createSlice({
     endLoad: (general, action) => {
       general.loading = false;
     },
+    messageFormFocusAdded: (general, action) => {
+      general.messageFormFocus = true;
+    },
+    messageFormFocusCleared: (general, action) => {
+      general.messageFormFocus = false;
+    },
   },
 });
 
 export const {
   errorMessageAdded,
+  messageFormFocusAdded,
+  messageFormFocusCleared,
   startLoad,
   endLoad,
   errorMessageCleared,
@@ -50,5 +59,10 @@ export const {
   successMessageCleared,
   doneTaskIdResived,
 } = slice.actions;
+
+export const selectMessageFormFocus = createSelector(
+  (state) => state.entities.general,
+  (general) => general.messageFormFocus
+);
 
 export default slice.reducer;

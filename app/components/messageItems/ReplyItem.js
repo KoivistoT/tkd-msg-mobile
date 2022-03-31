@@ -9,23 +9,27 @@ import {
   replyMessageIdCleared,
   selectMessageById,
 } from "../../../store/msgStore";
+import { messageFormFocusCleared } from "../../../store/general";
 
 function ReplyItem({ item }) {
   const dispatch = useDispatch();
   const { roomId, messageId } = item;
 
   const messageData = useSelector(selectMessageById(roomId, messageId));
+
   //   console.log(messageData, "täällä reply data");
 
+  const onClose = () => {
+    dispatch(replyMessageIdCleared(roomId));
+    dispatch(messageFormFocusCleared());
+  };
   return (
     <View>
       <View style={{ alignSelf: "center" }}>
         <TouchableOpacity
           style={styles.closeButton}
           activeOpacity={1}
-          onPress={() => {
-            dispatch(replyMessageIdCleared(roomId));
-          }}
+          onPress={() => onClose()}
         >
           <AppText style={styles.text}>CLOSE</AppText>
         </TouchableOpacity>

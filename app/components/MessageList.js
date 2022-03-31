@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Button, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Button,
+  Text,
+  Keyboard,
+} from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItemMain, {
   MemoMessageItemMain,
@@ -17,6 +24,7 @@ import AppTextInput from "./AppTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
 import AppSearchTextInput from "./AppSearchTextInput";
+import { messageFormFocusCleared } from "../../store/general";
 
 function MessageList({ item, showSearchBar }) {
   const store = useStore();
@@ -117,6 +125,7 @@ function MessageList({ item, showSearchBar }) {
             data={
               searchResultMessageIds ? searchResultMessageIds : roomMessageIds
             }
+            onScrollBeginDrag={() => Keyboard.dismiss()}
             onScrollToIndexFailed={onScrollToIndexFailed}
             keyExtractor={keyExtractor}
             renderItem={messageItem}
