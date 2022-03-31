@@ -18,7 +18,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
 import AppSearchTextInput from "./AppSearchTextInput";
 
-function MessageList({ item }) {
+function MessageList({ item, showSearchBar }) {
   const store = useStore();
   const dispatch = useDispatch();
   const msgListRef = useRef();
@@ -117,7 +117,7 @@ function MessageList({ item }) {
           color: "black",
         }}
       >
-        <AppSearchTextInput onSearch={onSearch} />
+        {showSearchBar && <AppSearchTextInput onSearch={onSearch} />}
         {roomMessageIds && (
           <FlatList
             ref={msgListRef}

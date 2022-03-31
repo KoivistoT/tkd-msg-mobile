@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, StyleSheet, Keyboard, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  TouchableOpacity,
+  Button,
+} from "react-native";
 import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
 import {
@@ -57,13 +63,16 @@ import { selectSocket } from "../../store/socket";
 import AppButton from "./AppButton";
 import SelectDocumentModal from "./modals/SelectDocumentModal";
 import { endLoad, startLoad } from "../../store/general";
+import colors from "../../config/colors";
+import SearchBar from "./SearchBar";
 
-function MessageForm({ item }) {
+function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
   const [photos, setPhotos] = useState([]);
+
   let documentURL = useRef(null);
   const [documentName, setDocumentName] = useState(null);
 
@@ -217,8 +226,6 @@ function MessageForm({ item }) {
     //   }
     // }, 10);
 
-    //en pidä tästä, että kysyy aina
-
     // dispatch(
     //   sendMessage(
     // message,
@@ -260,13 +267,9 @@ function MessageForm({ item }) {
       },
     ]);
   };
+
   const handleRemove = (uri) => {
     setPhotos(photos.filter((imageUri) => imageUri.uri !== uri));
-  };
-
-  const testi = async () => {
-    dispatch(itemAdded());
-    // dispatch(test());
   };
 
   const getReplyItem = () => {
@@ -298,6 +301,7 @@ function MessageForm({ item }) {
                 setDocumentName={setDocumentName}
               />
             )}
+            <SearchBar onPress={setShowSearchBar} />
             <AppForm
               initialValues={{ message: "" }}
               onSubmit={handleSubmit}
@@ -323,7 +327,6 @@ function MessageForm({ item }) {
                 <SendButton />
               </View>
             </AppForm>
-            <Button title={"test"} onPress={testi}></Button>
           </View>
         )}
       {currentRoomStatus === "archived" && (
