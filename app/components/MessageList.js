@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Button, Text } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItemMain, {
@@ -13,6 +13,10 @@ import {
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
 import { navigationRef } from "../navigation/rootNavigation";
 import { selectAllUsersMinimal } from "../../store/users";
+import AppTextInput from "./AppTextInput";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import AppButton from "./AppButton";
+import AppSearchTextInput from "./AppSearchTextInput";
 
 function MessageList({ item }) {
   const store = useStore();
@@ -23,6 +27,7 @@ function MessageList({ item }) {
   // const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
+  const [currentSearchWord, setcurrentSearchWord] = useState(null);
   //*********** */
   //*********** */
   // const allUsers = store.getState().entities.users.allUsers;
@@ -33,6 +38,7 @@ function MessageList({ item }) {
   const messageItem = ({ item }) => (
     <MemoMessageItemMain
       messageId={item}
+      searchWord={currentSearchWord}
       roomId={roomId}
       currentUserId={currentUserId}
       onScrollToIndex={onScrollToIndex}
@@ -74,6 +80,33 @@ function MessageList({ item }) {
     }, 10);
   };
 
+  const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
+  const onSearch = (searchWord) => {
+    const filteredMessageIds = [];
+
+    if (searchWord) {
+      setcurrentSearchWord(searchWord);
+      const roomAllMessages = {
+        ...store.getState().entities.msgStore.allMessages[roomId].messages,
+      };
+      const roomAllMessageIds = [
+        ...store.getState().entities.msgStore.allMessageIds[roomId],
+      ];
+      roomAllMessageIds.forEach((messageId) => {
+        if (
+          roomAllMessages[messageId].messageBody
+            .toLowerCase()
+            .includes(searchWord.toLowerCase())
+        )
+          filteredMessageIds.push(messageId);
+      });
+      setSearchResultMessageIds(filteredMessageIds);
+    } else {
+      setSearchResultMessageIds(null);
+      setcurrentSearchWord(null);
+    }
+  };
+
   return (
     <>
       <View
@@ -84,11 +117,14 @@ function MessageList({ item }) {
           color: "black",
         }}
       >
+        <AppSearchTextInput onSearch={onSearch} />
         {roomMessageIds && (
           <FlatList
             ref={msgListRef}
             // data={sortObjectsByfield(roomMessages, "createdAt")}
-            data={roomMessageIds}
+            data={
+              searchResultMessageIds ? searchResultMessageIds : roomMessageIds
+            }
             onScrollToIndexFailed={onScrollToIndexFailed}
             keyExtractor={keyExtractor}
             renderItem={messageItem}

@@ -8,6 +8,7 @@ function MessageItemMain({
   roomId,
   currentUserId,
   onScrollToIndex = null,
+  searchWord,
 }) {
   // console.log("message main!!!");
   const message = useSelector(selectMessageById(roomId, messageId));
@@ -21,6 +22,7 @@ function MessageItemMain({
   return (
     <MemoMessageItemMainChild
       message={message}
+      searchWord={searchWord}
       sentBy={sentBy}
       allUsers={allUsers}
       onScrollToIndex={onScrollToIndex}
@@ -30,7 +32,10 @@ function MessageItemMain({
 
 function areEqual(prevProps, nextProps) {
   try {
-    if (prevProps.messageId === nextProps.messageId) {
+    if (
+      prevProps.messageId === nextProps.messageId &&
+      prevProps.searchWord === nextProps.searchWord
+    ) {
       return true;
     } else {
       return false;
