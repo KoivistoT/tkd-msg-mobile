@@ -10,7 +10,6 @@ function MessageItemMain({
   onScrollToIndex = null,
   searchWord,
 }) {
-  console.log("message main!!!");
   const message = useSelector(selectMessageById(roomId, messageId));
   const store = useStore();
   // const message =

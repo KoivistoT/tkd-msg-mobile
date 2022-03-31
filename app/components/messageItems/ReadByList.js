@@ -12,7 +12,7 @@ import {
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
-import { MemoMessageItemMain } from "../messageItems/MessageItemMain";
+
 import MessageItemImage from "./MessageItemImage";
 
 import { selectAllUsersMinimal } from "../../../store/users";

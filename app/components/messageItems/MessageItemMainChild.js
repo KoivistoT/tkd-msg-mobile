@@ -8,11 +8,11 @@ import {
   Image,
 } from "react-native";
 import colors from "../../../config/colors";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
-import Autolink from "react-native-autolink";
+
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import {
   deleteMessageById,
@@ -33,7 +33,7 @@ function MessageItemMainChild({
   searchWord,
 }) {
   const dispatch = useDispatch();
-  console.log("child päivittyy ---");
+  // console.log("child päivittyy ---");
 
   const {
     roomId,
@@ -97,10 +97,10 @@ function MessageItemMainChild({
     >
       <View style={[styles[sentBy]]}>
         <TouchableOpacity
-
-        // onLongPress={() =>
-        //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
-        // }
+          activeOpacity={1}
+          // onLongPress={() =>
+          //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
+          // }
         >
           <View style={styles.messageHeader}>
             <AppText style={styles.senderName}>

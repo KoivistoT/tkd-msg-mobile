@@ -704,6 +704,7 @@ export const selectRoomMessageIdsByRoomId = (roomId) =>
       // msgStore.allMessageIds[roomId].length !== 0
       //   ? [...msgStore.allMessageIds[roomId]]
       //   : []
+
       msgStore.allMessageIds[roomId]
   );
 

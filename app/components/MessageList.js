@@ -13,7 +13,6 @@ import MessageItemMain, {
 } from "./messageItems/MessageItemMain";
 import {
   messageSelected,
-  messagesFromStorageFetched,
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesByRoomId,
 } from "../../store/msgStore";
@@ -42,7 +41,7 @@ function MessageList({ item, showSearchBar }) {
   // const allUsers = useSelector(selectAllUsersMinimal); // tämä ei tarvinne olla selector, voi tehdä raskaaksi
   //*********** */
   //*********** */
-  // console.log("MessageLists päivittyy");
+
   const messageItem = ({ item }) => (
     <MemoMessageItemMain
       messageId={item}
@@ -67,10 +66,6 @@ function MessageList({ item, showSearchBar }) {
     });
   };
 
-  onGetMoreMessages = () => {
-    //tämä ei enää ole olellinen, jos kaikki on samassa paikassa, ja nyt tuo on ihan muut viestit
-    // dispatch(messagesFromStorageFetched(roomId));
-  };
   const keyExtractor = (item) => item;
 
   const onScrollToIndexFailed = (error) => {
@@ -130,10 +125,9 @@ function MessageList({ item, showSearchBar }) {
             keyExtractor={keyExtractor}
             renderItem={messageItem}
             onEndReachedThreshold={0.7}
-            onEndReached={() => onGetMoreMessages()}
             maxToRenderPerBatch={10}
             initialNumToRender={10}
-            windowSize={30}
+            windowSize={5}
             inverted={true}
           />
         )}
