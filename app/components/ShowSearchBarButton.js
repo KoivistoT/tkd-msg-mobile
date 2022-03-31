@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../config/colors";
 
-function SearchBar({ onPress }) {
+function ShowSearchBarButton({ onPress }) {
   return (
     <TouchableOpacity
       activeOpacity="0.5"
@@ -16,4 +16,4 @@ function SearchBar({ onPress }) {
 }
 
 const styles = StyleSheet.create({});
-export default SearchBar;
+export default ShowSearchBarButton;

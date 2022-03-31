@@ -28,7 +28,7 @@ function AppSearchTextInput({
   const [searchWord, setSearchWord] = useState(null);
 
   return (
-    <View style={{ marginTop: 10 }}>
+    <View style={styles.mainContainer}>
       <View style={{ flexDirection: "row", paddingHorizontal: 20 }}>
         {icon && (
           <MaterialCommunityIcons name={icon} size={20} style={styles.icon} />
@@ -127,6 +127,9 @@ function AppSearchTextInput({
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    top: 15,
+  },
   container: {
     flexDirection: "row",
     marginRight: -50,

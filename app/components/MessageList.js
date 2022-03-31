@@ -109,19 +109,11 @@ function MessageList({ item, showSearchBar }) {
 
   return (
     <>
-      <View
-        style={{
-          borderWidth: 1,
-          width: "100%",
-          height: 300,
-          color: "black",
-        }}
-      >
+      <View style={styles.container}>
         {showSearchBar && <AppSearchTextInput onSearch={onSearch} />}
         {roomMessageIds && (
           <FlatList
             ref={msgListRef}
-            // data={sortObjectsByfield(roomMessages, "createdAt")}
             data={
               searchResultMessageIds ? searchResultMessageIds : roomMessageIds
             }
@@ -141,5 +133,9 @@ function MessageList({ item, showSearchBar }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 export default MessageList;

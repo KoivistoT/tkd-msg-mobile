@@ -27,7 +27,6 @@ import {
   sendMessage,
   test,
 } from "../../store/msgStore";
-
 import { useNavigation } from "@react-navigation/native";
 import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
@@ -64,7 +63,10 @@ import AppButton from "./AppButton";
 import SelectDocumentModal from "./modals/SelectDocumentModal";
 import { endLoad, startLoad } from "../../store/general";
 import colors from "../../config/colors";
-import SearchBar from "./SearchBar";
+import ShowSearchBarButton from "./ShowSearchBarButton";
+import AppCloseButton from "./AppCloseButton";
+import AttachmentOptions from "./AttachmentOptions";
+import MessageFormToolBar from "./MessageFormToolBar";
 
 function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
@@ -72,7 +74,7 @@ function MessageForm({ item, setShowSearchBar }) {
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
   const [photos, setPhotos] = useState([]);
-
+  const [showOptions, setShowOptions] = useState(false);
   let documentURL = useRef(null);
   const [documentName, setDocumentName] = useState(null);
 
@@ -249,27 +251,16 @@ function MessageForm({ item, setShowSearchBar }) {
     dispatch(replyMessageIdCleared(currentRoomId));
 
     resetForm();
+    setDocumentName(null);
+    documentURL.current = null;
+    setPhotos([]);
+    setShowOptions(false);
     dispatch(endLoad());
     if (currentRoomStatus === "draft") {
       dispatch(activateDraftRoom(currentRoomId, currentUserId));
     }
 
     Keyboard.dismiss();
-  };
-
-  const handleAdd = (uri) => {
-    setPhotos([
-      ...photos,
-      {
-        name: "IMG" + Math.random(),
-        type: "image/jpg",
-        uri: uri,
-      },
-    ]);
-  };
-
-  const handleRemove = (uri) => {
-    setPhotos(photos.filter((imageUri) => imageUri.uri !== uri));
   };
 
   const getReplyItem = () => {
@@ -287,21 +278,21 @@ function MessageForm({ item, setShowSearchBar }) {
               marginBottom: Platform.OS == "ios" ? 10 : 0,
             }}
           >
-            {!documentURL.current && (
-              <ImageInputList
-                imageUris={photos.map((photo) => photo.uri)}
-                onRemoveImage={handleRemove}
-                onAddImage={handleAdd}
-              />
-            )}
-            {documentURL.current && <AppText>{documentName}</AppText>}
-            {Platform.OS == "ios" && photos.length === 0 && (
-              <SelectDocumentModal
+            {showOptions && (
+              <AttachmentOptions
                 documentURL={documentURL}
                 setDocumentName={setDocumentName}
+                photos={photos}
+                setPhotos={setPhotos}
+                onPress={() => setShowOptions(false)}
+                documentName={documentName}
               />
             )}
-            <SearchBar onPress={setShowSearchBar} />
+            <MessageFormToolBar
+              onPress={() => setShowOptions((prevState) => !prevState)}
+              setShowSearchBar={setShowSearchBar}
+            />
+
             <AppForm
               initialValues={{ message: "" }}
               onSubmit={handleSubmit}
