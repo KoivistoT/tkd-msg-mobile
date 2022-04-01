@@ -8,7 +8,7 @@ import {
   Keyboard,
   Image,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
@@ -36,6 +36,9 @@ import {
 import AppButton from "../AppButton";
 
 import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
+import LeftAction from "./LeftAction";
+import SenderName from "./SenderName";
+import MessageHeader from "./MessageHeader";
 function MessageItemMainChild({
   message,
   sentBy,
@@ -137,13 +140,7 @@ function MessageItemMainChild({
               messageRef.current?.close();
             }, 50);
           }}
-          renderLeftActions={() => (
-            <FontAwesome5 name="reply" size={24} color={colors.lightgrey} />
-          )}
-          // onSwipeableRightOpen={() =>
-          //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
-          // }
-          // renderRightActions={() => <View style={{ width: 1 }}></View>}
+          renderLeftActions={() => <LeftAction />}
         >
           <View
             style={[
@@ -156,17 +153,12 @@ function MessageItemMainChild({
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => onSelectMessage()}
-              // onLongPress={() => onSelectMessage()}
             >
-              <View style={styles.messageHeader}>
-                {roomType !== "private" && (
-                  <AppText style={styles.senderName}>
-                    {allUsers
-                      ? allUsers[postedByUser].displayName
-                      : "unknown user"}
-                  </AppText>
-                )}
-              </View>
+              <MessageHeader
+                roomType={roomType}
+                allUsers={allUsers}
+                postedByUser={postedByUser}
+              />
 
               {messageType === "image" && <MessageItemImage item={message} />}
               {messageType === "document" && (
@@ -227,15 +219,11 @@ function MessageItemMainChild({
                 activeOpacity={1}
                 onPress={() => onSelectMessage()}
               >
-                <View style={styles.messageHeader}>
-                  {roomType !== "private" && (
-                    <AppText style={styles.senderName}>
-                      {allUsers
-                        ? allUsers[postedByUser].displayName
-                        : "unknown user"}
-                    </AppText>
-                  )}
-                </View>
+                <MessageHeader
+                  roomType={roomType}
+                  allUsers={allUsers}
+                  postedByUser={postedByUser}
+                />
 
                 {messageType === "image" && <MessageItemImage item={message} />}
                 {messageType === "document" && (
@@ -307,9 +295,9 @@ const styles = StyleSheet.create({
   optionButtons: {
     backgroundColor: "red",
   },
-  senderName: { paddingRight: 10 },
+
   messageTimestamp: { fontSize: 12, alignSelf: "center" },
-  messageHeader: { flexDirection: "row" },
+
   otherUser: {
     marginTop: 4,
     marginBottom: 4,
