@@ -8,13 +8,16 @@ import {
   Keyboard,
   Image,
 } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
-
+import { MaterialIcons } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+
+import { Feather } from "@expo/vector-icons";
 import {
   deleteMessageById,
   replyMessageIdCleared,
@@ -32,6 +35,7 @@ import {
 } from "../../../store/general";
 import AppButton from "../AppButton";
 
+import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
 function MessageItemMainChild({
   message,
   sentBy,
@@ -41,7 +45,10 @@ function MessageItemMainChild({
 }) {
   const dispatch = useDispatch();
   // console.log("child päivittyy ---");
-
+  const onWhoHasSeen = () => {
+    dispatch(messageSelectionRemoved());
+    navigationRef.current.navigate(routes.READ_BY_LIST, message);
+  };
   const selectedMessage = useSelector(selectSelectedMessage);
 
   const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
@@ -69,7 +76,12 @@ function MessageItemMainChild({
 
   const onSelectMessage = () => {
     dispatch(replyMessageIdCleared(message.roomId));
-    dispatch(messageSelected(messageId));
+    if (selectedMessage === messageId) {
+      dispatch(messageSelectionRemoved());
+    } else {
+      dispatch(messageSelected(messageId));
+    }
+
     // scrollToMessage();
     Keyboard.dismiss();
   };
@@ -87,6 +99,7 @@ function MessageItemMainChild({
     );
   };
   const onDeleteMessage = () => {
+    dispatch(messageSelectionRemoved());
     dispatch(deleteMessageById(roomId, messageId));
   };
 
@@ -119,7 +132,9 @@ function MessageItemMainChild({
               messageRef.current?.close();
             }, 50);
           }}
-          renderLeftActions={() => <View style={{ width: 50 }}></View>}
+          renderLeftActions={() => (
+            <FontAwesome5 name="reply" size={24} color={colors.lightgrey} />
+          )}
           // onSwipeableRightOpen={() =>
           //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
           // }
@@ -183,44 +198,28 @@ function MessageItemMainChild({
             alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
           }}
         >
-          {sentBy === "me" && (
+          {/* {sentBy === "me" && (
             <View style={{ backgroundColor: "white" }}>
               <AppButton
                 title="X"
                 onPress={() => dispatch(messageSelectionRemoved())}
               />
             </View>
-          )}
+          )} */}
           {sentBy === "me" && (
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
-                <AppText style={{ backgroundColor: "red", padding: 5 }}>
-                  delete
-                </AppText>
-                <TouchableOpacity
-                  title={"reply"}
-                  onPress={() =>
-                    navigationRef.current.navigate(routes.READ_BY_LIST, message)
-                  }
-                >
-                  <AppText
-                    style={{
-                      backgroundColor: "blue",
-                      padding: 5,
-                      marginTop: 2,
-                      color: "white",
-                    }}
-                  >
-                    seen
-                  </AppText>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
+            <MessageOptionsButtonGroup
+              onDelete={() => onDeleteMessage()}
+              onSeen={() => onWhoHasSeen()}
+              isDeleted={is_deleted}
+            />
           )}
 
           <View style={[styles[sentBy], { flexDirection: "row" }]}>
             <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity activeOpacity={1}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => onSelectMessage()}
+              >
                 <View style={styles.messageHeader}>
                   <AppText style={styles.senderName}>
                     {allUsers
@@ -259,38 +258,11 @@ function MessageItemMainChild({
             </View>
           </View>
           {sentBy !== "me" && (
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
-                <AppText style={{ backgroundColor: "red", padding: 5 }}>
-                  delete
-                </AppText>
-                <TouchableOpacity
-                  title={"reply"}
-                  onPress={() =>
-                    navigationRef.current.navigate(routes.READ_BY_LIST, message)
-                  }
-                >
-                  <AppText
-                    style={{
-                      backgroundColor: "blue",
-                      padding: 5,
-                      marginTop: 2,
-                      color: "white",
-                    }}
-                  >
-                    seen
-                  </AppText>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-          )}
-          {sentBy !== "me" && (
-            <View style={{ backgroundColor: "white" }}>
-              <AppButton
-                title="X"
-                onPress={() => dispatch(messageSelectionRemoved())}
-              />
-            </View>
+            <MessageOptionsButtonGroup
+              onDelete={() => onDeleteMessage()}
+              onSeen={() => onWhoHasSeen()}
+              isDeleted={is_deleted}
+            />
           )}
         </View>
       )}
@@ -318,6 +290,13 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
 
     elevation: 2,
+  },
+  optionIcon: {
+    paddingTop: 10,
+    paddingRight: 20,
+  },
+  optionButtons: {
+    backgroundColor: "red",
   },
   senderName: { paddingRight: 10 },
   messageTimestamp: { fontSize: 12, alignSelf: "center" },
