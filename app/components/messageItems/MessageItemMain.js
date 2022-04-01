@@ -10,8 +10,11 @@ function MessageItemMain({
   onScrollToIndex = null,
   searchWord,
 }) {
-  const message = useSelector(selectMessageById(roomId, messageId));
   const store = useStore();
+
+  const message = useSelector(selectMessageById(roomId, messageId));
+  // const message =
+  //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
   // const message =
   //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
 

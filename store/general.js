@@ -11,6 +11,7 @@ const slice = createSlice({
     doneTasksIds: [],
     loading: false,
     messageFormFocus: false,
+    selectedMessage: null,
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -45,12 +46,21 @@ const slice = createSlice({
     messageFormFocusCleared: (general, action) => {
       general.messageFormFocus = false;
     },
+    messageSelected: (general, action) => {
+      general.selectedMessage = action.payload;
+      console.log(general.selectedMessage, "valittu");
+    },
+    messageSelectionRemoved: (general, action) => {
+      general.selectedMessage = null;
+    },
   },
 });
 
 export const {
   errorMessageAdded,
   messageFormFocusAdded,
+  messageSelected,
+  messageSelectionRemoved,
   messageFormFocusCleared,
   startLoad,
   endLoad,
@@ -63,6 +73,10 @@ export const {
 export const selectMessageFormFocus = createSelector(
   (state) => state.entities.general,
   (general) => general.messageFormFocus
+);
+export const selectSelectedMessage = createSelector(
+  (state) => state.entities.general,
+  (general) => general.selectedMessage
 );
 
 export default slice.reducer;

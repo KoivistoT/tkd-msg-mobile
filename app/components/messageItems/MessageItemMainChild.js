@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import colors from "../../../config/colors";
-import { useDispatch, useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
@@ -23,7 +23,11 @@ import MessageItemReply from "./MessageItemReply";
 import { navigationRef } from "../../navigation/rootNavigation";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
 import messageFuncs from "../../../utility/messageFuncs";
-import { messageFormFocusAdded } from "../../../store/general";
+import {
+  messageFormFocusAdded,
+  messageSelected,
+  selectSelectedMessage,
+} from "../../../store/general";
 
 function MessageItemMainChild({
   message,
@@ -34,6 +38,15 @@ function MessageItemMainChild({
 }) {
   const dispatch = useDispatch();
   // console.log("child päivittyy ---");
+
+  const selectedMessage = useSelector(selectSelectedMessage);
+
+  const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
+    useState(false);
+
+  useEffect(() => {
+    setIsCurrentMessageSelected(selectedMessage === messageId);
+  }, [selectedMessage]);
 
   const {
     roomId,
@@ -48,22 +61,13 @@ function MessageItemMainChild({
   } = message;
   const store = useStore();
 
+  const onSelectMessage = () => {
+    dispatch(messageSelected(messageId));
+    scrollToMessage();
+  };
+
   const onReply = () => {
-    const messageIndex = store
-      .getState()
-      .entities.msgStore.allMessageIds[roomId].findIndex(
-        (message_id) => message_id === messageId
-      );
-
-    if (messageIndex !== -1) {
-      setTimeout(
-        () => {
-          onScrollToIndex(messageIndex);
-        },
-        Platform.OS == "ios" ? 100 : 1000
-      );
-    }
-
+    onSelectMessage();
     dispatch(replyMessageIdCleared(message.roomId));
     dispatch(messageFormFocusAdded());
     dispatch(
@@ -79,6 +83,22 @@ function MessageItemMainChild({
 
   const messageRef = useRef();
 
+  const scrollToMessage = () => {
+    const messageIndex = store
+      .getState()
+      .entities.msgStore.allMessageIds[roomId].findIndex(
+        (message_id) => message_id === messageId
+      );
+
+    if (messageIndex !== -1) {
+      setTimeout(
+        () => {
+          onScrollToIndex(messageIndex);
+        },
+        Platform.OS == "ios" ? 100 : 1000
+      );
+    }
+  };
   return (
     <Swipeable
       ref={messageRef}
@@ -95,12 +115,15 @@ function MessageItemMainChild({
       }
       renderRightActions={() => <View style={{ width: 1 }}></View>}
     >
-      <View style={[styles[sentBy]]}>
+      <View
+        style={[
+          styles[sentBy],
+          { backgroundColor: isCurrentMessageSelected ? "red" : "lightgrey" },
+        ]}
+      >
         <TouchableOpacity
           activeOpacity={1}
-          // onLongPress={() =>
-          //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
-          // }
+          onLongPress={() => onSelectMessage()}
         >
           <View style={styles.messageHeader}>
             <AppText style={styles.senderName}>

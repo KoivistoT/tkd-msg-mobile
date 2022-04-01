@@ -127,7 +127,7 @@ function MessageList({ item, showSearchBar }) {
             onEndReachedThreshold={0.7}
             maxToRenderPerBatch={10}
             initialNumToRender={10}
-            windowSize={5}
+            windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
             inverted={true}
           />
         )}
