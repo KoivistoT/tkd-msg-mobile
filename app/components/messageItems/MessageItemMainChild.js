@@ -177,8 +177,9 @@ function MessageItemMainChild({
                   onScrollToIndex={onScrollToIndex}
                 />
               )}
-              {is_deleted && <AppText>Message deleted</AppText>}
-              {!is_deleted && (
+              {is_deleted ? (
+                <AppText>Message deleted</AppText>
+              ) : (
                 <AppText>
                   {messageFuncs.autolinkText(messageBody, null, searchWord)}
                 </AppText>
@@ -242,8 +243,9 @@ function MessageItemMainChild({
                     onScrollToIndex={onScrollToIndex}
                   />
                 )}
-                {is_deleted && <AppText>Message deleted</AppText>}
-                {!is_deleted && (
+                {is_deleted ? (
+                  <AppText>Message deleted</AppText>
+                ) : (
                   <AppText>
                     {messageFuncs.autolinkText(messageBody, null, searchWord)}
                   </AppText>
