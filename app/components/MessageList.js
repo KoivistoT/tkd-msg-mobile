@@ -111,28 +111,26 @@ function MessageList({ item, showSearchBar }) {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        {showSearchBar && <AppSearchTextInput onSearch={onSearch} />}
-        {roomMessageIds && (
-          <FlatList
-            ref={msgListRef}
-            data={
-              searchResultMessageIds ? searchResultMessageIds : roomMessageIds
-            }
-            onScrollBeginDrag={() => Keyboard.dismiss()}
-            onScrollToIndexFailed={onScrollToIndexFailed}
-            keyExtractor={keyExtractor}
-            renderItem={messageItem}
-            onEndReachedThreshold={0.7}
-            maxToRenderPerBatch={10}
-            initialNumToRender={10}
-            windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
-            inverted={true}
-          />
-        )}
-      </View>
-    </>
+    <View style={styles.container}>
+      {showSearchBar && <AppSearchTextInput onSearch={onSearch} />}
+      {roomMessageIds && (
+        <FlatList
+          ref={msgListRef}
+          data={
+            searchResultMessageIds ? searchResultMessageIds : roomMessageIds
+          }
+          onScrollBeginDrag={() => Keyboard.dismiss()}
+          onScrollToIndexFailed={onScrollToIndexFailed}
+          keyExtractor={keyExtractor}
+          renderItem={messageItem}
+          onEndReachedThreshold={0.7}
+          maxToRenderPerBatch={10}
+          initialNumToRender={10}
+          windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
+          inverted={true}
+        />
+      )}
+    </View>
   );
 }
 

@@ -68,8 +68,9 @@ function MessageItemMainChild({
   const store = useStore();
 
   const onSelectMessage = () => {
+    dispatch(replyMessageIdCleared(message.roomId));
     dispatch(messageSelected(messageId));
-    scrollToMessage();
+    // scrollToMessage();
     Keyboard.dismiss();
   };
 
@@ -135,7 +136,8 @@ function MessageItemMainChild({
           >
             <TouchableOpacity
               activeOpacity={1}
-              onLongPress={() => onSelectMessage()}
+              onPress={() => onSelectMessage()}
+              // onLongPress={() => onSelectMessage()}
             >
               <View style={styles.messageHeader}>
                 <AppText style={styles.senderName}>
@@ -178,17 +180,27 @@ function MessageItemMainChild({
         </Swipeable>
       )}
       {isCurrentMessageSelected && (
-        <View style={{ backgroundColor: "red" }}>
-          <View
-            style={[
-              styles[sentBy],
-              // { backgroundColor: isCurrentMessageSelected ? "red" : "lightgrey" },
-            ]}
-          >
-            <TouchableOpacity
-              activeOpacity={1}
-              onLongPress={() => onSelectMessage()}
-            >
+        <View
+          style={[
+            styles[sentBy],
+            { flexDirection: "row", backgroundColor: "white" },
+          ]}
+        >
+          {sentBy === "me" && (
+            <View>
+              <AppButton
+                title="X"
+                onPress={() => dispatch(messageSelectionRemoved())}
+              />
+            </View>
+          )}
+          <View style={{ flexDirection: "row" }}>
+            {sentBy === "me" && (
+              <View>
+                <AppButton title="nappi" />
+              </View>
+            )}
+            <TouchableOpacity activeOpacity={1}>
               <View style={styles.messageHeader}>
                 <AppText style={styles.senderName}>
                   {allUsers
@@ -226,11 +238,20 @@ function MessageItemMainChild({
                 {createdAt.slice(11, 16)}
               </AppText>
             </TouchableOpacity>
+            {sentBy !== "me" && (
+              <View>
+                <AppButton title="nappi" />
+              </View>
+            )}
           </View>
-          <View>
-            <AppButton title="joo"></AppButton>
-            <AppButton title="jahas"></AppButton>
-          </View>
+          {sentBy !== "me" && (
+            <View style={{ backgroundColor: "white" }}>
+              <AppButton
+                title="X"
+                onPress={() => dispatch(messageSelectionRemoved())}
+              />
+            </View>
+          )}
         </View>
       )}
     </View>
