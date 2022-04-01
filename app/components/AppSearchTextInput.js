@@ -129,10 +129,13 @@ function AppSearchTextInput({
 const styles = StyleSheet.create({
   mainContainer: {
     top: 15,
+    zIndex: 20,
+    backgroundColor: colors.light,
+    padding: 5,
   },
   container: {
     flexDirection: "row",
-    marginRight: -50,
+    marginRight: 50,
   },
   icon: {
     marginRight: 10,

@@ -12,7 +12,8 @@ function SeenButton({ onPress }) {
 
 const styles = StyleSheet.create({
   optionIcon: {
-    padding: 7,
+    padding: 10,
+    paddingHorizontal: 20,
   },
 });
 export default SeenButton;

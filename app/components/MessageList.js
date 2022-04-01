@@ -11,6 +11,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItemMain, {
   MemoMessageItemMain,
 } from "./messageItems/MessageItemMain";
+
 import {
   messageSelected,
   selectRoomMessageIdsByRoomId,
@@ -24,6 +25,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
 import AppSearchTextInput from "./AppSearchTextInput";
 import { messageFormFocusCleared } from "../../store/general";
+import colors from "../../config/colors";
+import ScrollDownButton from "./ScrollDownButton";
 
 function MessageList({ item, showSearchBar }) {
   const store = useStore();
@@ -53,10 +56,16 @@ function MessageList({ item, showSearchBar }) {
   );
 
   useEffect(() => {
-    try {
-      msgListRef.current.scrollToIndex({ animated: false, index: 0 });
-    } catch (error) {}
-  }, []);
+    if (
+      store.getState().entities.msgStore.allMessages[roomId].messages[
+        roomMessageIds[0]
+      ].postedByUser === currentUserId
+    ) {
+      try {
+        onScrollToBottom(true);
+      } catch (error) {}
+    }
+  }, [roomMessageIds]);
 
   const onScrollToIndex = (replyMessageIndex) => {
     msgListRef.current.scrollToIndex({
@@ -66,6 +75,12 @@ function MessageList({ item, showSearchBar }) {
     });
   };
 
+  const onScrollToBottom = (animate) => {
+    msgListRef.current.scrollToIndex({
+      animated: animate,
+      index: 0,
+    });
+  };
   const keyExtractor = (item) => item;
 
   const onScrollToIndexFailed = (error) => {
@@ -110,15 +125,23 @@ function MessageList({ item, showSearchBar }) {
     }
   };
 
+  const getPosition = (e) => {
+    e.nativeEvent.contentOffset.y >= 250
+      ? setScrollButtonVisible(true)
+      : setScrollButtonVisible(false);
+  };
+  const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
   return (
     <View style={styles.container}>
       {showSearchBar && <AppSearchTextInput onSearch={onSearch} />}
+
       {roomMessageIds && (
         <FlatList
           ref={msgListRef}
           data={
             searchResultMessageIds ? searchResultMessageIds : roomMessageIds
           }
+          onScroll={(e) => getPosition(e)}
           onScrollBeginDrag={() => Keyboard.dismiss()}
           onScrollToIndexFailed={onScrollToIndexFailed}
           keyExtractor={keyExtractor}
@@ -129,6 +152,9 @@ function MessageList({ item, showSearchBar }) {
           windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
           inverted={true}
         />
+      )}
+      {scrollButtonVisible && (
+        <ScrollDownButton onPress={() => onScrollToBottom(true)} />
       )}
     </View>
   );

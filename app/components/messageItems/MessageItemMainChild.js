@@ -51,6 +51,7 @@ function MessageItemMainChild({
   };
   const selectedMessage = useSelector(selectSelectedMessage);
 
+  const [roomType, setRoomType] = useState(null);
   const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
     useState(false);
 
@@ -60,6 +61,9 @@ function MessageItemMainChild({
     //   dispatch(messageSelectionRemoved())
     // }
   }, [selectedMessage]);
+  useEffect(() => {
+    setRoomType(store.getState().entities.rooms.allRooms[roomId].type);
+  }, []);
 
   const {
     roomId,
@@ -126,6 +130,7 @@ function MessageItemMainChild({
       {!isCurrentMessageSelected && (
         <Swipeable
           ref={messageRef}
+          leftThreshold={60}
           onSwipeableLeftWillOpen={() => {
             setTimeout(() => {
               onReply();
@@ -154,11 +159,13 @@ function MessageItemMainChild({
               // onLongPress={() => onSelectMessage()}
             >
               <View style={styles.messageHeader}>
-                <AppText style={styles.senderName}>
-                  {allUsers
-                    ? allUsers[postedByUser].displayName
-                    : "unknown user"}
-                </AppText>
+                {roomType !== "private" && (
+                  <AppText style={styles.senderName}>
+                    {allUsers
+                      ? allUsers[postedByUser].displayName
+                      : "unknown user"}
+                  </AppText>
+                )}
               </View>
 
               {messageType === "image" && <MessageItemImage item={message} />}
@@ -221,11 +228,13 @@ function MessageItemMainChild({
                 onPress={() => onSelectMessage()}
               >
                 <View style={styles.messageHeader}>
-                  <AppText style={styles.senderName}>
-                    {allUsers
-                      ? allUsers[postedByUser].displayName
-                      : "unknown user"}
-                  </AppText>
+                  {roomType !== "private" && (
+                    <AppText style={styles.senderName}>
+                      {allUsers
+                        ? allUsers[postedByUser].displayName
+                        : "unknown user"}
+                    </AppText>
+                  )}
                 </View>
 
                 {messageType === "image" && <MessageItemImage item={message} />}
