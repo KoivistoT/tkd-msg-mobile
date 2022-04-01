@@ -48,7 +48,7 @@ const slice = createSlice({
     },
     messageSelected: (general, action) => {
       general.selectedMessage = action.payload;
-      console.log(general.selectedMessage, "valittu");
+      // console.log(general.selectedMessage, "valittu");
     },
     messageSelectionRemoved: (general, action) => {
       general.selectedMessage = null;

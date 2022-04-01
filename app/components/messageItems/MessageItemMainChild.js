@@ -119,12 +119,11 @@ function MessageItemMainChild({
               messageRef.current?.close();
             }, 50);
           }}
-          overshootRight
           renderLeftActions={() => <View style={{ width: 50 }}></View>}
-          onSwipeableRightOpen={() =>
-            navigationRef.current.navigate(routes.READ_BY_LIST, message)
-          }
-          renderRightActions={() => <View style={{ width: 1 }}></View>}
+          // onSwipeableRightOpen={() =>
+          //   navigationRef.current.navigate(routes.READ_BY_LIST, message)
+          // }
+          // renderRightActions={() => <View style={{ width: 1 }}></View>}
         >
           <View
             style={[
@@ -146,9 +145,7 @@ function MessageItemMainChild({
                     : "unknown user"}
                 </AppText>
               </View>
-              <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
-                <AppText>delete</AppText>
-              </TouchableOpacity>
+
               {messageType === "image" && <MessageItemImage item={message} />}
               {messageType === "document" && (
                 <ShowDocumentModal
@@ -181,69 +178,112 @@ function MessageItemMainChild({
       )}
       {isCurrentMessageSelected && (
         <View
-          style={[
-            styles[sentBy],
-            { flexDirection: "row", backgroundColor: "white" },
-          ]}
+          style={{
+            flexDirection: "row",
+            alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+          }}
         >
           {sentBy === "me" && (
-            <View>
+            <View style={{ backgroundColor: "white" }}>
               <AppButton
                 title="X"
                 onPress={() => dispatch(messageSelectionRemoved())}
               />
             </View>
           )}
-          <View style={{ flexDirection: "row" }}>
-            {sentBy === "me" && (
-              <View>
-                <AppButton title="nappi" />
-              </View>
-            )}
-            <TouchableOpacity activeOpacity={1}>
-              <View style={styles.messageHeader}>
-                <AppText style={styles.senderName}>
-                  {allUsers
-                    ? allUsers[postedByUser].displayName
-                    : "unknown user"}
-                </AppText>
-              </View>
+          {sentBy === "me" && (
+            <View style={{ flexDirection: "row" }}>
               <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
-                <AppText>delete</AppText>
-              </TouchableOpacity>
-              {messageType === "image" && <MessageItemImage item={message} />}
-              {messageType === "document" && (
-                <ShowDocumentModal
-                  name={documentData.documentDisplayName}
-                  url={documentData.documentDownloadURL}
-                />
-              )}
-              {replyMessageId && (
-                <MessageItemReply
-                  allUsers={allUsers}
-                  item={{
-                    roomId,
-                    replyMessageId,
-                  }}
-                  onScrollToIndex={onScrollToIndex}
-                />
-              )}
-              {is_deleted && <AppText>Message deleted</AppText>}
-              {!is_deleted && (
-                <AppText>
-                  {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                <AppText style={{ backgroundColor: "red", padding: 5 }}>
+                  delete
                 </AppText>
-              )}
-              <AppText style={styles.messageTimestamp}>
-                {createdAt.slice(11, 16)}
-              </AppText>
-            </TouchableOpacity>
-            {sentBy !== "me" && (
-              <View>
-                <AppButton title="nappi" />
-              </View>
-            )}
+                <TouchableOpacity
+                  title={"reply"}
+                  onPress={() =>
+                    navigationRef.current.navigate(routes.READ_BY_LIST, message)
+                  }
+                >
+                  <AppText
+                    style={{
+                      backgroundColor: "blue",
+                      padding: 5,
+                      marginTop: 2,
+                      color: "white",
+                    }}
+                  >
+                    seen
+                  </AppText>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          <View style={[styles[sentBy], { flexDirection: "row" }]}>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity activeOpacity={1}>
+                <View style={styles.messageHeader}>
+                  <AppText style={styles.senderName}>
+                    {allUsers
+                      ? allUsers[postedByUser].displayName
+                      : "unknown user"}
+                  </AppText>
+                </View>
+
+                {messageType === "image" && <MessageItemImage item={message} />}
+                {messageType === "document" && (
+                  <ShowDocumentModal
+                    name={documentData.documentDisplayName}
+                    url={documentData.documentDownloadURL}
+                  />
+                )}
+                {replyMessageId && (
+                  <MessageItemReply
+                    allUsers={allUsers}
+                    item={{
+                      roomId,
+                      replyMessageId,
+                    }}
+                    onScrollToIndex={onScrollToIndex}
+                  />
+                )}
+                {is_deleted && <AppText>Message deleted</AppText>}
+                {!is_deleted && (
+                  <AppText>
+                    {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                  </AppText>
+                )}
+                <AppText style={styles.messageTimestamp}>
+                  {createdAt.slice(11, 16)}
+                </AppText>
+              </TouchableOpacity>
+            </View>
           </View>
+          {sentBy !== "me" && (
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
+                <AppText style={{ backgroundColor: "red", padding: 5 }}>
+                  delete
+                </AppText>
+                <TouchableOpacity
+                  title={"reply"}
+                  onPress={() =>
+                    navigationRef.current.navigate(routes.READ_BY_LIST, message)
+                  }
+                >
+                  <AppText
+                    style={{
+                      backgroundColor: "blue",
+                      padding: 5,
+                      marginTop: 2,
+                      color: "white",
+                    }}
+                  >
+                    seen
+                  </AppText>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          )}
           {sentBy !== "me" && (
             <View style={{ backgroundColor: "white" }}>
               <AppButton
