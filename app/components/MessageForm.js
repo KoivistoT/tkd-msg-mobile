@@ -61,7 +61,11 @@ import {
 import { selectSocket } from "../../store/socket";
 import AppButton from "./AppButton";
 import SelectDocumentModal from "./modals/SelectDocumentModal";
-import { endLoad, startLoad } from "../../store/general";
+import {
+  endLoad,
+  messageFormFocusCleared,
+  startLoad,
+} from "../../store/general";
 import colors from "../../config/colors";
 import ShowSearchBarButton from "./ShowSearchBarButton";
 import AppCloseButton from "./AppCloseButton";
@@ -106,11 +110,15 @@ function MessageForm({ item, setShowSearchBar }) {
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
     saveMessageSum();
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      dispatch(messageFormFocusCleared());
+    });
 
     //onko tähän parempi ratkaisu, tämän pitää olla muualla
     setHeader();
 
     return () => {
+      hideSubscription.remove();
       dispatch(activeRoomIdCleared());
       dispatch(msgStoreActiveRoomIdCleared());
     };

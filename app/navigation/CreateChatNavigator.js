@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const CreateChatNavigator = () => (
   <Stack.Navigator
     screenOptions={{
-      headerBackTitle: "Cansel",
+      headerBackTitle: "Cancel",
     }}
   >
     <Stack.Group>

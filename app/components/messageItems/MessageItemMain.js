@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { View } from "react-native";
 import { useSelector, useStore } from "react-redux";
+import { selectSelectedMessage } from "../../../store/general";
 import { selectMessageById } from "../../../store/msgStore";
 import { MemoMessageItemMainChild } from "./MessageItemMainChild";
 
@@ -11,6 +13,18 @@ function MessageItemMain({
   searchWord,
 }) {
   const store = useStore();
+
+  // const selectedMessage = useSelector(selectSelectedMessage);
+
+  // const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
+  //   useState(false);
+
+  // useEffect(() => {
+  //   setIsCurrentMessageSelected(selectedMessage === messageId);
+  //   // return () => {
+  //   //   dispatch(messageSelectionRemoved())
+  //   // }
+  // }, [selectedMessage]);
 
   const message = useSelector(selectMessageById(roomId, messageId));
   // const message =

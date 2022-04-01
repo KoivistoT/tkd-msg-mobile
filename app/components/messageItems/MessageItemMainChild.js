@@ -5,6 +5,7 @@ import {
   Linking,
   Text,
   TouchableOpacity,
+  Keyboard,
   Image,
 } from "react-native";
 import colors from "../../../config/colors";
@@ -26,8 +27,10 @@ import messageFuncs from "../../../utility/messageFuncs";
 import {
   messageFormFocusAdded,
   messageSelected,
+  messageSelectionRemoved,
   selectSelectedMessage,
 } from "../../../store/general";
+import AppButton from "../AppButton";
 
 function MessageItemMainChild({
   message,
@@ -46,6 +49,9 @@ function MessageItemMainChild({
 
   useEffect(() => {
     setIsCurrentMessageSelected(selectedMessage === messageId);
+    // return () => {
+    //   dispatch(messageSelectionRemoved())
+    // }
   }, [selectedMessage]);
 
   const {
@@ -64,10 +70,12 @@ function MessageItemMainChild({
   const onSelectMessage = () => {
     dispatch(messageSelected(messageId));
     scrollToMessage();
+    Keyboard.dismiss();
   };
 
   const onReply = () => {
-    onSelectMessage();
+    scrollToMessage();
+    dispatch(messageSelectionRemoved());
     dispatch(replyMessageIdCleared(message.roomId));
     dispatch(messageFormFocusAdded());
     dispatch(
@@ -100,68 +108,132 @@ function MessageItemMainChild({
     }
   };
   return (
-    <Swipeable
-      ref={messageRef}
-      onSwipeableLeftWillOpen={() => {
-        setTimeout(() => {
-          onReply();
-          messageRef.current.close();
-        }, 50);
-      }}
-      overshootRight
-      renderLeftActions={() => <View style={{ width: 50 }}></View>}
-      onSwipeableRightOpen={() =>
-        navigationRef.current.navigate(routes.READ_BY_LIST, message)
-      }
-      renderRightActions={() => <View style={{ width: 1 }}></View>}
-    >
-      <View
-        style={[
-          styles[sentBy],
-          { backgroundColor: isCurrentMessageSelected ? "red" : "lightgrey" },
-        ]}
-      >
-        <TouchableOpacity
-          activeOpacity={1}
-          onLongPress={() => onSelectMessage()}
+    <View>
+      {!isCurrentMessageSelected && (
+        <Swipeable
+          ref={messageRef}
+          onSwipeableLeftWillOpen={() => {
+            setTimeout(() => {
+              onReply();
+              messageRef.current?.close();
+            }, 50);
+          }}
+          overshootRight
+          renderLeftActions={() => <View style={{ width: 50 }}></View>}
+          onSwipeableRightOpen={() =>
+            navigationRef.current.navigate(routes.READ_BY_LIST, message)
+          }
+          renderRightActions={() => <View style={{ width: 1 }}></View>}
         >
-          <View style={styles.messageHeader}>
-            <AppText style={styles.senderName}>
-              {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
-            </AppText>
+          <View
+            style={[
+              styles[sentBy],
+              {
+                backgroundColor: isCurrentMessageSelected ? "red" : "lightgrey",
+              },
+            ]}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              onLongPress={() => onSelectMessage()}
+            >
+              <View style={styles.messageHeader}>
+                <AppText style={styles.senderName}>
+                  {allUsers
+                    ? allUsers[postedByUser].displayName
+                    : "unknown user"}
+                </AppText>
+              </View>
+              <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
+                <AppText>delete</AppText>
+              </TouchableOpacity>
+              {messageType === "image" && <MessageItemImage item={message} />}
+              {messageType === "document" && (
+                <ShowDocumentModal
+                  name={documentData.documentDisplayName}
+                  url={documentData.documentDownloadURL}
+                />
+              )}
+              {replyMessageId && (
+                <MessageItemReply
+                  allUsers={allUsers}
+                  item={{
+                    roomId,
+                    replyMessageId,
+                  }}
+                  onScrollToIndex={onScrollToIndex}
+                />
+              )}
+              {is_deleted && <AppText>Message deleted</AppText>}
+              {!is_deleted && (
+                <AppText>
+                  {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                </AppText>
+              )}
+              <AppText style={styles.messageTimestamp}>
+                {createdAt.slice(11, 16)}
+              </AppText>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
-            <AppText>delete</AppText>
-          </TouchableOpacity>
-          {messageType === "image" && <MessageItemImage item={message} />}
-          {messageType === "document" && (
-            <ShowDocumentModal
-              name={documentData.documentDisplayName}
-              url={documentData.documentDownloadURL}
-            />
-          )}
-          {replyMessageId && (
-            <MessageItemReply
-              allUsers={allUsers}
-              item={{
-                roomId,
-                replyMessageId,
-              }}
-              onScrollToIndex={onScrollToIndex}
-            />
-          )}
-          {is_deleted && <AppText>Message deleted</AppText>}
-          {!is_deleted && (
-            <AppText>
-              {messageFuncs.autolinkText(messageBody, null, searchWord)}
-            </AppText>
-          )}
-          <AppText style={styles.messageTimestamp}>
-            {createdAt.slice(11, 16)}
-          </AppText>
-        </TouchableOpacity>
-      </View>
-    </Swipeable>
+        </Swipeable>
+      )}
+      {isCurrentMessageSelected && (
+        <View style={{ backgroundColor: "red" }}>
+          <View
+            style={[
+              styles[sentBy],
+              // { backgroundColor: isCurrentMessageSelected ? "red" : "lightgrey" },
+            ]}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              onLongPress={() => onSelectMessage()}
+            >
+              <View style={styles.messageHeader}>
+                <AppText style={styles.senderName}>
+                  {allUsers
+                    ? allUsers[postedByUser].displayName
+                    : "unknown user"}
+                </AppText>
+              </View>
+              <TouchableOpacity title={"reply"} onPress={onDeleteMessage}>
+                <AppText>delete</AppText>
+              </TouchableOpacity>
+              {messageType === "image" && <MessageItemImage item={message} />}
+              {messageType === "document" && (
+                <ShowDocumentModal
+                  name={documentData.documentDisplayName}
+                  url={documentData.documentDownloadURL}
+                />
+              )}
+              {replyMessageId && (
+                <MessageItemReply
+                  allUsers={allUsers}
+                  item={{
+                    roomId,
+                    replyMessageId,
+                  }}
+                  onScrollToIndex={onScrollToIndex}
+                />
+              )}
+              {is_deleted && <AppText>Message deleted</AppText>}
+              {!is_deleted && (
+                <AppText>
+                  {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                </AppText>
+              )}
+              <AppText style={styles.messageTimestamp}>
+                {createdAt.slice(11, 16)}
+              </AppText>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <AppButton title="joo"></AppButton>
+            <AppButton title="jahas"></AppButton>
+          </View>
+        </View>
+      )}
+    </View>
   );
 }
 
