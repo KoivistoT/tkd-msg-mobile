@@ -18,7 +18,7 @@ const autolinkText = (messageBody, style, searchWord) => {
       // Optional: enable @username linking to twitter
       // mention="twitter"
       // Optional: enable phone linking
-      phone="true"
+      // phone="true"
       // Optional: enable URL linking
       // url
       // Optional: custom linking matchers

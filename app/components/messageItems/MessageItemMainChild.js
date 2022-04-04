@@ -130,26 +130,14 @@ function MessageItemMainChild({
   };
   return (
     <View>
-      {!isCurrentMessageSelected && (
-        <Swipeable
-          ref={messageRef}
-          leftThreshold={60}
-          onSwipeableLeftWillOpen={() => {
-            setTimeout(() => {
-              onReply();
-              messageRef.current?.close();
-            }, 50);
-          }}
-          renderLeftActions={() => <LeftAction />}
-        >
-          <View
-            style={[
-              styles[sentBy],
-              {
-                backgroundColor: isCurrentMessageSelected ? "red" : "lightgrey",
-              },
-            ]}
-          >
+      <View
+        style={{
+          flexDirection: "row",
+          alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+        }}
+      >
+        <View style={[styles[sentBy], { flexDirection: "row" }]}>
+          <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => onSelectMessage()}
@@ -189,80 +177,18 @@ function MessageItemMainChild({
               </AppText>
             </TouchableOpacity>
           </View>
-        </Swipeable>
-      )}
+        </View>
+      </View>
       {isCurrentMessageSelected && (
         <View
-          style={{
-            flexDirection: "row",
-            alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
-          }}
+          style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
         >
-          {/* {sentBy === "me" && (
-            <View style={{ backgroundColor: "white" }}>
-              <AppButton
-                title="X"
-                onPress={() => dispatch(messageSelectionRemoved())}
-              />
-            </View>
-          )} */}
-          {sentBy === "me" && (
-            <MessageOptionsButtonGroup
-              onDelete={() => onDeleteMessage()}
-              onSeen={() => onWhoHasSeen()}
-              isDeleted={is_deleted}
-            />
-          )}
-
-          <View style={[styles[sentBy], { flexDirection: "row" }]}>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => onSelectMessage()}
-              >
-                <MessageHeader
-                  roomType={roomType}
-                  allUsers={allUsers}
-                  postedByUser={postedByUser}
-                />
-
-                {messageType === "image" && <MessageItemImage item={message} />}
-                {messageType === "document" && (
-                  <ShowDocumentModal
-                    name={documentData.documentDisplayName}
-                    url={documentData.documentDownloadURL}
-                  />
-                )}
-                {replyMessageId && (
-                  <MessageItemReply
-                    allUsers={allUsers}
-                    item={{
-                      roomId,
-                      replyMessageId,
-                    }}
-                    onScrollToIndex={onScrollToIndex}
-                  />
-                )}
-                {is_deleted ? (
-                  <AppText>Message deleted</AppText>
-                ) : (
-                  <AppText>
-                    {messageFuncs.autolinkText(messageBody, null, searchWord)}
-                  </AppText>
-                )}
-                <AppText style={styles.messageTimestamp}>
-                  {createdAt.slice(11, 16)}
-                </AppText>
-              </TouchableOpacity>
-            </View>
-          </View>
-          {sentBy !== "me" && (
-            <MessageOptionsButtonGroup
-              onDelete={() => onDeleteMessage()}
-              onSeen={() => onWhoHasSeen()}
-              isDeleted={is_deleted}
-            />
-          )}
+          <MessageOptionsButtonGroup
+            onDelete={() => onDeleteMessage()}
+            onSeen={() => onWhoHasSeen()}
+            isDeleted={is_deleted}
+            onReply={() => onReply()}
+          />
         </View>
       )}
     </View>
