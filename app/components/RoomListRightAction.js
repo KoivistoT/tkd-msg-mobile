@@ -9,8 +9,8 @@ function RoomListRightAction({ onPress }) {
     <TouchableOpacity
       onPress={onPress}
       style={{
-        width: 40,
-        height: 39,
+        width: 70,
+        height: 60,
         backgroundColor: colors.danger,
         justifyContent: "center",
         alignItems: "center",

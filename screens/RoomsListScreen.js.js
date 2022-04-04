@@ -47,6 +47,7 @@ import messagesApi from "../api/messages";
 import AppText from "../app/components/AppText";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import ShowDocumentModal from "../app/components/modals/SelectDocumentModal";
+import ListItemSeparator from "../app/components/ListItemSeparator";
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
@@ -165,7 +166,7 @@ function RoomsListScreen({ navigation }) {
       {allActiveRoomsIds && (
         <FlatList
           // data={sortObjectsByfield(userRooms, "roomName")}
-
+          ItemSeparatorComponent={ListItemSeparator}
           data={allActiveRoomsIds}
           keyExtractor={keyExtractor}
           renderItem={listItem}

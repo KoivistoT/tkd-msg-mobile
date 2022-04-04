@@ -1,5 +1,11 @@
 import React, { useRef } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import routes from "../navigation/routes";
 import roomFuncs from "../../utility/roomFuncs";
 import AppText from "./AppText";
@@ -10,6 +16,8 @@ import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 import { Swipeable } from "react-native-gesture-handler";
 import RoomListRightAction from "./RoomListRightAction";
 import { deleteRoom } from "../../store/rooms";
+import AppIcon from "./AppIcon";
+import colors from "../../config/colors";
 
 function RoomListItemChild({
   item,
@@ -24,52 +32,80 @@ function RoomListItemChild({
 
   const onDeleteRoom = async () => {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
-    if (!result) return;
+    if (!result) {
+      roomRef.current?.close();
+      return;
+    }
     dispatch(deleteRoom(roomId));
+  };
+  const onGetIcon = () => {
+    if (type === "private") return "user";
+    if (type === "group" || "direct") return "users";
+    return "user-circle-o";
   };
 
   return (
     <Swipeable
       ref={roomRef}
-      rightThreshold={40}
+      rightThreshold={60}
       renderRightActions={() => (
         <RoomListRightAction onPress={() => onDeleteRoom()} />
       )}
     >
-      <TouchableOpacity
-        style={{
-          marginBottom: 10,
-          backgroundColor: status === "active" ? "lightgrey" : "yellow",
-        }}
-        onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
-      >
-        {Object.keys(allUsers).length > 0 && (
-          <View style={styles.nameRow}>
-            {type === "private" && <OnlineIndicator members={members} />}
-            <AppText
-              style={{
-                color: "black",
+      {Object.keys(allUsers).length > 0 && (
+        <TouchableOpacity
+          style={{
+            paddingBottom: 10,
+            flexDirection: "row",
+          }}
+          onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
+        >
+          <View
+            style={{
+              width: 80,
+              alignItems: "center",
+              alignSelf: "center",
+              padding: 5,
+            }}
+          >
+            <AppIcon icon={onGetIcon()} />
+          </View>
 
-                padding: 10,
-              }}
-            >
-              {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
-            </AppText>
-            <MemoUnreadMessagesItem item={item} />
-            {latestMessage && (
+          <View>
+            <View style={styles.nameRow}>
               <AppText
                 style={{
                   color: "black",
-
-                  padding: 10,
+                  fontWeight: "800",
+                  maxWidth: Dimensions.get("window").width - 140,
                 }}
+                numberOfLines={1}
               >
-                last: {latestMessage.messageBody}
+                {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
               </AppText>
+            </View>
+            {latestMessage && (
+              <View style={styles.lastMessage}>
+                <AppText
+                  style={{
+                    color: "black",
+                    maxWidth: Dimensions.get("window").width - 140,
+                  }}
+                  numberOfLines={2}
+                >
+                  {`${allUsers[latestMessage.postedByUser].displayName}:  ${
+                    latestMessage.messageBody
+                  }`}
+                </AppText>
+              </View>
             )}
           </View>
-        )}
-      </TouchableOpacity>
+          <View style={{ position: "absolute", right: 20, top: 5 }}>
+            <MemoUnreadMessagesItem item={item} />
+          </View>
+          {type === "private" && <OnlineIndicator members={members} />}
+        </TouchableOpacity>
+      )}
     </Swipeable>
   );
 }
@@ -79,8 +115,13 @@ const styles = StyleSheet.create({
   otherUser: { alignItems: "flex-start" },
   nameRow: {
     flexDirection: "row",
-    marginRight: 5,
-    marginLeft: 5,
+
+    alignItems: "center",
+    marginTop: 5,
+  },
+  lastMessage: {
+    flexDirection: "row",
+
     alignItems: "center",
   },
 });

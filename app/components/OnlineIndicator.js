@@ -13,34 +13,21 @@ function OnlineIndicator({ members }) {
   //   console.log("online Indicator");
   return (
     <>
-      {showOnlineIndicator(usersOnline, members, currentUserId) ? (
-        <View style={styles.onlineIndicator}></View>
-      ) : (
-        <View style={styles.indicatorSpace}></View>
+      {showOnlineIndicator(usersOnline, members, currentUserId) && (
+        <View style={styles.onlineIndicator} />
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  me: { alignItems: "flex-end" },
-  otherUser: { alignItems: "flex-start" },
-  nameRow: {
-    flexDirection: "row",
-    marginRight: 5,
-    marginLeft: 5,
-    alignItems: "center",
-  },
   onlineIndicator: {
+    position: "absolute",
+    left: 10,
+    top: 8,
     width: 14,
     height: 14,
     backgroundColor: colors.success,
-    borderRadius: 7,
-  },
-  indicatorSpace: {
-    width: 14,
-    height: 14,
-
     borderRadius: 7,
   },
 });
