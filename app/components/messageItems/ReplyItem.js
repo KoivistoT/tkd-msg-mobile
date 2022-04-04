@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from "react-native";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
@@ -10,6 +17,7 @@ import {
   selectMessageById,
 } from "../../../store/msgStore";
 import { messageFormFocusCleared } from "../../../store/general";
+import AppCloseButton from "../AppCloseButton";
 
 function ReplyItem({ item }) {
   const dispatch = useDispatch();
@@ -24,22 +32,35 @@ function ReplyItem({ item }) {
     dispatch(messageFormFocusCleared());
   };
   return (
-    <View>
-      <View style={{ alignSelf: "center" }}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          activeOpacity={1}
-          onPress={() => onClose()}
-        >
-          <AppText style={styles.text}>CLOSE</AppText>
-        </TouchableOpacity>
+    <View
+      style={{
+        maxHeight: 100,
+        borderWidth: 1,
+        borderColor: colors.lightgrey,
+        padding: 8,
+      }}
+    >
+      <View style={{ position: "absolute", top: -10, right: 0, zIndex: 120 }}>
+        <AppCloseButton onPress={() => onClose()} />
       </View>
-      <AppText>{messageData.messageBody}</AppText>
+      <View style={{ backgroundColor: colors.primary, paddingLeft: 4 }}>
+        <View style={{ backgroundColor: colors.white }}>
+          <AppText
+            style={{
+              maxWidth: Dimensions.get("window").width - 70,
+              padding: 6,
+            }}
+            numberOfLines={3}
+          >
+            {messageData.messageBody}
+          </AppText>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  closeButton: { backgroundColor: colors.danger, padding: 5 },
+  closeButton: { backgroundColor: colors.danger, padding: 20 },
 });
 export default ReplyItem;
