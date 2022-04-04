@@ -71,7 +71,7 @@ function MessageList({ item, showSearchBar }) {
     msgListRef.current.scrollToIndex({
       animated: true, // tämä voisi olla false
       index: replyMessageIndex,
-      viewPosition: 1,
+      viewPosition: 0.5,
     });
   };
 

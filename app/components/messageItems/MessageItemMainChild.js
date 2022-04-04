@@ -57,6 +57,7 @@ function MessageItemMainChild({
   const [roomType, setRoomType] = useState(null);
   const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
     useState(false);
+  const [isCurrentMessagePressed, setIsCurrentMessagePressed] = useState(false);
 
   useEffect(() => {
     setIsCurrentMessageSelected(selectedMessage === messageId);
@@ -83,10 +84,12 @@ function MessageItemMainChild({
 
   const onSelectMessage = () => {
     dispatch(replyMessageIdCleared(message.roomId));
-    if (selectedMessage === messageId) {
+    if (selectedMessage === messageId && isCurrentMessagePressed) {
       dispatch(messageSelectionRemoved());
+      setIsCurrentMessagePressed(false);
     } else {
       dispatch(messageSelected(messageId));
+      setIsCurrentMessagePressed(true);
     }
 
     // scrollToMessage();
@@ -136,7 +139,15 @@ function MessageItemMainChild({
           alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
         }}
       >
-        <View style={[styles[sentBy], { flexDirection: "row" }]}>
+        <View
+          style={[
+            styles[sentBy],
+            {
+              flexDirection: "row",
+              backgroundColor: isCurrentMessageSelected ? "lightgrey" : "white",
+            },
+          ]}
+        >
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               activeOpacity={1}
@@ -179,7 +190,7 @@ function MessageItemMainChild({
           </View>
         </View>
       </View>
-      {isCurrentMessageSelected && (
+      {isCurrentMessagePressed && (
         <View
           style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
         >

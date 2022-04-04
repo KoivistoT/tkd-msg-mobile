@@ -11,11 +11,16 @@ import {
   selectMessageById,
 } from "../../../store/msgStore";
 import { selectAllUsersMinimal } from "../../../store/users";
+import { messageSelected } from "../../../store/general";
+
 function MessageItemReply({ item, allUsers, onScrollToIndex }) {
   const { roomId, replyMessageId } = item;
   const messageData = useSelector(selectMessageById(roomId, replyMessageId));
   //   console.log(messageData, "täällä messageItemReply");
+  const dispatch = useDispatch();
+
   const store = useStore();
+
   const getIndexNow = () => {
     const replyMessageIndex = store
       .getState()
@@ -23,6 +28,7 @@ function MessageItemReply({ item, allUsers, onScrollToIndex }) {
         (message_id) => message_id === replyMessageId
       );
 
+    dispatch(messageSelected(replyMessageId));
     onScrollToIndex(replyMessageIndex);
   };
   return (
