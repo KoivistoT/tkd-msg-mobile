@@ -47,7 +47,7 @@ function RoomListItemChild({
   return (
     <Swipeable
       ref={roomRef}
-      rightThreshold={60}
+      rightThreshold={80}
       renderRightActions={() => (
         <RoomListRightAction onPress={() => onDeleteRoom()} />
       )}
@@ -57,6 +57,7 @@ function RoomListItemChild({
           style={{
             paddingBottom: 10,
             flexDirection: "row",
+            backgroundColor: colors.white,
           }}
           onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
         >
@@ -77,7 +78,7 @@ function RoomListItemChild({
                 style={{
                   color: "black",
                   fontWeight: "800",
-                  maxWidth: Dimensions.get("window").width - 140,
+                  maxWidth: Dimensions.get("window").width - 160,
                 }}
                 numberOfLines={1}
               >
@@ -89,7 +90,7 @@ function RoomListItemChild({
                 <AppText
                   style={{
                     color: "black",
-                    maxWidth: Dimensions.get("window").width - 140,
+                    maxWidth: Dimensions.get("window").width - 160,
                   }}
                   numberOfLines={2}
                 >

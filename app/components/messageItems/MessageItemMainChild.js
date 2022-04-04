@@ -6,7 +6,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
-
+import { Swipeable } from "react-native-gesture-handler";
 import {
   deleteMessageById,
   replyMessageIdCleared,
@@ -125,91 +125,111 @@ function MessageItemMainChild({
       );
     }
   };
+
   return (
-    <TouchableOpacity
-      activeOpacity={1}
-      style={{ width: "100%" }}
-      onPress={() => onRemoveSelections()}
+    <Swipeable
+      ref={messageRef}
+      // leftThreshold={60}
+      rightThreshold={1}
+      friction={3}
+      onSwipeableRightWillOpen={() => {
+        if (is_deleted) {
+          messageRef.current?.close();
+          return;
+        }
+
+        onWhoHasSeen();
+        messageRef.current?.close();
+      }}
+      renderRightActions={() => <View style={{ width: 20 }}></View>}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
-        }}
+      <TouchableOpacity
+        activeOpacity={1}
+        style={{ width: "100%" }}
+        onPress={() => onRemoveSelections()}
       >
         <View
-          style={[
-            styles[sentBy],
-            {
-              flexDirection: "row",
-              backgroundColor: isCurrentMessageSelected ? "lightgrey" : "white",
-            },
-          ]}
+          style={{
+            flexDirection: "row",
+            alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+          }}
         >
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => onSelectMessage()}
-            >
-              <MessageHeader
-                sentBy={sentBy}
-                roomType={roomType}
-                allUsers={allUsers}
-                postedByUser={postedByUser}
-                createdAt={createdAt.slice(11, 16)}
-              />
-              {is_deleted ? (
-                <AppText style={{ fontStyle: "italic", fontSize: 12 }}>
-                  Message deleted
-                </AppText>
-              ) : (
-                <>
-                  {messageType === "image" && (
-                    <MessageItemImage item={message} />
-                  )}
-                  {messageType === "document" && (
-                    <ShowDocumentModal
-                      name={documentData.documentDisplayName}
-                      url={documentData.documentDownloadURL}
-                    />
-                  )}
-                  {replyMessageId && (
-                    <MessageItemReply
-                      roomType={roomType}
-                      allUsers={allUsers}
-                      isReplyMessage={true}
-                      postedByUser={postedByUser}
-                      sentBy={sentBy}
-                      item={{
-                        roomId,
-                        replyMessageId,
-                      }}
-                      onScrollToIndex={onScrollToIndex}
-                    />
-                  )}
-
-                  <AppText style={{ minWidth: 80 }}>
-                    {messageFuncs.autolinkText(messageBody, null, searchWord)}
+          <View
+            style={[
+              styles[sentBy],
+              {
+                flexDirection: "row",
+                backgroundColor: isCurrentMessageSelected
+                  ? "lightgrey"
+                  : "white",
+              },
+            ]}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => onSelectMessage()}
+              >
+                <MessageHeader
+                  sentBy={sentBy}
+                  roomType={roomType}
+                  allUsers={allUsers}
+                  postedByUser={postedByUser}
+                  createdAt={createdAt.slice(11, 16)}
+                />
+                {is_deleted ? (
+                  <AppText style={{ fontStyle: "italic", fontSize: 12 }}>
+                    Message deleted
                   </AppText>
-                </>
-              )}
-            </TouchableOpacity>
+                ) : (
+                  <>
+                    {messageType === "image" && (
+                      <MessageItemImage item={message} />
+                    )}
+                    {messageType === "document" && (
+                      <ShowDocumentModal
+                        name={documentData.documentDisplayName}
+                        url={documentData.documentDownloadURL}
+                      />
+                    )}
+                    {replyMessageId && (
+                      <MessageItemReply
+                        roomType={roomType}
+                        allUsers={allUsers}
+                        isReplyMessage={true}
+                        postedByUser={postedByUser}
+                        sentBy={sentBy}
+                        item={{
+                          roomId,
+                          replyMessageId,
+                        }}
+                        onScrollToIndex={onScrollToIndex}
+                      />
+                    )}
+
+                    <AppText style={{ minWidth: 80 }}>
+                      {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                    </AppText>
+                  </>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-      {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
-        <View
-          style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
-        >
-          <MessageOptionsButtonGroup
-            onDelete={() => onDeleteMessage()}
-            onSeen={() => onWhoHasSeen()}
-            isDeleted={is_deleted}
-            onReply={() => onReply()}
-          />
-        </View>
-      )}
-    </TouchableOpacity>
+        {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
+          <View
+            style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
+          >
+            <MessageOptionsButtonGroup
+              onDelete={() => onDeleteMessage()}
+              onSeen={() => onWhoHasSeen()}
+              isDeleted={is_deleted}
+              onReply={() => onReply()}
+            />
+          </View>
+        )}
+      </TouchableOpacity>
+    </Swipeable>
   );
 }
 

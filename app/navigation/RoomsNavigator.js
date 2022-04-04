@@ -20,8 +20,10 @@ const RoomsNavigator = () => (
     <Stack.Group>
       <Stack.Screen
         options={{
+          headerTitle: "Chats",
           headerRight: () => (
             <TouchableOpacity
+              style={{ paddingRight: 20, paddingTop: 10 }}
               onPress={() =>
                 navigationRef.current.navigate(routes.CREATE_CHAT_NAVIGATOR)
               }

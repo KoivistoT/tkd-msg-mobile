@@ -100,7 +100,7 @@ function ReadByList(item) {
             style={{
               position: "absolute",
               right: 0,
-              alingSelf: "center",
+              alignSelf: "center",
             }}
             key={item.id}
           >
