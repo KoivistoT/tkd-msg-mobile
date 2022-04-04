@@ -12,6 +12,7 @@ function RoomListItemMain({ roomId, navigation, currentUserId }) {
     item &&
     Object.keys(allUsers).length > 0 && (
       <MemoRoomListItemChild
+        roomId={roomId}
         item={item}
         allUsers={allUsers}
         currentUserId={currentUserId}

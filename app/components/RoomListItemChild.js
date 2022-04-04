@@ -1,18 +1,41 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useRef } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import routes from "../navigation/routes";
 import roomFuncs from "../../utility/roomFuncs";
 import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
 import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
+import { Swipeable } from "react-native-gesture-handler";
+import RoomListRightAction from "./RoomListRightAction";
+import { deleteRoom } from "../../store/rooms";
 
-function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
+function RoomListItemChild({
+  item,
+  allUsers,
+  currentUserId,
+  navigation,
+  roomId,
+}) {
   const { status, type, members, latestMessage } = item;
+  const roomRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const onDeleteRoom = async () => {
+    const result = await confirmAlert("Haluatko poistaa huoneen?", "");
+    if (!result) return;
+    dispatch(deleteRoom(roomId));
+  };
 
   return (
-    <>
+    <Swipeable
+      ref={roomRef}
+      rightThreshold={40}
+      renderRightActions={() => (
+        <RoomListRightAction onPress={() => onDeleteRoom()} />
+      )}
+    >
       <TouchableOpacity
         style={{
           marginBottom: 10,
@@ -32,7 +55,6 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
             >
               {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
             </AppText>
-            {/* tämä itemlatestMessage tsekkaus voi olla turha jatkoss */}
             <MemoUnreadMessagesItem item={item} />
             {latestMessage && (
               <AppText
@@ -48,7 +70,7 @@ function RoomListItemChild({ item, allUsers, currentUserId, navigation }) {
           </View>
         )}
       </TouchableOpacity>
-    </>
+    </Swipeable>
   );
 }
 
@@ -69,6 +91,7 @@ function areEqual(prevProps, nextProps) {
     prevProps.item.roomName === nextProps.item.roomName &&
     prevProps.item.latestMessage === nextProps.item.latestMessage &&
     prevProps.item.status === nextProps.item.status;
+  prevProps.item.roomId === nextProps.item.roomId;
 
   try {
     var result = [];
