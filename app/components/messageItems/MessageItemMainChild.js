@@ -1,23 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Linking,
-  Text,
-  TouchableOpacity,
-  Keyboard,
-  Image,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Keyboard } from "react-native";
 
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
-import { MaterialIcons } from "@expo/vector-icons";
-import Swipeable from "react-native-gesture-handler/Swipeable";
 
-import { Feather } from "@expo/vector-icons";
 import {
   deleteMessageById,
   replyMessageIdCleared,
@@ -33,11 +22,8 @@ import {
   messageSelectionRemoved,
   selectSelectedMessage,
 } from "../../../store/general";
-import AppButton from "../AppButton";
 
 import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
-import LeftAction from "./LeftAction";
-import SenderName from "./SenderName";
 import MessageHeader from "./MessageHeader";
 function MessageItemMainChild({
   message,
@@ -48,27 +34,6 @@ function MessageItemMainChild({
 }) {
   const dispatch = useDispatch();
   // console.log("child päivittyy ---");
-  const onWhoHasSeen = () => {
-    dispatch(messageSelectionRemoved());
-    navigationRef.current.navigate(routes.READ_BY_LIST, message);
-  };
-  const selectedMessage = useSelector(selectSelectedMessage);
-
-  const [roomType, setRoomType] = useState(null);
-  const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
-    useState(false);
-  const [isCurrentMessagePressed, setIsCurrentMessagePressed] = useState(false);
-
-  useEffect(() => {
-    setIsCurrentMessageSelected(selectedMessage === messageId);
-    // return () => {
-    //   dispatch(messageSelectionRemoved())
-    // }
-  }, [selectedMessage]);
-  useEffect(() => {
-    setRoomType(store.getState().entities.rooms.allRooms[roomId].type);
-  }, []);
-
   const {
     roomId,
     _id: messageId,
@@ -82,17 +47,38 @@ function MessageItemMainChild({
   } = message;
   const store = useStore();
 
-  const onSelectMessage = () => {
-    dispatch(replyMessageIdCleared(message.roomId));
-    if (selectedMessage === messageId && isCurrentMessagePressed) {
-      dispatch(messageSelectionRemoved());
-      setIsCurrentMessagePressed(false);
-    } else {
-      dispatch(messageSelected(messageId));
-      setIsCurrentMessagePressed(true);
-    }
+  const onWhoHasSeen = () => {
+    navigationRef.current.navigate(routes.READ_BY_LIST, message);
+  };
+  const selectedMessage = useSelector(selectSelectedMessage);
 
-    // scrollToMessage();
+  const [roomType, setRoomType] = useState(null);
+  const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
+    useState(false);
+  const [isCurrentMessagePressed, setIsCurrentMessagePressed] = useState(false);
+
+  useEffect(() => {
+    setIsCurrentMessageSelected(selectedMessage === messageId);
+  }, [selectedMessage]);
+
+  useEffect(() => {
+    setRoomType(store.getState().entities.rooms.allRooms[roomId].type);
+  }, []);
+
+  const onSelectMessage = () => {
+    setTimeout(() => {
+      if (selectedMessage === messageId) {
+        dispatch(messageSelectionRemoved());
+        setIsCurrentMessageSelected(false);
+        setIsCurrentMessagePressed(false);
+      } else {
+        dispatch(messageSelected(messageId));
+        setIsCurrentMessageSelected(true);
+        setIsCurrentMessagePressed(true);
+      }
+    }, 10);
+
+    scrollToMessage(); // tämä ei tarve välttämättä, maku asia
     Keyboard.dismiss();
   };
 
@@ -190,7 +176,7 @@ function MessageItemMainChild({
           </View>
         </View>
       </View>
-      {isCurrentMessagePressed && (
+      {isCurrentMessagePressed && isCurrentMessageSelected && (
         <View
           style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
         >
