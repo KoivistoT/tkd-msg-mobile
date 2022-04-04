@@ -25,6 +25,7 @@ import {
 
 import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
 import MessageHeader from "./MessageHeader";
+import timeFuncs from "../../../utility/timeFuncs";
 function MessageItemMainChild({
   message,
   sentBy,
@@ -175,7 +176,7 @@ function MessageItemMainChild({
                   roomType={roomType}
                   allUsers={allUsers}
                   postedByUser={postedByUser}
-                  createdAt={createdAt.slice(11, 16)}
+                  createdAt={timeFuncs.getTime(createdAt)}
                 />
                 {is_deleted ? (
                   <AppText style={{ fontStyle: "italic", fontSize: 12 }}>

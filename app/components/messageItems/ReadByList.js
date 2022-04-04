@@ -23,6 +23,7 @@ import { selectSocket } from "../../../store/socket";
 import MessageHeader from "./MessageHeader";
 import messageFuncs from "../../../utility/messageFuncs";
 import MessageItemReply from "./MessageItemReply";
+import timeFuncs from "../../../utility/timeFuncs";
 function ReadByList(item) {
   const {
     _id: messageId,
@@ -70,7 +71,10 @@ function ReadByList(item) {
       (item) => item.readByUserId === userId
     );
     if (index === -1) return "-";
-    else return currentMessage.readByRecipients[index].readAt;
+    else
+      return `${timeFuncs.getDate(
+        currentMessage.readByRecipients[index].readAt
+      )} ${timeFuncs.getTime(currentMessage.readByRecipients[index].readAt)}`;
   };
 
   const listItem = ({ item, index }) => {
