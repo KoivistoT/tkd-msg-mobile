@@ -188,7 +188,7 @@ function MessageItemMainChild({
                     />
                   )}
 
-                  <AppText>
+                  <AppText style={{ minWidth: 80 }}>
                     {messageFuncs.autolinkText(messageBody, null, searchWord)}
                   </AppText>
                 </>
