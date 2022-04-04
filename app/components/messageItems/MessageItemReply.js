@@ -12,8 +12,19 @@ import {
 } from "../../../store/msgStore";
 import { selectAllUsersMinimal } from "../../../store/users";
 import { messageSelected } from "../../../store/general";
+import SenderName from "./SenderName";
+import MessageHeader from "./MessageHeader";
 
-function MessageItemReply({ item, allUsers, onScrollToIndex }) {
+function MessageItemReply({
+  item,
+  createdAt,
+  roomType,
+  allUsers,
+  sentBy,
+  postedByUser,
+  onScrollToIndex,
+  isReplyMessage,
+}) {
   const { roomId, replyMessageId } = item;
   const messageData = useSelector(selectMessageById(roomId, replyMessageId));
   //   console.log(messageData, "täällä messageItemReply");
@@ -32,27 +43,41 @@ function MessageItemReply({ item, allUsers, onScrollToIndex }) {
     onScrollToIndex(replyMessageIndex);
   };
   return (
-    <>
+    <View
+      style={{
+        backgroundColor: colors.primary,
+        paddingLeft: 4,
+        borderTopLeftRadius: 4,
+        borderBottomLeftRadius: 4,
+      }}
+    >
       {!messageData && <AppText>Loading reply message....</AppText>}
       {messageData && (
         <TouchableOpacity
           key={messageData._id}
-          style={{ backgroundColor: colors.primary }}
+          style={{ backgroundColor: colors.light, padding: 4 }}
           onPress={getIndexNow}
         >
-          <AppText>
-            sender:
-            {allUsers
-              ? allUsers[messageData.postedByUser].displayName
-              : "unknown user"}
-          </AppText>
+          <MessageHeader
+            sentBy={sentBy}
+            isReplyMessage={isReplyMessage}
+            roomType={roomType}
+            allUser={allUsers}
+            postedByUser={postedByUser}
+            createdAt={createdAt}
+          />
+          <SenderName
+            allUsers={allUsers}
+            sentBy={sentBy}
+            postedByUser={postedByUser}
+          />
           {messageData.type === "image" && (
             <MessageItemImage item={messageData} />
           )}
           <AppText>{messageData.messageBody}</AppText>
         </TouchableOpacity>
       )}
-    </>
+    </View>
   );
 }
 

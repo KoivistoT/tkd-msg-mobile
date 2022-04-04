@@ -57,9 +57,9 @@ function MessageList({ item, showSearchBar }) {
 
   useEffect(() => {
     if (
-      store.getState().entities.msgStore.allMessages[roomId].messages[
+      store.getState().entities.msgStore.allMessages[roomId]?.messages[
         roomMessageIds[0]
-      ].postedByUser === currentUserId
+      ]?.postedByUser === currentUserId
     ) {
       try {
         onScrollToBottom(true);

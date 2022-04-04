@@ -140,9 +140,11 @@ function MessageItemMainChild({
               onPress={() => onSelectMessage()}
             >
               <MessageHeader
+                sentBy={sentBy}
                 roomType={roomType}
                 allUsers={allUsers}
                 postedByUser={postedByUser}
+                createdAt={createdAt.slice(11, 16)}
               />
 
               {messageType === "image" && <MessageItemImage item={message} />}
@@ -154,7 +156,12 @@ function MessageItemMainChild({
               )}
               {replyMessageId && (
                 <MessageItemReply
+                  roomType={roomType}
                   allUsers={allUsers}
+                  isReplyMessage={true}
+                  postedByUser={postedByUser}
+                  sentBy={sentBy}
+                  createdAt={createdAt.slice(11, 16)}
                   item={{
                     roomId,
                     replyMessageId,
@@ -169,9 +176,6 @@ function MessageItemMainChild({
                   {messageFuncs.autolinkText(messageBody, null, searchWord)}
                 </AppText>
               )}
-              <AppText style={styles.messageTimestamp}>
-                {createdAt.slice(11, 16)}
-              </AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -198,7 +202,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     alignSelf: "flex-end",
     backgroundColor: colors.light,
-    padding: 10,
+    padding: 5,
     borderTopRightRadius: 5,
     maxWidth: "82%",
     borderBottomRightRadius: 5,
@@ -221,14 +225,12 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
 
-  messageTimestamp: { fontSize: 12, alignSelf: "center" },
-
   otherUser: {
     marginTop: 4,
     marginBottom: 4,
     alignSelf: "flex-start",
     backgroundColor: colors.light,
-    padding: 10,
+    padding: 5,
     borderTopRightRadius: 5,
     maxWidth: "82%",
     borderBottomRightRadius: 5,
