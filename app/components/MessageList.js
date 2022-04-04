@@ -28,7 +28,7 @@ import { messageFormFocusCleared } from "../../store/general";
 import colors from "../../config/colors";
 import ScrollDownButton from "./ScrollDownButton";
 
-function MessageList({ item, showSearchBar }) {
+function MessageList({ item, showSearchBar, setShowSearchBar }) {
   const store = useStore();
   const dispatch = useDispatch();
   const msgListRef = useRef();
@@ -133,7 +133,12 @@ function MessageList({ item, showSearchBar }) {
   const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
   return (
     <View style={styles.container}>
-      {showSearchBar && <AppSearchTextInput onSearch={onSearch} />}
+      {showSearchBar && (
+        <AppSearchTextInput
+          setShowSearchBar={setShowSearchBar}
+          onSearch={onSearch}
+        />
+      )}
 
       {roomMessageIds && (
         <FlatList
@@ -163,7 +168,7 @@ function MessageList({ item, showSearchBar }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: 10,
   },
 });
 export default MessageList;

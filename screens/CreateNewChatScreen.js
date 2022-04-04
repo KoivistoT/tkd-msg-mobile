@@ -24,20 +24,20 @@ import ContactsScreen from "./ContactsScreen";
 function CreateNewChatScreen({}) {
   return (
     <Screen>
-      <TouchableOpacity
+      <AppButton
+        style={{ alignSelf: "center", padding: 10 }}
         onPress={() =>
           navigationRef.current.navigate(routes.CREATE_CHANNEL_SCREEN)
         }
-      >
-        <AppText>TÄSTÄ TEE CHANNEL</AppText>
-      </TouchableOpacity>
-      <TouchableOpacity
+        title={"NEW CHANNEL"}
+      ></AppButton>
+      <AppButton
+        style={{ alignSelf: "center", padding: 10 }}
         onPress={() =>
           navigationRef.current.navigate(routes.CREATE_DIRECT_GROUP_SCREEN)
         }
-      >
-        <AppText>TÄSTÄ TEE group</AppText>
-      </TouchableOpacity>
+        title={"NEW Group"}
+      ></AppButton>
 
       <ContactsScreen></ContactsScreen>
     </Screen>

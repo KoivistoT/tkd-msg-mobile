@@ -6,6 +6,7 @@ import RoomsListScreen from "../../screens/RoomsListScreen.js.js";
 import ControlScreen from "../../screens/ControlScreen";
 import ControlNavigator from "./ControlNavigator";
 import ContactsNavigator from "./ContactsNavigator";
+import { Feather } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,12 +21,18 @@ const AdminTabNavigator = () => {
         name="RoomsNavigator"
         component={RoomsNavigator}
         options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="chat-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
-      <Tab.Screen
+
+      {/* <Tab.Screen
         name="ContactsNavigator"
         component={ContactsNavigator}
         options={{
@@ -33,13 +40,14 @@ const AdminTabNavigator = () => {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="ControlNavigator"
         component={ControlNavigator}
         options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <Feather name="settings" color={color} size={size} />
           ),
         }}
       />

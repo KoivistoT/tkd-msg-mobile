@@ -23,6 +23,7 @@ import {
 } from "../store/rooms";
 import sortArray from "../utility/sortArray";
 import roomFuncs from "../utility/roomFuncs";
+import OnlineIndicator from "../app/components/OnlineIndicator";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function ContactsScreen({ navigation }) {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
+        onPress={() => onStartConversation(item)}
         // onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
       >
         <View
@@ -56,15 +58,12 @@ function ContactsScreen({ navigation }) {
           {usersOnline &&
             Object.keys(usersOnline).length !== 0 &&
             usersOnline.includes(item._id) && (
-              <AppText style={styles.onlineIndicator}>Online</AppText>
+              <View style={{ height: 20, backgroundColor: "red" }}></View>
             )}
           <View>
             <AppText style={styles.name}>{item.firstName}</AppText>
           </View>
-          <AppButton
-            title="uusi keskustelu"
-            onPress={() => onStartConversation(item)}
-          />
+
           <MaterialCommunityIcons
             name="chevron-right"
             size={25}

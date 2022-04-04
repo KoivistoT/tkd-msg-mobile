@@ -12,7 +12,11 @@ function MessageScreen(item) {
       style={styles.container}
       keyboardVerticalOffset={60}
     >
-      <MessageList item={item} showSearchBar={showSearchBar} />
+      <MessageList
+        item={item}
+        showSearchBar={showSearchBar}
+        setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
+      />
       <MessageForm
         item={item}
         setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}

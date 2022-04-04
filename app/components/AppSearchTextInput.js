@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { TextInput as NativeTextInput } from "react-native";
 import colors from "../../config/colors";
-
+import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -21,7 +21,8 @@ function AppSearchTextInput({
   onSearch,
   width = "100%",
   marginTop,
-  reverseMessages,
+  setShowSearchBar,
+
   ...ohterProps
 }) {
   const textInput = useRef(null);
@@ -29,7 +30,7 @@ function AppSearchTextInput({
 
   return (
     <View style={styles.mainContainer}>
-      <View style={{ flexDirection: "row", paddingHorizontal: 20 }}>
+      <View style={{ flexDirection: "row", paddingHorizontal: 0 }}>
         {icon && (
           <MaterialCommunityIcons name={icon} size={20} style={styles.icon} />
         )}
@@ -37,7 +38,7 @@ function AppSearchTextInput({
           onPress={() => textInput.current.focus()}
           style={styles.container}
         >
-          <View style={{ width: "75%" }}>
+          <View style={{ width: "64%" }}>
             <TextInput
               ref={textInput}
               {...ohterProps}
@@ -90,29 +91,27 @@ function AppSearchTextInput({
         >
           <AntDesign name="search1" size={24} color={colors.white} />
         </TouchableOpacity>
-        {/* <TouchableOpacity
+
+        <TouchableOpacity
           onPress={() => {
-            // textInput.current.clear(),
-            //   setSearchWord(null),
-            //   onSearch(),
-            reverseMessages();
+            textInput.current.clear(), setSearchWord(null), onSearch();
           }}
           style={{
             margin: 5,
             alignSelf: "center",
             borderRadius: 5,
             padding: 5,
-            backgroundColor: colors.medium,
+            backgroundColor: colors.danger,
           }}
         >
-          <FontAwesome name="exchange" size={24} color={colors.white} />
-        </TouchableOpacity> */}
+          <FontAwesome5 name="eraser" size={24} color={colors.white} />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             textInput.current.clear(), setSearchWord(null), onSearch();
+            setShowSearchBar(false);
           }}
           style={{
-            margin: 5, // tämä pois
             alignSelf: "center",
             borderRadius: 5,
             padding: 5,
@@ -128,7 +127,6 @@ function AppSearchTextInput({
 
 const styles = StyleSheet.create({
   mainContainer: {
-    top: 15,
     zIndex: 20,
     backgroundColor: colors.light,
     padding: 5,

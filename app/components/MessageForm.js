@@ -139,11 +139,15 @@ function MessageForm({ item, setShowSearchBar }) {
         <ScreenHeaderTitle
           title={roomFuncs.getRoomTitle(roomData, allUsers, currentUserId)}
           subTitle={getSubTitle()}
-          showOnlineIndicator={showOnlineIndicator(
-            usersOnline,
-            currentRoomMembers,
-            currentUserId
-          )}
+          showOnlineIndicator={
+            currentRoomType !== "private"
+              ? false
+              : showOnlineIndicator(
+                  usersOnline,
+                  currentRoomMembers,
+                  currentUserId
+                )
+          }
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }

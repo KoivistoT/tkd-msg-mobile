@@ -35,9 +35,27 @@ const RoomsNavigator = () => (
         name="Rooms_screen"
         component={RoomsListScreen}
       />
-      <Stack.Screen name="Message_screen" component={MessageScreen} />
-      <Stack.Screen name="Room_setup_screen" component={RoomSetupScreen} />
-      <Stack.Screen name="Read_by_list" component={MemoReadByList} />
+      <Stack.Screen
+        options={{
+          headerTitle: "",
+        }}
+        name="Message_screen"
+        component={MessageScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Room details",
+        }}
+        name="Room_setup_screen"
+        component={RoomSetupScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Read by list",
+        }}
+        name="Read_by_list"
+        component={MemoReadByList}
+      />
     </Stack.Group>
   </Stack.Navigator>
 );
