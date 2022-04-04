@@ -12,7 +12,7 @@ function SenderName({ allUsers, postedByUser, sentBy }) {
         { color: sentBy === "me" ? colors.primary : colors.secondary },
       ]}
     >
-      {allUsers ? allUsers[postedByUser].displayName : "unknown user"}
+      {allUsers ? allUsers[postedByUser].displayName : ""}
     </AppText>
   );
 }

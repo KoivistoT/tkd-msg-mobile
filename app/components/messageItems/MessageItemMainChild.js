@@ -47,6 +47,11 @@ function MessageItemMainChild({
   } = message;
   const store = useStore();
 
+  const onRemoveSelections = () => {
+    dispatch(messageSelectionRemoved());
+    setIsCurrentMessageSelected(false);
+    setIsCurrentMessagePressed(false);
+  };
   const onWhoHasSeen = () => {
     navigationRef.current.navigate(routes.READ_BY_LIST, message);
   };
@@ -66,11 +71,14 @@ function MessageItemMainChild({
   }, []);
 
   const onSelectMessage = () => {
+    if (is_deleted) {
+      onRemoveSelections();
+      return;
+    }
+
     setTimeout(() => {
-      if (selectedMessage === messageId) {
-        dispatch(messageSelectionRemoved());
-        setIsCurrentMessageSelected(false);
-        setIsCurrentMessagePressed(false);
+      if (selectedMessage === messageId && isCurrentMessagePressed) {
+        onRemoveSelections();
       } else {
         dispatch(messageSelected(messageId));
         setIsCurrentMessageSelected(true);
@@ -118,7 +126,11 @@ function MessageItemMainChild({
     }
   };
   return (
-    <View>
+    <TouchableOpacity
+      activeOpacity={1}
+      style={{ width: "100%" }}
+      onPress={() => onRemoveSelections()}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -146,41 +158,46 @@ function MessageItemMainChild({
                 postedByUser={postedByUser}
                 createdAt={createdAt.slice(11, 16)}
               />
-
-              {messageType === "image" && <MessageItemImage item={message} />}
-              {messageType === "document" && (
-                <ShowDocumentModal
-                  name={documentData.documentDisplayName}
-                  url={documentData.documentDownloadURL}
-                />
-              )}
-              {replyMessageId && (
-                <MessageItemReply
-                  roomType={roomType}
-                  allUsers={allUsers}
-                  isReplyMessage={true}
-                  postedByUser={postedByUser}
-                  sentBy={sentBy}
-                  createdAt={createdAt.slice(11, 16)}
-                  item={{
-                    roomId,
-                    replyMessageId,
-                  }}
-                  onScrollToIndex={onScrollToIndex}
-                />
-              )}
               {is_deleted ? (
-                <AppText>Message deleted</AppText>
-              ) : (
-                <AppText>
-                  {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                <AppText style={{ fontStyle: "italic", fontSize: 12 }}>
+                  Message deleted
                 </AppText>
+              ) : (
+                <>
+                  {messageType === "image" && (
+                    <MessageItemImage item={message} />
+                  )}
+                  {messageType === "document" && (
+                    <ShowDocumentModal
+                      name={documentData.documentDisplayName}
+                      url={documentData.documentDownloadURL}
+                    />
+                  )}
+                  {replyMessageId && (
+                    <MessageItemReply
+                      roomType={roomType}
+                      allUsers={allUsers}
+                      isReplyMessage={true}
+                      postedByUser={postedByUser}
+                      sentBy={sentBy}
+                      item={{
+                        roomId,
+                        replyMessageId,
+                      }}
+                      onScrollToIndex={onScrollToIndex}
+                    />
+                  )}
+
+                  <AppText>
+                    {messageFuncs.autolinkText(messageBody, null, searchWord)}
+                  </AppText>
+                </>
               )}
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      {isCurrentMessagePressed && isCurrentMessageSelected && (
+      {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
         <View
           style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
         >
@@ -192,7 +209,7 @@ function MessageItemMainChild({
           />
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 }
 

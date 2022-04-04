@@ -17,7 +17,7 @@ import MessageHeader from "./MessageHeader";
 
 function MessageItemReply({
   item,
-  createdAt,
+
   roomType,
   allUsers,
   sentBy,
@@ -64,7 +64,7 @@ function MessageItemReply({
             roomType={roomType}
             allUser={allUsers}
             postedByUser={postedByUser}
-            createdAt={createdAt}
+            createdAt={messageData.createdAt.slice(11, 16)}
           />
           <SenderName
             allUsers={allUsers}
