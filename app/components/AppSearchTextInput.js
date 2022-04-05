@@ -38,11 +38,12 @@ function AppSearchTextInput({
           onPress={() => textInput.current.focus()}
           style={styles.container}
         >
-          <View style={{ width: "64%" }}>
+          <View style={{ width: "62%" }}>
             <TextInput
               ref={textInput}
               {...ohterProps}
               placeholder="Search word..."
+              placeholderTextColor={colors.medium}
               onChangeText={(text) => setSearchWord(text)}
               multiline={false}
               style={{
@@ -80,6 +81,7 @@ function AppSearchTextInput({
           /> */}
           </View>
         </TouchableWithoutFeedback>
+
         <TouchableOpacity
           style={{
             alignSelf: "center",
@@ -101,7 +103,7 @@ function AppSearchTextInput({
             alignSelf: "center",
             borderRadius: 5,
             padding: 5,
-            backgroundColor: colors.danger,
+            backgroundColor: colors.medium,
           }}
         >
           <FontAwesome5 name="eraser" size={24} color={colors.white} />
@@ -115,6 +117,7 @@ function AppSearchTextInput({
             alignSelf: "center",
             borderRadius: 5,
             padding: 5,
+
             backgroundColor: colors.danger,
           }}
         >

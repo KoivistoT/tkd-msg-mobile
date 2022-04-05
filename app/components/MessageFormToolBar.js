@@ -5,25 +5,24 @@ import ShowSearchBarButton from "./ShowSearchBarButton";
 
 function MessageFormToolBar({ onPress, setShowSearchBar }) {
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity="0.5"
-        onPress={onPress}
-        style={{
-          paddingBottom: 6,
-        }}
-      >
-        <MaterialCommunityIcons
-          name="attachment"
-          size={24}
-        ></MaterialCommunityIcons>
-      </TouchableOpacity>
-      <ShowSearchBarButton onPress={setShowSearchBar} />
-    </View>
+    <TouchableOpacity
+      activeOpacity="0.5"
+      onPress={onPress}
+      style={styles.container}
+    >
+      <MaterialCommunityIcons
+        // name="attachment"
+        name="plus"
+        size={24}
+      ></MaterialCommunityIcons>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row", justifyContent: "space-around" },
+  container: {
+    padding: 10,
+  },
+  // container: { flexDirection: "row", justifyContent: "space-around" },
 });
 export default MessageFormToolBar;

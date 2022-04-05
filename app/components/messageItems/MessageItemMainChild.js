@@ -171,8 +171,8 @@ function MessageItemMainChild({
               {
                 flexDirection: "row",
                 backgroundColor: isCurrentMessageSelected
-                  ? "lightgrey"
-                  : "white",
+                  ? colors.khaki
+                  : colors.white,
               },
             ]}
           >

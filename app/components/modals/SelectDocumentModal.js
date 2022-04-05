@@ -21,8 +21,16 @@ import * as ImagePicker from "expo-image-picker";
 import { useSelector, useStore } from "react-redux";
 import { selectRoomImagesByRoomId } from "../../../store/msgStore";
 import { WebView } from "react-native-webview";
+import ToolBarButton from "../ToolbarButton";
+import RemoveButton from "../RemoveButton";
 
-function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
+function SelectDocumentModal({
+  documentURL,
+  documentName,
+  setDocumentName,
+  showRemoveButton,
+  buttonName = "Select document",
+}) {
   const [modalVisible, setModalVisible] = useState(false);
 
   //nämä file funcsiin!!!
@@ -50,6 +58,10 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
     }
   };
 
+  const onRemove = () => {
+    documentURL.current = null;
+    setDocumentName(null);
+  };
   const onCancel = () => {
     documentURL.current = null;
     setDocumentName(null);
@@ -111,15 +123,16 @@ function SelectDocumentModal({ documentURL, documentName, setDocumentName }) {
         </View>
       </Modal>
 
-      <TouchableOpacity
-        activeOpacity="0.8"
-        // onPress={() => setModalVisible(true)}
-        onPress={() => pickDocument()}
-      >
-        <View>
-          <AppText style={{ padding: 20 }}>doc</AppText>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.documentButtons}>
+        <ToolBarButton
+          onPress={() => pickDocument()}
+          icon="file-document"
+          text={buttonName}
+        />
+        {showRemoveButton && (
+          <RemoveButton text="REMOVE" onPress={() => onRemove()} />
+        )}
+      </View>
     </View>
   );
 }
@@ -130,6 +143,7 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
     alignItems: "center",
   },
+  documentButtons: { flexDirection: "row" },
   ImageViewer: { backgroundColor: "black" },
   headerButtons: {
     backgroundColor: colors.white,

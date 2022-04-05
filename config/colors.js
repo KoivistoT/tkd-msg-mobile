@@ -9,6 +9,7 @@ export default {
   danger: "#ff5252",
   lightgrey: "lightgrey",
   yellow: "yellow",
+  khaki: "khaki",
   green: "green",
   background1: "lightblue",
   success: "#42ba96",

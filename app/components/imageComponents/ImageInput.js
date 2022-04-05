@@ -10,6 +10,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import colors from "../../../config/colors";
+import ToolBarButton from "../ToolbarButton";
 
 function ImageInput({ imageUri, onChangeImage }) {
   useEffect(() => {
@@ -71,37 +72,18 @@ function ImageInput({ imageUri, onChangeImage }) {
   return (
     <>
       {!imageUri && (
-        <View style={styles.buttons}>
-          <View>
-            <TouchableOpacity
-              style={{ padding: 5, flexDirection: "row" }}
-              onPress={() => handlePress("image")}
-              activeOpacity="0.5"
-            >
-              <MaterialCommunityIcons
-                color={colors.black}
-                name="image-plus"
-                size={24}
-              />
-              <Text style={{ alignSelf: "center", marginLeft: 5 }}>
-                Add image
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ padding: 5, flexDirection: "row" }}
-              onPress={() => handlePress("camera")}
-              activeOpacity="0.5"
-            >
-              <MaterialCommunityIcons
-                color={colors.black}
-                name="camera"
-                size={24}
-              />
-              <Text style={{ alignSelf: "center", marginLeft: 5 }}>
-                Take photo
-              </Text>
-            </TouchableOpacity>
-          </View>
+        <View>
+          <ToolBarButton
+            onPress={() => handlePress("image")}
+            icon="image-plus"
+            text="Add image"
+          />
+
+          <ToolBarButton
+            onPress={() => handlePress("camera")}
+            icon="camera"
+            text="Take photo"
+          />
         </View>
       )}
       {imageUri && (

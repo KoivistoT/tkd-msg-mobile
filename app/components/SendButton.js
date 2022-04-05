@@ -28,20 +28,14 @@ function SendButton() {
         name="send"
         size={30}
         color={socket ? colors.primary : colors.lightgrey}
-        style={{ padding: 15, paddingLeft: 10 }}
+        style={{ paddingHorizontal: 10, paddingVertical: 7 }}
       />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    alignSelf: "center",
-    top: -15,
-    // borderRadius: 15,
-    // paddingBottom: 20,
-    // marginLeft: 10,
-  },
+  button: {},
   text: { color: colors.white },
 });
 export default SendButton;

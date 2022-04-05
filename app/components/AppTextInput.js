@@ -49,12 +49,9 @@ function AppTextInput({ icon, width = "100%", marginTop, ...ohterProps }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: defaultStyles.colors.light,
-    borderRadius: 25,
+    borderRadius: 5,
     flexDirection: "row",
-
-    padding: 15,
-
-    marginVertical: 10,
+    padding: 5,
   },
   icon: {
     marginRight: 10,

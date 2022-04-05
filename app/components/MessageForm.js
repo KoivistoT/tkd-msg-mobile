@@ -153,6 +153,7 @@ function MessageForm({ item, setShowSearchBar }) {
           }
         />
       ),
+      headerRight: () => <ShowSearchBarButton onPress={setShowSearchBar} />,
     });
   };
 
@@ -301,10 +302,6 @@ function MessageForm({ item, setShowSearchBar }) {
                 documentName={documentName}
               />
             )}
-            <MessageFormToolBar
-              onPress={() => setShowOptions((prevState) => !prevState)}
-              setShowSearchBar={setShowSearchBar}
-            />
 
             <AppForm
               initialValues={{ message: "" }}
@@ -313,19 +310,23 @@ function MessageForm({ item, setShowSearchBar }) {
             >
               <View
                 style={{
-                  marginLeft: 0,
                   flexDirection: "row",
-                  width: "75%",
+                  width: "76%",
+                  maxHeight: 180,
+                  paddingTop: 6,
                 }}
               >
+                <MessageFormToolBar
+                  onPress={() => setShowOptions((prevState) => !prevState)}
+                  setShowSearchBar={setShowSearchBar}
+                />
+
                 <AppFormField
                   showErrorMessage={false}
-                  borderRadius={0}
-                  marginTop={0}
-                  style={{ maxHeight: 85, height: 65 }}
+                  // style={{ maxHeight: 85, height: 25 }}
                   multiline
                   name="message"
-                  numberOfLines={2}
+                  numberOfLines={1}
                   placeholder="Message..."
                 />
                 <SendButton />

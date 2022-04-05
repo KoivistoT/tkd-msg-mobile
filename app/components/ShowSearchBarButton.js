@@ -7,7 +7,7 @@ function ShowSearchBarButton({ onPress }) {
   return (
     <TouchableOpacity
       activeOpacity="0.5"
-      style={{ paddingBottom: 6, paddingTop: 4 }}
+      style={{ paddingHorizontal: 10, paddingVertical: 7 }}
       onPress={onPress}
     >
       <AntDesign name="search1" size={20} color={colors.black} />
