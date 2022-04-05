@@ -10,5 +10,6 @@ export default {
   lightgrey: "lightgrey",
   yellow: "yellow",
   green: "green",
+  background1: "lightblue",
   success: "#42ba96",
 };

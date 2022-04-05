@@ -142,6 +142,7 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
 
       {roomMessageIds && (
         <FlatList
+          style={{ backgroundColor: colors.background1 }}
           ref={msgListRef}
           data={
             searchResultMessageIds ? searchResultMessageIds : roomMessageIds
@@ -169,6 +170,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
+    backgroundColor: colors.background1,
   },
 });
 export default MessageList;

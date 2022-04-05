@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Dimensions, TouchableOpacity, View } from "react-native";
 import AppText from "./AppText";
 import { useSelector } from "react-redux";
 import { selectUsersOnline } from "../../store/users";
@@ -15,7 +15,17 @@ function ScreenHeaderTitle({
     <TouchableOpacity activeOpacity={1} style={styles.header} onPress={action}>
       <View style={styles.titleRow}>
         {showOnlineIndicator && <View style={styles.onlineIndicator}></View>}
-        <AppText style={styles.title}>{title}</AppText>
+        <AppText
+          style={{
+            color: "black",
+            fontWeight: "800",
+            maxWidth: Dimensions.get("window").width - 160,
+          }}
+          numberOfLines={1}
+        >
+          {title}
+        </AppText>
+        {/* <AppText style={styles.title}></AppText> */}
       </View>
       {subTitle && <AppText style={styles.subTitle}>{subTitle}</AppText>}
     </TouchableOpacity>

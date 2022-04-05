@@ -25,6 +25,7 @@ import {
 
 import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
 import MessageHeader from "./MessageHeader";
+import LeftAction from "./LeftAction";
 import timeFuncs from "../../../utility/timeFuncs";
 function MessageItemMainChild({
   message,
@@ -131,6 +132,15 @@ function MessageItemMainChild({
     <Swipeable
       ref={messageRef}
       // leftThreshold={60}
+
+      // onSwipeableLeftOpen={() => {
+      //   setTimeout(() => {
+      //     onReply();
+      //     messageRef.current?.close();
+      //   }, 10);
+      // }}
+      // renderLeftActions={() => <LeftAction />}
+
       rightThreshold={1}
       friction={3}
       onSwipeableRightWillOpen={() => {
@@ -242,8 +252,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     padding: 5,
     borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
     maxWidth: "82%",
-    borderBottomRightRadius: 5,
+    borderBottomLeftRadius: 5,
     // shadowColor: "#000",
     shadowColor: "#000",
     shadowOffset: {
@@ -270,6 +281,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     padding: 5,
     borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
     maxWidth: "82%",
     borderBottomRightRadius: 5,
     // shadowColor: "#000",
