@@ -29,7 +29,7 @@ function SelectDocumentModal({
   documentName,
   setDocumentName,
   showRemoveButton,
-  buttonName = "Select document",
+  buttonName,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -74,6 +74,7 @@ function SelectDocumentModal({
   const onAddDocument = () => {
     setModalVisible(false);
   };
+  console.log(buttonName);
 
   return (
     <View>
@@ -127,7 +128,7 @@ function SelectDocumentModal({
         <ToolBarButton
           onPress={() => pickDocument()}
           icon="file-document"
-          text={buttonName}
+          text={buttonName || "Select document"}
         />
         {showRemoveButton && (
           <RemoveButton text="REMOVE" onPress={() => onRemove()} />

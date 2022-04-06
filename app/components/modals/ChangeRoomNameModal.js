@@ -32,12 +32,8 @@ function ChangeRoomNameModal({ roomId, roomNameNow }) {
           />
         </Screen>
       </Modal>
-      <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
-        <AppButton
-          onPress={() => setModalVisible(true)}
-          title={"Change channel name"}
-        />
-      </View>
+
+      <AppButton onPress={() => setModalVisible(true)} title={"Change name"} />
     </View>
   );
 }

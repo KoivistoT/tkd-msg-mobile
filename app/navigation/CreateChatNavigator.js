@@ -15,14 +15,17 @@ const CreateChatNavigator = () => (
   >
     <Stack.Group>
       <Stack.Screen
+        options={{ title: "Create chat" }}
         name="create_new_chat_screen"
         component={MemoCreateNewChatScreen}
       />
       <Stack.Screen
+        options={{ title: "Create channel" }}
         name="create_channel_screen"
         component={MemoCreateChannelScreen}
       />
       <Stack.Screen
+        options={{ title: "Create group" }}
         name="create_direct_group_screen"
         component={MemoCreateDirectGroupScreen}
       />

@@ -38,8 +38,10 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
             placeholder={roomNameNow}
           />
 
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <SubmitButton title="Save new channel name" />
+          <View
+            style={{ flexDirection: "row", alignSelf: "center", marginTop: 20 }}
+          >
+            <SubmitButton title="Save new name" />
           </View>
         </>
       </AppForm>

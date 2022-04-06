@@ -8,6 +8,7 @@ import { navigationRef } from "../app/navigation/rootNavigation";
 import {
   allUsers,
   selectAllUsers,
+  selectAllUsersMedium,
   selectAllUsersMinimal,
 } from "../store/users";
 import {
@@ -31,6 +32,8 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import ChangeRoomNameModal from "../app/components/modals/ChangeRoomNameModal";
 import roomFuncs from "../utility/roomFuncs";
+import colors from "../config/colors";
+import SectionSeparator from "../app/components/SectionSeparator";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -45,7 +48,7 @@ function RoomSetupScreen(item) {
     roomName,
   } = item.route.params;
 
-  const allUsers = useSelector(selectAllUsersMinimal);
+  const allUsers = useSelector(selectAllUsersMedium);
   const roomMembers = useSelector(selectRoomMembersById(roomId));
 
   const currentUserData = useSelector(selectCurrentUserData);
@@ -128,7 +131,6 @@ function RoomSetupScreen(item) {
   };
 
   const listItem = ({ item }) => {
-    if (item._id === currentUserData._id) return;
     if (item.status === "deleted") return;
     if (item.status === "archived") return;
     return (
@@ -136,61 +138,159 @@ function RoomSetupScreen(item) {
         label={`${item.firstName} ${item.lastName}`}
         initialValue={roomMembers ? roomMembers.includes(item._id) : false}
         item={item}
+        disabled={item._id === currentUserData._id}
         onPressItem={item._id}
         onPress={(userId) => selectUser(userId)}
       />
     );
   };
+  const listItem2 = ({ item }) => {
+    if (allUsers[item].status === "deleted") return;
+    if (allUsers[item].status === "archived") return;
+    return (
+      <AppText
+        style={{ height: 22 }}
+        key={item._id}
+      >{`${allUsers[item].firstName} ${allUsers[item].lastName}`}</AppText>
+    );
+  };
 
   return (
-    <Screen>
-      <AppText>{`Huoneen tyyppi on: ${roomType}`}</AppText>
-      {description !== undefined && (
-        <AppText>{`Huoneen kuvaus on: ${description}`}</AppText>
-      )}
-      <AppText>{`Huoneen status on: ${roomStatus}`}</AppText>
-      <AppText>Members</AppText>
+    <ScrollView style={{ padding: 20 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignSelf: "center",
+          marginBottom: 20,
+        }}
+      >
+        <AppText>{`Chat type: ${roomType}`}</AppText>
+        <AppText
+          style={{
+            color: roomStatus === "active" ? colors.success : colors.yellow,
+            marginLeft: 5,
+          }}
+        >{`(${roomStatus})`}</AppText>
+      </View>
 
-      <ScrollView
-        style={{ maxHeight: 100 }}
+      {description !== undefined && (
+        <View>
+          <AppText style={{ marginBottom: 5, alignSelf: "center" }}>
+            Description
+          </AppText>
+          <View
+            style={{
+              backgroundColor: colors.background1,
+              borderRadius: 7,
+              padding: 10,
+            }}
+          >
+            <AppText style={{ alignSelf: "center" }}>{description}</AppText>
+          </View>
+        </View>
+      )}
+
+      {roomType !== "private" && (
+        <>
+          <SectionSeparator />
+          <AppText style={{ alignSelf: "center" }}>Chat members</AppText>
+        </>
+      )}
+
+      {/* <View
+        style={{
+          marginVertical: 10,
+          backgroundColor: colors.background1,
+          borderRadius: 7,
+          height: 150,
+          margin: 10,
+          overflow: "hidden",
+          paddingLeft: 10,
+          paddingVertical: 10,
+        }}
         ref={scrollView}
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
-        {selectedUsers.map((item) => {
-          if (allUsers[item].status === "deleted") return;
-          if (allUsers[item].status === "archived") return;
-          return (
-            <AppText
-              key={item}
-            >{`${allUsers[item].firstName} ${allUsers[item].lastName}`}</AppText>
-          );
-        })}
-      </ScrollView>
-      {roomType !== "private" && roomStatus !== "archived" && (
-        <AppButton title={"save changes"} onPress={onSaveChanges} />
-      )}
-
-      {roomType !== "private" && roomStatus !== "archived" && allUsers && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}
-          data={Object.values(allUsers)}
+          data={selectedUsers}
           bounces={false}
-          keyExtractor={listKeyExtractor}
-          renderItem={listItem}
+          keyExtractor={(item) => item}
+          renderItem={listItem2}
+        />
+      </View> */}
+
+      {roomType !== "private" && roomStatus !== "archived" && allUsers && (
+        <View
+          style={{
+            marginVertical: 10,
+            backgroundColor: colors.light,
+            borderRadius: 7,
+
+            margin: 10,
+            overflow: "hidden",
+            paddingLeft: 10,
+            paddingVertical: 10,
+          }}
+          ref={scrollView}
+          onContentSizeChange={() => scrollView.current.scrollToEnd()}
+        >
+          {Object.values(allUsers).map((item) => {
+            if (item.status === "deleted") return;
+            if (item.status === "archived") return;
+            return (
+              <View key={item._id}>
+                <AppCheckBox
+                  label={`${item.firstName} ${item.lastName}`}
+                  initialValue={
+                    roomMembers ? roomMembers.includes(item._id) : false
+                  }
+                  item={item}
+                  disabled={item._id === currentUserData._id}
+                  onPressItem={item._id}
+                  onPress={(userId) => selectUser(userId)}
+                />
+                <ListItemSeparator />
+              </View>
+            );
+          })}
+          {/* <FlatList
+            ItemSeparatorComponent={() => <ListItemSeparator />}
+            data={Object.values(allUsers)}
+            bounces={false}
+            keyExtractor={listKeyExtractor}
+            renderItem={listItem}
+          /> */}
+        </View>
+      )}
+      {roomType !== "private" && roomStatus !== "archived" && (
+        <AppButton
+          backgroundColor="success"
+          buttonWidth={"100%"}
+          title={"Save changes"}
+          onPress={onSaveChanges}
         />
       )}
-
-      {(currentUserData._id === roomCreator ||
-        currentUserData.accountType === "admin") && (
-        <View>
-          {roomType !== "private" && (
-            <AppButton
-              title={`Leave ${roomType}`}
-              onPress={onLeaveRoom}
-              backgroundColor={"primary"}
-            />
-          )}
-          {/* {roomStatus === "archived" ? (
+      <SectionSeparator />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginBottom: 30,
+        }}
+      >
+        {(currentUserData._id === roomCreator ||
+          currentUserData.accountType === "admin") && (
+          <View>
+            {roomType !== "private" && (
+              <AppButton
+                // title={`Leave ${roomType}`}
+                title={`Leave chat`}
+                onPress={onLeaveRoom}
+                backgroundColor={"primary"}
+              />
+            )}
+            {/* {roomStatus === "archived" ? (
             <AppButton
               title={`Activate ${roomType}`}
               onPress={onActivateRoom}
@@ -204,21 +304,24 @@ function RoomSetupScreen(item) {
               backgroundColor={"yellow"}
             />
           )} */}
-        </View>
-      )}
-      {roomType === "channel" && (
-        <ChangeRoomNameModal roomId={roomId} roomNameNow={roomName} />
-      )}
-      {(currentUserData.accountType === "admin" ||
-        currentUserData._id === roomCreator ||
-        roomType === "private") && (
-        <AppButton
-          title={`Delete ${roomType}`}
-          onPress={onDeleteRoom}
-          backgroundColor={"danger"}
-        />
-      )}
-    </Screen>
+          </View>
+        )}
+
+        {roomType === "channel" && (
+          <ChangeRoomNameModal roomId={roomId} roomNameNow={roomName} />
+        )}
+
+        {(currentUserData.accountType === "admin" ||
+          currentUserData._id === roomCreator ||
+          roomType === "private") && (
+          <AppButton
+            title={`Delete chat`}
+            onPress={onDeleteRoom}
+            backgroundColor={"danger"}
+          />
+        )}
+      </View>
+    </ScrollView>
   );
 }
 

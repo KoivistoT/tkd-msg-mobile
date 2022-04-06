@@ -24,22 +24,26 @@ import ContactsScreen from "./ContactsScreen";
 function CreateNewChatScreen({}) {
   return (
     <Screen>
-      <AppButton
-        style={{ alignSelf: "center", padding: 10 }}
-        onPress={() =>
-          navigationRef.current.navigate(routes.CREATE_CHANNEL_SCREEN)
-        }
-        title={"NEW CHANNEL"}
-      ></AppButton>
-      <AppButton
-        style={{ alignSelf: "center", padding: 10 }}
-        onPress={() =>
-          navigationRef.current.navigate(routes.CREATE_DIRECT_GROUP_SCREEN)
-        }
-        title={"NEW Group"}
-      ></AppButton>
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <AppButton
+          style={{ alignSelf: "center", padding: 10 }}
+          onPress={() =>
+            navigationRef.current.navigate(routes.CREATE_CHANNEL_SCREEN)
+          }
+          buttonWidth={150}
+          title={"New channel"}
+        ></AppButton>
+        <AppButton
+          style={{ alignSelf: "center", padding: 10 }}
+          onPress={() =>
+            navigationRef.current.navigate(routes.CREATE_DIRECT_GROUP_SCREEN)
+          }
+          buttonWidth={150}
+          title={"New group"}
+        ></AppButton>
+      </View>
 
-      <ContactsScreen></ContactsScreen>
+      <ContactsScreen />
     </Screen>
   );
 }

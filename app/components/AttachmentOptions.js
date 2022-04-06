@@ -45,6 +45,7 @@ function AttachmentOptions({
           documentURL={documentURL}
           setDocumentName={setDocumentName}
           showRemoveButton={documentName ? true : false}
+          buttonName={documentName}
         />
       )}
     </View>

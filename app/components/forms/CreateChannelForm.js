@@ -47,15 +47,16 @@ function CreateChannelForm() {
             name="roomName"
             placeholder="Channel name"
           />
-          <AppFormField
-            style={{ height: 100 }}
-            autoCapitalize="none"
-            autoCorrect={false}
-            multiline
-            name="description"
-            placeholder="Description"
-          />
-
+          <View style={{ marginTop: 20 }}>
+            <AppFormField
+              style={{ height: 100 }}
+              autoCapitalize="none"
+              autoCorrect={false}
+              multiline
+              name="description"
+              placeholder="Description"
+            />
+          </View>
           <View>
             {loadingStatus ? (
               <ActivityIndicator

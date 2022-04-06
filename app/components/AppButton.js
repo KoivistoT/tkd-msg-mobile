@@ -20,7 +20,7 @@ function AppButton({
   return (
     <TouchableOpacity
       activeOpacity="0.7"
-      style={{ padding: 15 }}
+      style={{ padding: 5 }}
       onPress={onPress}
       color={"primary"}
     >

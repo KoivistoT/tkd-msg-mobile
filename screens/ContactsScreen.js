@@ -48,11 +48,14 @@ function ContactsScreen({ navigation }) {
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={() => onStartConversation(item)}
+
         // onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
       >
         <View
           style={{
             backgroundColor: item.status === "archived" ? "yellow" : "white",
+            flexDirection: "row",
+            margin: 10,
           }}
         >
           {usersOnline &&
@@ -60,15 +63,17 @@ function ContactsScreen({ navigation }) {
             usersOnline.includes(item._id) && (
               <View style={{ height: 20, backgroundColor: "red" }}></View>
             )}
+
           <View>
             <AppText style={styles.name}>{item.firstName}</AppText>
           </View>
-
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={25}
-            color={colors.dark}
-          />
+          <View style={{ position: "absolute", right: 10 }}>
+            <MaterialCommunityIcons
+              name="chevron-right"
+              size={25}
+              color={colors.dark}
+            />
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -76,6 +81,9 @@ function ContactsScreen({ navigation }) {
 
   return (
     <Screen>
+      <View style={{ alignSelf: "center", marginTop: 20, marginBottom: 10 }}>
+        <AppText style={{ fontWeight: "700" }}>Start private chat</AppText>
+      </View>
       {allUsers && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}

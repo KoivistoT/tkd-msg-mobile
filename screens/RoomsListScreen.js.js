@@ -173,11 +173,11 @@ function RoomsListScreen({ navigation }) {
         />
       )}
 
-      <View>
+      {/* <View>
         <TouchableOpacity onPress={() => logout()}>
           <Text>kirjaudu ulos</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </Screen>
   );
 }
