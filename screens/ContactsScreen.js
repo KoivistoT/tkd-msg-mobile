@@ -24,6 +24,7 @@ import {
 import sortArray from "../utility/sortArray";
 import roomFuncs from "../utility/roomFuncs";
 import OnlineIndicator from "../app/components/OnlineIndicator";
+import userFuncs from "../utility/userFuncs";
 
 function ContactsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ function ContactsScreen({ navigation }) {
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={() => onStartConversation(item)}
-
+        style={{ height: 50, justifyContent: "center" }}
         // onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
       >
         <View
@@ -58,22 +59,40 @@ function ContactsScreen({ navigation }) {
             margin: 10,
           }}
         >
-          {usersOnline &&
-            Object.keys(usersOnline).length !== 0 &&
-            usersOnline.includes(item._id) && (
-              <View style={{ height: 20, backgroundColor: "red" }}></View>
-            )}
+          <View
+            style={[
+              styles.onlineIndicator,
+              {
+                backgroundColor:
+                  colors[
+                    usersOnline.includes(item._id) ? "success" : "lightgrey"
+                  ],
+              },
+            ]}
+          />
 
           <View>
-            <AppText style={styles.name}>{item.firstName}</AppText>
+            <AppText style={styles.name}>{userFuncs.fullName(item)}</AppText>
           </View>
-          <View style={{ position: "absolute", right: 10 }}>
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              padding: 20,
+              right: 0,
+
+              top: -20,
+            }}
+            activeOpacity={1}
+            onPress={() =>
+              navigation.navigate(routes.USER_INFO_CARD_SCREEN, item._id)
+            }
+          >
             <MaterialCommunityIcons
-              name="chevron-right"
+              name="badge-account-horizontal-outline"
               size={25}
               color={colors.dark}
             />
-          </View>
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     );
@@ -81,9 +100,6 @@ function ContactsScreen({ navigation }) {
 
   return (
     <Screen>
-      <View style={{ alignSelf: "center", marginTop: 20, marginBottom: 10 }}>
-        <AppText style={{ fontWeight: "700" }}>Start private chat</AppText>
-      </View>
       {allUsers && (
         <FlatList
           ItemSeparatorComponent={() => <ListItemSeparator />}
@@ -99,7 +115,12 @@ function ContactsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   onlineIndicator: {
-    backgroundColor: colors.danger,
+    width: 14,
+    alignSelf: "center",
+    marginRight: 10,
+    height: 14,
+
+    borderRadius: 7,
   },
 });
 export default ContactsScreen;

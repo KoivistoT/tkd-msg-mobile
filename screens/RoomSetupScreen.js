@@ -34,6 +34,8 @@ import ChangeRoomNameModal from "../app/components/modals/ChangeRoomNameModal";
 import roomFuncs from "../utility/roomFuncs";
 import colors from "../config/colors";
 import SectionSeparator from "../app/components/SectionSeparator";
+import AppTitle from "../app/components/AppTitle";
+import UserInfoCard from "../app/components/UserInfoCard";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -173,6 +175,14 @@ function RoomSetupScreen(item) {
         >{`(${roomStatus})`}</AppText>
       </View>
 
+      {roomType === "private" && (
+        <UserInfoCard
+          userId={roomFuncs.getPrivateRoomOtherUserId(
+            roomMembers,
+            currentUserData._id
+          )}
+        />
+      )}
       {description !== undefined && (
         <View>
           <AppText style={{ marginBottom: 5, alignSelf: "center" }}>

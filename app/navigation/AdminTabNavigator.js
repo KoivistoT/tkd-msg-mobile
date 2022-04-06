@@ -15,13 +15,13 @@ const AdminTabNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route, navigation }) => ({
         headerShown: false,
+        tabBarShowLabel: false,
       })}
     >
       <Tab.Screen
         name="RoomsNavigator"
         component={RoomsNavigator}
         options={{
-          tabBarShowLabel: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="chat-outline"
@@ -32,20 +32,23 @@ const AdminTabNavigator = () => {
         }}
       />
 
-      {/* <Tab.Screen
+      <Tab.Screen
         name="ContactsNavigator"
         component={ContactsNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="card-account-details-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="ControlNavigator"
         component={ControlNavigator}
         options={{
-          tabBarShowLabel: false,
           tabBarIcon: ({ color, size }) => (
             <Feather name="settings" color={color} size={size} />
           ),

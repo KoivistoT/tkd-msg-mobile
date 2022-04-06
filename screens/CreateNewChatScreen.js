@@ -20,6 +20,7 @@ import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import AppText from "../app/components/AppText";
 import ContactsScreen from "./ContactsScreen";
+import AppTitle from "../app/components/AppTitle";
 
 function CreateNewChatScreen({}) {
   return (
@@ -43,6 +44,7 @@ function CreateNewChatScreen({}) {
         ></AppButton>
       </View>
 
+      <AppTitle>Start private chat</AppTitle>
       <ContactsScreen />
     </Screen>
   );

@@ -40,16 +40,16 @@ function CreateChannelForm() {
       >
         <>
           <AppFormField
+            style={{ padding: 10 }}
             autoCapitalize="none"
             autoCorrect={false}
-            icon="account-outline"
             keyboardType="email-address"
             name="roomName"
             placeholder="Channel name"
           />
           <View style={{ marginTop: 20 }}>
             <AppFormField
-              style={{ height: 100 }}
+              style={{ height: 100, padding: 10 }}
               autoCapitalize="none"
               autoCorrect={false}
               multiline

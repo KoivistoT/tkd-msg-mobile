@@ -1,18 +1,13 @@
-import { navigationRef } from "../app/navigation/rootNavigation";
-
-// const onDeleteRoom = async (roomId) => {
-//   const result = await confirmAlert("Haluatko poistaa huoneen?", "");
-//   if (!result) return;
-
-//   navigationRef.current.navigate(routes.ROOM_SCREEN);
-//   // dispatch(setRoomLoadingToTrue());
-
-//   dispatch(deleteRoom(roomId));
-//   setTimeout(() => {
-//     // dispatch(setRoomLoadingToFalse());
-//   }, 300); // tämä ei pakillinen, toimii vain hienommin
-// };
+const fullName = (item) => {
+  if (!item) return "unknown user";
+  if (item.firstName && item.lastName)
+    return `${item.firstName} ${item.lastName}`;
+  if (item.lastName) return item.lastName;
+  if (item.firstName) return item.firstName;
+  if (item.displayName) return item.displayName;
+  return "unknown user";
+};
 
 export default {
-  //   onDeleteRoom,
+  fullName,
 };

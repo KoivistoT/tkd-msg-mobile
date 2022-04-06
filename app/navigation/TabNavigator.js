@@ -30,7 +30,11 @@ const TabNavigator = () => {
         component={ContactsNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="card-account-details-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

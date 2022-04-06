@@ -44,7 +44,7 @@ const RoomsNavigator = () => (
       />
       <Stack.Screen
         options={{
-          headerTitle: "Room details",
+          headerTitle: "Chat details",
         }}
         name="Room_setup_screen"
         component={RoomSetupScreen}
