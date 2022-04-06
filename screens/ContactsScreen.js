@@ -79,8 +79,7 @@ function ContactsScreen({ navigation }) {
               position: "absolute",
               padding: 20,
               right: 0,
-
-              top: -20,
+              alignSelf: "center",
             }}
             activeOpacity={1}
             onPress={() =>
@@ -102,9 +101,10 @@ function ContactsScreen({ navigation }) {
     <Screen>
       {allUsers && (
         <FlatList
+          style={{ marginTop: 10 }}
           ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsers)}
-          bounces={false}
+          // bounces={false}
           keyExtractor={listKeyExtractor}
           renderItem={listItem}
         />

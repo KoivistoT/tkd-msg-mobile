@@ -30,7 +30,7 @@ function UserInfoCard({ userId }) {
       {userData && (
         <View style={styles.container}>
           <View style={{ alignItems: "center" }}>
-            <AppIcon />
+            <AppIcon size={90} />
             <AppText style={{ marginTop: 10 }}>
               {userFuncs.fullName(userData)}
             </AppText>

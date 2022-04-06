@@ -11,7 +11,6 @@ const Stack = createStackNavigator();
 const ControlNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen name="Control_screen" component={ControlScreen} />
-
     <Stack.Screen name="Users_control_screen" component={UsersControlScreen} />
     <Stack.Screen name="User_details_screen" component={UserDetailsScreen} />
   </Stack.Navigator>

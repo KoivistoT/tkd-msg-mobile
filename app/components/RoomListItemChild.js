@@ -101,7 +101,9 @@ function RoomListItemChild({
               </View>
             )}
           </View>
-          <View style={{ position: "absolute", right: 20, top: 5 }}>
+          <View
+            style={{ position: "absolute", right: 15, alignSelf: "center" }}
+          >
             <MemoUnreadMessagesItem item={item} />
           </View>
           {type === "private" && <OnlineIndicator members={members} />}
