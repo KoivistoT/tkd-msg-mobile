@@ -152,7 +152,7 @@ function RoomsListScreen({ navigation }) {
   };
 
   return (
-    <Screen>
+    <Screen style={{ marginTop: 10 }}>
       {/* {!socket && ( */}
       {/* <ShowDocumentModal /> */}
       {!roomsFetched && (

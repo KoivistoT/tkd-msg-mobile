@@ -93,6 +93,7 @@ function ContactsScreen({ navigation }) {
             />
           </TouchableOpacity>
         </View>
+        <ListItemSeparator />
       </TouchableOpacity>
     );
   };
@@ -102,7 +103,7 @@ function ContactsScreen({ navigation }) {
       {allUsers && (
         <FlatList
           style={{ marginTop: 10 }}
-          ItemSeparatorComponent={() => <ListItemSeparator />}
+          // ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsers)}
           // bounces={false}
           keyExtractor={listKeyExtractor}

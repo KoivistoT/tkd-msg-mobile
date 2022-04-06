@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { useSelector, useStore } from "react-redux";
 import { selectSelectedMessage } from "../../../store/general";
 import { selectMessageById } from "../../../store/msgStore";
@@ -13,9 +13,8 @@ function MessageItemMain({
   searchWord,
 }) {
   const store = useStore();
-
   // const selectedMessage = useSelector(selectSelectedMessage);
-
+  // console.log("maini päi");
   // const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
   //   useState(false);
 

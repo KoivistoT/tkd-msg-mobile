@@ -15,13 +15,13 @@ function MessageHeader({
 }) {
   return (
     <View style={styles.messageHeader}>
-      {roomType !== "private" && (
-        <SenderName
-          allUsers={allUsers}
-          sentBy={sentBy}
-          postedByUser={postedByUser}
-        />
-      )}
+      {/* {roomType !== "private" && ( */}
+      <SenderName
+        allUsers={allUsers}
+        sentBy={sentBy}
+        postedByUser={postedByUser}
+      />
+      {/* )} */}
       {!isReplyMessage && <View style={{ marginBottom: 20 }}></View>}
       <View style={{ position: "absolute", right: 0 }}>
         <AppText style={styles.messageTimestamp}>{createdAt}</AppText>

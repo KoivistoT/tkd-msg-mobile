@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, FlatList } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
@@ -16,10 +16,13 @@ function UsersControlScreen({ navigation }) {
 
   const listItem = ({ item }) =>
     item.status === "deleted" ? null : (
-      <UserControlListItem
-        onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
-        item={item}
-      />
+      <View key={item._id}>
+        <UserControlListItem
+          onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
+          item={item}
+        />
+        <ListItemSeparator />
+      </View>
     );
 
   return (
@@ -27,7 +30,7 @@ function UsersControlScreen({ navigation }) {
       <CreateUserModal />
       {allUsers && (
         <FlatList
-          ItemSeparatorComponent={() => <ListItemSeparator />}
+          // ItemSeparatorComponent={() =>}
           data={Object.values(allUsers)}
           bounces={false}
           keyExtractor={listKeyExtractor}

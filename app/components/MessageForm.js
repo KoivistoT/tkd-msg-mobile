@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -72,8 +72,9 @@ import AppCloseButton from "./AppCloseButton";
 import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
 import messageFuncs from "../../utility/messageFuncs";
+import UnreadMessagesButton from "./UnreadMessagesButton";
 
-function MessageForm({ item, setShowSearchBar }) {
+function MessageForm({ item, setShowSearchBar, setDispatchScrollToIndex }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
@@ -110,6 +111,7 @@ function MessageForm({ item, setShowSearchBar }) {
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
     saveMessageSum();
+
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
       dispatch(messageFormFocusCleared());
     });
@@ -157,6 +159,7 @@ function MessageForm({ item, setShowSearchBar }) {
     });
   };
 
+  let isDone = useRef(false);
   const saveMessageSum = () => {
     const unreadMessagesSum = messageFuncs.getLastSeenMessage(
       store.getState(),
@@ -174,6 +177,18 @@ function MessageForm({ item, setShowSearchBar }) {
       );
     }
   };
+
+  const [unreadMessageSumOnStart, setUnreadMessageSumOnStart] = useState(0);
+  const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
+  useLayoutEffect(() => {
+    setUnreadMessageSumOnStart(
+      messageFuncs.getLastSeenMessage(
+        store.getState(),
+        currentRoomId,
+        currentRoomMessageSum
+      )
+    );
+  }, []);
   const handleSubmit = async ({ message }, { resetForm }) => {
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
@@ -188,6 +203,7 @@ function MessageForm({ item, setShowSearchBar }) {
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
+
     if (message.length === 0 && photos.length === 0 && !documentURL.current) {
       return;
     }
@@ -278,11 +294,18 @@ function MessageForm({ item, setShowSearchBar }) {
     documentURL.current = null;
     setPhotos([]);
     setShowOptions(false);
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
   };
 
   return (
     <>
+      {/* {showUnreadMessageButton && unreadMessageSumOnStart > 0 && (
+        <UnreadMessagesButton
+          unreadMessages={unreadMessageSumOnStart}
+          setDispatchScrollToIndex={setDispatchScrollToIndex}
+          setShowUnreadMessageButton={setShowUnreadMessageButton}
+        ></UnreadMessagesButton>
+      )} */}
       {getReplyItem() && <ReplyItem item={getReplyItem()} />}
       {currentRoomStatus !== "archived" &&
         otherUser.status !== "deleted" &&

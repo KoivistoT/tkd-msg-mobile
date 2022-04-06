@@ -27,8 +27,15 @@ import AppSearchTextInput from "./AppSearchTextInput";
 import { messageFormFocusCleared } from "../../store/general";
 import colors from "../../config/colors";
 import ScrollDownButton from "./ScrollDownButton";
+import UnreadMessagesButton from "./UnreadMessagesButton";
+import { selectLastSeenMessagesById } from "../../store/currentUser";
 
-function MessageList({ item, showSearchBar, setShowSearchBar }) {
+function MessageList({
+  item,
+  showSearchBar,
+  setShowSearchBar,
+  dispatchScrollToIndex,
+}) {
   const store = useStore();
   const dispatch = useDispatch();
   const msgListRef = useRef();
@@ -44,16 +51,24 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
   // const allUsers = useSelector(selectAllUsersMinimal); // tämä ei tarvinne olla selector, voi tehdä raskaaksi
   //*********** */
   //*********** */
-
-  const messageItem = ({ item }) => (
-    <MemoMessageItemMain
-      messageId={item}
-      searchWord={currentSearchWord}
-      roomId={roomId}
-      currentUserId={currentUserId}
-      onScrollToIndex={onScrollToIndex}
-    />
-  );
+  const messageItem = ({ item }) => {
+    return (
+      <>
+        {lastSeenMessageId === item && (
+          <Text style={{ alignSelf: "center", color: colors.danger }}>
+            NEW MESSAGES
+          </Text>
+        )}
+        <MemoMessageItemMain
+          messageId={item}
+          searchWord={currentSearchWord}
+          roomId={roomId}
+          currentUserId={currentUserId}
+          onScrollToIndex={onScrollToIndex}
+        />
+      </>
+    );
+  };
 
   useEffect(() => {
     if (
@@ -67,13 +82,30 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
     }
   }, [roomMessageIds]);
 
-  const onScrollToIndex = (replyMessageIndex) => {
-    msgListRef.current.scrollToIndex({
-      animated: true, // tämä voisi olla false
-      index: replyMessageIndex,
-      viewPosition: 0.5,
-    });
-  };
+  // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
+  const [lastSeenMessageId, setLasetSeenMessageId] = useState(null);
+  let unreadMessagesOnStart = useRef(null);
+  console.log("Messagelist päivittyy");
+
+  useLayoutEffect(() => {
+    try {
+      const { messageSum, _id: roomId } = item.route.params;
+      const lastSeenMessagesNow =
+        store.getState().auth.currentUser.last_seen_messages[
+          store
+            .getState()
+            .auth.currentUser.last_seen_messages.findIndex(
+              (object) => object.roomId === roomId
+            )
+        ].lastSeenMessageSum;
+      const unreadMessages = messageSum - lastSeenMessagesNow;
+      unreadMessagesOnStart.current = unreadMessages;
+
+      setLasetSeenMessageId(roomMessageIds[unreadMessages - 1]);
+    } catch (error) {
+      console.log(error, "code 662112");
+    }
+  }, []);
 
   const onScrollToBottom = (animate) => {
     msgListRef.current.scrollToIndex({
@@ -96,6 +128,18 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
         });
       }
     }, 10);
+  };
+
+  const onScrollToIndex = (replyMessageIndex) => {
+    try {
+      msgListRef.current.scrollToIndex({
+        animated: true, // tämä voisi olla false
+        index: replyMessageIndex,
+        viewPosition: 0.5,
+      });
+    } catch (error) {
+      console.log(error, "code 87271");
+    }
   };
 
   const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
@@ -125,12 +169,14 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
     }
   };
 
+  // console.log("messagelista päivittyy----");
   const getPosition = (e) => {
     e.nativeEvent.contentOffset.y >= 250
       ? setScrollButtonVisible(true)
       : setScrollButtonVisible(false);
   };
   const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
+  const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
   return (
     <View style={styles.container}>
       {showSearchBar && (
@@ -139,7 +185,13 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
           onSearch={onSearch}
         />
       )}
-
+      {showUnreadMessageButton && unreadMessagesOnStart.current > 0 && (
+        <UnreadMessagesButton
+          unreadMessagesOnStart={unreadMessagesOnStart.current}
+          onPress={onScrollToIndex}
+          setShowUnreadMessageButton={setShowUnreadMessageButton}
+        ></UnreadMessagesButton>
+      )}
       {roomMessageIds && (
         <FlatList
           style={{ backgroundColor: colors.background1, padding: 5 }}
@@ -154,7 +206,7 @@ function MessageList({ item, showSearchBar, setShowSearchBar }) {
           renderItem={messageItem}
           onEndReachedThreshold={0.7}
           maxToRenderPerBatch={10}
-          initialNumToRender={10}
+          initialNumToRender={12}
           windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
           inverted={true}
         />

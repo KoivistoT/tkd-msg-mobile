@@ -59,7 +59,7 @@ function MessageItemMainChild({
   };
   const selectedMessage = useSelector(selectSelectedMessage);
 
-  const [roomType, setRoomType] = useState(null);
+  // const [roomType, setRoomType] = useState(null);
   const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
     useState(false);
   const [isCurrentMessagePressed, setIsCurrentMessagePressed] = useState(false);
@@ -67,10 +67,6 @@ function MessageItemMainChild({
   useEffect(() => {
     setIsCurrentMessageSelected(selectedMessage === messageId);
   }, [selectedMessage]);
-
-  useEffect(() => {
-    setRoomType(store.getState().entities.rooms.allRooms[roomId].type);
-  }, []);
 
   const onSelectMessage = () => {
     if (is_deleted) {
@@ -183,7 +179,7 @@ function MessageItemMainChild({
               >
                 <MessageHeader
                   sentBy={sentBy}
-                  roomType={roomType}
+                  // roomType={roomType}
                   allUsers={allUsers}
                   postedByUser={postedByUser}
                   createdAt={timeFuncs.getTime(createdAt)}
@@ -205,7 +201,7 @@ function MessageItemMainChild({
                     )}
                     {replyMessageId && (
                       <MessageItemReply
-                        roomType={roomType}
+                        // roomType={roomType}
                         allUsers={allUsers}
                         isReplyMessage={true}
                         postedByUser={postedByUser}
