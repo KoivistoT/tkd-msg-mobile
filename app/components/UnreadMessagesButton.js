@@ -6,10 +6,8 @@ import { selectLastSeenMessagesById } from "../../store/currentUser";
 import AppText from "./AppText";
 
 function UnreadMessagesButton({
-  unreadMessages,
   setShowUnreadMessageButton,
   unreadMessagesOnStart,
-  setDispatchScrollToIndex,
   onPress,
 }) {
   //   unreadMessages;

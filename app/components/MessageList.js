@@ -53,7 +53,7 @@ function MessageList({
   //*********** */
   const messageItem = ({ item }) => {
     return (
-      <>
+      <View>
         {lastSeenMessageId === item && (
           <Text style={{ alignSelf: "center", color: colors.danger }}>
             NEW MESSAGES
@@ -66,7 +66,7 @@ function MessageList({
           currentUserId={currentUserId}
           onScrollToIndex={onScrollToIndex}
         />
-      </>
+      </View>
     );
   };
 
