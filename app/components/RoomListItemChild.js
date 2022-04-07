@@ -45,71 +45,74 @@ function RoomListItemChild({
   };
 
   return (
-    <Swipeable
-      ref={roomRef}
-      rightThreshold={80}
-      renderRightActions={() => (
-        <RoomListRightAction onPress={() => onDeleteRoom()} />
-      )}
-    >
-      {Object.keys(allUsers).length > 0 && (
-        <TouchableOpacity
-          style={{
-            paddingBottom: 10,
-            flexDirection: "row",
-            backgroundColor: colors.white,
-          }}
-          onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
-        >
-          <View
+    <View>
+      <Swipeable
+        ref={roomRef}
+        rightThreshold={80}
+        renderRightActions={() => (
+          <RoomListRightAction onPress={() => onDeleteRoom()} />
+        )}
+      >
+        {Object.keys(allUsers).length > 0 && (
+          <TouchableOpacity
+            activeOpacity={1}
             style={{
-              width: 80,
-              alignItems: "center",
-              alignSelf: "center",
-              padding: 5,
+              paddingBottom: 10,
+              flexDirection: "row",
+              backgroundColor: colors.white,
             }}
+            onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
           >
-            <AppIcon icon={onGetIcon()} />
-          </View>
-
-          <View>
-            <View style={styles.nameRow}>
-              <AppText
-                style={{
-                  color: colors.primary,
-                  fontWeight: "600",
-                  maxWidth: Dimensions.get("window").width - 160,
-                }}
-                numberOfLines={1}
-              >
-                {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
-              </AppText>
+            <View
+              style={{
+                width: 80,
+                alignItems: "center",
+                alignSelf: "center",
+                padding: 5,
+              }}
+            >
+              <AppIcon icon={onGetIcon()} />
             </View>
-            {latestMessage && (
-              <View style={styles.lastMessage}>
+
+            <View>
+              <View style={styles.nameRow}>
                 <AppText
                   style={{
-                    color: "black",
+                    color: colors.primary,
+                    fontWeight: "600",
                     maxWidth: Dimensions.get("window").width - 160,
                   }}
-                  numberOfLines={2}
+                  numberOfLines={1}
                 >
-                  {`${allUsers[latestMessage.postedByUser].displayName}:  ${
-                    latestMessage.messageBody
-                  }`}
+                  {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
                 </AppText>
               </View>
-            )}
-          </View>
-          <View
-            style={{ position: "absolute", right: 15, alignSelf: "center" }}
-          >
-            <MemoUnreadMessagesItem item={item} />
-          </View>
-          {type === "private" && <OnlineIndicator members={members} />}
-        </TouchableOpacity>
-      )}
-    </Swipeable>
+              {latestMessage && (
+                <View style={styles.lastMessage}>
+                  <AppText
+                    style={{
+                      color: "black",
+                      maxWidth: Dimensions.get("window").width - 160,
+                    }}
+                    numberOfLines={2}
+                  >
+                    {`${allUsers[latestMessage.postedByUser].displayName}:  ${
+                      latestMessage.messageBody
+                    }`}
+                  </AppText>
+                </View>
+              )}
+            </View>
+            <View
+              style={{ position: "absolute", right: 15, alignSelf: "center" }}
+            >
+              <MemoUnreadMessagesItem item={item} />
+            </View>
+            {type === "private" && <OnlineIndicator members={members} />}
+          </TouchableOpacity>
+        )}
+      </Swipeable>
+    </View>
   );
 }
 

@@ -109,6 +109,7 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
           // ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsers)}
           // bounces={false}
+          initialNumToRender={15}
           keyExtractor={listKeyExtractor}
           renderItem={listItem}
         />

@@ -152,7 +152,7 @@ function MessageItemMainChild({
     >
       <TouchableOpacity
         activeOpacity={1}
-        style={{ width: "100%" }}
+        style={{ width: "100%", paddingHorizontal: 15 }}
         onPress={() => onRemoveSelections()}
       >
         <View

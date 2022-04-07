@@ -343,19 +343,19 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     rooms.push({
       roomId,
       lastMessageTimestamp:
-        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || null,
+        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || 0,
     });
   });
 
   //tee sort array by field
   const sortedRooms = rooms.sort(function (a, b) {
-    var nameA = a.lastMessageTimestamp;
-    var nameB = b.lastMessageTimestamp;
+    var A = a.lastMessageTimestamp;
+    var B = b.lastMessageTimestamp;
 
-    if (nameA > nameB) {
+    if (A > B) {
       return -1;
     }
-    if (nameA < nameB) {
+    if (A < B) {
       return 1;
     }
     return 0;

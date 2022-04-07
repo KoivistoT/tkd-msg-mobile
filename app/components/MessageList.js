@@ -192,28 +192,33 @@ function MessageList({
           setShowUnreadMessageButton={setShowUnreadMessageButton}
         ></UnreadMessagesButton>
       )}
+
       {roomMessageIds && (
-        <FlatList
-          style={{
-            backgroundColor: colors.background1,
-            paddingHorizontal: 10,
-          }}
-          ref={msgListRef}
-          data={
-            searchResultMessageIds ? searchResultMessageIds : roomMessageIds
-          }
-          onScroll={(e) => getPosition(e)}
-          onScrollBeginDrag={() => Keyboard.dismiss()}
-          onScrollToIndexFailed={onScrollToIndexFailed}
-          keyExtractor={keyExtractor}
-          renderItem={messageItem}
-          onEndReachedThreshold={0.7}
-          maxToRenderPerBatch={10}
-          initialNumToRender={12}
-          windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
-          inverted={true}
-        />
+        <View style={{ flexDirection: "row", flex: 1 }}>
+          <View style={[styles.touchMargin, { left: 0 }]}></View>
+          <FlatList
+            style={{
+              backgroundColor: colors.background1,
+              // paddingHorizontal: 10,
+            }}
+            ref={msgListRef}
+            data={
+              searchResultMessageIds ? searchResultMessageIds : roomMessageIds
+            }
+            onScroll={(e) => getPosition(e)}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
+            onScrollToIndexFailed={onScrollToIndexFailed}
+            keyExtractor={keyExtractor}
+            renderItem={messageItem}
+            onEndReachedThreshold={0.7}
+            maxToRenderPerBatch={10}
+            initialNumToRender={12}
+            windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
+            inverted={true}
+          />
+        </View>
       )}
+
       {scrollButtonVisible && (
         <ScrollDownButton onPress={() => onScrollToBottom(true)} />
       )}
@@ -224,8 +229,18 @@ function MessageList({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingHorizontal: 10,
+
     // backgroundColor: colors.background1,
+  },
+  touchMargin: {
+    width: 25,
+    position: "absolute",
+
+    height: "100%",
+    zIndex: 200,
+    // backgroundColor: "red",
+    zIndex: 1,
+    opacity: 10,
   },
 });
 export default MessageList;
