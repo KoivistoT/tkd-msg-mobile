@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
   },
   info: {},
   value: { marginLeft: 10 },
-  columnLeft: { width: "30%" },
-  columnRight: { width: "70%" },
+  columnLeft: { width: "40%" },
+  columnRight: { width: "60%" },
 });
 
 export default AppInfoRow;
