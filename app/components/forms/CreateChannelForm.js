@@ -69,7 +69,9 @@ function CreateChannelForm() {
                 color="#999999"
               />
             ) : (
-              <SubmitButton title="Create channel" />
+              <View style={{ marginTop: 10 }}>
+                <SubmitButton title="Create channel" />
+              </View>
             )}
           </View>
         </>
