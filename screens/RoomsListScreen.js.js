@@ -152,7 +152,7 @@ function RoomsListScreen({ navigation }) {
   };
 
   return (
-    <Screen style={{ marginTop: 10 }}>
+    <Screen>
       {/* {!socket && ( */}
       {/* <ShowDocumentModal /> */}
       {!roomsFetched && (
@@ -165,6 +165,7 @@ function RoomsListScreen({ navigation }) {
       {/* {socket && allActiveRoomsIds && ( */}
       {allActiveRoomsIds && (
         <FlatList
+          style={{ paddingTop: 10 }}
           // data={sortObjectsByfield(userRooms, "roomName")}
           ItemSeparatorComponent={ListItemSeparator}
           data={allActiveRoomsIds}

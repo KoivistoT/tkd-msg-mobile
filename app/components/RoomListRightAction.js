@@ -10,7 +10,6 @@ function RoomListRightAction({ onPress }) {
       onPress={onPress}
       style={{
         width: 80,
-        height: 80,
         backgroundColor: colors.danger,
         justifyContent: "center",
         alignItems: "center",

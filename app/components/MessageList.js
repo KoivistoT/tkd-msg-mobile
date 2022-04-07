@@ -194,7 +194,10 @@ function MessageList({
       )}
       {roomMessageIds && (
         <FlatList
-          style={{ backgroundColor: colors.background1, padding: 5 }}
+          style={{
+            backgroundColor: colors.background1,
+            paddingHorizontal: 10,
+          }}
           ref={msgListRef}
           data={
             searchResultMessageIds ? searchResultMessageIds : roomMessageIds
