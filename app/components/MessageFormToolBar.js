@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ShowSearchBarButton from "./ShowSearchBarButton";
 
-function MessageFormToolBar({ onPress, setShowSearchBar }) {
+function MessageFormToolBar({ onPress, showOptions }) {
   return (
     <TouchableOpacity
       activeOpacity="0.5"
@@ -12,7 +12,7 @@ function MessageFormToolBar({ onPress, setShowSearchBar }) {
     >
       <MaterialCommunityIcons
         // name="attachment"
-        name="plus"
+        name={!showOptions ? "plus" : "close"}
         size={24}
       ></MaterialCommunityIcons>
     </TouchableOpacity>

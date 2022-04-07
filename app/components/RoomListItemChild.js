@@ -50,7 +50,11 @@ function RoomListItemChild({
         ref={roomRef}
         rightThreshold={80}
         renderRightActions={() => (
-          <RoomListRightAction onPress={() => onDeleteRoom()} />
+          <RoomListRightAction
+            onPress={() => onDeleteRoom()}
+            item={item}
+            onClose={() => roomRef.current?.close()}
+          />
         )}
       >
         {Object.keys(allUsers).length > 0 && (

@@ -11,6 +11,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import colors from "../../../config/colors";
 import ToolBarButton from "../ToolbarButton";
+import AppCloseButton from "../AppCloseButton";
 
 function ImageInput({ imageUri, onChangeImage }) {
   useEffect(() => {
@@ -87,13 +88,23 @@ function ImageInput({ imageUri, onChangeImage }) {
         </View>
       )}
       {imageUri && (
-        <TouchableOpacity
-          onPress={() => handlePress("remove")}
-          activeOpacity="0.5"
-          style={styles.container}
-        >
-          <Image source={{ uri: imageUri }} style={styles.image} />
-        </TouchableOpacity>
+        <View style={{ padding: 5 }}>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={styles.button}
+            onPress={() => handlePress("remove")}
+          >
+            <MaterialCommunityIcons
+              style={styles.icon}
+              name="close"
+              color={colors.white}
+              size={22}
+            ></MaterialCommunityIcons>
+          </TouchableOpacity>
+          <View style={styles.container}>
+            <Image source={{ uri: imageUri }} style={styles.image} />
+          </View>
+        </View>
       )}
     </>
   );
@@ -109,6 +120,18 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     overflow: "hidden",
     width: 100,
+  },
+  icon: {
+    padding: 4,
+    borderRadius: 10,
+  },
+  button: {
+    position: "absolute",
+    top: 5,
+    right: 0,
+    zIndex: 1,
+    borderRadius: 10,
+    backgroundColor: colors.black,
   },
   buttons: {
     marginLeft: 5,

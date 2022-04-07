@@ -3,8 +3,8 @@ import {
   View,
   StyleSheet,
   Keyboard,
+  Text,
   TouchableOpacity,
-  Button,
 } from "react-native";
 import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
@@ -309,6 +309,20 @@ function MessageForm({ item, setShowSearchBar }) {
                 documentName={documentName}
               />
             )}
+            {!showOptions && (documentName || photos.length !== 0) && (
+              <TouchableOpacity
+                onPress={() => setShowOptions(true)}
+                style={{ padding: 5, paddingLeft: 15, paddingTop: 10 }}
+              >
+                <AppText style={{ color: colors.primary }}>
+                  {documentName
+                    ? documentName
+                    : photos.length === 1
+                    ? `1 photo selected`
+                    : `${photos.length} photos selected`}
+                </AppText>
+              </TouchableOpacity>
+            )}
 
             <AppForm
               initialValues={{ message: "" }}
@@ -325,7 +339,7 @@ function MessageForm({ item, setShowSearchBar }) {
               >
                 <MessageFormToolBar
                   onPress={() => setShowOptions((prevState) => !prevState)}
-                  setShowSearchBar={setShowSearchBar}
+                  showOptions={showOptions}
                 />
 
                 <AppFormField

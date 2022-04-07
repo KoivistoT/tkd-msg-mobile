@@ -31,7 +31,7 @@ function AttachmentOptions({
 
   return (
     <View style={styles.container}>
-      <AppCloseButton onPress={onPress} />
+      {/* <AppCloseButton onPress={onPress} top={-20} /> */}
       {!documentURL.current && (
         <ImageInputList
           imageUris={photos.map((photo) => photo.uri)}

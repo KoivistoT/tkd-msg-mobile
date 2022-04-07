@@ -49,9 +49,10 @@ function ShowDocumentModal({ name, url }) {
       <Modal animationType="slide" visible={modalVisible}>
         <View style={styles.header}>
           <AppText>{name}</AppText>
-          <AppButton onPress={() => fileFuncs.saveFileToPhone(url, name)}>
-            Save file
-          </AppButton>
+          <AppButton
+            title="Save document"
+            onPress={() => fileFuncs.saveFileToPhone(url, name)}
+          />
         </View>
 
         {/* <WebView
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginTop: Constants.statusBarHeight,
     alignItems: "center",
+    paddingTop: 20,
   },
   ImageViewer: { backgroundColor: "black" },
   headerButtons: {
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     marginTop: 10,
     marginRight: 20,
-    fontWeight: "800",
+    fontWeight: "600",
   },
   image: {
     height: (250 / 16) * 9,
