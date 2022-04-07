@@ -24,6 +24,7 @@ import {
   msgStoreActiveRoomIdResived,
   replyMessageIdCleared,
   selectReplyItemIds,
+  selectRoomMessageIdsByRoomId,
   sendMessage,
   test,
 } from "../../store/msgStore";
@@ -74,7 +75,7 @@ import MessageFormToolBar from "./MessageFormToolBar";
 import messageFuncs from "../../utility/messageFuncs";
 import UnreadMessagesButton from "./UnreadMessagesButton";
 
-function MessageForm({ item, setShowSearchBar, setDispatchScrollToIndex }) {
+function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
@@ -179,17 +180,6 @@ function MessageForm({ item, setShowSearchBar, setDispatchScrollToIndex }) {
     }
   };
 
-  const [unreadMessageSumOnStart, setUnreadMessageSumOnStart] = useState(0);
-  const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
-  useLayoutEffect(() => {
-    setUnreadMessageSumOnStart(
-      messageFuncs.getLastSeenMessage(
-        store.getState(),
-        currentRoomId,
-        currentRoomMessageSum
-      )
-    );
-  }, []);
   const handleSubmit = async ({ message }, { resetForm }) => {
     // !! katso tämä vielä kuntoon
     // !! katso tämä vielä kuntoon
@@ -300,13 +290,6 @@ function MessageForm({ item, setShowSearchBar, setDispatchScrollToIndex }) {
 
   return (
     <>
-      {/* {showUnreadMessageButton && unreadMessageSumOnStart > 0 && (
-        <UnreadMessagesButton
-          unreadMessages={unreadMessageSumOnStart}
-          setDispatchScrollToIndex={setDispatchScrollToIndex}
-          setShowUnreadMessageButton={setShowUnreadMessageButton}
-        ></UnreadMessagesButton>
-      )} */}
       {getReplyItem() && <ReplyItem item={getReplyItem()} />}
       {currentRoomStatus !== "archived" &&
         otherUser.status !== "deleted" &&

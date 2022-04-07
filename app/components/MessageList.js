@@ -30,6 +30,7 @@ import colors from "../../config/colors";
 import ScrollDownButton from "./ScrollDownButton";
 import UnreadMessagesButton from "./UnreadMessagesButton";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
+import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 
 function MessageList({
   item,
@@ -197,32 +198,8 @@ function MessageList({
           setShowUnreadMessageButton={setShowUnreadMessageButton}
         ></UnreadMessagesButton>
       )}
-      {!allMessagesFetched && (
-        <View
-          style={{
-            position: "absolute",
-            bottom: 10,
+      {!allMessagesFetched && <LoadingMessagesIndicator />}
 
-            // borderBottomLeftRadius: 10,
-            borderRadius: 10,
-            // borderBottomRightRadius: 10,
-            alignSelf: "center",
-            backgroundColor: colors.white,
-            zIndex: 200,
-            // borderBottomWidth: 1,
-            // borderRightWidth: 1,
-            // borderLeftWidth: 1,
-            borderColor: colors.primary,
-            flexDirection: "row",
-            padding: 5,
-          }}
-        >
-          <ActivityIndicator size="small" color={colors.primary} />
-          <Text style={{ color: colors.primary, paddingHorizontal: 10 }}>
-            Loading messages
-          </Text>
-        </View>
-      )}
       {roomMessageIds && (
         <View style={{ flexDirection: "row", flex: 1 }}>
           <View style={[styles.touchMargin, { left: 0 }]}></View>
