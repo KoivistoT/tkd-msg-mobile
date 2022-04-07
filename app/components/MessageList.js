@@ -31,6 +31,8 @@ import ScrollDownButton from "./ScrollDownButton";
 import UnreadMessagesButton from "./UnreadMessagesButton";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
+import AppText from "./AppText";
+import NewMessagesIndicator from "./NewMessagesIndicator";
 
 function MessageList({
   item,
@@ -56,11 +58,7 @@ function MessageList({
   const messageItem = ({ item }) => {
     return (
       <View>
-        {lastSeenMessageId === item && (
-          <Text style={{ alignSelf: "center", color: colors.danger }}>
-            NEW MESSAGES
-          </Text>
-        )}
+        {lastSeenMessageId === item && <NewMessagesIndicator />}
         <MemoMessageItemMain
           messageId={item}
           searchWord={currentSearchWord}
