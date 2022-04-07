@@ -4,6 +4,7 @@ import {
   StyleSheet,
   FlatList,
   Button,
+  ActivityIndicator,
   Text,
   Keyboard,
 } from "react-native";
@@ -39,7 +40,7 @@ function MessageList({
   const store = useStore();
   const dispatch = useDispatch();
   const msgListRef = useRef();
-  const roomId = item.route.params._id;
+  const { _id: roomId, messageSum } = item.route.params;
   // console.log("tämä päivittyy myös");
   // const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
   const currentUserId = store.getState().auth.currentUser._id;
@@ -70,6 +71,7 @@ function MessageList({
     );
   };
 
+  const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   useEffect(() => {
     if (
       store.getState().entities.msgStore.allMessages[roomId]?.messages[
@@ -80,6 +82,9 @@ function MessageList({
         onScrollToBottom(true);
       } catch (error) {}
     }
+    if (messageSum === roomMessageIds.length) {
+      setAllMessagesFetched(true);
+    }
   }, [roomMessageIds]);
 
   // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
@@ -89,7 +94,7 @@ function MessageList({
 
   useLayoutEffect(() => {
     try {
-      const { messageSum, _id: roomId } = item.route.params;
+      // const { messageSum, _id: roomId } = item.route.params;
       const lastSeenMessagesNow =
         store.getState().auth.currentUser.last_seen_messages[
           store
@@ -192,7 +197,32 @@ function MessageList({
           setShowUnreadMessageButton={setShowUnreadMessageButton}
         ></UnreadMessagesButton>
       )}
+      {!allMessagesFetched && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 10,
 
+            // borderBottomLeftRadius: 10,
+            borderRadius: 10,
+            // borderBottomRightRadius: 10,
+            alignSelf: "center",
+            backgroundColor: colors.white,
+            zIndex: 200,
+            // borderBottomWidth: 1,
+            // borderRightWidth: 1,
+            // borderLeftWidth: 1,
+            borderColor: colors.primary,
+            flexDirection: "row",
+            padding: 5,
+          }}
+        >
+          <ActivityIndicator size="small" color={colors.primary} />
+          <Text style={{ color: colors.primary, paddingHorizontal: 10 }}>
+            Loading messages
+          </Text>
+        </View>
+      )}
       {roomMessageIds && (
         <View style={{ flexDirection: "row", flex: 1 }}>
           <View style={[styles.touchMargin, { left: 0 }]}></View>

@@ -117,6 +117,7 @@ function MessageForm({ item, setShowSearchBar, setDispatchScrollToIndex }) {
     });
 
     //onko tähän parempi ratkaisu, tämän pitää olla muualla
+    //ainakin header set ref jos ei muuta, ettei aina laita uusiksi
     setHeader();
 
     return () => {

@@ -122,7 +122,6 @@ const slice = createSlice({
       msgStore = stateNow;
     },
     restMessagesResived: (msgStore, action) => {
-      // console.log(action.payload);
       let stateNow = { ...msgStore };
       Object.keys(action.payload).forEach((currentRoomId) => {
         const newObject = Object.assign(
