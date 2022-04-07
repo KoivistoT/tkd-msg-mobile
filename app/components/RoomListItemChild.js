@@ -76,8 +76,8 @@ function RoomListItemChild({
             <View style={styles.nameRow}>
               <AppText
                 style={{
-                  color: "black",
-                  fontWeight: "800",
+                  color: colors.primary,
+                  fontWeight: "600",
                   maxWidth: Dimensions.get("window").width - 160,
                 }}
                 numberOfLines={1}

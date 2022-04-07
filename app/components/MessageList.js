@@ -85,7 +85,7 @@ function MessageList({
   // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
   const [lastSeenMessageId, setLasetSeenMessageId] = useState(null);
   let unreadMessagesOnStart = useRef(null);
-  console.log("Messagelist päivittyy");
+  // console.log("Messagelist päivittyy");
 
   useLayoutEffect(() => {
     try {
