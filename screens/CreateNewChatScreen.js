@@ -25,7 +25,13 @@ import AppTitle from "../app/components/AppTitle";
 function CreateNewChatScreen({}) {
   return (
     <Screen>
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 10,
+        }}
+      >
         <AppButton
           style={{ alignSelf: "center", padding: 10 }}
           onPress={() =>
@@ -45,7 +51,7 @@ function CreateNewChatScreen({}) {
       </View>
 
       <AppTitle>Start private chat</AppTitle>
-      <ContactsScreen />
+      <ContactsScreen showInfoButton={false} />
     </Screen>
   );
 }

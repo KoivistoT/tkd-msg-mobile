@@ -26,7 +26,7 @@ import roomFuncs from "../utility/roomFuncs";
 import OnlineIndicator from "../app/components/OnlineIndicator";
 import userFuncs from "../utility/userFuncs";
 
-function ContactsScreen({ navigation }) {
+function ContactsScreen({ navigation, showInfoButton = true }) {
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
@@ -74,24 +74,27 @@ function ContactsScreen({ navigation }) {
           <View>
             <AppText style={styles.name}>{userFuncs.fullName(item)}</AppText>
           </View>
-          <TouchableOpacity
-            style={{
-              position: "absolute",
-              padding: 20,
-              right: 0,
-              alignSelf: "center",
-            }}
-            activeOpacity={1}
-            onPress={() =>
-              navigation.navigate(routes.USER_INFO_CARD_SCREEN, item._id)
-            }
-          >
-            <MaterialCommunityIcons
-              name="badge-account-horizontal-outline"
-              size={25}
-              color={colors.dark}
-            />
-          </TouchableOpacity>
+          {showInfoButton && (
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                padding: 20,
+                paddingRight: 10,
+                right: 0,
+                alignSelf: "center",
+              }}
+              activeOpacity={1}
+              onPress={() =>
+                navigation.navigate(routes.USER_INFO_CARD_SCREEN, item._id)
+              }
+            >
+              <MaterialCommunityIcons
+                name="badge-account-horizontal-outline"
+                size={25}
+                color={colors.dark}
+              />
+            </TouchableOpacity>
+          )}
         </View>
         <ListItemSeparator />
       </TouchableOpacity>
@@ -102,7 +105,7 @@ function ContactsScreen({ navigation }) {
     <Screen>
       {allUsers && (
         <FlatList
-          style={{ marginTop: 10 }}
+          style={{ paddingTop: 10 }}
           // ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsers)}
           // bounces={false}
