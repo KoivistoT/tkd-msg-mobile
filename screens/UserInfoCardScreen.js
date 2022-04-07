@@ -8,7 +8,7 @@ import UserInfoCard from "../app/components/UserInfoCard";
 function UserInfoCardScreen(item) {
   return (
     <Screen style={styles.container}>
-      <UserInfoCard userId={item.route.params} />
+      <UserInfoCard userId={item.route.params} hideFields={["accountType"]} />
     </Screen>
   );
 }

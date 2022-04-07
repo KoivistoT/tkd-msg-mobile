@@ -177,6 +177,7 @@ function RoomSetupScreen(item) {
 
       {roomType === "private" && (
         <UserInfoCard
+          hideFields={["accountType"]}
           userId={roomFuncs.getPrivateRoomOtherUserId(
             roomMembers,
             currentUserData._id

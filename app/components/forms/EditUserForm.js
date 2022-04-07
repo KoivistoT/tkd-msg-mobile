@@ -17,6 +17,7 @@ import {
   usersErrorCleared,
 } from "../../../store/users";
 import AppText from "../AppText";
+import colors from "../../../config/colors";
 
 const accountTypeOptions = [
   { label: "Admin", value: "admin" },
@@ -30,7 +31,7 @@ const validationSchema = Yup.object().shape({
   accountType: Yup.string().required().min(1).label("AccountType"),
 });
 
-function EditUserForm({ userData, closeModal }) {
+function EditUserForm({ userData, closeModal, hideFields = [] }) {
   const dispatch = useDispatch();
 
   const handleSubmit = async ({
@@ -74,16 +75,15 @@ function EditUserForm({ userData, closeModal }) {
           validationSchema={validationSchema}
         >
           <>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <SubmitButton title="Save changes" />
-            </View>
-            <AppFormPicker
-              options={accountTypeOptions}
-              autoCapitalize="none"
-              icon="account-outline"
-              name="accountType"
-              placeholder="Account type"
-            ></AppFormPicker>
+            {!hideFields.includes("accountType") && (
+              <AppFormPicker
+                options={accountTypeOptions}
+                autoCapitalize="none"
+                icon="account-outline"
+                name="accountType"
+                placeholder="Account type"
+              ></AppFormPicker>
+            )}
 
             <AppFormField
               autoCapitalize="none"
@@ -131,6 +131,11 @@ function EditUserForm({ userData, closeModal }) {
               showLabel
             />
           </>
+          <View
+            style={{ flexDirection: "row", alignSelf: "center", marginTop: 20 }}
+          >
+            <SubmitButton title="Save changes" />
+          </View>
         </AppForm>
       </ScrollView>
     </Screen>

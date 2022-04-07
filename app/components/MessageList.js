@@ -83,7 +83,7 @@ function MessageList({
         onScrollToBottom(true);
       } catch (error) {}
     }
-    if (messageSum === roomMessageIds.length) {
+    if (messageSum === roomMessageIds?.length) {
       setAllMessagesFetched(true);
     }
   }, [roomMessageIds]);

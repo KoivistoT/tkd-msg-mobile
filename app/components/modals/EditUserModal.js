@@ -15,7 +15,7 @@ import EditUserForm from "../forms/EditUserForm";
 import { useSelector } from "react-redux";
 import { selectUserById } from "../../../store/users";
 
-function EditUserModal({ userId }) {
+function EditUserModal({ userId, hideFields = [], title = "Edit user" }) {
   const [modalVisible, setModalVisible] = useState(false);
   const userData = useSelector(selectUserById(userId));
 
@@ -34,13 +34,14 @@ function EditUserModal({ userId }) {
             />
           </TouchableOpacity>
           <EditUserForm
+            hideFields={hideFields}
             userData={userData}
             closeModal={() => setModalVisible(false)}
           />
         </Screen>
       </Modal>
       <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
-        <AppButton onPress={() => setModalVisible(true)} title={"Edit user"} />
+        <AppButton onPress={() => setModalVisible(true)} title={title} />
       </View>
     </View>
   );

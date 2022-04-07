@@ -22,9 +22,8 @@ import AppInfoRow from "./AppInfoRow";
 import SectionSeparator from "./SectionSeparator";
 import colors from "../../config/colors";
 
-function UserInfoCard({ userId }) {
+function UserInfoCard({ userId, hideFields = [] }) {
   const userData = useSelector(selectUserById(userId));
-
   return (
     <Screen>
       {userData && (
@@ -44,9 +43,21 @@ function UserInfoCard({ userId }) {
               marginTop: 10,
             }}
           >
-            <AppInfoRow info="Displayname" value={userData.displayName} />
-            <AppInfoRow info="Phone" value={userData.phone} />
-            <AppInfoRow info="Email" value={userData.email} />
+            {!hideFields.includes("accountType") && (
+              <AppInfoRow
+                info="Account type"
+                value={userData.accountType.toUpperCase()}
+              />
+            )}
+            {!hideFields.includes("displayName") && (
+              <AppInfoRow info="Displayname" value={userData.displayName} />
+            )}
+            {!hideFields.includes("phone") && (
+              <AppInfoRow info="Phone" value={userData.phone} />
+            )}
+            {!hideFields.includes("email") && (
+              <AppInfoRow info="Email" value={userData.email} />
+            )}
           </View>
           {/* <AppText>User channels:</AppText>
           {userData.userRooms.length > 0 && (
