@@ -55,9 +55,10 @@ function MessageList({
   // const allUsers = useSelector(selectAllUsersMinimal); // tämä ei tarvinne olla selector, voi tehdä raskaaksi
   //*********** */
   //*********** */
-  const messageItem = ({ item }) => {
+  const messageItem = ({ item, index }) => {
     return (
       <View>
+        {!allMessagesFetched && index === 14 && <LoadingMessagesIndicator />}
         {lastSeenMessageId === item && <NewMessagesIndicator />}
         <MemoMessageItemMain
           messageId={item}
@@ -72,6 +73,11 @@ function MessageList({
 
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   useEffect(() => {
+    if (messageSum === roomMessageIds?.length) {
+      setAllMessagesFetched(true);
+      //don't scroll when last messages fetched, so thats why return
+      return;
+    }
     if (
       store.getState().entities.msgStore.allMessages[roomId]?.messages[
         roomMessageIds[0]
@@ -81,13 +87,10 @@ function MessageList({
         onScrollToBottom(true);
       } catch (error) {}
     }
-    if (messageSum === roomMessageIds?.length) {
-      setAllMessagesFetched(true);
-    }
   }, [roomMessageIds]);
 
   // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
-  const [lastSeenMessageId, setLasetSeenMessageId] = useState(null);
+  const [lastSeenMessageId, setLatestSeenMessageId] = useState(null);
   let unreadMessagesOnStart = useRef(null);
   // console.log("Messagelist päivittyy");
 
@@ -105,7 +108,7 @@ function MessageList({
       const unreadMessages = messageSum - lastSeenMessagesNow;
       unreadMessagesOnStart.current = unreadMessages;
 
-      setLasetSeenMessageId(roomMessageIds[unreadMessages - 1]);
+      setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
     } catch (error) {
       console.log(error, "code 662112");
     }
@@ -196,7 +199,6 @@ function MessageList({
           setShowUnreadMessageButton={setShowUnreadMessageButton}
         ></UnreadMessagesButton>
       )}
-      {!allMessagesFetched && <LoadingMessagesIndicator />}
 
       {roomMessageIds && (
         <View style={{ flexDirection: "row", flex: 1 }}>
