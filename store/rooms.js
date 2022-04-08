@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import memoize from "proxy-memoize";
+import sortArray from "../utility/sortArray";
 const slice = createSlice({
   name: "rooms",
   initialState: {
@@ -347,19 +348,5 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     });
   });
 
-  //tee sort array by field
-  const sortedRooms = rooms.sort(function (a, b) {
-    var A = a.lastMessageTimestamp;
-    var B = b.lastMessageTimestamp;
-
-    if (A > B) {
-      return -1;
-    }
-    if (A < B) {
-      return 1;
-    }
-    return 0;
-  });
-
-  return sortedRooms.map((item) => item.roomId);
+  return sortArray(rooms, "lastMessageTimestamp").map((item) => item.roomId);
 });

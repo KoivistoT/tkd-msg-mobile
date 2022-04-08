@@ -16,6 +16,7 @@ function UserSetupScreen() {
       <Text>Change login data, password</Text>
       <Text>autologin off on</Text>
       <Text>Logout</Text>
+      <Text>edit button tuohon yläkulmaan, jossa boxi</Text>
     </Screen>
   );
 }

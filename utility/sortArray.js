@@ -1,12 +1,12 @@
-export default sortArray = (array) =>
+export default sortArray = (array, field) =>
   array.sort(function (a, b) {
-    var nameA = a;
-    var nameB = b;
+    var A = field ? a[field] : a;
+    var B = field ? b[field] : b;
 
-    if (nameA > nameB) {
+    if (A > B) {
       return 1;
     }
-    if (nameA < nameB) {
+    if (A < B) {
       return -1;
     }
     return 0;
