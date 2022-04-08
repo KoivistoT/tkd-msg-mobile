@@ -228,6 +228,7 @@ function MessageItemMainChild({
             style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
           >
             <MessageOptionsButtonGroup
+              message={message}
               onDelete={() => onDeleteMessage()}
               onSeen={() => onWhoHasSeen()}
               isDeleted={is_deleted}

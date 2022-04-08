@@ -550,6 +550,12 @@ const slice = createSlice({
     messageSendErrorCleared: (msgStore, action) => {
       msgStore.messageSendError = null;
     },
+    reactionAdded: (msgStore, action) => {
+      console.log("add reaction");
+    },
+    addReactionError: (msgStore, action) => {
+      console.log("add reaction error");
+    },
   },
 });
 
@@ -562,8 +568,10 @@ export const {
   messagesFromStorageFetched,
   messageSent,
   messagesError,
+  addReactionError,
   messageSendErrorCleared,
   msgTasksResived,
+  reactionAdded,
   messagesRemoved,
   oneRoomImagesResived,
   allImagesResived,
@@ -598,6 +606,20 @@ export const getOneMessageById = (roomId, messageId) =>
     },
     onSuccess: oneMessageResived.type,
     onError: messagesError.type,
+  });
+
+export const addReaction = (roomId, messageId, reaction, currentUserId) =>
+  apiCallBegan({
+    url: url + "/messages/add_reaction/",
+    method: "post",
+    data: {
+      roomId,
+      messageId,
+      reaction,
+      currentUserId,
+    },
+    onSuccess: reactionAdded.type,
+    onError: addReactionError.type,
   });
 
 export const deleteMessageById = (roomId, messageId) =>
