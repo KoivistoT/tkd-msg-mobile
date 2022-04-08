@@ -1,4 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createSelector as toolkitCreateSelector,
+} from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
@@ -417,6 +420,21 @@ const slice = createSlice({
 
       // delete msgStore.newTasks[action.payload.taskId];
     },
+    messageUpdatedTaskResived: (msgStore, action) => {
+      let newState = { ...msgStore };
+
+      action.payload.forEach((task) => {
+        const { taskType, data } = task;
+
+        if (taskType === "messageUpdated") {
+          const { roomId, _id: messageId } = data;
+
+          newState.allMessages[roomId].messages[messageId] = data;
+        }
+      });
+
+      msgStore = newState;
+    },
     roomMessagesMoveToStorage: (msgStore, action) => {
       Object.keys(msgStore.allMessages).forEach((currentRoomId) => {
         if (
@@ -581,6 +599,7 @@ export const {
   readByRecepientsAdded,
   oneMessageResived,
   msgStoreActiveRoomIdCleared,
+  messageUpdatedTaskResived,
   msgStoreActiveRoomIdResived,
   newCurrentUserMessageResived,
 } = slice.actions;
@@ -706,6 +725,12 @@ export const selectMessageById = (roomId, messageId) =>
   createSelector(
     (state) => state.entities.msgStore,
     (msgStore) => msgStore.allMessages[roomId].messages[messageId]
+  );
+
+export const selectReactionsMessageById = (roomId, messageId) =>
+  createSelector(
+    (state) => state.entities.msgStore,
+    (msgStore) => msgStore.allMessages[roomId].messages[messageId].messageBody
   );
 
 export const selectRoomMessageIdsByRoomId = (roomId) =>

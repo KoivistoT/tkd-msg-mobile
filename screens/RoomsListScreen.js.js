@@ -41,6 +41,7 @@ import {
   messagesFromStorageFetched,
   newMessageResived,
   roomMessagesMoveToStorage,
+  selectMessageById,
 } from "../store/msgStore";
 import { LogBox } from "react-native";
 import messagesApi from "../api/messages";
@@ -58,7 +59,6 @@ function RoomsListScreen({ navigation }) {
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
   const roomsFetched = useSelector(selectRoomsFetched);
-
   // const tasks = useSelector(selecttasks);
 
   // if (tasks && tasks.length !== 0) {

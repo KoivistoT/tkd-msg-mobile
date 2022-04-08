@@ -415,7 +415,7 @@ export const selectAllUsersAllData = memoize((state) => {
           email,
           phone,
           status,
-          userRooms: [...userRooms],
+          userRooms: userRooms ? [...userRooms] : null,
         },
       });
     },

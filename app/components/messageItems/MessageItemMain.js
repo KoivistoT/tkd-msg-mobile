@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { useSelector, useStore } from "react-redux";
 import { selectSelectedMessage } from "../../../store/general";
-import { selectMessageById } from "../../../store/msgStore";
+import {
+  selectMessageById,
+  selectReactionsMessageById,
+} from "../../../store/msgStore";
 import { MemoMessageItemMainChild } from "./MessageItemMainChild";
 
 function MessageItemMain({
@@ -26,6 +29,12 @@ function MessageItemMain({
   // }, [selectedMessage]);
 
   const message = useSelector(selectMessageById(roomId, messageId));
+  // const testi = useSelector(selectReactionsMessageById(roomId, messageId));
+  // useEffect(() => {
+  //   console.log("nyt päivitti");
+  // }, [testi]);
+
+  // console.log(testi, "message");
   // const message =
   //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
   // const message =
@@ -46,6 +55,7 @@ function MessageItemMain({
 }
 
 function areEqual(prevProps, nextProps) {
+  // console.log("täällä päivittää joo");
   try {
     if (
       prevProps.messageId === nextProps.messageId &&

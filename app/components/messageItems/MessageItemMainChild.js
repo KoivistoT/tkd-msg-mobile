@@ -300,12 +300,18 @@ function areEqual(prevProps, nextProps) {
   //   nextProps.message.is_deleted,
   //   prevProps.message.is_deleted === nextProps.message.is_deleted
   // );
+  // console.log(
+  //   prevProps.message.reactions.length === nextProps.message.reactions.length,
+  //   prevProps.message.reactions.length,
+  //   nextProps.message.reactions.length,
+  //   "täällä memossa"
+  // );
   try {
     if (
       prevProps.message.is_deleted === nextProps.message.is_deleted &&
       prevProps.searchWord === nextProps.searchWord &&
       prevProps.message.messageBody === nextProps.message.messageBody &&
-      prevProps.message.messageStatus === nextProps.message.messageStatus
+      prevProps.message.reactions.length === nextProps.message.reactions.length
     ) {
       return true;
     } else {

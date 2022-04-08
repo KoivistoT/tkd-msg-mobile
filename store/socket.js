@@ -16,6 +16,7 @@ import {
   getRoomImages,
   messageDeleted,
   messagesRemoved,
+  messageUpdatedTaskResived,
   msgNewTasksResived,
   msgTasksResived,
   newCurrentUserMessageResived,
@@ -149,6 +150,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           //     getState().entities.msgStore.messageStorage
           //   );
           // }, 1500);
+        }
+        if (taskGroupType === "messageUpdated") {
+          dispatch(messageUpdatedTaskResived(data));
         }
         if (taskGroupType === "room") {
           dispatch(roomTasksResived(data));
