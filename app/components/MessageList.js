@@ -58,7 +58,9 @@ function MessageList({
   const messageItem = ({ item, index }) => {
     return (
       <View>
-        {!allMessagesFetched && index === 14 && <LoadingMessagesIndicator />}
+        {!allMessagesFetched && index === roomMessageIds.length - 1 && (
+          <LoadingMessagesIndicator />
+        )}
         {lastSeenMessageId === item && <NewMessagesIndicator />}
         <MemoMessageItemMain
           messageId={item}
