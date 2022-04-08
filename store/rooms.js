@@ -18,6 +18,7 @@ const slice = createSlice({
     newTasks: {},
     roomsFetched: false,
     lastNotificationResponseRoomId: null,
+    typers: [],
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
@@ -170,6 +171,9 @@ const slice = createSlice({
 
       // console.log(rooms.allRooms, "now");
     },
+    typersResived: (rooms, action) => {
+      rooms.typers = action.payload;
+    },
   },
 });
 
@@ -184,6 +188,7 @@ export const {
   roomLatestMessageChanged,
   setRoomLoadingToTrue,
   roomStateCleared,
+  typersResived,
   roomRemoved,
   roomNewTasksResived,
   roomAdded,
@@ -335,6 +340,17 @@ export const selectAllActiveRoomsIdsOld = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allActiveRoomsIds
 );
+export const selectTypersByRoomId = (roomId) =>
+  createSelector(
+    (state) => state.entities.rooms,
+    (rooms) => {
+      const index = rooms.typers.findIndex((item) => item.roomId === roomId);
+
+      if (index === -1) return null;
+      const typer = rooms.typers[index].userId;
+      return typer;
+    }
+  );
 
 export const selectAllActiveRoomsIds = memoize((state) => {
   const rooms = [];

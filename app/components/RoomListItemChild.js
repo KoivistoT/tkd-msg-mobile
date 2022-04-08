@@ -15,7 +15,7 @@ import { selectLastSeenMessagesById } from "../../store/currentUser";
 import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 import { Swipeable } from "react-native-gesture-handler";
 import RoomListRightAction from "./RoomListRightAction";
-import { deleteRoom } from "../../store/rooms";
+import { deleteRoom, selectTypersByRoomId } from "../../store/rooms";
 import AppIcon from "./AppIcon";
 import colors from "../../config/colors";
 
@@ -30,6 +30,8 @@ function RoomListItemChild({
   const roomRef = useRef(null);
   const dispatch = useDispatch();
 
+  const typer = useSelector(selectTypersByRoomId(roomId));
+  console.log(typer, "Tässä typerin id");
   const onDeleteRoom = async () => {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) {

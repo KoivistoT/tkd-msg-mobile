@@ -74,6 +74,7 @@ import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
 import messageFuncs from "../../utility/messageFuncs";
 import UnreadMessagesButton from "./UnreadMessagesButton";
+import MessageFormField from "./forms/MessageFormField";
 
 function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
@@ -342,14 +343,17 @@ function MessageForm({ item, setShowSearchBar }) {
                   showOptions={showOptions}
                 />
 
-                <AppFormField
+                <MessageFormField
                   showErrorMessage={false}
+                  currentRoomId={currentRoomId}
+                  currentUserId={currentUserId}
                   // style={{ maxHeight: 85, height: 25 }}
                   multiline
                   name="message"
                   numberOfLines={1}
                   placeholder="Message..."
-                />
+                ></MessageFormField>
+
                 <SendButton />
               </View>
             </AppForm>

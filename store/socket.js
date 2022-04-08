@@ -36,6 +36,7 @@ import {
   roomLatestMessageChanged,
   roomNewTasksResived,
   roomTasksResived,
+  typersResived,
 } from "./rooms";
 
 import {
@@ -101,6 +102,10 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     });
     socket.on("currentUserMessage", (data) => {
       dispatch(newCurrentUserMessageResived(data));
+    });
+
+    socket.on("typers", (data) => {
+      dispatch(typersResived(data));
     });
 
     socket.on("updates", (taskGroups) => {

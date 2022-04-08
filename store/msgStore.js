@@ -569,7 +569,7 @@ const slice = createSlice({
       msgStore.messageSendError = null;
     },
     reactionAdded: (msgStore, action) => {
-      console.log("add reaction");
+      // console.log("add reaction");
     },
     addReactionError: (msgStore, action) => {
       console.log("add reaction error");
