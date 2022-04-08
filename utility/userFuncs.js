@@ -8,6 +8,12 @@ const fullName = (item) => {
   return "unknown user";
 };
 
+const displayName = (allUsers, userId) => {
+  const displayName = allUsers[userId]?.displayName;
+  return displayName ? displayName : "unknown user";
+};
+
 export default {
   fullName,
+  displayName,
 };

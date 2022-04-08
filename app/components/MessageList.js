@@ -18,12 +18,14 @@ import {
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesByRoomId,
 } from "../../store/msgStore";
+import userFuncs from "../../utility/userFuncs";
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
 import { navigationRef } from "../navigation/rootNavigation";
 import { selectAllUsersMinimal } from "../../store/users";
 import AppTextInput from "./AppTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
+import { selectTypersByRoomId } from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
 import { messageFormFocusCleared } from "../../store/general";
 import colors from "../../config/colors";
@@ -33,6 +35,7 @@ import { selectLastSeenMessagesById } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
 import NewMessagesIndicator from "./NewMessagesIndicator";
+import IsTypingElement from "./IsTypingElement";
 
 function MessageList({
   item,
@@ -49,6 +52,10 @@ function MessageList({
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
   const [currentSearchWord, setcurrentSearchWord] = useState(null);
+  console.log(
+    "tänne selectTypersByRoomId  myös userId, koska valitsee sitten jonkun toisen, koska muuten ei näytä, jos kirjoittaa yhtä aikaa samassa huoneessa joku toinen"
+  );
+  const typer = useSelector(selectTypersByRoomId(roomId));
   //*********** */
   //*********** */
   // const allUsers = store.getState().entities.users.allUsers;
@@ -69,6 +76,11 @@ function MessageList({
           currentUserId={currentUserId}
           onScrollToIndex={onScrollToIndex}
         />
+        {/* tämä ei näytä jos ei ole viestejä,,, ei ehkä tarvikaan */}
+
+        {typer && index === 0 && typer !== currentUserId && (
+          <IsTypingElement typer={typer} roomId={roomId} />
+        )}
       </View>
     );
   };

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import routes from "../navigation/routes";
 import roomFuncs from "../../utility/roomFuncs";
+import userFuncs from "../../utility/userFuncs";
 import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -31,7 +32,7 @@ function RoomListItemChild({
   const dispatch = useDispatch();
 
   const typer = useSelector(selectTypersByRoomId(roomId));
-  console.log(typer, "Tässä typerin id");
+
   const onDeleteRoom = async () => {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) {
@@ -102,9 +103,14 @@ function RoomListItemChild({
                     }}
                     numberOfLines={2}
                   >
-                    {`${allUsers[latestMessage.postedByUser].displayName}:  ${
-                      latestMessage.messageBody
-                    }`}
+                    {typer
+                      ? `${userFuncs.displayName(
+                          allUsers,
+                          typer
+                        )} is typing...(tähän dot activity indicator)`
+                      : `${
+                          allUsers[latestMessage.postedByUser].displayName
+                        }:  ${latestMessage.messageBody}`}
                   </AppText>
                 </View>
               )}
