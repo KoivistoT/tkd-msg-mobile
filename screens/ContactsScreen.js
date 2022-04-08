@@ -106,10 +106,10 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
       {allUsers && (
         <FlatList
           style={{ paddingTop: 10 }}
-          // ItemSeparatorComponent={() => <ListItemSeparator />}
           data={Object.values(allUsers)}
-          // bounces={false}
+          maxToRenderPerBatch={15}
           initialNumToRender={15}
+          windowSize={15}
           keyExtractor={listKeyExtractor}
           renderItem={listItem}
         />

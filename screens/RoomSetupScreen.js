@@ -161,6 +161,19 @@ function RoomSetupScreen(item) {
     <ScrollView style={{ padding: 20 }}>
       <View
         style={{
+          alignSelf: "center",
+          alignItems: "center",
+          marginBottom: 20,
+        }}
+      >
+        <AppText>Chat name</AppText>
+        <AppText style={{ fontSize: 20 }}>
+          {roomFuncs.getRoomTitle(item.route.params, roomMembers, allUsers)}
+        </AppText>
+      </View>
+
+      <View
+        style={{
           flexDirection: "row",
           alignSelf: "center",
           marginBottom: 20,

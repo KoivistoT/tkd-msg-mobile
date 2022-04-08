@@ -23,7 +23,7 @@ const RoomsNavigator = () => (
           headerTitle: "Chats",
           headerRight: () => (
             <TouchableOpacity
-              style={{ paddingRight: 20, paddingTop: 10 }}
+              style={{ paddingRight: 20, paddingTop: 0 }}
               onPress={() =>
                 navigationRef.current.navigate(routes.CREATE_CHAT_NAVIGATOR)
               }
