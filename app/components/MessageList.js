@@ -263,7 +263,7 @@ function MessageList({
             onEndReachedThreshold={0.7}
             maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
             initialNumToRender={12}
-            windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
+            windowSize={4} // voisi olla isompi, mut ei ehkä tarvi
             inverted={true}
           />
         </View>
