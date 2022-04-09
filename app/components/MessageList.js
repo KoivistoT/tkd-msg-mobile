@@ -269,7 +269,7 @@ function MessageList({
         </View>
       )}
 
-      {scrollButtonVisible && (
+      {scrollButtonVisible && !showLoader && (
         <ScrollDownButton onPress={() => onScrollToBottom(true)} />
       )}
     </View>

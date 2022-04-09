@@ -52,8 +52,9 @@ function MessageItemReply({
       }}
     >
       {!messageData && (
+        //tämä muualle tämä elementti
         <View style={{ margin: 5 }}>
-          <AppText style={{ padding: 2, color: colors.white }}>
+          <AppText style={{ padding: 2, color: colors.white, fontSize: 12 }}>
             Loading reply message....
           </AppText>
         </View>
