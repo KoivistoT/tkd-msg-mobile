@@ -37,6 +37,8 @@ import AppText from "./AppText";
 import NewMessagesIndicator from "./NewMessagesIndicator";
 import IsTypingElement from "./IsTypingElement";
 
+const MAX_TO_RENDER_PER_BATCH = 20;
+
 function MessageList({
   item,
   showSearchBar,
@@ -52,9 +54,9 @@ function MessageList({
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
   const [currentSearchWord, setcurrentSearchWord] = useState(null);
-  console.log(
-    "tänne selectTypersByRoomId  myös userId, koska valitsee sitten jonkun toisen, koska muuten ei näytä, jos kirjoittaa yhtä aikaa samassa huoneessa joku toinen"
-  );
+  // console.log(
+  //   "tänne selectTypersByRoomId  myös userId, koska valitsee sitten jonkun toisen, koska muuten ei näytä, jos kirjoittaa yhtä aikaa samassa huoneessa joku toinen"
+  // );
   const typer = useSelector(selectTypersByRoomId(roomId));
   //*********** */
   //*********** */
@@ -136,11 +138,22 @@ function MessageList({
   };
   const keyExtractor = (item) => item;
 
+  const [showLoader, setShowLoader] = useState(false);
+
   const onScrollToIndexFailed = (error) => {
+    setShowLoader(true);
     msgListRef.current.scrollToOffset({
       offset: error.averageItemLength * error.index,
       animated: false,
     });
+
+    if (
+      error.highestMeasuredFrameIndex + MAX_TO_RENDER_PER_BATCH >=
+      error.index
+    ) {
+      setShowLoader(false);
+    }
+
     setTimeout(() => {
       if (msgListRef.current !== null) {
         msgListRef.current.scrollToIndex({
@@ -148,7 +161,7 @@ function MessageList({
           animated: false,
         });
       }
-    }, 10);
+    }, 1);
   };
 
   const onScrollToIndex = (replyMessageIndex) => {
@@ -198,6 +211,7 @@ function MessageList({
   };
   const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
   const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
+
   return (
     <View style={styles.container}>
       {showSearchBar && (
@@ -217,6 +231,21 @@ function MessageList({
       {roomMessageIds && (
         <View style={{ flexDirection: "row", flex: 1 }}>
           <View style={[styles.touchMargin, { left: 0 }]}></View>
+          {showLoader && (
+            <View
+              style={{
+                width: "100%",
+                position: "absolute",
+                backgroundColor: "red",
+                height: "100%",
+                zIndex: 200,
+                // backgroundColor: "red",
+
+                zIndex: 2,
+                opacity: 0.5,
+              }}
+            ></View>
+          )}
           <FlatList
             style={{
               backgroundColor: colors.background1,
@@ -232,7 +261,7 @@ function MessageList({
             keyExtractor={keyExtractor}
             renderItem={messageItem}
             onEndReachedThreshold={0.7}
-            maxToRenderPerBatch={10}
+            maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
             initialNumToRender={12}
             windowSize={5} // voisi olla isompi, mut ei ehkä tarvi
             inverted={true}

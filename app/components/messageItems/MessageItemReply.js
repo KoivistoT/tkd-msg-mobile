@@ -51,7 +51,13 @@ function MessageItemReply({
         borderBottomLeftRadius: 4,
       }}
     >
-      {!messageData && <AppText>Loading reply message....</AppText>}
+      {!messageData && (
+        <View style={{ margin: 5 }}>
+          <AppText style={{ padding: 2, color: colors.white }}>
+            Loading reply message....
+          </AppText>
+        </View>
+      )}
       {messageData && (
         <TouchableOpacity
           key={messageData._id}
