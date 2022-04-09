@@ -7,6 +7,10 @@ import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
 import { Swipeable } from "react-native-gesture-handler";
+import GestureRecognizer, {
+  swipeDirections,
+} from "react-native-swipe-gestures";
+import { Feather } from "@expo/vector-icons";
 import {
   deleteMessageById,
   replyMessageIdCleared,
@@ -27,6 +31,7 @@ import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
 import MessageHeader from "./MessageHeader";
 import LeftAction from "./LeftAction";
 import timeFuncs from "../../../utility/timeFuncs";
+import SeenButton from "./SeenButton";
 function MessageItemMainChild({
   message,
   sentBy,
@@ -88,6 +93,19 @@ function MessageItemMainChild({
     Keyboard.dismiss();
   };
 
+  const onSwipeRight = (gestureState) => {
+    navigationRef.current.goBack();
+  };
+
+  // const onSwipe = (gestureName, gestureState) => {
+  //   const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+
+  //   switch (gestureName) {
+  //     case SWIPE_LEFT:
+  //       alert("yellow");
+  //       break;
+  //   }
+  // };
   const onReply = () => {
     scrollToMessage();
     dispatch(messageSelectionRemoved());
@@ -123,8 +141,19 @@ function MessageItemMainChild({
       );
     }
   };
-
+  const config = {
+    velocityThreshold: 0.1,
+    directionalOffsetThreshold: 80,
+  };
   return (
+    // <GestureRecognizer
+    //   onSwipeRight={(state) => onSwipeRight(state)}
+    //   config={config}
+    //   // style={{
+    //   //   flex: 1,
+    //   //   backgroundColor: this.state.backgroundColor,
+    //   // }}
+    // >
     <Swipeable
       ref={messageRef}
       // leftThreshold={60}
@@ -148,7 +177,14 @@ function MessageItemMainChild({
         onWhoHasSeen();
         messageRef.current?.close();
       }}
-      renderRightActions={() => <View style={{ width: 20 }}></View>}
+      renderRightActions={() => (
+        <Feather
+          name="eye"
+          size={24}
+          color={colors.white}
+          style={styles.optionIcon}
+        />
+      )}
     >
       <TouchableOpacity
         activeOpacity={1}
@@ -238,6 +274,7 @@ function MessageItemMainChild({
         )}
       </TouchableOpacity>
     </Swipeable>
+    // </GestureRecognizer>
   );
 }
 
