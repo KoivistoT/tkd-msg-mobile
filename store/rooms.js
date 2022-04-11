@@ -364,5 +364,7 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     });
   });
 
-  return sortArray(rooms, "lastMessageTimestamp").map((item) => item.roomId);
+  return sortArray(rooms, "lastMessageTimestamp", "DESC").map(
+    (item) => item.roomId
+  );
 });
