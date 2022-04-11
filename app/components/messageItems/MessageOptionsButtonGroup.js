@@ -8,61 +8,38 @@ import {
   selectReactionsMessageById,
 } from "../../../store/msgStore";
 import { useDispatch, useSelector, useStore } from "react-redux";
-
+import Reactions from "./Reactions";
+import EmojiSelector from "react-native-emoji-selector";
+import { AntDesign } from "@expo/vector-icons";
+import colors from "../../../config/colors";
+import ReactionEmoji from "./ReactionEmoji";
+import AddReactionButton from "./AddReactionButton";
 const MessageOptionsButtonGroup = ({
   onDelete,
   onSeen,
   isDeleted,
   onReply,
-  message,
+  sentBy,
 }) => {
-  const { roomId, _id: messageId, reactions } = message;
-
-  const dispatch = useDispatch();
-
   const store = useStore();
 
-  const currentUserId = store.getState().auth.currentUser._id;
-  const onReaction = (reaction) => {
-    dispatch(addReaction(roomId, messageId, reaction, currentUserId));
-  };
-  //pitää ensi tehdä niin, että on group, missä jokaisen erilaisessa reactionissa on kaikki saman reagtionit
-  //sitten kun sitä painaa pitkään, niin avaa tiedot, ketkä on ja miten ragoinut, katso slackistä
-  //reactionit toki jää koko ajan näkyviin, eli on edellisellä childissa ne näkyvät
   return (
     <View>
-      <View style={styles.container}>
-        <View>
-          <TouchableNativeFeedback
-            onPress={() => onReaction("like")}
-            style={{ margin: 20 }}
-          >
-            <Text>like</Text>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback
-            onPress={() => onReaction("love")}
-            style={{ margin: 20 }}
-          >
-            <Text>love</Text>
-          </TouchableNativeFeedback>
-        </View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+        }}
+      >
         {!isDeleted && <DeleteButton onPress={() => onDelete()} />}
         <SeenButton onPress={() => onSeen()}></SeenButton>
         <ReplyButton onPress={onReply} />
       </View>
-      {reactions &&
-        reactions.map((item) => {
-          return (
-            <Text key={item.reaction + item.reactionByUser}>
-              {item.reaction} {item.reactionByUser}
-            </Text>
-          );
-        })}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row" },
+  container: {},
 });
 export default MessageOptionsButtonGroup;

@@ -10,6 +10,7 @@ import { Swipeable } from "react-native-gesture-handler";
 import GestureRecognizer, {
   swipeDirections,
 } from "react-native-swipe-gestures";
+import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import {
   deleteMessageById,
@@ -32,6 +33,7 @@ import MessageHeader from "./MessageHeader";
 import LeftAction from "./LeftAction";
 import timeFuncs from "../../../utility/timeFuncs";
 import SeenButton from "./SeenButton";
+import Reactions from "./Reactions";
 function MessageItemMainChild({
   message,
   sentBy,
@@ -70,6 +72,7 @@ function MessageItemMainChild({
   const [isCurrentMessagePressed, setIsCurrentMessagePressed] = useState(false);
 
   useEffect(() => {
+    setShowAllEmojis(false);
     setIsCurrentMessageSelected(selectedMessage === messageId);
   }, [selectedMessage]);
 
@@ -86,10 +89,12 @@ function MessageItemMainChild({
         dispatch(messageSelected(messageId));
         setIsCurrentMessageSelected(true);
         setIsCurrentMessagePressed(true);
+        setShowAllEmojis(true);
       }
     }, 10);
 
     scrollToMessage(); // tämä ei tarve välttämättä, maku asia
+
     Keyboard.dismiss();
   };
 
@@ -145,6 +150,9 @@ function MessageItemMainChild({
     velocityThreshold: 0.1,
     directionalOffsetThreshold: 80,
   };
+  const [showAllEmojis, setShowAllEmojis] = useState(false);
+
+  // console.log(showAllEmojis);
   return (
     // <GestureRecognizer
     //   onSwipeRight={(state) => onSwipeRight(state)}
@@ -189,7 +197,9 @@ function MessageItemMainChild({
       <TouchableOpacity
         activeOpacity={1}
         style={{ width: "100%", paddingHorizontal: 12 }}
-        onPress={() => onRemoveSelections()}
+        onPress={() => {
+          onRemoveSelections();
+        }}
       >
         <View
           style={{
@@ -259,19 +269,36 @@ function MessageItemMainChild({
             </View>
           </View>
         </View>
-        {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
+
+        <View
+          style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
+        >
           <View
-            style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
+            style={{
+              flexDirection: "row",
+              alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+            }}
           >
-            <MessageOptionsButtonGroup
+            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+
+            <Reactions
+              showAllEmojis={showAllEmojis}
               message={message}
+              sentBy={sentBy}
+            ></Reactions>
+          </View>
+
+          {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
+            <MessageOptionsButtonGroup
+              sentBy={sentBy}
+              // message={message}
               onDelete={() => onDeleteMessage()}
               onSeen={() => onWhoHasSeen()}
               isDeleted={is_deleted}
               onReply={() => onReply()}
             />
-          </View>
-        )}
+          )}
+        </View>
       </TouchableOpacity>
     </Swipeable>
     // </GestureRecognizer>

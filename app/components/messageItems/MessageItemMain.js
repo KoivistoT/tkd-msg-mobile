@@ -111,8 +111,9 @@ function areEqual(prevProps, nextProps) {
   try {
     if (
       prevProps.messageId === nextProps.messageId &&
-      prevProps.searchWord === nextProps.searchWord &&
-      prevProps.index === nextProps.index
+      prevProps.searchWord === nextProps.searchWord
+      //  &&
+      // prevProps.index === nextProps.index
     ) {
       return true;
     } else {
