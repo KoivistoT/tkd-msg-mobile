@@ -73,6 +73,7 @@ function MessageList({
         {lastSeenMessageId === item && <NewMessagesIndicator />}
         <MemoMessageItemMain
           messageId={item}
+          index={index}
           searchWord={currentSearchWord}
           roomId={roomId}
           currentUserId={currentUserId}

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, Animated, StyleSheet } from "react-native";
 import { useSelector, useStore } from "react-redux";
+import colors from "../../../config/colors";
 import { selectSelectedMessage } from "../../../store/general";
 import {
   selectMessageById,
@@ -8,13 +9,40 @@ import {
 } from "../../../store/msgStore";
 import { MemoMessageItemMainChild } from "./MessageItemMainChild";
 
+const ANIMATION_DURATION = 250;
 function MessageItemMain({
   messageId,
   roomId,
   currentUserId,
   onScrollToIndex = null,
   searchWord,
+  index,
 }) {
+  let [elementHeight, setElemetHeight] = useState(57.5);
+
+  let _animated = new Animated.Value(elementHeight);
+  // let _animated = new Animated.Value(0);
+  const rowStyles = [
+    styles.row,
+    // { opacity: _animated },
+    {
+      // transform: [
+      //   { scale: _animated },
+      //   {
+      //     rotate: _animated.interpolate({
+      //       // inputRange: [0, 1],
+      //       // // outputRange: ["35deg", "0deg"],
+      //       // // extrapolate: "clamp",
+      //       // outputRange: ["90deg", "0deg"],
+      //       // extrapolate: "clamp",
+      //       inputRange: [0, 1],
+      //       outputRange: [-100, 0],
+      //     }),
+      //   },
+      // ],
+      transform: [{ translateY: _animated }],
+    },
+  ];
   const store = useStore();
   // const selectedMessage = useSelector(selectSelectedMessage);
   // console.log("maini päi");
@@ -27,8 +55,10 @@ function MessageItemMain({
   //   //   dispatch(messageSelectionRemoved())
   //   // }
   // }, [selectedMessage]);
-
+  const animated = new Animated.Value(0);
+  const duration = 5000;
   const message = useSelector(selectMessageById(roomId, messageId));
+
   // const testi = useSelector(selectReactionsMessageById(roomId, messageId));
   // useEffect(() => {
   //   console.log("nyt päivitti");
@@ -39,11 +69,32 @@ function MessageItemMain({
   //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
   // const message =
   //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
+  const [bounceValue, setBounceValue] = useState(new Animated.Value(300));
+  // useEffect(() => {
+  //   Animated.timing(_animated, {
+  //     toValue: 0,
+  //     duration: ANIMATION_DURATION,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [index]);
 
   const sentBy = message.postedByUser === currentUserId ? "me" : "otherUser";
   const allUsers = store.getState().entities.users.allUsers;
 
+  const trans = {
+    transform: [{ translateX: _animated }],
+  };
+
   return (
+    // <Animated.View
+    //   style={[rowStyles]}
+    //   // onLayout={(event) => {
+    //   //   var { x, y, width, height } = event.nativeEvent.layout;
+    //   //   setElemetHeight(height);
+    //   //   // console.log(height);
+    //   // }}
+    // >
+    // {/* <Animated.View style={[{ transform: [{ translateX: bounceValue }] }]}> */}
     <MemoMessageItemMainChild
       message={message}
       searchWord={searchWord}
@@ -51,6 +102,7 @@ function MessageItemMain({
       allUsers={allUsers}
       onScrollToIndex={onScrollToIndex}
     />
+    // {/* </Animated.View> */}
   );
 }
 
@@ -59,7 +111,8 @@ function areEqual(prevProps, nextProps) {
   try {
     if (
       prevProps.messageId === nextProps.messageId &&
-      prevProps.searchWord === nextProps.searchWord
+      prevProps.searchWord === nextProps.searchWord &&
+      prevProps.index === nextProps.index
     ) {
       return true;
     } else {
@@ -70,5 +123,57 @@ function areEqual(prevProps, nextProps) {
   }
 }
 
+const styles = StyleSheet.create({
+  me: {
+    marginTop: 4,
+    marginBottom: 4,
+    alignSelf: "flex-end",
+    backgroundColor: colors.light,
+    padding: 5,
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+    maxWidth: "82%",
+    borderBottomLeftRadius: 5,
+    // shadowColor: "#000",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  optionIcon: {
+    paddingTop: 10,
+    paddingRight: 20,
+  },
+  optionButtons: {
+    backgroundColor: "red",
+  },
+
+  otherUser: {
+    marginTop: 4,
+    marginBottom: 4,
+    alignSelf: "flex-start",
+    backgroundColor: colors.light,
+    padding: 5,
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+    maxWidth: "82%",
+    borderBottomRightRadius: 5,
+    // shadowColor: "#000",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+});
 export const MemoMessageItemMain = React.memo(MessageItemMain, areEqual);
 // export default MessageItemMain;

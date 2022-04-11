@@ -305,6 +305,7 @@ function MessageForm({ item, setShowSearchBar }) {
                 documentURL={documentURL}
                 setDocumentName={setDocumentName}
                 photos={photos}
+                showOptions={showOptions}
                 setPhotos={setPhotos}
                 onPress={() => setShowOptions(false)}
                 documentName={documentName}
