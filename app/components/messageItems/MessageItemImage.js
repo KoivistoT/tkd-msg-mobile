@@ -6,7 +6,7 @@ import AppText from "../AppText";
 import ShowImageModal from "../imageComponents/ShowImageModal";
 function MessageItemImage({ item }) {
   return item.imageURLs.map((url) => (
-    <ShowImageModal key={url} roomId={item.roomId} image={url} />
+    <ShowImageModal key={url} item={item} image={url} />
   ));
 }
 

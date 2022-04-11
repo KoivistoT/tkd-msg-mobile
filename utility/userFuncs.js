@@ -13,7 +13,15 @@ const displayName = (allUsers, userId) => {
   return displayName ? displayName : "unknown user";
 };
 
+const getFullName = (allUsers, userId) => {
+  const firstName = allUsers[userId]?.firstName;
+  const lastName = allUsers[userId]?.lastName;
+
+  return `${firstName ? firstName : ""} ${lastName ? lastName : ""}`;
+};
+
 export default {
   fullName,
   displayName,
+  getFullName,
 };

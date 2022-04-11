@@ -18,8 +18,13 @@ import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector, useStore } from "react-redux";
 import { selectRoomImagesByRoomId } from "../../../store/msgStore";
+import { selectAllUsersMinimal } from "../../../store/users";
+import userFuncs from "../../../utility/userFuncs";
+import timeFuncs from "../../../utility/timeFuncs";
 
-function ShowImageModal({ image, roomId }) {
+function ShowImageModal({ image, item }) {
+  const { roomId, createdAt, postedByUser } = item;
+
   // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
   // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
   // const roomImages = useSelector(selectRoomImagesByRoomId(roomId)) || [];
@@ -28,6 +33,7 @@ function ShowImageModal({ image, roomId }) {
   const roomImages = store.getState().entities.msgStore.images[roomId] || [];
   // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
   // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
+  const allUsers = useSelector(selectAllUsersMinimal);
 
   useEffect(() => {
     if (roomImages.findIndex((imageURL) => imageURL === image) !== undefined) {
@@ -77,6 +83,12 @@ function ShowImageModal({ image, roomId }) {
     <View>
       <Modal animationType="slide" visible={modalVisible}>
         <View style={styles.header}>
+          {/* <AppText
+            style={{ alignSelf: "center", marginTop: 6 }}
+          >{`${userFuncs.getFullName(
+            allUsers,
+            postedByUser
+          )}  ${timeFuncs.getDateAndTime(createdAt)}`}</AppText> */}
           <TouchableOpacity
             activeOpacity={1}
             style={styles.headerButtons}

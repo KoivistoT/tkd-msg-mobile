@@ -109,8 +109,10 @@ function RoomListItemChild({
                           typer
                         )} is typing...(tähän dot activity indicator)`
                       : `${
-                          allUsers[latestMessage.postedByUser].displayName
-                        }:  ${latestMessage.messageBody}`}
+                          latestMessage.postedByUser === currentUserId
+                            ? "You"
+                            : allUsers[latestMessage.postedByUser].displayName
+                        }: ${latestMessage.messageBody}`}
                   </AppText>
                 </View>
               )}

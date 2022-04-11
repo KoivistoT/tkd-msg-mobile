@@ -6,7 +6,15 @@ const getDate = (date) => {
   return `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)}`;
 };
 
+const getDateAndTime = (date) => {
+  return `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(
+    0,
+    4
+  )} ${date.slice(11, 16)}`;
+};
+
 export default {
   getDate,
   getTime,
+  getDateAndTime,
 };
