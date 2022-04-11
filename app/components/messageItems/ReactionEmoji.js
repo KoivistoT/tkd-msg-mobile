@@ -6,7 +6,7 @@ import AppText from "../AppText";
 import sortArray from "../../../utility/sortArray";
 
 function ReactionEmoji({ onPress, reactions, currentUserId }) {
-  const sortedReactions = sortArray(reactions, "name");
+  const sortedReactions = sortArray(reactions, "order");
 
   return sortedReactions.map((reaction) => {
     const { name, count, users } = reaction;
@@ -23,24 +23,25 @@ function ReactionEmoji({ onPress, reactions, currentUserId }) {
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
 
+            alignItems: "center",
             borderWidth: 1,
             borderColor:
-              colors[users?.includes(currentUserId) ? "success" : "white"],
-            borderRadius: 10,
-            paddingHorizontal: 10,
-            width: 60,
+              colors[users?.includes(currentUserId) ? "light" : "white"],
+            borderRadius: 6,
+            paddingHorizontal: 8,
+            minWidth: 45,
             paddingVertical: 4,
+
             margin: 2,
             backgroundColor:
               colors[
-                users?.includes(currentUserId) ? "success" : "backgroundColor1"
+                users?.includes(currentUserId) ? "light" : "backgroundColor1"
               ],
           }}
         >
-          <AntDesign name={name} size={24} color={colors[reaction.color]} />
-          {count && <AppText style={{ marginLeft: 4 }}>{`${count}`}</AppText>}
+          <AntDesign name={name} size={16} color={colors[reaction.color]} />
+          {count && <AppText style={{ marginLeft: 2 }}>{`${count}`}</AppText>}
         </View>
       </TouchableNativeFeedback>
     );

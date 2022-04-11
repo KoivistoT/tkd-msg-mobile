@@ -152,6 +152,17 @@ function MessageItemMainChild({
   };
   const [showAllEmojis, setShowAllEmojis] = useState(false);
 
+  const [showWholeMessage, setShowWholeMessage] = useState(true);
+  let orginalMessageLines = useRef(null);
+
+  const onTextLayout = (e) => {
+    //https://stackoverflow.com/questions/38386704/react-native-determine-number-of-lines-of-text-component
+
+    if (!orginalMessageLines.current)
+      orginalMessageLines.current = e.nativeEvent.lines.length;
+    console.log(orginalMessageLines.current);
+  };
+
   // console.log(showAllEmojis);
   return (
     // <GestureRecognizer
@@ -218,7 +229,11 @@ function MessageItemMainChild({
               },
             ]}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
               <TouchableOpacity
                 activeOpacity={1}
                 onPress={() => onSelectMessage()}
@@ -259,10 +274,32 @@ function MessageItemMainChild({
                         onScrollToIndex={onScrollToIndex}
                       />
                     )}
-
-                    <AppText style={{ minWidth: 80 }}>
-                      {messageFuncs.autolinkText(messageBody, null, searchWord)}
-                    </AppText>
+                    <View>
+                      <AppText
+                        style={{ minWidth: 80, overflow: "hidden" }}
+                        onTextLayout={onTextLayout}
+                        numberOfLines={
+                          showWholeMessage ? orginalMessageLines.current : 2
+                        }
+                      >
+                        {messageFuncs.autolinkText(
+                          messageBody,
+                          null,
+                          searchWord
+                        )}
+                      </AppText>
+                      {orginalMessageLines.current > 5 && (
+                        <TouchableOpacity
+                          onPress={() =>
+                            setShowWholeMessage((prevState) => !prevState)
+                          }
+                        >
+                          <AppText style={{ alignSelf: "flex-end" }}>
+                            {showWholeMessage ? "piilota" : "näytä"}
+                          </AppText>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </>
                 )}
               </TouchableOpacity>
@@ -271,7 +308,9 @@ function MessageItemMainChild({
         </View>
 
         <View
-          style={{ alignSelf: sentBy === "me" ? "flex-end" : "flex-start" }}
+          style={{
+            alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+          }}
         >
           <View
             style={{

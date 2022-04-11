@@ -29,11 +29,11 @@ const Reactions = ({ message, showAllEmojis }) => {
   const allReactions = [];
 
   const allEmojis = {
-    heart: { color: "danger" },
-    like1: { color: "white" },
-    dislike1: { color: "white" },
-    star: { color: "yellow" },
-    smileo: { color: "white" },
+    heart: { color: "danger", order: 0 },
+    like1: { color: "khaki", order: 1 },
+    dislike1: { color: "khaki", order: 2 },
+    star: { color: "yellow", order: 3 },
+    smileo: { color: "white", order: 4 },
   };
   //tämä toki voisi olla jo be:ssä tehtyä? ehkä, ehkä ei
   useEffect(() => {
@@ -45,8 +45,9 @@ const Reactions = ({ message, showAllEmojis }) => {
       if (index === -1) {
         allReactions.push({
           name: item.reaction,
+          order: allEmojis[item.reaction]?.order,
           count: 1,
-          color: allEmojis[item.reaction].color,
+          color: allEmojis[item.reaction]?.color,
           users: [item.reactionByUser],
         });
       } else {
@@ -66,6 +67,7 @@ const Reactions = ({ message, showAllEmojis }) => {
           allReactions.push({
             name,
             color: allEmojis[name].color,
+            order: allEmojis[name].order,
           });
         }
       });
