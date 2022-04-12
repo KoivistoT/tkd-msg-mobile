@@ -19,6 +19,7 @@ import RoomListRightAction from "./RoomListRightAction";
 import { deleteRoom, selectTypersByRoomId } from "../../store/rooms";
 import AppIcon from "./AppIcon";
 import colors from "../../config/colors";
+import AppLoadingIndicator from "./AppLoadingIndicator";
 
 function RoomListItemChild({
   item,
@@ -96,24 +97,28 @@ function RoomListItemChild({
               </View>
               {latestMessage && (
                 <View style={styles.lastMessage}>
-                  <AppText
-                    style={{
-                      color: "black",
-                      maxWidth: Dimensions.get("window").width - 160,
-                    }}
-                    numberOfLines={2}
-                  >
-                    {typer
-                      ? `${userFuncs.displayName(
-                          allUsers,
-                          typer
-                        )} is typing...(tähän dot activity indicator)`
-                      : `${
-                          latestMessage.postedByUser === currentUserId
-                            ? "You"
-                            : allUsers[latestMessage.postedByUser].displayName
-                        }: ${latestMessage.messageBody}`}
-                  </AppText>
+                  {typer ? (
+                    <AppLoadingIndicator
+                      text={`${userFuncs.displayName(
+                        allUsers,
+                        typer
+                      )} is typing`}
+                    />
+                  ) : (
+                    <AppText
+                      style={{
+                        color: "black",
+                        maxWidth: Dimensions.get("window").width - 160,
+                      }}
+                      numberOfLines={2}
+                    >
+                      {`${
+                        latestMessage.postedByUser === currentUserId
+                          ? "You"
+                          : allUsers[latestMessage.postedByUser].displayName
+                      }: ${latestMessage.messageBody}`}
+                    </AppText>
+                  )}
                 </View>
               )}
             </View>
