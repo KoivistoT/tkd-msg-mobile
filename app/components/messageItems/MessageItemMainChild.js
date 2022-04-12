@@ -35,7 +35,7 @@ import timeFuncs from "../../../utility/timeFuncs";
 import SeenButton from "./SeenButton";
 import Reactions from "./Reactions";
 import MessageText from "./MessageText";
-
+import { useIsFocused } from "@react-navigation/native";
 const SHOW_IMAGES = 2;
 
 function MessageItemMainChild({
@@ -47,6 +47,7 @@ function MessageItemMainChild({
 }) {
   const dispatch = useDispatch();
   // console.log("child päivittyy ---");
+  // const isFocused = useIsFocused();
   const {
     roomId,
     _id: messageId,
