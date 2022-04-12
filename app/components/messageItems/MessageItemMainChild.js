@@ -264,11 +264,14 @@ function MessageItemMainChild({
                         onScrollToIndex={onScrollToIndex}
                       />
                     )}
-                    <MessageText
-                      numberOfLines={5}
-                      messageBody={messageBody}
-                      searchWord={searchWord}
-                    />
+
+                    {messageBody !== "" && (
+                      <MessageText
+                        numberOfLines={5}
+                        messageBody={messageBody}
+                        searchWord={searchWord}
+                      />
+                    )}
                   </>
                 )}
               </TouchableOpacity>

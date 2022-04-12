@@ -142,7 +142,17 @@ function ShowImageModal({ image, item }) {
         <View style={styles.imageFrame}>
           <Image
             transitionDuration={0}
-            style={styles.image}
+            style={[
+              styles.image,
+
+              // {
+              //   transform: [
+              //     {
+              //       rotate: Math.floor(createdAt.slice(17, 19) - 30) + "deg",
+              //     },
+              //   ],
+              // },
+            ]}
             source={{ uri: image }}
           />
         </View>

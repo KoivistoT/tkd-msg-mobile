@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import colors from "../../../config/colors";
 import messageFuncs from "../../../utility/messageFuncs";
 import AppText from "../AppText";
@@ -8,8 +8,13 @@ function MessageText({ numberOfLines, messageBody, searchWord }) {
   const [isTruncatedText, setIsTruncatedText] = useState(false);
   const [showMore, setShowMore] = useState(true);
 
+  const onTextLayout = (event) => {
+    const { lines } = event.nativeEvent;
+    setIsTruncatedText(lines?.length > numberOfLines);
+  };
+
   const message = () => (
-    <AppText style={{ minWidth: 80 }}>
+    <AppText>
       {messageFuncs.autolinkText(messageBody, null, searchWord)}
     </AppText>
   );
@@ -27,14 +32,7 @@ function MessageText({ numberOfLines, messageBody, searchWord }) {
       </AppText>
     </>
   ) : (
-    <AppText
-      onTextLayout={(event) => {
-        const { lines } = event.nativeEvent;
-        setIsTruncatedText(lines?.length > numberOfLines);
-      }}
-    >
-      {message()}
-    </AppText>
+    <AppText onTextLayout={onTextLayout}>{message()}</AppText>
   );
 }
 
