@@ -31,21 +31,15 @@ function MessageFormField({
 
     if (!isFocused) {
       socket.emit("notTyping", currentRoomId, currentUserId);
-      //   console.log("cleared2 nyt");
-      console.log(
-        "jos laittaa sovelluksen background, niin pitäiisi tulle notTyping ja vastaavasti jatkaa, jos tulee takaisin."
-      );
     }
   }, [values, isFocused]);
 
   const sendTyping = () => {
     if (values.message.length > 0 && !isTypingSent.current) {
-      //   console.log("kyllä se on");
       socket.emit("isTyping", currentRoomId, currentUserId);
       isTypingSent.current = true;
     }
     if (values.message.length === 0 && isTypingSent.current) {
-      //   console.log("cleared nyt");
       socket.emit("notTyping", currentRoomId, currentUserId);
       isTypingSent.current = false;
     }

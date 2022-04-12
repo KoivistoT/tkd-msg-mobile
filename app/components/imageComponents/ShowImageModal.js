@@ -138,24 +138,23 @@ function ShowImageModal({ image, item }) {
       <TouchableOpacity
         activeOpacity="0.8"
         onPress={() => setModalVisible(true)}
+        style={styles.imageFrame}
       >
-        <View style={styles.imageFrame}>
-          <Image
-            transitionDuration={0}
-            style={[
-              styles.image,
+        <Image
+          transitionDuration={0}
+          style={[
+            styles.image,
 
-              // {
-              //   transform: [
-              //     {
-              //       rotate: Math.floor(createdAt.slice(17, 19) - 30) + "deg",
-              //     },
-              //   ],
-              // },
-            ]}
-            source={{ uri: image }}
-          />
-        </View>
+            // {
+            //   transform: [
+            //     {
+            //       rotate: Math.floor(createdAt.slice(17, 19) - 30) + "deg",
+            //     },
+            //   ],
+            // },
+          ]}
+          source={{ uri: image }}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -201,12 +200,16 @@ const styles = StyleSheet.create({
   image: {
     height: 120,
     alignSelf: "center",
-    margin: 5,
+    margin: 3,
     width: 120,
     backgroundColor: colors.black,
     borderRadius: 10,
   },
-  imageFrame: {},
+  imageFrame: {
+    // backgroundColor: colors.black,
+    margin: 5,
+    borderRadius: 10,
+  },
   icon: { marginRight: 10 },
   button: {},
   loader: {

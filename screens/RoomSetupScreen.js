@@ -133,8 +133,8 @@ function RoomSetupScreen(item) {
   };
 
   const listItem = ({ item }) => {
-    if (item.status === "deleted") return;
-    if (item.status === "archived") return;
+    if (item.status !== "active") return;
+
     return (
       <AppCheckBox
         label={`${item.firstName} ${item.lastName}`}
@@ -260,8 +260,8 @@ function RoomSetupScreen(item) {
           onContentSizeChange={() => scrollView.current.scrollToEnd()}
         >
           {Object.values(allUsers).map((item) => {
-            if (item.status === "deleted") return;
-            if (item.status === "archived") return;
+            if (item.status === "active") return;
+
             return (
               <View key={item._id}>
                 <AppCheckBox

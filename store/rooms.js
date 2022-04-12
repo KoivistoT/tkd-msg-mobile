@@ -340,11 +340,13 @@ export const selectAllActiveRoomsIdsOld = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allActiveRoomsIds
 );
-export const selectTypersByRoomId = (roomId) =>
+export const selectTypersByRoomId = (roomId, currentUserId) =>
   createSelector(
     (state) => state.entities.rooms,
     (rooms) => {
-      const index = rooms.typers.findIndex((item) => item.roomId === roomId);
+      const index = rooms.typers.findIndex(
+        (item) => item.roomId === roomId && item.userId !== currentUserId
+      );
 
       if (index === -1) return null;
       const typer = rooms.typers[index].userId;

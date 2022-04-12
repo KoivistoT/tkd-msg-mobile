@@ -54,8 +54,8 @@ function NewDirectRoomModal() {
 
   const listItem = ({ item }) => {
     if (item._id == currentUserId) return;
-    if (item.status === "deleted") return;
-    if (item.status === "archived") return;
+    if (item.status !== "active") return;
+
     return (
       <AppCheckBox
         label={`${item.firstName} ${item.lastName}`}

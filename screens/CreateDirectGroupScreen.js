@@ -13,7 +13,7 @@ colors;
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { createDirectRoom } from "../store/rooms";
-import { selectAllUsersMinimal } from "../store/users";
+import { selectAllUsersMedium, selectAllUsersMinimal } from "../store/users";
 import AppCheckBox from "../app/components/AppCheckBox";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
@@ -26,7 +26,7 @@ function CreateDirectGroupScreen() {
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = store.getState().auth.currentUser._id;
-  const allUsers = useSelector(selectAllUsersMinimal);
+  const allUsers = useSelector(selectAllUsersMedium);
 
   const listKeyExtractor = (data) => data._id;
 
@@ -53,8 +53,8 @@ function CreateDirectGroupScreen() {
 
   const listItem = ({ item }) => {
     if (item._id == currentUserId) return;
-    if (item.status === "deleted") return;
-    if (item.status === "archived") return;
+    if (item.status !== "active") return;
+
     return (
       <AppCheckBox
         label={`${item.firstName} ${item.lastName}`}
