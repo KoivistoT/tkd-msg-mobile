@@ -76,6 +76,8 @@ import messageFuncs from "../../utility/messageFuncs";
 import UnreadMessagesButton from "./UnreadMessagesButton";
 import MessageFormField from "./forms/MessageFormField";
 
+const PLACEHOLDER_TEXT_MAX_LENGTH = 26;
+
 function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
@@ -120,8 +122,8 @@ function MessageForm({ item, setShowSearchBar }) {
 
     //onko tähän parempi ratkaisu, tämän pitää olla muualla
     //ainakin header set ref jos ei muuta, ettei aina laita uusiksi
-    setHeader();
 
+    setHeader();
     return () => {
       hideSubscription.remove();
       dispatch(activeRoomIdCleared());
@@ -352,7 +354,22 @@ function MessageForm({ item, setShowSearchBar }) {
                   multiline
                   name="message"
                   numberOfLines={1}
-                  placeholder="Message..."
+                  //tämä järkevämmin
+                  placeholder={
+                    `Message #${roomFuncs.getRoomTitle(
+                      roomData,
+                      allUsers,
+                      currentUserId
+                    )}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
+                      ? `Message #${roomFuncs
+                          .getRoomTitle(roomData, allUsers, currentUserId)
+                          .slice(0, PLACEHOLDER_TEXT_MAX_LENGTH - 3)}...`
+                      : `Message #${roomFuncs.getRoomTitle(
+                          roomData,
+                          allUsers,
+                          currentUserId
+                        )}`
+                  }
                 ></MessageFormField>
 
                 <SendButton />
