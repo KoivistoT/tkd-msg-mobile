@@ -139,11 +139,10 @@ function ShowImageModal({ image, item }) {
         activeOpacity="0.8"
         onPress={() => setModalVisible(true)}
       >
-        <View>
+        <View style={styles.imageFrame}>
           <Image
             transitionDuration={0}
             style={styles.image}
-            resizeMode="contain"
             source={{ uri: image }}
           />
         </View>
@@ -190,13 +189,14 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   image: {
-    height: (250 / 16) * 9,
+    height: 120,
     alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 5,
-
-    width: 200,
+    margin: 5,
+    width: 120,
+    backgroundColor: colors.black,
+    borderRadius: 10,
   },
+  imageFrame: {},
   icon: { marginRight: 10 },
   button: {},
   loader: {

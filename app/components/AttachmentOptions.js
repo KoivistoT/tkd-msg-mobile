@@ -48,9 +48,30 @@ function AttachmentOptions({
     // },
   ];
 
-  console.log(
-    "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
-  );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
+  // console.log(
+  //   "tässä edes takaisin https://www.codedaily.io/courses/Master-React-Native-Animations/Floating-Action-Button-with-Menu"
+  // );
   useEffect(() => {
     // Animated.timing(_animated, {
     //   toValue: 1,
