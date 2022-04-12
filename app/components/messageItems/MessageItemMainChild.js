@@ -34,6 +34,7 @@ import LeftAction from "./LeftAction";
 import timeFuncs from "../../../utility/timeFuncs";
 import SeenButton from "./SeenButton";
 import Reactions from "./Reactions";
+import MessageText from "./MessageText";
 function MessageItemMainChild({
   message,
   sentBy,
@@ -152,20 +153,6 @@ function MessageItemMainChild({
   };
   const [showAllEmojis, setShowAllEmojis] = useState(false);
 
-  const [showWholeMessage, setShowWholeMessage] = useState(false);
-  let orginalMessageLines = useRef(null);
-  const [trigger, setTrigger] = useState(null);
-  const onTextLayout = (e) => {
-    //https://stackoverflow.com/questions/38386704/react-native-determine-number-of-lines-of-text-component
-
-    if (!orginalMessageLines.current)
-      orginalMessageLines.current = e.nativeEvent.lines.length;
-    // console.log(orginalMessageLines.current);
-    if (e.nativeEvent.lines.length > 5) {
-      setShowWholeMessage(true);
-    }
-  };
-
   // console.log(showAllEmojis);
   return (
     // <GestureRecognizer
@@ -277,30 +264,11 @@ function MessageItemMainChild({
                         onScrollToIndex={onScrollToIndex}
                       />
                     )}
-                    <View>
-                      <AppText
-                        style={{ minWidth: 80, overflow: "hidden" }}
-                        onTextLayout={onTextLayout}
-                        numberOfLines={showWholeMessage ? 1000 : 5}
-                      >
-                        {messageFuncs.autolinkText(
-                          messageBody,
-                          null,
-                          searchWord
-                        )}
-                      </AppText>
-                      {/* {orginalMessageLines.current > 5 && ( */}
-                      <TouchableOpacity
-                        onPress={() =>
-                          setShowWholeMessage((prevState) => !prevState)
-                        }
-                      >
-                        <AppText style={{ alignSelf: "flex-end" }}>
-                          {showWholeMessage ? "piilota" : "näytä"}
-                        </AppText>
-                      </TouchableOpacity>
-                      {/* )} */}
-                    </View>
+                    <MessageText
+                      numberOfLines={5}
+                      messageBody={messageBody}
+                      searchWord={searchWord}
+                    />
                   </>
                 )}
               </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import colors from "../../config/colors";
 AppText;
 import AppText from "./AppText";
@@ -12,9 +12,10 @@ function NewMessagesIndicator() {
         color: colors.danger,
         backgroundColor: colors.primary,
         width: "100%",
+        margin: 5,
       }}
     >
-      <AppText style={{ alignSelf: "center", color: colors.white, padding: 5 }}>
+      <AppText style={{ alignSelf: "center", color: colors.white, padding: 1 }}>
         NEW MESSAGES
       </AppText>
     </View>
