@@ -349,7 +349,7 @@ export const selectTypersByRoomId = (roomId, currentUserId) =>
       );
 
       if (index === -1) return null;
-      const typer = rooms.typers[index].userId;
+      const typer = rooms.typers[index]?.userId;
       return typer;
     }
   );
