@@ -35,6 +35,9 @@ import timeFuncs from "../../../utility/timeFuncs";
 import SeenButton from "./SeenButton";
 import Reactions from "./Reactions";
 import MessageText from "./MessageText";
+
+const SHOW_IMAGES = 2;
+
 function MessageItemMainChild({
   message,
   sentBy,
@@ -91,6 +94,8 @@ function MessageItemMainChild({
         setIsCurrentMessageSelected(true);
         setIsCurrentMessagePressed(true);
         setShowAllEmojis(true);
+        setShowMore(true);
+        setShowImages(SHOW_IMAGES);
       }
     }, 10);
 
@@ -152,7 +157,8 @@ function MessageItemMainChild({
     directionalOffsetThreshold: 80,
   };
   const [showAllEmojis, setShowAllEmojis] = useState(false);
-
+  const [showMore, setShowMore] = useState(true);
+  const [showImages, setShowImages] = useState(SHOW_IMAGES);
   // console.log(showAllEmojis);
   return (
     // <GestureRecognizer
@@ -242,7 +248,12 @@ function MessageItemMainChild({
                 ) : (
                   <>
                     {messageType === "image" && (
-                      <MessageItemImage item={message} />
+                      <MessageItemImage
+                        item={message}
+                        showImages={showImages}
+                        setShowImages={setShowImages}
+                        SHOW_IMAGES={SHOW_IMAGES}
+                      />
                     )}
                     {messageType === "document" && (
                       <ShowDocumentModal
@@ -270,6 +281,8 @@ function MessageItemMainChild({
                         numberOfLines={5}
                         messageBody={messageBody}
                         searchWord={searchWord}
+                        showMore={showMore}
+                        setShowMore={setShowMore}
                       />
                     )}
                   </>

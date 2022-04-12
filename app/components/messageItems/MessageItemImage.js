@@ -5,37 +5,22 @@ import colors from "../../../config/colors";
 import AppText from "../AppText";
 import ShowImageModal from "../imageComponents/ShowImageModal";
 
-const SHOW_IMAGES = 2;
-function MessageItemImage({ item }) {
+function MessageItemImage({ item, showImages, setShowImages, SHOW_IMAGES }) {
   const [isMoreImages, setIsMoreImages] = useState(false);
-  const [showImages, setShowImages] = useState(SHOW_IMAGES);
-
-  let showMore = useRef(false);
-
-  const onMoreLess = () => {
-    if (showMore.current) {
-      setShowImages(SHOW_IMAGES);
-      showMore.current = false;
-    } else {
-      setShowImages(item.imageURLs.length);
-      showMore.current = true;
-    }
-  };
 
   useEffect(() => {
     if (item.imageURLs.length > SHOW_IMAGES) setIsMoreImages(true);
   }, []);
 
+  const onMoreLess = () => {
+    setShowImages(
+      showImages === SHOW_IMAGES ? item.imageURLs.length : SHOW_IMAGES
+    );
+  };
+
   return (
     <View>
-      <View
-        style={{
-          justifyContent: "center",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          flex: 1,
-        }}
-      >
+      <View style={styles.ImageModalContainer}>
         {item.imageURLs.slice(0, showImages).map((url) => (
           <ShowImageModal key={url} item={item} image={url} />
         ))}
@@ -46,7 +31,7 @@ function MessageItemImage({ item }) {
           onPress={() => onMoreLess()}
         >
           <AppText style={styles.moreHideText}>
-            {showMore.current ? "Hide images" : "More images"}
+            {showImages === SHOW_IMAGES ? "More images" : "Hide images"}
           </AppText>
         </TouchableOpacity>
       )}
@@ -60,6 +45,12 @@ const styles = StyleSheet.create({
   },
   moreHideText: {
     color: colors.secondary,
+  },
+  ImageModalContainer: {
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    flex: 1,
   },
 });
 export default MessageItemImage;

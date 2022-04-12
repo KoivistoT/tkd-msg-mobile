@@ -4,9 +4,14 @@ import colors from "../../../config/colors";
 import messageFuncs from "../../../utility/messageFuncs";
 import AppText from "../AppText";
 
-function MessageText({ numberOfLines, messageBody, searchWord }) {
+function MessageText({
+  numberOfLines,
+  messageBody,
+  searchWord,
+  showMore,
+  setShowMore,
+}) {
   const [isTruncatedText, setIsTruncatedText] = useState(false);
-  const [showMore, setShowMore] = useState(true);
 
   const onTextLayout = (event) => {
     const { lines } = event.nativeEvent;
