@@ -140,6 +140,7 @@ function RoomsListScreen({ navigation }) {
       appStateListener?.remove();
     };
   }, []);
+
   useEffect(() => {
     if (isFocused) dispatch(messageSelectionRemoved());
   }, [isFocused]);

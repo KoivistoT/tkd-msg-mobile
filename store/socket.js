@@ -234,7 +234,7 @@ export const disconnectSocket = (userId) => {
     // console.log(action.payload, "tästä tuli1");
     //saako nämä jotenkin nätemmin
     const socket = getState().entities.socket.connection;
-
+    socket.emit("notTyping", getState().auth.currentUser._id);
     socket.emit("userOffline", getState().auth.currentUser._id);
     socket.off("userOnline");
 

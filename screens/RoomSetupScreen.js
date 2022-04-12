@@ -260,7 +260,7 @@ function RoomSetupScreen(item) {
           onContentSizeChange={() => scrollView.current.scrollToEnd()}
         >
           {Object.values(allUsers).map((item) => {
-            if (item.status === "active") return;
+            if (item.status !== "active") return;
 
             return (
               <View key={item._id}>

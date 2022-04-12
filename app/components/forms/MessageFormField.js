@@ -1,5 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, Platform, StyleSheet, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  AppState,
+  Platform,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 
 import AppTextInput from "../AppTextInput";
 import { useFormikContext } from "formik";
@@ -30,17 +37,20 @@ function MessageFormField({
     sendTyping();
 
     if (!isFocused) {
-      socket.emit("notTyping", currentRoomId, currentUserId);
+      socket.emit("notTyping", currentUserId);
     }
   }, [values, isFocused]);
 
   const sendTyping = () => {
+    //jos poistaa isTypingSent, silloin kun tulee sovellukseen takaisin ja jatkaa kirjoittamista, tulisi taas, että typing...
+    // set tosin vie niin paljon ehkä energiaa, ettei kannata?
+    //tulisiko olla appstate, joka kertoo, että kävi muualla?
     if (values.message.length > 0 && !isTypingSent.current) {
       socket.emit("isTyping", currentRoomId, currentUserId);
       isTypingSent.current = true;
     }
     if (values.message.length === 0 && isTypingSent.current) {
-      socket.emit("notTyping", currentRoomId, currentUserId);
+      socket.emit("notTyping", currentUserId);
       isTypingSent.current = false;
     }
   };
