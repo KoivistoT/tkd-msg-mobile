@@ -162,19 +162,26 @@ function ReadByList(item) {
 
         <AppText>{messageFuncs.autolinkText(messageBody, null)}</AppText>
       </View>
-      <View style={{ margin: 20 }}>
-        <AppText style={{ marginBottom: 10 }}>Read by</AppText>
-        <FlatList
-          data={roomMemebers}
-          keyExtractor={(member) => member}
-          renderItem={listItem}
-        />
-      </View>
+      {roomMemebers.length > 1 ? (
+        <View style={{ margin: 20 }}>
+          <AppText style={{ marginBottom: 10 }}>Read by</AppText>
+          <FlatList
+            data={roomMemebers}
+            keyExtractor={(member) => member}
+            renderItem={listItem}
+          />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <AppText>You are only member in this chat.</AppText>
+        </View>
+      )}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  container: { paddingHorizontal: 25, paddingTop: 10 },
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
 });

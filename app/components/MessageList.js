@@ -54,9 +54,7 @@ function MessageList({
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
   const [currentSearchWord, setcurrentSearchWord] = useState(null);
-  console.log(
-    "tänne selectTypersByRoomId  myös userId, koska valitsee sitten jonkun toisen, koska muuten ei näytä, jos kirjoittaa yhtä aikaa samassa huoneessa joku toinen"
-  );
+
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
   //*********** */
   //*********** */
