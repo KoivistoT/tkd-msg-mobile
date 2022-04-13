@@ -7,6 +7,7 @@ import AppText from "../AppText";
 function SenderName({ allUsers, postedByUser, sentBy }) {
   return (
     <AppText
+      numberOfLines={1}
       style={[
         styles.senderName,
         { color: sentBy === "me" ? colors.primary : colors.secondary },
@@ -18,7 +19,7 @@ function SenderName({ allUsers, postedByUser, sentBy }) {
 }
 
 const styles = StyleSheet.create({
-  senderName: { paddingRight: 10, marginRight: 40 },
+  senderName: { paddingRight: 10, marginRight: 44 },
 });
 
 export default SenderName;

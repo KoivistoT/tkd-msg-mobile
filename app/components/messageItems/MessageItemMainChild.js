@@ -240,7 +240,7 @@ function MessageItemMainChild({
                   // roomType={roomType}
                   allUsers={allUsers}
                   postedByUser={postedByUser}
-                  createdAt={timeFuncs.getTime(createdAt)}
+                  createdAt={timeFuncs.getWeekDayNamesWithTimes(createdAt)}
                 />
                 {is_deleted ? (
                   <AppText style={{ fontStyle: "italic", fontSize: 12 }}>

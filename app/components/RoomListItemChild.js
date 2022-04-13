@@ -20,6 +20,7 @@ import { deleteRoom, selectTypersByRoomId } from "../../store/rooms";
 import AppIcon from "./AppIcon";
 import colors from "../../config/colors";
 import AppLoadingIndicator from "./AppLoadingIndicator";
+import timeFuncs from "../../utility/timeFuncs";
 
 function RoomListItemChild({
   item,
@@ -119,6 +120,9 @@ function RoomListItemChild({
                       }: ${latestMessage.messageBody}`}
                     </AppText>
                   )}
+                  <AppText style={{ backgroundColor: "red" }}>
+                    {timeFuncs.getWeekDayNames(latestMessage.createdAt)}
+                  </AppText>
                 </View>
               )}
             </View>
