@@ -44,9 +44,9 @@ function MessageItemMain({
     },
   ];
   const store = useStore();
-  console.log(
-    "https://stackoverflow.com/questions/56020794/react-native-components-with-zindex-in-flatlist-does-not-seem-to-work"
-  );
+  // console.log(
+  //   "https://stackoverflow.com/questions/56020794/react-native-components-with-zindex-in-flatlist-does-not-seem-to-work"
+  // );
   // const selectedMessage = useSelector(selectSelectedMessage);
   // console.log("maini päi");
   // const [isCurrentMessageSelected, setIsCurrentMessageSelected] =

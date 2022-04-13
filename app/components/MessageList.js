@@ -25,7 +25,10 @@ import { selectAllUsersMinimal } from "../../store/users";
 import AppTextInput from "./AppTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
-import { selectTypersByRoomId } from "../../store/rooms";
+import {
+  selectRoomMessageSumByRoomId,
+  selectTypersByRoomId,
+} from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
 import { messageFormFocusCleared } from "../../store/general";
 import colors from "../../config/colors";
@@ -37,7 +40,7 @@ import AppText from "./AppText";
 import NewMessagesIndicator from "./NewMessagesIndicator";
 import IsTypingElement from "./IsTypingElement";
 import ShowSearchBarButton from "./ShowSearchBarButton";
-
+import { useIsFocused } from "@react-navigation/native";
 const MAX_TO_RENDER_PER_BATCH = 20;
 
 function MessageList({
@@ -56,7 +59,7 @@ function MessageList({
   const currentUserId = store.getState().auth.currentUser._id;
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
   const [currentSearchWord, setcurrentSearchWord] = useState(null);
-
+  const isFocused = useIsFocused();
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
   //*********** */
   //*********** */
@@ -91,6 +94,7 @@ function MessageList({
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   useEffect(() => {
     //tätä ei aina pitäisi, eli tee reffillä
+
     nav.setOptions({
       headerRight: () => (
         <ShowSearchBarButton
@@ -116,12 +120,76 @@ function MessageList({
     }
   }, [roomMessageIds]);
 
+  //testiä
+  //testiä
+  //testiä
+  //testiä
+  //testiä
   // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
+  const messagesssumm = useSelector(selectRoomMessageSumByRoomId(roomId));
+
+  //testiä
+  //testiä
+  //testiä
+  //testiä
+  //testiä
+
   const [lastSeenMessageId, setLatestSeenMessageId] = useState(null);
   let unreadMessagesOnStart = useRef(null);
   // console.log("Messagelist päivittyy");
 
   useLayoutEffect(() => {
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    console.log(
+      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+    );
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
     try {
       // const { messageSum, _id: roomId } = item.route.params;
       const lastSeenMessagesNow =
@@ -132,14 +200,21 @@ function MessageList({
               (object) => object.roomId === roomId
             )
         ].lastSeenMessageSum;
+      console.log(lastSeenMessagesNow, "tämä on oikein, koska on se edellinen");
+      console.log(
+        messageSum,
+        "tämä sitten taas tulee jälkijunassa, joten ei ole oikea. Eli ei ole ehtinyt päivittyä vielä. tee täysin uusiksi koko homma, ehkä be:stä hakee"
+      );
+      console.log(messagesssumm, messageSum, "entäs tämä");
+
       const unreadMessages = messageSum - lastSeenMessagesNow;
       unreadMessagesOnStart.current = unreadMessages;
-
+      // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
       setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
     } catch (error) {
       console.log(error, "code 662112");
     }
-  }, []);
+  }, [messagesssumm]);
 
   const onScrollToBottom = (animate) => {
     msgListRef.current.scrollToIndex({

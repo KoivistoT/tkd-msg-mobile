@@ -271,6 +271,24 @@ export const saveLastSeenMessageSum =
     );
   };
 
+export const getUnseenMessageSum =
+  (currentUserId, roomId) => (dispatch, getState) => {
+    return dispatch(
+      apiCallBegan({
+        url: url + "/users/get_unseen_message_sum",
+        method: "post",
+        data: {
+          currentUserId,
+          roomId,
+        },
+
+        onSuccess: currentUserRequestStarted.type,
+        //tämä väärä
+        onError: lastSaveError.type,
+      })
+    );
+  };
+
 export const logout = () => {
   console.log("tämä suoraan logout siellä missä onkaan");
   userLoggedOut();

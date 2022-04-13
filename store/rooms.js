@@ -354,6 +354,12 @@ export const selectTypersByRoomId = (roomId, currentUserId) =>
     }
   );
 
+export const selectRoomMessageSumByRoomId = (roomId) =>
+  createSelector(
+    (state) => state.entities.rooms,
+    (rooms) => rooms.allRooms[roomId].messageSum
+  );
+
 export const selectAllActiveRoomsIds = memoize((state) => {
   const rooms = [];
 
