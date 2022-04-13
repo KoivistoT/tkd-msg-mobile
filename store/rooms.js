@@ -359,6 +359,7 @@ export const selectAllActiveRoomsIds = memoize((state) => {
 
   state.entities.rooms.allActiveRoomsIds.forEach((roomId) => {
     //latest message kysymysmerkki voi olla pois, jos aina on alussa viesti?
+
     rooms.push({
       roomId,
       lastMessageTimestamp:

@@ -10,7 +10,7 @@ function NewMessagesIndicator() {
       style={{
         alignSelf: "center",
         color: colors.danger,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.success,
         width: "100%",
         margin: 5,
       }}

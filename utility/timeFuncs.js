@@ -38,6 +38,8 @@ function getWeekDayNamesWithTimes(date) {
 
   if (diffInDays < 1) {
     return getTime(date);
+  } else if (diffInDays > 1 && diffInDays < 2) {
+    return `Yesterday`;
   } else if (diffInDays < 7) {
     return `${days[d.getDay()]} ${getTime(date)}`;
   } else {
@@ -46,7 +48,15 @@ function getWeekDayNamesWithTimes(date) {
 }
 
 function getWeekDayNames(date) {
-  var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const diffInDays = getDateDiffInDays(date, new Date().toISOString());
 
@@ -54,6 +64,8 @@ function getWeekDayNames(date) {
 
   if (diffInDays < 1) {
     return getTime(date);
+  } else if (diffInDays === 1) {
+    return `Yesterday`;
   } else if (diffInDays < 7) {
     return `${days[d.getDay()]}`;
   } else {

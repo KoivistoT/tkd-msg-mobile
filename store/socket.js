@@ -242,6 +242,7 @@ export const disconnectSocket = (currentUserId) => {
       socket.off("subscribe", roomId);
     });
 
+    //timeout, koska muuten nuo edellä ei tahdo onnistua, esim userOffline ja notTyping ei mennyt ilman timeoutia, vain toinen meni
     setTimeout(() => {
       socket.disconnect();
       dispatch(socketDisconnected("Socket disconnected"));

@@ -7,7 +7,7 @@ import AppText from "../AppText";
 
 function MessageHeader({
   sentBy,
-  roomType,
+
   allUsers,
   postedByUser,
   createdAt,

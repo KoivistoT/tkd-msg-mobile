@@ -14,6 +14,7 @@ import { selectAllUsersMinimal } from "../../../store/users";
 import { messageSelected } from "../../../store/general";
 import SenderName from "./SenderName";
 import MessageHeader from "./MessageHeader";
+import timeFuncs from "../../../utility/timeFuncs";
 
 function MessageItemReply({
   item,
@@ -67,17 +68,14 @@ function MessageItemReply({
         >
           <MessageHeader
             sentBy={sentBy}
-            isReplyMessage={isReplyMessage}
-            // roomType={roomType}
-            allUser={allUsers}
-            postedByUser={postedByUser}
-            createdAt={messageData.createdAt.slice(11, 16)}
-          />
-          <SenderName
             allUsers={allUsers}
-            sentBy={sentBy}
             postedByUser={postedByUser}
+            createdAt={timeFuncs.getWeekDayNamesWithTimes(
+              messageData.createdAt
+            )}
+            isReplyMessage={isReplyMessage}
           />
+
           {messageData.type === "image" && (
             <MessageItemImage item={messageData} />
           )}

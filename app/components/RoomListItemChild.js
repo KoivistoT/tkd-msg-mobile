@@ -120,15 +120,16 @@ function RoomListItemChild({
                       }: ${latestMessage.messageBody}`}
                     </AppText>
                   )}
-                  <AppText style={{ backgroundColor: "red" }}>
-                    {timeFuncs.getWeekDayNames(latestMessage.createdAt)}
-                  </AppText>
                 </View>
               )}
             </View>
             <View
               style={{ position: "absolute", right: 15, alignSelf: "center" }}
             >
+              <AppText style={{ fontSize: 14 }}>
+                {latestMessage &&
+                  timeFuncs.getWeekDayNames(latestMessage.createdAt)}
+              </AppText>
               <MemoUnreadMessagesItem item={item} />
             </View>
             {type === "private" && <OnlineIndicator members={members} />}
