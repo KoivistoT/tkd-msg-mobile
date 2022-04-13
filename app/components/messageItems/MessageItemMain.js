@@ -44,6 +44,9 @@ function MessageItemMain({
     },
   ];
   const store = useStore();
+  console.log(
+    "https://stackoverflow.com/questions/56020794/react-native-components-with-zindex-in-flatlist-does-not-seem-to-work"
+  );
   // const selectedMessage = useSelector(selectSelectedMessage);
   // console.log("maini päi");
   // const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
@@ -84,7 +87,7 @@ function MessageItemMain({
   const trans = {
     transform: [{ translateX: _animated }],
   };
-
+  // console.log(messageId);
   return (
     // <Animated.View
     //   style={[rowStyles]}
@@ -95,6 +98,16 @@ function MessageItemMain({
     //   // }}
     // >
     // {/* <Animated.View style={[{ transform: [{ translateX: bounceValue }] }]}> */}
+    // <View
+    //   style={{
+    //     position:
+    //       messageId === "625537b0de70ac59a4f011f6" ? "absolute" : "relative",
+    //     bottom: messageId === "625537b0de70ac59a4f011f6" ? -40 : 0,
+    //     right: messageId === "625537b0de70ac59a4f011f6" ? 80 : 0,
+    //     backgroundColor: messageId === "625537b0de70ac59a4f011f6" ? "red" : "",
+    //     zIndex: messageId === "625537b0de70ac59a4f011f6" ? 200000 : 2,
+    //   }}
+    // >
     <MemoMessageItemMainChild
       message={message}
       searchWord={searchWord}
@@ -102,6 +115,7 @@ function MessageItemMain({
       allUsers={allUsers}
       onScrollToIndex={onScrollToIndex}
     />
+    // </View>
     // {/* </Animated.View> */}
   );
 }

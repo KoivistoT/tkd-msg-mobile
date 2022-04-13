@@ -52,7 +52,6 @@ import {
   selectOnlineUsers,
   selectUsersOnline,
 } from "../../store/users";
-import showOnlineIndicator from "../../utility/showOnlineIndicator";
 import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
 import {
@@ -76,7 +75,7 @@ import messageFuncs from "../../utility/messageFuncs";
 import UnreadMessagesButton from "./UnreadMessagesButton";
 import MessageFormField from "./forms/MessageFormField";
 
-const PLACEHOLDER_TEXT_MAX_LENGTH = 26;
+const PLACEHOLDER_TEXT_MAX_LENGTH = 22;
 
 function MessageForm({ item, setShowSearchBar }) {
   const nav = useNavigation();
@@ -100,7 +99,7 @@ function MessageForm({ item, setShowSearchBar }) {
   const allUsers = useSelector(selectAllUsersMedium);
   const replyMessageIds = useSelector(selectReplyItemIds);
   const roomMembers = useSelector(selectRoomMembersById(currentRoomId));
-  const usersOnline = useSelector(selectUsersOnline);
+
   const socket = useSelector(selectSocket);
 
   const otherUser =
@@ -131,30 +130,19 @@ function MessageForm({ item, setShowSearchBar }) {
     };
   }, [roomMembers, roomData, allUsers]);
 
-  const getSubTitle = () => {
-    if (!roomMembers) return;
-    if (currentRoomType === "private") return "View details";
-    return `Members ${roomFuncs.getRoomActiveMembersSum(
-      roomMembers,
-      allUsers
-    )} >`;
-  };
-
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
           title={roomFuncs.getRoomTitle(roomData, allUsers, currentUserId)}
-          subTitle={getSubTitle()}
-          showOnlineIndicator={
-            currentRoomType !== "private"
-              ? false
-              : showOnlineIndicator(
-                  usersOnline,
-                  currentRoomMembers,
-                  currentUserId
-                )
-          }
+          roomMembers={roomMembers}
+          currentRoomType={currentRoomType}
+          currentRoomMembers={currentRoomMembers}
+          currentUserId={currentUserId}
+          otherUserId={roomFuncs.getPrivateRoomOtherUserId(
+            roomMembers,
+            currentUserId
+          )}
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }

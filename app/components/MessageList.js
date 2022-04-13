@@ -248,6 +248,7 @@ function MessageList({
           <FlatList
             style={{
               backgroundColor: colors.background1,
+
               // paddingHorizontal: 10,
             }}
             ref={msgListRef}

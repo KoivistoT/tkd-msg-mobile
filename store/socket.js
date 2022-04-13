@@ -9,6 +9,7 @@ import {
   getTasks,
   removeOlderTasksItemsById,
   removeTaskItemById,
+  saveLastPresent,
 } from "./currentUser";
 
 import {
@@ -229,22 +230,24 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
   }
 };
 
-export const disconnectSocket = (userId) => {
+export const disconnectSocket = (currentUserId) => {
   return async (dispatch, getState) => {
-    // console.log(action.payload, "tästä tuli1");
-    //saako nämä jotenkin nätemmin
     const socket = getState().entities.socket.connection;
-    socket.emit("notTyping", getState().auth.currentUser._id);
-    socket.emit("userOffline", getState().auth.currentUser._id);
-    socket.off("userOnline");
+    socket.emit("userOffline", currentUserId);
+    socket.emit("notTyping", currentUserId);
+    // socket.off("userOnline"); // tätä ei kaiketi tarvi, kun socket on off kuitenkin
 
     await getState().auth.currentUser.userRooms.forEach((roomId) => {
       socket.emit("unsubscribe", roomId);
       socket.off("subscribe", roomId);
-      // console.log("poistui täältä", roomId);
     });
-    socket.disconnect();
-    dispatch(socketDisconnected("Socket disconnected"));
+
+    setTimeout(() => {
+      socket.disconnect();
+      dispatch(socketDisconnected("Socket disconnected"));
+    }, 100);
+
+    dispatch(saveLastPresent());
   };
 };
 

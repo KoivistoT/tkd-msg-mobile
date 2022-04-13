@@ -1,20 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, View } from "react-native";
 import AppText from "./AppText";
-import { useSelector } from "react-redux";
-import { selectUsersOnline } from "../../store/users";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getUserLastPresentByUserId,
+  selectLastPresentByUserId,
+  selectUsersOnline,
+} from "../../store/users";
 import colors from "../../config/colors";
+import roomFuncs from "../../utility/roomFuncs";
+import showOnlineIndicator from "../../utility/showOnlineIndicator";
+import timeFuncs from "../../utility/timeFuncs";
 
 function ScreenHeaderTitle({
   title,
   subTitle,
   action = null,
-  showOnlineIndicator = false,
+
+  currentRoomType,
+  currentRoomMembers,
+  roomMembers,
+  currentUserId,
+  otherUserId,
 }) {
+  const usersOnline = useSelector(selectUsersOnline);
+  // const dispatch = useDispatch();
+
+  const otherUserLastPresent = useSelector(
+    selectLastPresentByUserId(otherUserId)
+  );
+
+  // useEffect(() => {
+  //   if (otherUserId) {
+  //     console.log(otherUserId);
+  //     dispatch(getUserLastPresentByUserId(otherUserId));
+  //   }
+
+  //   //onko live vai ei, muttaa tämän
+  // }, []);
+  // showOnlineIndicator={
+
+  // }
+
+  const getSubTitle = () => {
+    if (!roomMembers) return;
+    if (
+      currentRoomType === "private" &&
+      showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
+    ) {
+      return "View details";
+    }
+
+    if (
+      currentRoomType === "private" &&
+      !showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
+    ) {
+      return otherUserLastPresent
+        ? timeFuncs.getDateAndTime(otherUserLastPresent)
+        : "";
+    }
+
+    return `Members ${roomFuncs.getRoomActiveMembersSum(
+      roomMembers,
+      allUsers
+    )} >`;
+  };
+
   return (
     <TouchableOpacity activeOpacity={1} style={styles.header} onPress={action}>
       <View style={styles.titleRow}>
-        {showOnlineIndicator && <View style={styles.onlineIndicator}></View>}
+        {currentRoomType !== "private" ? (
+          false
+        ) : (
+          <View
+            style={[
+              styles.onlineIndicator,
+              {
+                backgroundColor: showOnlineIndicator(
+                  usersOnline,
+                  currentRoomMembers,
+                  currentUserId
+                )
+                  ? colors.success
+                  : colors.white,
+              },
+            ]}
+          ></View>
+        )}
         <AppText
           style={{
             color: "black",
@@ -27,7 +99,7 @@ function ScreenHeaderTitle({
         </AppText>
         {/* <AppText style={styles.title}></AppText> */}
       </View>
-      {subTitle && <AppText style={styles.subTitle}>{subTitle}</AppText>}
+      <AppText style={styles.subTitle}>{getSubTitle()}</AppText>
     </TouchableOpacity>
   );
 }
@@ -40,7 +112,7 @@ const styles = StyleSheet.create({
   onlineIndicator: {
     width: 14,
     height: 14,
-    backgroundColor: colors.success,
+
     borderRadius: 7,
     marginRight: 5,
   },

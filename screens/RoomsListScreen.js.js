@@ -84,7 +84,7 @@ function RoomsListScreen({ navigation }) {
     // userOffline();
 
     asyncStorageFuncs.setData("autoLogin", false);
-    dispatch(disconnectSocket());
+    dispatch(disconnectSocket(currentUserId));
     dispatch(roomStateCleared());
     dispatch(userLoggedOut());
   };
@@ -127,7 +127,7 @@ function RoomsListScreen({ navigation }) {
       // userOffline();
       // if (socket) {
       if (socketConnection.current) {
-        dispatch(disconnectSocket());
+        dispatch(disconnectSocket(currentUserId));
         socketConnection.current = false;
       }
       // }

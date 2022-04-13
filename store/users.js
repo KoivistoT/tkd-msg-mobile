@@ -114,6 +114,10 @@ const slice = createSlice({
     channelsResived: (users, action) => {
       users.allChannels = action.payload;
     },
+    userLastPresentResived: (users, action) => {
+      const { userId, last_present } = action.payload;
+      users.allUsers[userId].last_present = last_present;
+    },
   },
 });
 
@@ -122,7 +126,7 @@ export const {
   usersError,
   userCreated,
   usersOnlineResived,
-
+  userLastPresentResived,
   channelsResived,
 
   usersErrorCleared,
@@ -183,6 +187,16 @@ export const archiveOrDeleteUserById = (userId, status) =>
       status,
     },
     // onSuccess: userControlUserDeleted.type,
+    onError: usersError.type,
+  });
+export const getUserLastPresentByUserId = (userId) =>
+  apiCallBegan({
+    url: url + "/get_last_user_last_present",
+    method: "post",
+    data: {
+      userId,
+    },
+    onSuccess: userLastPresentResived.type,
     onError: usersError.type,
   });
 
@@ -248,6 +262,12 @@ export const selectUserById = (userId) =>
   createSelector(
     (state) => state.entities.users,
     (users) => users.allUsers[userId]
+  );
+
+export const selectLastPresentByUserId = (userId) =>
+  createSelector(
+    (state) => state.entities.users,
+    (users) => users.allUsers[userId].last_present
   );
 
 export const selectUsersOnline = createSelector(
