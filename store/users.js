@@ -115,6 +115,7 @@ const slice = createSlice({
       users.allChannels = action.payload;
     },
     userLastPresentResived: (users, action) => {
+      console.log(action.payload);
       const { userId, last_present } = action.payload;
       users.allUsers[userId].last_present = last_present;
     },

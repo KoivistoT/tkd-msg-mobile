@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, View } from "react-native";
 import AppText from "./AppText";
+import AppLoadingIndicator from "./AppLoadingIndicator";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUserLastPresentByUserId,
@@ -14,9 +15,9 @@ import timeFuncs from "../../utility/timeFuncs";
 
 function ScreenHeaderTitle({
   title,
-  subTitle,
-  action = null,
 
+  action = null,
+  allUsers,
   currentRoomType,
   currentRoomMembers,
   roomMembers,
@@ -24,26 +25,32 @@ function ScreenHeaderTitle({
   otherUserId,
 }) {
   const usersOnline = useSelector(selectUsersOnline);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const otherUserLastPresent = useSelector(
     selectLastPresentByUserId(otherUserId)
   );
 
-  // useEffect(() => {
-  //   if (otherUserId) {
-  //     console.log(otherUserId);
-  //     dispatch(getUserLastPresentByUserId(otherUserId));
-  //   }
-
-  //   //onko live vai ei, muttaa tämän
-  // }, []);
-  // showOnlineIndicator={
-
-  // }
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (
+      otherUserId &&
+      !showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
+    ) {
+      setLoading(true);
+      //tämä siksi että ensin sen lähteneen käyttäjän tulee olla tallentanut lähtö aika, sitten voi vasta hakea. haku olisi nopeampi kuin tallennus
+      setTimeout(() => {
+        dispatch(getUserLastPresentByUserId(otherUserId));
+      }, 100);
+      setTimeout(() => {
+        setLoading(false);
+      }, 180);
+    }
+  }, [showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)]);
 
   const getSubTitle = () => {
     if (!roomMembers) return;
+
     if (
       currentRoomType === "private" &&
       showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
@@ -99,7 +106,8 @@ function ScreenHeaderTitle({
         </AppText>
         {/* <AppText style={styles.title}></AppText> */}
       </View>
-      <AppText style={styles.subTitle}>{getSubTitle()}</AppText>
+
+      <AppText style={styles.subTitle}>{loading ? "" : getSubTitle()}</AppText>
     </TouchableOpacity>
   );
 }

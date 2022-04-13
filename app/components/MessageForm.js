@@ -139,6 +139,7 @@ function MessageForm({ item, setShowSearchBar }) {
           currentRoomType={currentRoomType}
           currentRoomMembers={currentRoomMembers}
           currentUserId={currentUserId}
+          allUsers={allUsers}
           otherUserId={roomFuncs.getPrivateRoomOtherUserId(
             roomMembers,
             currentUserId
