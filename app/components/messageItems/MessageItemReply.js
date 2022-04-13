@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
+import MessageText from "./MessageText";
 
 import MessageItemImage from "./MessageItemImage";
 import {
@@ -17,8 +18,14 @@ import MessageHeader from "./MessageHeader";
 import timeFuncs from "../../../utility/timeFuncs";
 
 function MessageItemReply({
+  messageBody,
+  searchWord,
+  showMore,
+  setShowMore,
   item,
-
+  showImages,
+  setShowImages,
+  SHOW_IMAGES,
   // roomType,
   allUsers,
   sentBy,
@@ -62,6 +69,7 @@ function MessageItemReply({
       )}
       {messageData && (
         <TouchableOpacity
+          activeOpacity={1}
           key={messageData._id}
           style={{ backgroundColor: colors.light, padding: 4 }}
           onPress={getIndexNow}
@@ -77,9 +85,22 @@ function MessageItemReply({
           />
 
           {messageData.type === "image" && (
-            <MessageItemImage item={messageData} />
+            <MessageItemImage
+              showImages={showImages}
+              setShowImages={setShowImages}
+              SHOW_IMAGES={SHOW_IMAGES}
+              item={messageData}
+            />
           )}
-          <AppText>{messageData.messageBody}</AppText>
+          {messageData.messageBody !== "" && (
+            <MessageText
+              numberOfLines={5}
+              messageBody={messageData.messageBody}
+              searchWord={searchWord}
+              showMore={showMore}
+              setShowMore={setShowMore}
+            />
+          )}
         </TouchableOpacity>
       )}
     </View>

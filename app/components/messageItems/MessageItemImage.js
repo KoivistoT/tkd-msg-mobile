@@ -31,7 +31,9 @@ function MessageItemImage({ item, showImages, setShowImages, SHOW_IMAGES }) {
           onPress={() => onMoreLess()}
         >
           <AppText style={styles.moreHideText}>
-            {showImages === SHOW_IMAGES ? "More images" : "Hide images"}
+            {showImages === SHOW_IMAGES
+              ? `${item.imageURLs.length - SHOW_IMAGES} More image(s)`
+              : "Hide images"}
           </AppText>
         </TouchableOpacity>
       )}

@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     height: 120,
     alignSelf: "center",
     margin: 3,
-    width: 120,
+    width: 110,
     backgroundColor: colors.black,
     borderRadius: 10,
   },

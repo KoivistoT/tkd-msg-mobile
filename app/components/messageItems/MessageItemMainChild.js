@@ -100,7 +100,9 @@ function MessageItemMainChild({
       }
     }, 10);
 
-    scrollToMessage(); // tämä ei tarve välttämättä, maku asia
+    setTimeout(() => {
+      scrollToMessage(); // tämä ei tarve välttämättä, maku asia
+    }, 200); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
 
     Keyboard.dismiss();
   };
@@ -265,6 +267,14 @@ function MessageItemMainChild({
                     {replyMessageId && (
                       <MessageItemReply
                         // roomType={roomType}
+
+                        messageBody={messageBody}
+                        searchWord={searchWord}
+                        showMore={showMore}
+                        setShowMore={setShowMore}
+                        showImages={showImages}
+                        setShowImages={setShowImages}
+                        SHOW_IMAGES={SHOW_IMAGES}
                         allUsers={allUsers}
                         isReplyMessage={true}
                         postedByUser={postedByUser}
@@ -279,7 +289,7 @@ function MessageItemMainChild({
 
                     {messageBody !== "" && (
                       <MessageText
-                        numberOfLines={5}
+                        numberOfLines={8}
                         messageBody={messageBody}
                         searchWord={searchWord}
                         showMore={showMore}
