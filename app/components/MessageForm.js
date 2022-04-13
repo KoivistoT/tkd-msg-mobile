@@ -1,38 +1,23 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Keyboard,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { View, StyleSheet, Keyboard, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
 import {
   activeRoomIdResived,
   activeRoomIdCleared,
-  setLoading,
-  setRoomLoadingToTrue,
   selectRoomDataById,
   selectRoomMembersById,
-  activateRoom,
   activateDraftRoom,
 } from "../../store/rooms";
 
 import {
   msgStoreActiveRoomIdCleared,
-  msgStoreActiveRoomIdResived,
   replyMessageIdCleared,
   selectReplyItemIds,
-  selectRoomMessageIdsByRoomId,
-  sendMessage,
-  test,
 } from "../../store/msgStore";
 import { useNavigation } from "@react-navigation/native";
-import AppFormField from "./forms/AppFormField";
 import AppForm from "./forms/AppForm";
 import SendButton from "./SendButton";
-import ImageInputList from "./imageComponents/ImageInputList";
 import fileFuncs from "../../utility/fileFuncs";
 import { navigationRef } from "../../app/navigation/rootNavigation";
 
@@ -41,26 +26,11 @@ import AppText from "./AppText";
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
 import routes from "../navigation/routes";
 
-import {
-  allUsers,
-  itemAdded,
-  selectAllUsers,
-  selectAllUsersAllData,
-  selectAllUsersMedium,
-  selectAllUsersMinimal,
-  selectMyItems,
-  selectOnlineUsers,
-  selectUsersOnline,
-} from "../../store/users";
+import { selectAllUsersMedium } from "../../store/users";
 import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
-import {
-  saveLastSeenMessageSum,
-  selectLastSeenMessagesById,
-} from "../../store/currentUser";
+import { saveLastSeenMessageSum } from "../../store/currentUser";
 import { selectSocket } from "../../store/socket";
-import AppButton from "./AppButton";
-import SelectDocumentModal from "./modals/SelectDocumentModal";
 import {
   endLoad,
   messageFormFocusCleared,
@@ -68,11 +38,9 @@ import {
 } from "../../store/general";
 import colors from "../../config/colors";
 import ShowSearchBarButton from "./ShowSearchBarButton";
-import AppCloseButton from "./AppCloseButton";
 import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
 import messageFuncs from "../../utility/messageFuncs";
-import UnreadMessagesButton from "./UnreadMessagesButton";
 import MessageFormField from "./forms/MessageFormField";
 
 const PLACEHOLDER_TEXT_MAX_LENGTH = 22;
@@ -153,7 +121,6 @@ function MessageForm({ item, setShowSearchBar }) {
     });
   };
 
-  let isDone = useRef(false);
   const saveMessageSum = () => {
     const unreadMessagesSum = messageFuncs.getLastSeenMessage(
       store.getState(),
