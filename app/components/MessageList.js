@@ -12,7 +12,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItemMain, {
   MemoMessageItemMain,
 } from "./messageItems/MessageItemMain";
-
+import { useNavigation } from "@react-navigation/native";
 import {
   messageSelected,
   selectRoomMessageIdsByRoomId,
@@ -36,6 +36,7 @@ import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
 import NewMessagesIndicator from "./NewMessagesIndicator";
 import IsTypingElement from "./IsTypingElement";
+import ShowSearchBarButton from "./ShowSearchBarButton";
 
 const MAX_TO_RENDER_PER_BATCH = 20;
 
@@ -45,6 +46,7 @@ function MessageList({
   setShowSearchBar,
   dispatchScrollToIndex,
 }) {
+  const nav = useNavigation();
   const store = useStore();
   const dispatch = useDispatch();
   const msgListRef = useRef();
@@ -88,6 +90,16 @@ function MessageList({
 
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   useEffect(() => {
+    //tätä ei aina pitäisi, eli tee reffillä
+    nav.setOptions({
+      headerRight: () => (
+        <ShowSearchBarButton
+          onPress={setShowSearchBar}
+          onSearch={() => onSearch()}
+        />
+      ),
+    });
+
     if (messageSum === roomMessageIds?.length) {
       setAllMessagesFetched(true);
       //don't scroll when last messages fetched, so thats why return
@@ -214,10 +226,7 @@ function MessageList({
   return (
     <View style={styles.container}>
       {showSearchBar && (
-        <AppSearchTextInput
-          setShowSearchBar={setShowSearchBar}
-          onSearch={onSearch}
-        />
+        <AppSearchTextInput setShowSearchBar={setShowSearchBar} />
       )}
       {showUnreadMessageButton && unreadMessagesOnStart.current > 0 && (
         <UnreadMessagesButton

@@ -117,7 +117,6 @@ function MessageForm({ item, setShowSearchBar }) {
           }
         />
       ),
-      headerRight: () => <ShowSearchBarButton onPress={setShowSearchBar} />,
     });
   };
 

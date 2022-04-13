@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Image,
+  ScrollView,
   AppState,
 } from "react-native";
 import colors from "../../../config/colors";
@@ -127,55 +128,60 @@ function ReadByList(item) {
 
   return (
     <Screen>
-      <View
-        style={{ padding: 20, borderWidth: 1, margin: 7, borderRadius: 10 }}
-      >
-        <MessageHeader
-          sentBy={sentBy}
-          roomType={roomType}
-          allUsers={allUsers}
-          postedByUser={postedByUser}
-          createdAt={createdAt.slice(11, 16)}
-        />
-
-        {messageType === "image" && <MessageItemImage item={message} />}
-        {messageType === "document" && (
-          <ShowDocumentModal
-            name={documentData.documentDisplayName}
-            url={documentData.documentDownloadURL}
-          />
-        )}
-        {replyMessageId && (
-          <MessageItemReply
+      <ScrollView>
+        <View
+          style={{ padding: 20, borderWidth: 1, margin: 7, borderRadius: 10 }}
+        >
+          <MessageHeader
+            sentBy={sentBy}
             roomType={roomType}
             allUsers={allUsers}
-            isReplyMessage={true}
             postedByUser={postedByUser}
-            sentBy={sentBy}
-            item={{
-              roomId,
-              replyMessageId,
-            }}
-            onScrollToIndex={() => console.log("not")}
+            createdAt={createdAt.slice(11, 16)}
           />
-        )}
 
-        <AppText>{messageFuncs.autolinkText(messageBody, null)}</AppText>
-      </View>
-      {roomMemebers.length > 1 ? (
-        <View style={{ margin: 20 }}>
-          <AppText style={{ marginBottom: 10 }}>Read by</AppText>
-          <FlatList
-            data={roomMemebers}
-            keyExtractor={(member) => member}
-            renderItem={listItem}
-          />
+          {messageType === "image" && <MessageItemImage item={message} />}
+          {messageType === "document" && (
+            <ShowDocumentModal
+              name={documentData.documentDisplayName}
+              url={documentData.documentDownloadURL}
+            />
+          )}
+          {replyMessageId && (
+            // <MessageItemReply
+            //   roomType={roomType}
+            //   allUsers={allUsers}
+            //   isReplyMessage={true}
+            //   postedByUser={postedByUser}
+            //   sentBy={sentBy}
+            //   item={{
+            //     roomId,
+            //     replyMessageId,
+            //   }}
+            //   onScrollToIndex={() => console.log("not")}
+            // />
+            <></>
+          )}
+
+          <AppText numberOfLines={10} style={{ overflow: "hidden" }}>
+            {messageFuncs.autolinkText(messageBody, null)}
+          </AppText>
         </View>
-      ) : (
-        <View style={styles.container}>
-          <AppText>You are only member in this chat.</AppText>
-        </View>
-      )}
+        {roomMemebers.length > 1 ? (
+          <View style={{ margin: 20 }}>
+            <AppText style={{ marginBottom: 10 }}>Read by</AppText>
+            <FlatList
+              data={roomMemebers}
+              keyExtractor={(member) => member}
+              renderItem={listItem}
+            />
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <AppText>You are only member in this chat.</AppText>
+          </View>
+        )}
+      </ScrollView>
     </Screen>
   );
 }

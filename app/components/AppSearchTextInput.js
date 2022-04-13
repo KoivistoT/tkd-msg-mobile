@@ -110,8 +110,9 @@ function AppSearchTextInput({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            textInput.current.clear(), setSearchWord(null), onSearch();
-            setShowSearchBar(false);
+            textInput.current.clear();
+            setSearchWord(null);
+            onSearch();
           }}
           style={{
             alignSelf: "center",
