@@ -8,7 +8,6 @@ import colors from "../../config/colors";
 function UnreadMessagesItem({ item }) {
   const { messageSum, _id: roomId } = item;
   const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
-
   const unreadMessages = messageSum - lastSeenMessagesNow;
 
   if (unreadMessages === 0 || unreadMessages < 0) return null;

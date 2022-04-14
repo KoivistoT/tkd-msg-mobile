@@ -149,7 +149,7 @@ function MessageItemMainChild({
     if (messageIndex !== -1) {
       setTimeout(
         () => {
-          onScrollToIndex(messageIndex, 0);
+          onScrollToIndex(messageIndex, 0.0);
         },
         Platform.OS == "ios" ? 100 : 1000
       );

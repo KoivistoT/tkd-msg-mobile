@@ -42,9 +42,17 @@ const slice = createSlice({
     last_seen_messages: [],
     tasks: [],
     doneTasksIds: [],
+    currentRoomUnseenMessagesSum: null,
   },
   reducers: {
     // action => action handler
+
+    unseenMessageSumResived: (currentUser, action) => {
+      currentUser.currentRoomUnseenMessagesSum = action.payload.newMessagesSum;
+    },
+    unseenMessagesRemoved: (currentUser, action) => {
+      currentUser.currentRoomUnseenMessagesSum = null;
+    },
     userLoggedIn: (currentUser, action) => {
       const user = action.payload ? jwtDecode(action.payload) : null;
 
@@ -138,7 +146,9 @@ export const {
   currentUserRequestStarted,
   userFetchFaild,
   tasksResived,
+  unseenMessagesRemoved,
   tasksCleared,
+  unseenMessageSumResived,
   doneTaskResived,
   lastSeenMessageSumResived,
   currentUserLastSeenMessagesResived,
@@ -272,7 +282,7 @@ export const saveLastSeenMessageSum =
   };
 
 export const getUnseenMessageSum =
-  (currentUserId, roomId) => (dispatch, getState) => {
+  (roomId, currentUserId) => (dispatch, getState) => {
     return dispatch(
       apiCallBegan({
         url: url + "/users/get_unseen_message_sum",
@@ -282,7 +292,7 @@ export const getUnseenMessageSum =
           roomId,
         },
 
-        onSuccess: currentUserRequestStarted.type,
+        onSuccess: unseenMessageSumResived.type,
         //tämä väärä
         onError: lastSaveError.type,
       })
@@ -308,6 +318,10 @@ export const selectCurrentUserToken = createSelector(
 export const selectCurrentUserData = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser
+);
+export const selectCurrentRoomNewMessagesSum = createSelector(
+  (state) => state.auth,
+  (auth) => auth.currentUser.currentRoomUnseenMessagesSum
 );
 
 export const selectLastSeenMessagesById = (roomId) =>

@@ -81,6 +81,7 @@ function MessageForm({ item, setShowSearchBar }) {
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
+
     saveMessageSum();
 
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {

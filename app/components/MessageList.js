@@ -28,19 +28,25 @@ import AppButton from "./AppButton";
 import {
   selectRoomMessageSumByRoomId,
   selectTypersByRoomId,
+  selectUnreadSum,
 } from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
 import { messageFormFocusCleared } from "../../store/general";
 import colors from "../../config/colors";
 import ScrollDownButton from "./ScrollDownButton";
 import UnreadMessagesButton from "./UnreadMessagesButton";
-import { selectLastSeenMessagesById } from "../../store/currentUser";
+import {
+  saveLastSeenMessageSum,
+  selectLastSeenMessagesById,
+} from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
 import NewMessagesIndicator from "./NewMessagesIndicator";
 import IsTypingElement from "./IsTypingElement";
 import ShowSearchBarButton from "./ShowSearchBarButton";
 import { useIsFocused } from "@react-navigation/native";
+import { selectSocket } from "../../store/socket";
+import messageFuncs from "../../utility/messageFuncs";
 const MAX_TO_RENDER_PER_BATCH = 20;
 
 function MessageList({
@@ -136,62 +142,145 @@ function MessageList({
 
   const [lastSeenMessageId, setLatestSeenMessageId] = useState(null);
   let unreadMessagesOnStart = useRef(null);
+  let lastOnStart = useRef(null);
+  let noMore = useRef(null);
   // console.log("Messagelist päivittyy");
+  const trueUnread = useRef(0);
+  const unread = useSelector(selectUnreadSum(roomId));
 
-  useLayoutEffect(() => {
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-    try {
-      // const { messageSum, _id: roomId } = item.route.params;
-      const lastSeenMessagesNow =
-        store.getState().auth.currentUser.last_seen_messages[
-          store
-            .getState()
-            .auth.currentUser.last_seen_messages.findIndex(
-              (object) => object.roomId === roomId
-            )
-        ].lastSeenMessageSum;
-      console.log(lastSeenMessagesNow, "tämä on oikein, koska on se edellinen");
-      console.log(
-        messageSum,
-        "tämä sitten taas tulee jälkijunassa, joten ei ole oikea. Eli ei ole ehtinyt päivittyä vielä. tee täysin uusiksi koko homma, ehkä be:stä hakee"
-      );
-      console.log(messagesssumm, messageSum, "entäs tämä");
+  const saveMessageSum = () => {
+    const unreadMessagesSum = messageFuncs.getLastSeenMessage(
+      store.getState(),
+      roomId,
+      messageSum
+    );
 
-      const unreadMessages = messagesssumm - lastSeenMessagesNow;
-      unreadMessagesOnStart.current = unreadMessages;
-      console.log(unreadMessages, "tämä unread");
-      // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
-      setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
-    } catch (error) {
-      console.log(error, "code 662112");
+    if (unreadMessagesSum !== 0) {
+      dispatch(saveLastSeenMessageSum(currentUserId, roomId, messageSum));
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    // saveMessageSum();
+
+    if (socket) {
+      setTimeout(() => {
+        noMore.current = true;
+      }, 1000);
+    }
+
+    if (unread > trueUnread.current && !noMore.current) {
+      trueUnread.current = unread;
+      unreadMessagesOnStart.current = trueUnread.current;
+      setLatestSeenMessageId(
+        store.getState().entities.msgStore.allMessageIds[roomId][
+          trueUnread.current - 1
+        ]
+      );
+    }
+
+    // try {
+    //   // const { messageSum, _id: roomId } = item.route.params;
+    //   if (!lastOnStart.current) {
+    //     lastOnStart.current =
+    //       store.getState().auth.currentUser.last_seen_messages[
+    //         store
+    //           .getState()
+    //           .auth.currentUser.last_seen_messages.findIndex(
+    //             (object) => object.roomId === roomId
+    //           )
+    //       ].lastSeenMessageSum;
+    //   }
+    //   const unreadMessages = messagesssumm - lastOnStart.current;
+
+    //   // // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
+    //   if (unreadMessages > 0) {
+    //     console.log(unreadMessages, "lukemattomat");
+    //     unreadMessagesOnStart.current = unreadMessages;
+    //     setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
+    //   }
+    // } catch (error) {
+    //   console.log(error, "code 662112");
+    // }
+  }, [unread, socket]);
+  const socket = useSelector(selectSocket);
+  // useLayoutEffect(() => {
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   // console.log(
+  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
+  //   // );
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
+  //   try {
+  //     // const { messageSum, _id: roomId } = item.route.params;
+  //     const lastSeenMessagesNow =
+  //       store.getState().auth.currentUser.last_seen_messages[
+  //         store
+  //           .getState()
+  //           .auth.currentUser.last_seen_messages.findIndex(
+  //             (object) => object.roomId === roomId
+  //           )
+  //       ].lastSeenMessageSum;
+  //     console.log(lastSeenMessagesNow, "tämä on oikein, koska on se edellinen");
+  //     console.log(
+  //       messageSum,
+  //       "tämä sitten taas tulee jälkijunassa, joten ei ole oikea. Eli ei ole ehtinyt päivittyä vielä. tee täysin uusiksi koko homma, ehkä be:stä hakee"
+  //     );
+  //     console.log(messagesssumm, messageSum, "entäs tämä");
+
+  //     const unreadMessages = messageSum - lastSeenMessagesNow;
+  //     unreadMessagesOnStart.current = unreadMessages;
+  //     // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
+  //     setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
+  //   } catch (error) {
+  //     console.log(error, "code 662112");
+  //   }
+  // }, []);
 
   const onScrollToBottom = (animate) => {
     msgListRef.current.scrollToIndex({
@@ -199,7 +288,6 @@ function MessageList({
       index: 0,
     });
   };
-
   const keyExtractor = (item) => item;
 
   const [showLoader, setShowLoader] = useState(false);
@@ -228,7 +316,7 @@ function MessageList({
     }, 1);
   };
 
-  const onScrollToIndex = (replyMessageIndex, position = 0.5) => {
+  const onScrollToIndex = (replyMessageIndex, position) => {
     try {
       msgListRef.current.scrollToIndex({
         animated: true, // tämä voisi olla false

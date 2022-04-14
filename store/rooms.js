@@ -100,8 +100,7 @@ const slice = createSlice({
         if (taskType === "roomLatestMessageChanged") {
           const { roomId } = data;
           newState.allRooms[roomId].latestMessage = data;
-          newState.allRooms[roomId].messageSum =
-            newState.allRooms[roomId].messageSum + 1;
+          newState.allRooms[roomId].messageSum = data.messageSum;
         }
       });
 
@@ -359,6 +358,25 @@ export const selectRoomMessageSumByRoomId = (roomId) =>
     (state) => state.entities.rooms,
     (rooms) => rooms.allRooms[roomId].messageSum
   );
+
+export const selectUnreadSum = (roomId) =>
+  createSelector(
+    (state) => state.entities.rooms.allRooms[roomId].messageSum,
+    (state) => state.auth.currentUser.last_seen_messages,
+    (messageSum, last_seen_messages) => {
+      const condition =
+        last_seen_messages[
+          last_seen_messages.findIndex((object) => object.roomId === roomId)
+        ];
+      return condition !== undefined
+        ? messageSum - condition.lastSeenMessageSum
+        : 0;
+    }
+  );
+
+// (state) => state.entities.bugs, // tämä eka menee tuohon toiseen, eli tässä otetaan bugs
+// (state) => state.entities.projects,
+// (bugs, projects) => bugs.list.filter((bug) => !bug.resolved) // jos bugs tai projects ei mu
 
 export const selectAllActiveRoomsIds = memoize((state) => {
   const rooms = [];
