@@ -373,6 +373,12 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     });
   });
 
+  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
+  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
+  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
+  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
+  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
+  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
   return sortArray(rooms, "lastMessageTimestamp", "DESC").map(
     (item) => item.roomId
   );

@@ -139,30 +139,6 @@ function MessageList({
   // console.log("Messagelist päivittyy");
 
   useLayoutEffect(() => {
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
-    console.log(
-      "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-    );
     //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
     //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
     //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
@@ -207,14 +183,15 @@ function MessageList({
       );
       console.log(messagesssumm, messageSum, "entäs tämä");
 
-      const unreadMessages = messageSum - lastSeenMessagesNow;
+      const unreadMessages = messagesssumm - lastSeenMessagesNow;
       unreadMessagesOnStart.current = unreadMessages;
+      console.log(unreadMessages, "tämä unread");
       // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
       setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
     } catch (error) {
       console.log(error, "code 662112");
     }
-  }, [messagesssumm]);
+  }, []);
 
   const onScrollToBottom = (animate) => {
     msgListRef.current.scrollToIndex({
@@ -222,6 +199,7 @@ function MessageList({
       index: 0,
     });
   };
+
   const keyExtractor = (item) => item;
 
   const [showLoader, setShowLoader] = useState(false);
@@ -250,12 +228,12 @@ function MessageList({
     }, 1);
   };
 
-  const onScrollToIndex = (replyMessageIndex) => {
+  const onScrollToIndex = (replyMessageIndex, position = 0.5) => {
     try {
       msgListRef.current.scrollToIndex({
         animated: true, // tämä voisi olla false
         index: replyMessageIndex,
-        viewPosition: 0.5,
+        viewPosition: position,
       });
     } catch (error) {
       console.log(error, "code 87271");

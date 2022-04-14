@@ -149,7 +149,7 @@ function MessageItemMainChild({
     if (messageIndex !== -1) {
       setTimeout(
         () => {
-          onScrollToIndex(messageIndex);
+          onScrollToIndex(messageIndex, 0);
         },
         Platform.OS == "ios" ? 100 : 1000
       );
@@ -289,7 +289,7 @@ function MessageItemMainChild({
 
                     {messageBody !== "" && (
                       <MessageText
-                        numberOfLines={8}
+                        numberOfLines={1000}
                         messageBody={messageBody}
                         searchWord={searchWord}
                         showMore={showMore}
