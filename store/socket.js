@@ -10,6 +10,7 @@ import {
   removeOlderTasksItemsById,
   removeTaskItemById,
   saveLastPresent,
+  unseenMessagesRemoved,
 } from "./currentUser";
 
 import {
@@ -247,7 +248,7 @@ export const disconnectSocket = (currentUserId) => {
       socket.disconnect();
       dispatch(socketDisconnected("Socket disconnected"));
     }, 100);
-
+    // dispatch(unseenMessagesRemoved());
     dispatch(saveLastPresent());
   };
 };

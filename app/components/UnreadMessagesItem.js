@@ -10,6 +10,8 @@ function UnreadMessagesItem({ item }) {
   const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
   const unreadMessages = messageSum - lastSeenMessagesNow;
 
+  //kokeile täälä vielä selectoria, josta tulee suoraan lukemattomat?, ettei vain laske se liikaa
+
   if (unreadMessages === 0 || unreadMessages < 0) return null;
   return (
     <View style={styles.container}>

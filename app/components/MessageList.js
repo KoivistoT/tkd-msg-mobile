@@ -6,6 +6,7 @@ import {
   Button,
   ActivityIndicator,
   Text,
+  AppState,
   Keyboard,
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -26,6 +27,8 @@ import AppTextInput from "./AppTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
 import {
+  lastStorageAdded,
+  selectLastStorage,
   selectRoomMessageSumByRoomId,
   selectTypersByRoomId,
   selectUnreadSum,
@@ -38,6 +41,8 @@ import UnreadMessagesButton from "./UnreadMessagesButton";
 import {
   saveLastSeenMessageSum,
   selectLastSeenMessagesById,
+  getUnseenMessageSum,
+  selectCurrentRoomNewMessagesSum,
 } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
@@ -101,15 +106,6 @@ function MessageList({
   useEffect(() => {
     //tätä ei aina pitäisi, eli tee reffillä
 
-    nav.setOptions({
-      headerRight: () => (
-        <ShowSearchBarButton
-          onPress={setShowSearchBar}
-          onSearch={() => onSearch()}
-        />
-      ),
-    });
-
     if (messageSum === roomMessageIds?.length) {
       setAllMessagesFetched(true);
       //don't scroll when last messages fetched, so thats why return
@@ -126,13 +122,27 @@ function MessageList({
     }
   }, [roomMessageIds]);
 
+  useEffect(() => {
+    var appStateListener = AppState.addEventListener("change", handleChange);
+
+    nav.setOptions({
+      headerRight: () => (
+        <ShowSearchBarButton
+          onPress={setShowSearchBar}
+          onSearch={() => onSearch()}
+        />
+      ),
+    });
+
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
   //testiä
   //testiä
   //testiä
   //testiä
   //testiä
-  // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
-  const messagesssumm = useSelector(selectRoomMessageSumByRoomId(roomId));
 
   //testiä
   //testiä
@@ -141,8 +151,7 @@ function MessageList({
   //testiä
 
   const [lastSeenMessageId, setLatestSeenMessageId] = useState(null);
-  let unreadMessagesOnStart = useRef(null);
-  let lastOnStart = useRef(null);
+
   let noMore = useRef(null);
   // console.log("Messagelist päivittyy");
   const trueUnread = useRef(0);
@@ -152,57 +161,122 @@ function MessageList({
     const unreadMessagesSum = messageFuncs.getLastSeenMessage(
       store.getState(),
       roomId,
-      messageSum
+      roomMessageIds.length
     );
 
     if (unreadMessagesSum !== 0) {
-      dispatch(saveLastSeenMessageSum(currentUserId, roomId, messageSum));
+      dispatch(
+        saveLastSeenMessageSum(currentUserId, roomId, roomMessageIds.length)
+      );
+    }
+  };
+
+  const getLastSeenNow = () => {
+    return store.getState().auth.currentUser.last_seen_messages[
+      store
+        .getState()
+        .auth.currentUser.last_seen_messages.findIndex(
+          (object) => object.roomId === roomId
+        )
+    ].lastSeenMessageSum;
+  };
+
+  const roomMessageSum = useSelector(selectRoomMessageSumByRoomId(roomId));
+  const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
+  let unreadMessagesOnStart = useRef(null);
+  // let [unreadMessagesOnStart, setUnreadMessagesOnStart] = useState(null);
+  let lastOnStart = useRef(null);
+  let showNewMessageIndicators = useRef(true);
+  const handleChange = (newState) => {
+    if (newState === "active") {
+    } else if (newState === "background" || newState === "inactive") {
+      unreadMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
     }
   };
 
   useEffect(() => {
-    // saveMessageSum();
-
-    if (socket) {
-      setTimeout(() => {
-        noMore.current = true;
-      }, 1000);
-    }
-
-    if (unread > trueUnread.current && !noMore.current) {
-      trueUnread.current = unread;
-      unreadMessagesOnStart.current = trueUnread.current;
+    // console.log(
+    //   roomMessageSum,
+    //   getLastSeenNow(),
+    //   "pitääkö päivittää jos samat"
+    // );
+    let newMessages = roomMessageIds.length - getLastSeenNow();
+    if (
+      (!unreadMessagesOnStart.current ||
+        newMessages > unreadMessagesOnStart.current) &&
+      roomMessageSum !== getLastSeenNow()
+    ) {
+      unreadMessagesOnStart.current += newMessages;
+      // console.log(newMessages, "newMessages");
       setLatestSeenMessageId(
         store.getState().entities.msgStore.allMessageIds[roomId][
-          trueUnread.current - 1
+          unreadMessagesOnStart.current - 1
         ]
       );
+      // console.log(
+      //   store.getState().entities.msgStore.allMessageIds[roomId][
+      //     roomMessageIds.length - unreadMessagesOnStart.current - 1
+      //   ]
+      // );
     }
 
-    // try {
-    //   // const { messageSum, _id: roomId } = item.route.params;
-    //   if (!lastOnStart.current) {
-    //     lastOnStart.current =
-    //       store.getState().auth.currentUser.last_seen_messages[
-    //         store
-    //           .getState()
-    //           .auth.currentUser.last_seen_messages.findIndex(
-    //             (object) => object.roomId === roomId
-    //           )
-    //       ].lastSeenMessageSum;
-    //   }
-    //   const unreadMessages = messagesssumm - lastOnStart.current;
+    // console.log(
+    //   roomMessageSum,
+    //   getLastSeenNow(),
+    //   roomMessageIds.length,
+    //   // store.getState().entities.msgStore.allMessageIds[roomId].length,
+    //   "tässä viestit listal",
+    //   "tässä luetut",
+    //   "id pituus"
+    //   // "id manuaalisesti"
+    // );
 
-    //   // // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
-    //   if (unreadMessages > 0) {
-    //     console.log(unreadMessages, "lukemattomat");
-    //     unreadMessagesOnStart.current = unreadMessages;
-    //     setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
-    //   }
-    // } catch (error) {
-    //   console.log(error, "code 662112");
+    saveMessageSum();
+
+    //kun tulee tänne, ei tee mitään ,josa erotus on 0
+    //
+
+    // if (trueUnread.current && unread === 0) {
+    //   // setTimeout(() => {
+    //   noMore.current = true;
+    //   // }, 1000);
     // }
-  }, [unread, socket]);
+
+    //   if (unread > trueUnread.current && !noMore.current) {
+    //     trueUnread.current = unread;
+    //     unreadMessagesOnStart.current = trueUnread.current;
+    //     setLatestSeenMessageId(
+    //       store.getState().entities.msgStore.allMessageIds[roomId][
+    //         trueUnread.current - 1
+    //       ]
+    //     );
+    //   }
+
+    //   // try {
+    //   //   // const { messageSum, _id: roomId } = item.route.params;
+    // if (!lastOnStart.current) {
+    //   lastOnStart.current =
+    //     store.getState().auth.currentUser.last_seen_messages[
+    //       store
+    //         .getState()
+    //         .auth.currentUser.last_seen_messages.findIndex(
+    //           (object) => object.roomId === roomId
+    //         )
+    //     ].lastSeenMessageSum;
+    // }
+    //   //   const unreadMessages = messagesssumm - lastOnStart.current;
+
+    //   //   // // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
+    //   //   if (unreadMessages > 0) {
+    //   //     console.log(unreadMessages, "lukemattomat");
+    //   //     unreadMessagesOnStart.current = unreadMessages;
+    //   //     setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
+    //   //   }
+    //   // } catch (error) {
+    //   //   console.log(error, "code 662112");
+    //   // }
+    // }, [unread, socket]);
+  }, [roomMessageIds.length]);
   const socket = useSelector(selectSocket);
   // useLayoutEffect(() => {
   //   // console.log(

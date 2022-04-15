@@ -98,6 +98,7 @@ const slice = createSlice({
           newState.allActiveRoomsIds.push(currentRoomId);
         }
         if (taskType === "roomLatestMessageChanged") {
+          // console.log(data.messageSum, "tämä päivittymä määrä viestejä");
           const { roomId } = data;
           newState.allRooms[roomId].latestMessage = data;
           newState.allRooms[roomId].messageSum = data.messageSum;
