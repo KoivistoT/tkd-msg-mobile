@@ -184,6 +184,7 @@ function MessageList({
     }
   };
 
+  const [trigger, setTrigger] = useState();
   let countTimes = useRef(0);
 
   const checkNewMessages = async () => {
@@ -198,6 +199,10 @@ function MessageList({
 
       if (countTimes.current === 1) {
         dispatch(goThowDeActivated());
+        // tämä jotta päivittää, kun ensin on roomslistalla ja saa viestin, sitten menee pois sovelluksesta ja tulee uuden viestin myötä takaisin. Silloin pitää päivittää.
+        // ei siis päivitä new Messages (numero) -juttua muuten
+        // toki mikä asia vain, mikä päivittää messsagelistan, niin toimisi myös, jos se vain tulee tämän asian jälkeen
+        setTrigger(Math.random());
       }
     }
     if (countTimes.current === 0) {
