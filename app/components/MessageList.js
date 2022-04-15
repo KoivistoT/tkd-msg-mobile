@@ -107,8 +107,6 @@ function MessageList({
 
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   useEffect(() => {
-    //tätä ei aina pitäisi, eli tee reffillä
-
     if (messageSum === roomMessageIds?.length) {
       setAllMessagesFetched(true);
       //don't scroll when last messages fetched, so thats why return
@@ -141,25 +139,8 @@ function MessageList({
       appStateListener?.remove();
     };
   }, []);
-  //testiä
-  //testiä
-  //testiä
-  //testiä
-  //testiä
-
-  //testiä
-  //testiä
-  //testiä
-  //testiä
-  //testiä
 
   const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
-
-  let noMore = useRef(null);
-  // console.log("Messagelist päivittyy");
-  const trueUnread = useRef(0);
-  const unread = useSelector(selectUnreadSum(roomId));
-
   const saveMessageSum = () => {
     const unreadMessagesSum = messageFuncs.getLastSeenMessage(
       store.getState(),
@@ -183,35 +164,15 @@ function MessageList({
         )
     ].lastSeenMessageSum;
 
-  const roomMessageSum = useSelector(selectRoomMessageSumByRoomId(roomId));
-  const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
   let unreadMessagesOnStart = useRef(null);
-  // let [unreadMessagesOnStart, setUnreadMessagesOnStart] = useState(null);
-  let lastOnStart = useRef(null);
-  let showNewMessageIndicators = useRef(true);
 
   const getRoomMessageSumNow = () =>
     store.getState().entities.rooms.allRooms[roomId].messageSum;
-
-  const getMessageIdLengthNow = () =>
-    store.getState().entities.msgStore.allMessageIds[roomId].length;
 
   const getLastSeenMessageId = () =>
     store.getState().entities.msgStore.allMessageIds[roomId][
       unreadMessagesOnStart.current - 1
     ];
-  const getDifference = () => {
-    return (
-      store.getState().auth.currentUser.last_seen_messages[
-        store
-          .getState()
-          .auth.currentUser.last_seen_messages.findIndex(
-            (object) => object.roomId === roomId
-          )
-      ].lastSeenMessageSum -
-      store.getState().entities.rooms.allRooms[roomId].messageSum
-    );
-  };
 
   const handleChange = (newState) => {
     if (newState === "active") {
@@ -223,11 +184,8 @@ function MessageList({
     }
   };
 
-  let cameBack = useRef(false);
-  let goThrow = useRef(true);
-  let firstLastSeen = useRef(0);
-  let lastSeenBefore = useRef(0);
   let countTimes = useRef(0);
+
   const checkNewMessages = async () => {
     if (
       countTimes.current === 0 ||
@@ -235,154 +193,24 @@ function MessageList({
         countTimes.current === 1)
     ) {
       let newMessages = getRoomMessageSumNow() - getLastSeenNow();
-      if (currentUserId !== "6229c4a085aaca98e525f169")
-        console.log(
-          getMessageIdLengthNow(),
-          getRoomMessageSumNow(),
-          getLastSeenNow(),
-          currentUserId
-        );
-      // if (!firstLastSeen.current) {
-      //   firstLastSeen.current = getLastSeenNow();
-      // }
 
-      //menee vain kerran läpi,
-      //kahdesti, jos tuli takaisin sovellukseen
-      //jos taas lähti huoneesta pois sovelluksesta, menee vain kerran silloinkin
-
-      // if (getMessageIdLengthNow() !== getLastSeenNow()) {
       unreadMessagesOnStart.current += newMessages;
 
-      //tämä vain kerran, siirrä vielä
-      setLatestSeenMessageId(getLastSeenMessageId());
-      // }
       if (countTimes.current === 1) {
         dispatch(goThowDeActivated());
       }
     }
+    if (countTimes.current === 0) {
+      setLatestSeenMessageId(getLastSeenMessageId());
+    }
     countTimes.current += 1;
-    // if (!cameBack.current) {
-    //   goThrow.current = false;
-    // }
-    // else {
-    //   cameBack.current = true;
-    // }
 
-    // if (
-    //   // (!unreadMessagesOnStart.current &&
-
-    //   // getMessageIdLengthNow()
-    //   // a
-    //   //  ||
-    //   // (unreadMessagesOnStart.current &&
-
-    //   getRoomMessageSumNow() !== getLastSeenNow()
-    // ) {
-    //   unreadMessagesOnStart.current =
-    //     getMessageIdLengthNow() - firstLastSeen.current;
-    //   console.log(unreadMessagesOnStart.current);
-    //   setLatestSeenMessageId(getLastSeenMessageId());
-    // }
-
-    //tämä oli, mut ei ollut tasainen
-    // getRoomMessageSumNow() !== getLastSeenNow()
-    // if (
-    //   (!unreadMessagesOnStart.current ||
-    //     newMessages >= unreadMessagesOnStart.current) &&
-    //   getRoomMessageSumNow() - getLastSeenNow() > 0
-    // ) {
-    //   unreadMessagesOnStart.current += newMessages;
-    //   setLatestSeenMessageId(getLastSeenMessageId());
-    // }
-    // if (unreadMessagesOnStart.current && !latestSeenMessageId) {
-
-    // }
     saveMessageSum();
   };
 
   useEffect(() => {
-    // if (!allMessagesFetched) return;
-
     checkNewMessages();
   }, [store.getState().entities.rooms.allRooms[roomId].messageSum]);
-  // }, [roomMessageIds.length]);
-  // useLayoutEffect(() => {
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   // console.log(
-  //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"
-  //   // );
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //ei siis näytä oikein, jos tulee sovellukseen pushin kautta
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   //huomioi, että jos on huone auki kun tulee, tai ei ole huone auki kun tulee
-  //   try {
-  //     // const { messageSum, _id: roomId } = item.route.params;
-  //     const lastSeenMessagesNow =
-  //       store.getState().auth.currentUser.last_seen_messages[
-  //         store
-  //           .getState()
-  //           .auth.currentUser.last_seen_messages.findIndex(
-  //             (object) => object.roomId === roomId
-  //           )
-  //       ].lastSeenMessageSum;
-  //     console.log(lastSeenMessagesNow, "tämä on oikein, koska on se edellinen");
-  //     console.log(
-  //       messageSum,
-  //       "tämä sitten taas tulee jälkijunassa, joten ei ole oikea. Eli ei ole ehtinyt päivittyä vielä. tee täysin uusiksi koko homma, ehkä be:stä hakee"
-  //     );
-  //     console.log(messagesssumm, messageSum, "entäs tämä");
-
-  //     const unreadMessages = messageSum - lastSeenMessagesNow;
-  //     unreadMessagesOnStart.current = unreadMessages;
-  //     // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
-  //     setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
-  //   } catch (error) {
-  //     console.log(error, "code 662112");
-  //   }
-  // }, []);
 
   const onScrollToBottom = (animate) => {
     msgListRef.current.scrollToIndex({
@@ -457,7 +285,7 @@ function MessageList({
     }
   };
 
-  // console.log("messagelista päivittyy----");
+  console.log("messagelista päivittyy----");
   const getPosition = (e) => {
     e.nativeEvent.contentOffset.y >= 250
       ? setScrollButtonVisible(true)
