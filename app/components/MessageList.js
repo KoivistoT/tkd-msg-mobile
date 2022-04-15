@@ -34,7 +34,10 @@ import {
   selectUnreadSum,
 } from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
-import { messageFormFocusCleared } from "../../store/general";
+import {
+  goThowDeActivated,
+  messageFormFocusCleared,
+} from "../../store/general";
 import colors from "../../config/colors";
 import ScrollDownButton from "./ScrollDownButton";
 import UnreadMessagesButton from "./UnreadMessagesButton";
@@ -84,7 +87,7 @@ function MessageList({
         {!allMessagesFetched && index === roomMessageIds.length - 1 && (
           <LoadingMessagesIndicator />
         )}
-        {lastSeenMessageId === item && <NewMessagesIndicator />}
+        {latestSeenMessageId === item && <NewMessagesIndicator />}
         <MemoMessageItemMain
           messageId={item}
           index={index}
@@ -150,7 +153,7 @@ function MessageList({
   //testiä
   //testiä
 
-  const [lastSeenMessageId, setLatestSeenMessageId] = useState(null);
+  const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
 
   let noMore = useRef(null);
   // console.log("Messagelist päivittyy");
@@ -161,12 +164,12 @@ function MessageList({
     const unreadMessagesSum = messageFuncs.getLastSeenMessage(
       store.getState(),
       roomId,
-      roomMessageIds.length
+      getRoomMessageSumNow()
     );
 
     if (unreadMessagesSum !== 0) {
       dispatch(
-        saveLastSeenMessageSum(currentUserId, roomId, roomMessageIds.length)
+        saveLastSeenMessageSum(currentUserId, roomId, getRoomMessageSumNow())
       );
     }
   };
@@ -186,15 +189,12 @@ function MessageList({
   // let [unreadMessagesOnStart, setUnreadMessagesOnStart] = useState(null);
   let lastOnStart = useRef(null);
   let showNewMessageIndicators = useRef(true);
-  const handleChange = (newState) => {
-    if (newState === "active") {
-    } else if (newState === "background" || newState === "inactive") {
-      unreadMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
-    }
-  };
 
   const getRoomMessageSumNow = () =>
     store.getState().entities.rooms.allRooms[roomId].messageSum;
+
+  const getMessageIdLengthNow = () =>
+    store.getState().entities.msgStore.allMessageIds[roomId].length;
 
   const getLastSeenMessageId = () =>
     store.getState().entities.msgStore.allMessageIds[roomId][
@@ -212,88 +212,100 @@ function MessageList({
       store.getState().entities.rooms.allRooms[roomId].messageSum
     );
   };
-  useEffect(() => {
-    // console.log(
-    //   roomMessageSum,
-    //   getLastSeenNow(),
-    //   "pitääkö päivittää jos samat"
-    // );
-    // let newMessages = roomMessageIds.length - getLastSeenNow();
-    let newMessages = roomMessageIds.length - getLastSeenNow();
-    console.log(getRoomMessageSumNow(), getLastSeenNow(), getDifference());
 
-    if (
-      (!unreadMessagesOnStart.current ||
-        newMessages > unreadMessagesOnStart.current) &&
-      getRoomMessageSumNow() > getLastSeenNow()
-    ) {
-      unreadMessagesOnStart.current += newMessages;
-      // console.log(newMessages, "newMessages");
-      console.log(unreadMessagesOnStart.current);
-      setLatestSeenMessageId(getLastSeenMessageId());
-      // console.log(
-      //   store.getState().entities.msgStore.allMessageIds[roomId][
-      //     roomMessageIds.length - unreadMessagesOnStart.current - 1
-      //   ]
-      // );
+  const handleChange = (newState) => {
+    if (newState === "active") {
+    } else if (newState === "background" || newState === "inactive") {
+      unreadMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
+      countTimes.current = 0;
+      // cameBack.current = true;
+      // goThrow.current = true;
     }
+  };
+
+  let cameBack = useRef(false);
+  let goThrow = useRef(true);
+  let firstLastSeen = useRef(0);
+  let lastSeenBefore = useRef(0);
+  let countTimes = useRef(0);
+  const checkNewMessages = async () => {
+    if (
+      countTimes.current === 0 ||
+      (store.getState().entities.general.goThrowTwoTimes &&
+        countTimes.current === 1)
+    ) {
+      let newMessages = getRoomMessageSumNow() - getLastSeenNow();
+      if (currentUserId !== "6229c4a085aaca98e525f169")
+        console.log(
+          getMessageIdLengthNow(),
+          getRoomMessageSumNow(),
+          getLastSeenNow(),
+          currentUserId
+        );
+      // if (!firstLastSeen.current) {
+      //   firstLastSeen.current = getLastSeenNow();
+      // }
+
+      //menee vain kerran läpi,
+      //kahdesti, jos tuli takaisin sovellukseen
+      //jos taas lähti huoneesta pois sovelluksesta, menee vain kerran silloinkin
+
+      // if (getMessageIdLengthNow() !== getLastSeenNow()) {
+      unreadMessagesOnStart.current += newMessages;
+
+      //tämä vain kerran, siirrä vielä
+      setLatestSeenMessageId(getLastSeenMessageId());
+      // }
+      if (countTimes.current === 1) {
+        dispatch(goThowDeActivated());
+      }
+    }
+    countTimes.current += 1;
+    // if (!cameBack.current) {
+    //   goThrow.current = false;
+    // }
+    // else {
+    //   cameBack.current = true;
+    // }
+
+    // if (
+    //   // (!unreadMessagesOnStart.current &&
+
+    //   // getMessageIdLengthNow()
+    //   // a
+    //   //  ||
+    //   // (unreadMessagesOnStart.current &&
+
+    //   getRoomMessageSumNow() !== getLastSeenNow()
+    // ) {
+    //   unreadMessagesOnStart.current =
+    //     getMessageIdLengthNow() - firstLastSeen.current;
+    //   console.log(unreadMessagesOnStart.current);
+    //   setLatestSeenMessageId(getLastSeenMessageId());
+    // }
+
+    //tämä oli, mut ei ollut tasainen
+    // getRoomMessageSumNow() !== getLastSeenNow()
+    // if (
+    //   (!unreadMessagesOnStart.current ||
+    //     newMessages >= unreadMessagesOnStart.current) &&
+    //   getRoomMessageSumNow() - getLastSeenNow() > 0
+    // ) {
+    //   unreadMessagesOnStart.current += newMessages;
+    //   setLatestSeenMessageId(getLastSeenMessageId());
+    // }
+    // if (unreadMessagesOnStart.current && !latestSeenMessageId) {
+
+    // }
     saveMessageSum();
-    // console.log(
-    //   roomMessageSum,
-    //   getLastSeenNow(),
-    //   roomMessageIds.length,
-    //   // store.getState().entities.msgStore.allMessageIds[roomId].length,
-    //   "tässä viestit listal",
-    //   "tässä luetut",
-    //   "id pituus"
-    //   // "id manuaalisesti"
-    // );
+  };
 
-    //kun tulee tänne, ei tee mitään ,josa erotus on 0
-    //
+  useEffect(() => {
+    // if (!allMessagesFetched) return;
 
-    // if (trueUnread.current && unread === 0) {
-    //   // setTimeout(() => {
-    //   noMore.current = true;
-    //   // }, 1000);
-    // }
-
-    //   if (unread > trueUnread.current && !noMore.current) {
-    //     trueUnread.current = unread;
-    //     unreadMessagesOnStart.current = trueUnread.current;
-    //     setLatestSeenMessageId(
-    //       store.getState().entities.msgStore.allMessageIds[roomId][
-    //         trueUnread.current - 1
-    //       ]
-    //     );
-    //   }
-
-    //   // try {
-    //   //   // const { messageSum, _id: roomId } = item.route.params;
-    // if (!lastOnStart.current) {
-    //   lastOnStart.current =
-    //     store.getState().auth.currentUser.last_seen_messages[
-    //       store
-    //         .getState()
-    //         .auth.currentUser.last_seen_messages.findIndex(
-    //           (object) => object.roomId === roomId
-    //         )
-    //     ].lastSeenMessageSum;
-    // }
-    //   //   const unreadMessages = messagesssumm - lastOnStart.current;
-
-    //   //   // // console.log(unreadMessages, messageSum, lastSeenMessagesNow, "joo joo");
-    //   //   if (unreadMessages > 0) {
-    //   //     console.log(unreadMessages, "lukemattomat");
-    //   //     unreadMessagesOnStart.current = unreadMessages;
-    //   //     setLatestSeenMessageId(roomMessageIds[unreadMessages - 1]);
-    //   //   }
-    //   // } catch (error) {
-    //   //   console.log(error, "code 662112");
-    //   // }
-    // }, [unread, socket]);
-  }, [roomMessageIds.length]);
-  const socket = useSelector(selectSocket);
+    checkNewMessages();
+  }, [store.getState().entities.rooms.allRooms[roomId].messageSum]);
+  // }, [roomMessageIds.length]);
   // useLayoutEffect(() => {
   //   // console.log(
   //   //   "tee loppuun getUnseenMessageSum!!!!!!!!!!!!!!!!!!!!!!!!!!!, ei vielä be:ssä kuin alku users routerissa"

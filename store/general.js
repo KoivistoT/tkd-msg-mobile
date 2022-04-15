@@ -12,6 +12,7 @@ const slice = createSlice({
     loading: false,
     messageFormFocus: false,
     selectedMessage: null,
+    goThrowTwoTimes: false,
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -50,6 +51,14 @@ const slice = createSlice({
       general.selectedMessage = action.payload;
       // console.log(general.selectedMessage, "valittu");
     },
+    goThowActivated: (general, action) => {
+      general.goThrowTwoTimes = true;
+      // console.log(general.selectedMessage, "valittu");
+    },
+    goThowDeActivated: (general, action) => {
+      general.goThrowTwoTimes = false;
+      // console.log(general.selectedMessage, "valittu");
+    },
     messageSelectionRemoved: (general, action) => {
       general.selectedMessage = null;
     },
@@ -59,6 +68,8 @@ const slice = createSlice({
 export const {
   errorMessageAdded,
   messageFormFocusAdded,
+  goThowActivated,
+  goThowDeActivated,
   messageSelected,
   messageSelectionRemoved,
   messageFormFocusCleared,
