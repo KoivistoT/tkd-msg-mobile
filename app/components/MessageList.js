@@ -171,15 +171,14 @@ function MessageList({
     }
   };
 
-  const getLastSeenNow = () => {
-    return store.getState().auth.currentUser.last_seen_messages[
+  const getLastSeenNow = () =>
+    store.getState().auth.currentUser.last_seen_messages[
       store
         .getState()
         .auth.currentUser.last_seen_messages.findIndex(
           (object) => object.roomId === roomId
         )
     ].lastSeenMessageSum;
-  };
 
   const roomMessageSum = useSelector(selectRoomMessageSumByRoomId(roomId));
   const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
@@ -194,32 +193,51 @@ function MessageList({
     }
   };
 
+  const getRoomMessageSumNow = () =>
+    store.getState().entities.rooms.allRooms[roomId].messageSum;
+
+  const getLastSeenMessageId = () =>
+    store.getState().entities.msgStore.allMessageIds[roomId][
+      unreadMessagesOnStart.current - 1
+    ];
+  const getDifference = () => {
+    return (
+      store.getState().auth.currentUser.last_seen_messages[
+        store
+          .getState()
+          .auth.currentUser.last_seen_messages.findIndex(
+            (object) => object.roomId === roomId
+          )
+      ].lastSeenMessageSum -
+      store.getState().entities.rooms.allRooms[roomId].messageSum
+    );
+  };
   useEffect(() => {
     // console.log(
     //   roomMessageSum,
     //   getLastSeenNow(),
     //   "pitääkö päivittää jos samat"
     // );
+    // let newMessages = roomMessageIds.length - getLastSeenNow();
     let newMessages = roomMessageIds.length - getLastSeenNow();
+    console.log(getRoomMessageSumNow(), getLastSeenNow(), getDifference());
+
     if (
       (!unreadMessagesOnStart.current ||
         newMessages > unreadMessagesOnStart.current) &&
-      roomMessageSum !== getLastSeenNow()
+      getRoomMessageSumNow() > getLastSeenNow()
     ) {
       unreadMessagesOnStart.current += newMessages;
       // console.log(newMessages, "newMessages");
-      setLatestSeenMessageId(
-        store.getState().entities.msgStore.allMessageIds[roomId][
-          unreadMessagesOnStart.current - 1
-        ]
-      );
+      console.log(unreadMessagesOnStart.current);
+      setLatestSeenMessageId(getLastSeenMessageId());
       // console.log(
       //   store.getState().entities.msgStore.allMessageIds[roomId][
       //     roomMessageIds.length - unreadMessagesOnStart.current - 1
       //   ]
       // );
     }
-
+    saveMessageSum();
     // console.log(
     //   roomMessageSum,
     //   getLastSeenNow(),
@@ -230,8 +248,6 @@ function MessageList({
     //   "id pituus"
     //   // "id manuaalisesti"
     // );
-
-    saveMessageSum();
 
     //kun tulee tänne, ei tee mitään ,josa erotus on 0
     //
