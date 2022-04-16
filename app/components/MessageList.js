@@ -88,7 +88,9 @@ function MessageList({
   const currentUserId = store.getState().auth.currentUser._id;
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
-
+  const currentRoomMessageSum = useSelector(
+    selectRoomMessageSumByRoomId(roomId)
+  );
   const getLastSeenNow = () => selectLastSeenMessagSumByRoomId(store, roomId);
 
   const getNewMessagesSum = () => getRoomMessageSumNow() - getLastSeenNow();
@@ -106,7 +108,7 @@ function MessageList({
 
   useEffect(() => {
     checkNewMessages();
-  }, [getRoomMessageSumNow()]);
+  }, [currentRoomMessageSum]);
 
   useEffect(() => {
     var appStateListener = AppState.addEventListener("change", handleChange);
