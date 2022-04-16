@@ -93,12 +93,10 @@ function MessageList({ item }) {
   const getLastSeenNow = () => selectLastSeenMessagSumByRoomId(store, roomId);
 
   const getNewMessagesSum = () => getRoomMessageSumNow() - getLastSeenNow();
-  const getLastSeenMessageId = () =>
-    selectLastSeenMessageIdByRoomId(
-      store,
-      roomId,
-      newMessagesOnStart.current - 1
-    );
+  const getLastSeenMessageId = () => {
+    const messageIndex = newMessagesOnStart.current - 1;
+    return selectLastSeenMessageIdByRoomId(store, roomId, messageIndex);
+  };
   const getRoomMessageSumNow = () => selectMessageSumByRoomId(store, roomId);
 
   useEffect(() => {
@@ -191,16 +189,28 @@ function MessageList({ item }) {
   };
 
   const checkNewMessages = async () => {
+    //tämä maku asia
+    //tämä maku asia
+    //tämä maku asia
+    if (countTimes.current > 0 && !isGoThrowTwoTimes(store)) {
+      setShowUnreadMessageButton(false);
+    }
+    //tämä maku asia
+    //tämä maku asia
+    //tämä maku asia
+
     if (
       countTimes.current === 0 ||
       (isGoThrowTwoTimes(store) && countTimes.current === 1)
     ) {
       let newMessages = getNewMessagesSum();
       newMessagesOnStart.current += newMessages;
+      setShowUnreadMessageButton(true); //tämä maku asiaa
       setTrigger(Math.random());
 
       if (countTimes.current === 1) {
         dispatch(goThrowDeactivated());
+        setLatestSeenMessageId(getLastSeenMessageId());
         countTimes.current += 1;
       }
     }
