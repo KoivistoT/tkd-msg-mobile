@@ -5,10 +5,11 @@ import { useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 
 import UserInfoCard from "../app/components/UserInfoCard";
+import { selectCurrenUserId } from "../store/currentUser";
 
 function UserSetupScreen() {
   const store = useStore();
-  const currentUserId = store.getState().auth.currentUser._id;
+  const currentUserId = selectCurrenUserId(store);
 
   return (
     <Screen style={styles.container}>

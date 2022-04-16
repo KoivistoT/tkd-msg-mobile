@@ -12,6 +12,7 @@ import {
   selectRoomLoading,
 } from "../../../store/rooms";
 import AppText from "../AppText";
+import { selectCurrenUserId } from "../../../store/currentUser";
 
 const validationSchema = Yup.object().shape({
   roomName: Yup.string().required().min(1).label("Channel name"),
@@ -22,7 +23,7 @@ function CreateChannelForm() {
   const dispatch = useDispatch();
   const store = useStore();
   const loadingStatus = useSelector(selectRoomLoading);
-  const userId = store.getState().auth.currentUser._id;
+  const userId = selectCurrenUserId(store);
 
   const handleSubmit = async ({ roomName, description }) => {
     dispatch(createChannel(userId, roomName, description));

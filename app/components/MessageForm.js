@@ -29,7 +29,10 @@ import routes from "../navigation/routes";
 import { selectAllUsersMedium } from "../../store/users";
 import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
-import { saveLastSeenMessageSum } from "../../store/currentUser";
+import {
+  saveLastSeenMessageSum,
+  selectCurrenUserId,
+} from "../../store/currentUser";
 import { selectSocket } from "../../store/socket";
 import {
   endLoad,
@@ -49,7 +52,7 @@ function MessageForm({ item }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
-  const currentUserId = store.getState().auth.currentUser._id;
+  const currentUserId = selectCurrenUserId(store);
   const [photos, setPhotos] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   let documentURL = useRef(null);

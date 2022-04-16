@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector, useStore } from "react-redux";
 import ReactionEmoji from "./ReactionEmoji";
 import AddReactionButton from "./AddReactionButton";
+import { selectCurrenUserId } from "../../../store/currentUser";
 
 const Reactions = ({ message, showAllEmojis }) => {
   const { roomId, _id: messageId, reactions } = message;
@@ -18,7 +19,7 @@ const Reactions = ({ message, showAllEmojis }) => {
 
   const store = useStore();
 
-  const currentUserId = store.getState().auth.currentUser._id;
+  const currentUserId = selectCurrenUserId(store);
   const onReaction = (reaction) => {
     dispatch(addReaction(roomId, messageId, reaction, currentUserId));
   };

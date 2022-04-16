@@ -25,6 +25,7 @@ import MessageHeader from "./MessageHeader";
 import messageFuncs from "../../../utility/messageFuncs";
 import MessageItemReply from "./MessageItemReply";
 import timeFuncs from "../../../utility/timeFuncs";
+import { selectCurrenUserId } from "../../../store/currentUser";
 function ReadByList(item) {
   const {
     _id: messageId,
@@ -40,7 +41,7 @@ function ReadByList(item) {
 
   const store = useStore();
   const dispatch = useDispatch();
-  const currentUserId = store.getState().auth.currentUser._id;
+  const currentUserId = selectCurrenUserId(store);
   const roomMemebers = useSelector(selectRoomMembersById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);
   const currentMessage = useSelector(selectMessageById(roomId, messageId));

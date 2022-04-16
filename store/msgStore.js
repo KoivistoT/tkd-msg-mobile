@@ -707,6 +707,11 @@ export const getRestMessages = (object) =>
 export const selectLastSeenMessageIdByRoomId = (store, roomId, index) =>
   store.getState().entities.msgStore.allMessageIds[roomId][index];
 
+export const selectRoomMessagesById = (store, roomId) =>
+  store.getState().entities.msgStore.allMessages[roomId].messages;
+export const selectRoomMessagesIdsById = (store, roomId) =>
+  store.getState().entities.msgStore.allMessageIds[roomId];
+
 export const selectIsLastMessageSentByCurrentUser = (
   store,
   currentUserId,

@@ -19,7 +19,9 @@ import {
   selectIsLastMessageSentByCurrentUser,
   selectLastSeenMessageIdByRoomId,
   selectRoomMessageIdsByRoomId,
+  selectRoomMessagesById,
   selectRoomMessagesByRoomId,
+  selectRoomMessagesIdsById,
 } from "../../store/msgStore";
 import userFuncs from "../../utility/userFuncs";
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
@@ -51,6 +53,7 @@ import {
   getUnseenMessageSum,
   selectCurrentRoomNewMessagesSum,
   selectLastSeenMessagSumByRoomId,
+  selectCurrenUserId,
 } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
@@ -81,7 +84,7 @@ function MessageList({ item }) {
   const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const currentUserId = store.getState().auth.currentUser._id;
+  const currentUserId = selectCurrenUserId(store);
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
   const currentRoomMessageSum = useSelector(
@@ -262,12 +265,10 @@ function MessageList({ item }) {
 
     if (searchWord) {
       setCurrentSearchWord(searchWord);
-      const roomAllMessages = {
-        ...store.getState().entities.msgStore.allMessages[roomId].messages,
-      };
-      const roomAllMessageIds = [
-        ...store.getState().entities.msgStore.allMessageIds[roomId],
-      ];
+
+      const roomAllMessages = { ...selectRoomMessagesById(store, roomId) };
+      const roomAllMessageIds = [...selectRoomMessagesIdsById(store, roomId)];
+
       roomAllMessageIds.forEach((messageId) => {
         if (
           roomAllMessages[messageId].messageBody
@@ -283,7 +284,6 @@ function MessageList({ item }) {
     }
   };
 
-  // console.log("messagelista päivittyy----");
   const getPosition = (e) => {
     e.nativeEvent.contentOffset.y >= 250
       ? setScrollButtonVisible(true)
