@@ -16,6 +16,8 @@ import MessageItemMain, {
 import { useNavigation } from "@react-navigation/native";
 import {
   messageSelected,
+  selectIsLastMessageSentByCurrentUser,
+  selectLastSeenMessageIdByRoomId,
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesByRoomId,
 } from "../../store/msgStore";
@@ -27,6 +29,7 @@ import AppTextInput from "./AppTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppButton from "./AppButton";
 import {
+  selectMessageSumByRoomId,
   lastStorageAdded,
   selectLastStorage,
   selectRoomMessageSumByRoomId,
@@ -35,7 +38,8 @@ import {
 } from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
 import {
-  goThowDeActivated,
+  goThrowDeactivated,
+  isGoThrowTwoTimes,
   messageFormFocusCleared,
 } from "../../store/general";
 import colors from "../../config/colors";
@@ -46,6 +50,7 @@ import {
   selectLastSeenMessagesById,
   getUnseenMessageSum,
   selectCurrentRoomNewMessagesSum,
+  selectLastSeenMessagSumByRoomId,
 } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
@@ -63,33 +68,64 @@ function MessageList({
   setShowSearchBar,
   dispatchScrollToIndex,
 }) {
+  const { _id: roomId, messageSum } = item.route.params;
+
+  const dispatch = useDispatch();
   const nav = useNavigation();
   const store = useStore();
-  const dispatch = useDispatch();
   const msgListRef = useRef();
-  const { _id: roomId, messageSum } = item.route.params;
-  // console.log("tämä päivittyy myös");
-  // const roomMessages = useSelector(selectRoomMessagesByRoomId(roomId));
-  const currentUserId = store.getState().auth.currentUser._id;
-  const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
-  const [currentSearchWord, setcurrentSearchWord] = useState(null);
-  const isFocused = useIsFocused();
-  const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
+  let newMessagesOnStart = useRef(null);
   let countTimes = useRef(0);
-  const [newMessagesOnStart, _setNewMessagesOnStart] = useState(null);
-  const newMessagesOnStartRef = React.useRef(newMessagesOnStart);
 
-  const setNewMessagesOnStart = (data) => {
-    newMessagesOnStartRef.current = data;
-    _setNewMessagesOnStart(data);
-  };
+  const [currentSearchWord, setcurrentSearchWord] = useState(null);
+  const [allMessagesFetched, setAllMessagesFetched] = useState(false);
+  const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
+  const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
+  const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
+  const [trigger, setTrigger] = useState(null);
+  const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const currentUserId = store.getState().auth.currentUser._id;
+  const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
+  const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
 
-  //*********** */
-  //*********** */
-  // const allUsers = store.getState().entities.users.allUsers;
-  // const allUsers = useSelector(selectAllUsersMinimal); // tämä ei tarvinne olla selector, voi tehdä raskaaksi
-  //*********** */
-  //*********** */
+  const getLastSeenNow = () => selectLastSeenMessagSumByRoomId(store, roomId);
+
+  const getNewMessagesSum = () => getRoomMessageSumNow() - getLastSeenNow();
+  const getLastSeenMessageId = () =>
+    selectLastSeenMessageIdByRoomId(
+      store,
+      roomId,
+      newMessagesOnStart.current - 1
+    );
+  const getRoomMessageSumNow = () => selectMessageSumByRoomId(store, roomId);
+
+  useEffect(() => {
+    newMessageScroll();
+  }, [roomMessageIds]);
+
+  useEffect(() => {
+    checkNewMessages();
+  }, [getRoomMessageSumNow()]);
+
+  useEffect(() => {
+    var appStateListener = AppState.addEventListener("change", handleChange);
+
+    nav.setOptions({
+      headerRight: () => (
+        <ShowSearchBarButton
+          onPress={setShowSearchBar}
+          onSearch={() => onSearch()}
+        />
+      ),
+    });
+
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
+
+  const keyExtractor = (item) => item;
   const messageItem = ({ item, index }) => {
     return (
       <View>
@@ -114,42 +150,24 @@ function MessageList({
     );
   };
 
-  const [allMessagesFetched, setAllMessagesFetched] = useState(false);
-  useEffect(() => {
+  const newMessageScroll = () => {
     if (messageSum === roomMessageIds?.length) {
       setAllMessagesFetched(true);
-      //don't scroll when last messages fetched, so thats why return
       return;
     }
+
     if (
-      store.getState().entities.msgStore.allMessages[roomId]?.messages[
-        roomMessageIds[0]
-      ]?.postedByUser === currentUserId
+      selectIsLastMessageSentByCurrentUser(
+        store,
+        currentUserId,
+        roomMessageIds[0],
+        roomId
+      )
     ) {
-      try {
-        onScrollToBottom(true);
-      } catch (error) {}
+      onScrollToBottom(true);
     }
-  }, [roomMessageIds]);
+  };
 
-  useEffect(() => {
-    var appStateListener = AppState.addEventListener("change", handleChange);
-
-    nav.setOptions({
-      headerRight: () => (
-        <ShowSearchBarButton
-          onPress={setShowSearchBar}
-          onSearch={() => onSearch()}
-        />
-      ),
-    });
-
-    return () => {
-      appStateListener?.remove();
-    };
-  }, []);
-
-  const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
   const saveMessageSum = () => {
     const unreadMessagesSum = messageFuncs.getLastSeenMessage(
       store.getState(),
@@ -164,68 +182,47 @@ function MessageList({
     }
   };
 
-  const getLastSeenNow = () =>
-    store.getState().auth.currentUser.last_seen_messages[
-      store
-        .getState()
-        .auth.currentUser.last_seen_messages.findIndex(
-          (object) => object.roomId === roomId
-        )
-    ].lastSeenMessageSum;
-
-  const getRoomMessageSumNow = () =>
-    store.getState().entities.rooms.allRooms[roomId].messageSum;
-
-  const getLastSeenMessageId = () =>
-    store.getState().entities.msgStore.allMessageIds[roomId][
-      newMessagesOnStartRef.current - 1
-    ];
-
   const handleChange = (newState) => {
     if (newState === "active") {
     } else if (newState === "background" || newState === "inactive") {
-      setNewMessagesOnStart(null); // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
+      newMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
       countTimes.current = 0;
-      // cameBack.current = true;
-      // goThrow.current = true;
     }
   };
 
   const checkNewMessages = async () => {
     if (
       countTimes.current === 0 ||
-      (store.getState().entities.general.goThrowTwoTimes &&
-        countTimes.current === 1)
+      (isGoThrowTwoTimes(store) && countTimes.current === 1)
     ) {
-      let newMessages = getRoomMessageSumNow() - getLastSeenNow();
-
-      setNewMessagesOnStart((newMessagesOnStartRef.current += newMessages));
+      let newMessages = getNewMessagesSum();
+      newMessagesOnStart.current += newMessages;
+      setTrigger(Math.random());
 
       if (countTimes.current === 1) {
-        dispatch(goThowDeActivated());
+        dispatch(goThrowDeactivated());
+        countTimes.current += 1;
       }
     }
+
     if (countTimes.current === 0) {
       setLatestSeenMessageId(getLastSeenMessageId());
+      countTimes.current += 1;
     }
-    countTimes.current += 1;
 
     saveMessageSum();
   };
 
-  useEffect(() => {
-    checkNewMessages();
-  }, [store.getState().entities.rooms.allRooms[roomId].messageSum]);
-
   const onScrollToBottom = (animate) => {
-    msgListRef.current.scrollToIndex({
-      animated: animate,
-      index: 0,
-    });
+    try {
+      msgListRef.current.scrollToIndex({
+        animated: animate,
+        index: 0,
+      });
+    } catch (error) {
+      console.log(error, "code 2971662");
+    }
   };
-  const keyExtractor = (item) => item;
-
-  const [showLoader, setShowLoader] = useState(false);
 
   const onScrollToIndexFailed = (error) => {
     setShowLoader(true);
@@ -263,7 +260,6 @@ function MessageList({
     }
   };
 
-  const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
   const onSearch = (searchWord) => {
     const filteredMessageIds = [];
 
@@ -296,17 +292,15 @@ function MessageList({
       ? setScrollButtonVisible(true)
       : setScrollButtonVisible(false);
   };
-  const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
-  const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
 
   return (
     <View style={styles.container}>
       {showSearchBar && (
         <AppSearchTextInput setShowSearchBar={setShowSearchBar} />
       )}
-      {showUnreadMessageButton && newMessagesOnStartRef.current > 0 && (
+      {showUnreadMessageButton && newMessagesOnStart.current > 0 && (
         <UnreadMessagesButton
-          unreadMessagesOnStart={newMessagesOnStartRef.current}
+          unreadMessagesOnStart={newMessagesOnStart.current}
           onPress={onScrollToIndex}
           setShowUnreadMessageButton={setShowUnreadMessageButton}
         ></UnreadMessagesButton>

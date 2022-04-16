@@ -55,7 +55,7 @@ const slice = createSlice({
       general.goThrowTwoTimes = true;
       // console.log(general.selectedMessage, "valittu");
     },
-    goThowDeActivated: (general, action) => {
+    goThrowDeactivated: (general, action) => {
       general.goThrowTwoTimes = false;
       // console.log(general.selectedMessage, "valittu");
     },
@@ -69,7 +69,7 @@ export const {
   errorMessageAdded,
   messageFormFocusAdded,
   goThowActivated,
-  goThowDeActivated,
+  goThrowDeactivated,
   messageSelected,
   messageSelectionRemoved,
   messageFormFocusCleared,
@@ -90,4 +90,6 @@ export const selectSelectedMessage = createSelector(
   (general) => general.selectedMessage
 );
 
+export const isGoThrowTwoTimes = (store) =>
+  store.getState().entities.general.goThrowTwoTimes;
 export default slice.reducer;

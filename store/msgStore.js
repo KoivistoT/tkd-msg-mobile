@@ -704,6 +704,19 @@ export const getRestMessages = (object) =>
     onError: messagesError.type,
   });
 
+export const selectLastSeenMessageIdByRoomId = (store, roomId, index) =>
+  store.getState().entities.msgStore.allMessageIds[roomId][index];
+
+export const selectIsLastMessageSentByCurrentUser = (
+  store,
+  currentUserId,
+  lastMessageId,
+  roomId
+) =>
+  store.getState().entities.msgStore.allMessages[roomId]?.messages[
+    lastMessageId
+  ]?.postedByUser === currentUserId;
+
 export const selectRoomMessagesByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,

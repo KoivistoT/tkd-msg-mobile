@@ -317,6 +317,9 @@ export const selectRoomDataById = (roomId) =>
       rooms.allRooms[roomId] !== undefined ? rooms.allRooms[roomId] : null
   );
 
+export const selectMessageSumByRoomId = (store, roomId) =>
+  store.getState().entities.rooms.allRooms[roomId].messageSum;
+
 export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms

@@ -308,6 +308,15 @@ export const onLoginFailed = () => {
   loginFailed();
 };
 
+export const selectLastSeenMessagSumByRoomId = (store, roomId) =>
+  store.getState().auth.currentUser.last_seen_messages[
+    store
+      .getState()
+      .auth.currentUser.last_seen_messages.findIndex(
+        (object) => object.roomId === roomId
+      )
+  ].lastSeenMessageSum;
+
 export const selectAccountType = (state) => state.auth.currentUser.accountType;
 
 export const selectCurrentUserToken = createSelector(
