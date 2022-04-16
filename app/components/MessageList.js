@@ -74,7 +74,7 @@ function MessageList({ item }) {
   const msgListRef = useRef();
   let newMessagesOnStart = useRef(null);
   let countTimes = useRef(0);
-  let checkNewWhenCameBack = useRef(false);
+
   const [currentSearchWord, setCurrentSearchWord] = useState(null);
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
@@ -183,7 +183,6 @@ function MessageList({ item }) {
   const handleChange = (newState) => {
     if (newState === "active") {
       countTimes.current = 1;
-      // checkNewWhenCameBack.current = true;
     } else if (newState === "background" || newState === "inactive") {
       newMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
       countTimes.current = 0;
