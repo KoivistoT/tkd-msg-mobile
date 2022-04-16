@@ -57,17 +57,20 @@ function CreateDirectGroupScreen() {
     if (item.status !== "active") return;
 
     return (
-      <AppCheckBox
-        label={`${item.firstName} ${item.lastName}`}
-        onPressItem={item._id}
-        onPress={(userId) => selectUser(userId)}
-      />
+      <>
+        <AppCheckBox
+          label={`${item.firstName} ${item.lastName}`}
+          onPressItem={item._id}
+          onPress={(userId) => selectUser(userId)}
+        />
+        <ListItemSeparator />
+      </>
     );
   };
 
   return (
     <Screen style={styles.modal}>
-      <AppButton title="Create room" onPress={onCreateRoom} />
+      <AppButton title="Create group" onPress={onCreateRoom} />
       <View>
         {Object.keys(allUsers).length !== 0 &&
           selectedUsers.map((item) => (
@@ -81,7 +84,7 @@ function CreateDirectGroupScreen() {
       <View style={styles.usersList}>
         {allUsers && (
           <FlatList
-            ItemSeparatorComponent={() => <ListItemSeparator />}
+            // ItemSeparatorComponent={() => <ListItemSeparator />}
             data={Object.values(allUsers)}
             bounces={false}
             keyExtractor={listKeyExtractor}
