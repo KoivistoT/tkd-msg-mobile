@@ -75,6 +75,15 @@ function MessageList({
   const [currentSearchWord, setcurrentSearchWord] = useState(null);
   const isFocused = useIsFocused();
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
+  let countTimes = useRef(0);
+  const [newMessagesOnStart, _setNewMessagesOnStart] = useState(null);
+  const newMessagesOnStartRef = React.useRef(newMessagesOnStart);
+
+  const setNewMessagesOnStart = (data) => {
+    newMessagesOnStartRef.current = data;
+    _setNewMessagesOnStart(data);
+  };
+
   //*********** */
   //*********** */
   // const allUsers = store.getState().entities.users.allUsers;
@@ -164,28 +173,23 @@ function MessageList({
         )
     ].lastSeenMessageSum;
 
-  let unreadMessagesOnStart = useRef(null);
-
   const getRoomMessageSumNow = () =>
     store.getState().entities.rooms.allRooms[roomId].messageSum;
 
   const getLastSeenMessageId = () =>
     store.getState().entities.msgStore.allMessageIds[roomId][
-      unreadMessagesOnStart.current - 1
+      newMessagesOnStartRef.current - 1
     ];
 
   const handleChange = (newState) => {
     if (newState === "active") {
     } else if (newState === "background" || newState === "inactive") {
-      unreadMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
+      setNewMessagesOnStart(null); // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
       countTimes.current = 0;
       // cameBack.current = true;
       // goThrow.current = true;
     }
   };
-
-  const [trigger, setTrigger] = useState();
-  let countTimes = useRef(0);
 
   const checkNewMessages = async () => {
     if (
@@ -195,14 +199,10 @@ function MessageList({
     ) {
       let newMessages = getRoomMessageSumNow() - getLastSeenNow();
 
-      unreadMessagesOnStart.current += newMessages;
+      setNewMessagesOnStart((newMessagesOnStartRef.current += newMessages));
 
       if (countTimes.current === 1) {
         dispatch(goThowDeActivated());
-        // tämä jotta päivittää, kun ensin on roomslistalla ja saa viestin, sitten menee pois sovelluksesta ja tulee uuden viestin myötä takaisin. Silloin pitää päivittää.
-        // ei siis päivitä new Messages (numero) -juttua muuten
-        // toki mikä asia vain, mikä päivittää messsagelistan, niin toimisi myös, jos se vain tulee tämän asian jälkeen
-        setTrigger(Math.random());
       }
     }
     if (countTimes.current === 0) {
@@ -290,7 +290,7 @@ function MessageList({
     }
   };
 
-  console.log("messagelista päivittyy----");
+  // console.log("messagelista päivittyy----");
   const getPosition = (e) => {
     e.nativeEvent.contentOffset.y >= 250
       ? setScrollButtonVisible(true)
@@ -304,9 +304,9 @@ function MessageList({
       {showSearchBar && (
         <AppSearchTextInput setShowSearchBar={setShowSearchBar} />
       )}
-      {showUnreadMessageButton && unreadMessagesOnStart.current > 0 && (
+      {showUnreadMessageButton && newMessagesOnStartRef.current > 0 && (
         <UnreadMessagesButton
-          unreadMessagesOnStart={unreadMessagesOnStart.current}
+          unreadMessagesOnStart={newMessagesOnStartRef.current}
           onPress={onScrollToIndex}
           setShowUnreadMessageButton={setShowUnreadMessageButton}
         ></UnreadMessagesButton>
