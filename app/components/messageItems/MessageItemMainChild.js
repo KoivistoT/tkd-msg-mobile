@@ -97,12 +97,11 @@ function MessageItemMainChild({
         setShowAllEmojis(true);
         setShowMore(true);
         setShowImages(SHOW_IMAGES);
+        setTimeout(() => {
+          scrollToMessage(); // tämä ei tarve välttämättä, maku asia
+        }, 400); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
       }
     }, 10);
-
-    setTimeout(() => {
-      scrollToMessage(); // tämä ei tarve välttämättä, maku asia
-    }, 200); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
 
     Keyboard.dismiss();
   };
@@ -235,7 +234,7 @@ function MessageItemMainChild({
             >
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => onSelectMessage()}
+                onLongPress={() => onSelectMessage()}
               >
                 <MessageHeader
                   sentBy={sentBy}
@@ -256,6 +255,7 @@ function MessageItemMainChild({
                         showImages={showImages}
                         setShowImages={setShowImages}
                         SHOW_IMAGES={SHOW_IMAGES}
+                        onLongPress={() => onSelectMessage()}
                       />
                     )}
                     {messageType === "document" && (

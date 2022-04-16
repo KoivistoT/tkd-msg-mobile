@@ -81,7 +81,6 @@ function MessageList({ item }) {
   const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
   const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
   const [showUnreadMessageButton, setShowUnreadMessageButton] = useState(true);
-  const [trigger, setTrigger] = useState(null);
   const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -204,7 +203,6 @@ function MessageList({ item }) {
     if (!isNewMessagesChecked.current || isPushNotificationPressed(store)) {
       newMessagesOnStart.current += getNewMessagesSum();
       setShowUnreadMessageButton(true); //tämä maku asiaa
-      // setTrigger(Math.random());
 
       if (isNewMessagesChecked.current) {
         dispatch(pushNotificationPressedDeactivated());

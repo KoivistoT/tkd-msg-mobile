@@ -22,7 +22,7 @@ import { selectAllUsersMinimal } from "../../../store/users";
 import userFuncs from "../../../utility/userFuncs";
 import timeFuncs from "../../../utility/timeFuncs";
 
-function ShowImageModal({ image, item }) {
+function ShowImageModal({ image, item, onLongPress }) {
   const { roomId, createdAt, postedByUser } = item;
 
   // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
@@ -138,6 +138,7 @@ function ShowImageModal({ image, item }) {
       <TouchableOpacity
         activeOpacity="0.8"
         onPress={() => setModalVisible(true)}
+        onLongPress={onLongPress}
         style={styles.imageFrame}
       >
         <Image

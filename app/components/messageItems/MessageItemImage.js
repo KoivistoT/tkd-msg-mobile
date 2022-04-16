@@ -5,7 +5,13 @@ import colors from "../../../config/colors";
 import AppText from "../AppText";
 import ShowImageModal from "../imageComponents/ShowImageModal";
 
-function MessageItemImage({ item, showImages, setShowImages, SHOW_IMAGES }) {
+function MessageItemImage({
+  onLongPress,
+  item,
+  showImages,
+  setShowImages,
+  SHOW_IMAGES,
+}) {
   const [isMoreImages, setIsMoreImages] = useState(false);
 
   useEffect(() => {
@@ -22,7 +28,12 @@ function MessageItemImage({ item, showImages, setShowImages, SHOW_IMAGES }) {
     <View>
       <View style={styles.ImageModalContainer}>
         {item.imageURLs.slice(0, showImages).map((url) => (
-          <ShowImageModal key={url} item={item} image={url} />
+          <ShowImageModal
+            onLongPress={onLongPress}
+            key={url}
+            item={item}
+            image={url}
+          />
         ))}
       </View>
       {isMoreImages && (

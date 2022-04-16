@@ -48,7 +48,9 @@ function MessageItemReply({
       );
 
     dispatch(messageSelected(replyMessageId));
-    onScrollToIndex(replyMessageIndex);
+    setTimeout(() => {
+      onScrollToIndex(replyMessageIndex, 0.5);
+    }, 200);
   };
   return (
     <View
