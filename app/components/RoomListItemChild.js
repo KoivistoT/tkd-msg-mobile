@@ -130,7 +130,9 @@ function RoomListItemChild({
                 {latestMessage &&
                   timeFuncs.getWeekDayNames(latestMessage.createdAt)}
               </AppText>
-              <MemoUnreadMessagesItem item={item} />
+              <View style={{ height: 30 }}>
+                <MemoUnreadMessagesItem item={item} />
+              </View>
             </View>
             {type === "private" && <OnlineIndicator members={members} />}
           </TouchableOpacity>
