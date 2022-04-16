@@ -4,11 +4,13 @@ import AppText from "./AppText";
 import { useSelector } from "react-redux";
 import { selectLastSeenMessagesById } from "../../store/currentUser";
 import colors from "../../config/colors";
+import { selectUnreadSum } from "../../store/rooms";
 
 function UnreadMessagesItem({ item }) {
   const { messageSum, _id: roomId } = item;
-  const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
-  const unreadMessages = messageSum - lastSeenMessagesNow;
+  // const lastSeenMessagesNow = useSelector(selectLastSeenMessagesById(roomId));
+  // const unreadMessages = messageSum - lastSeenMessagesNow;
+  const unreadMessages = useSelector(selectUnreadSum(roomId));
 
   //kokeile täälä vielä selectoria, josta tulee suoraan lukemattomat?, ettei vain laske se liikaa
 
