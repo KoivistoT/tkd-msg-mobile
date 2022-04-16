@@ -204,7 +204,7 @@ function MessageList({ item }) {
     if (!isNewMessagesChecked.current || isPushNotificationPressed(store)) {
       newMessagesOnStart.current += getNewMessagesSum();
       setShowUnreadMessageButton(true); //tämä maku asiaa
-      setTrigger(Math.random());
+      // setTrigger(Math.random());
 
       if (isNewMessagesChecked.current) {
         dispatch(pushNotificationPressedDeactivated());
