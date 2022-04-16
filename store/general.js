@@ -51,7 +51,7 @@ const slice = createSlice({
       general.selectedMessage = action.payload;
       // console.log(general.selectedMessage, "valittu");
     },
-    goThowActivated: (general, action) => {
+    goThrowTwoTimesActivated: (general, action) => {
       general.goThrowTwoTimes = true;
       // console.log(general.selectedMessage, "valittu");
     },
@@ -68,7 +68,7 @@ const slice = createSlice({
 export const {
   errorMessageAdded,
   messageFormFocusAdded,
-  goThowActivated,
+  goThrowTwoTimesActivated,
   goThrowDeactivated,
   messageSelected,
   messageSelectionRemoved,
