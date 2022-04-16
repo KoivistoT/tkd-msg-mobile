@@ -99,7 +99,7 @@ function MessageItemMainChild({
         setShowImages(SHOW_IMAGES);
         setTimeout(() => {
           scrollToMessage(); // tämä ei tarve välttämättä, maku asia
-        }, 400); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
+        }, 100); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
       }
     }, 10);
 

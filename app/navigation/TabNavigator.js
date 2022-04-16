@@ -6,6 +6,8 @@ import RoomsListScreen from "../../screens/RoomsListScreen.js.js";
 import ControlScreen from "../../screens/ControlScreen";
 import ControlNavigator from "./ControlNavigator";
 import ContactsNavigator from "./ContactsNavigator";
+import UserSetupScreen from "../../screens/UserSetupScreen";
+import { Octicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +37,15 @@ const TabNavigator = () => {
               color={color}
               size={size}
             />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="UserSetup"
+        component={UserSetupScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Octicons name="settings" size={24} color="black" />
           ),
         }}
       />

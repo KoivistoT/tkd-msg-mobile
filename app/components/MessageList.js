@@ -253,10 +253,10 @@ function MessageList({ item }) {
     }, 1);
   };
 
-  const onScrollToIndex = (replyMessageIndex, position) => {
+  const onScrollToIndex = (replyMessageIndex, position, animation = true) => {
     try {
       msgListRef.current.scrollToIndex({
-        animated: true, // tämä voisi olla false
+        animated: animation, // tämä voisi olla false
         index: replyMessageIndex,
         viewPosition: position,
       });
