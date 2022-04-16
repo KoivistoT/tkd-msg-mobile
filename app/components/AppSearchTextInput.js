@@ -22,29 +22,27 @@ function AppSearchTextInput({
   width = "100%",
   marginTop,
   setShowSearchBar,
-
+  currentSearchWord,
   ...ohterProps
 }) {
   const textInput = useRef(null);
-  const [searchWord, setSearchWord] = useState(null);
+  const [searchWord, setSearchWord] = useState(currentSearchWord);
 
   return (
     <View style={styles.mainContainer}>
       <View style={{ flexDirection: "row", paddingHorizontal: 0 }}>
-        {icon && (
-          <MaterialCommunityIcons name={icon} size={20} style={styles.icon} />
-        )}
         <TouchableWithoutFeedback
           onPress={() => textInput.current.focus()}
           style={styles.container}
         >
-          <View style={{ width: "62%" }}>
+          <View style={{ width: 260 }}>
             <TextInput
               ref={textInput}
               {...ohterProps}
+              defaultValue={searchWord ? searchWord : null}
               placeholder="Search word..."
               placeholderTextColor={colors.medium}
-              onChangeText={(text) => setSearchWord(text)}
+              onChangeText={(searchWord) => setSearchWord(searchWord)}
               multiline={false}
               style={{
                 height: 40,
@@ -112,6 +110,7 @@ function AppSearchTextInput({
           onPress={() => {
             textInput.current.clear();
             setSearchWord(null);
+            setShowSearchBar(false);
             onSearch();
           }}
           style={{
@@ -132,15 +131,15 @@ function AppSearchTextInput({
 const styles = StyleSheet.create({
   mainContainer: {
     zIndex: 20,
-    backgroundColor: colors.light,
+
     padding: 5,
+    alignItems: "center",
   },
   container: {
     flexDirection: "row",
-    marginRight: 50,
-  },
-  icon: {
-    marginRight: 10,
+    marginHorizontal: 10,
+    backgroundColor: colors.light,
+    borderRadius: 6,
   },
 });
 export default AppSearchTextInput;

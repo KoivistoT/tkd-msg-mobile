@@ -4,7 +4,6 @@ import Screen from "../app/components/Screen";
 import MessageList from "../app/components/MessageList";
 import { KeyboardAvoidingView, StyleSheet } from "react-native";
 function MessageScreen(item) {
-  const [showSearchBar, setShowSearchBar] = useState(false);
   // const [dispatchScrollToIndex, setDispatchScrollToIndex] = useState(false);
   return (
     <KeyboardAvoidingView
@@ -15,13 +14,13 @@ function MessageScreen(item) {
       <MessageList
         // dispatchScrollToIndex={dispatchScrollToIndex}
         item={item}
-        showSearchBar={showSearchBar}
-        setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
+        // showSearchBar={showSearchBar}
+        // setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
       />
       <MessageForm
         item={item}
         // setDispatchScrollToIndex={setDispatchScrollToIndex}
-        setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
+        // setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
       />
     </KeyboardAvoidingView>
   );

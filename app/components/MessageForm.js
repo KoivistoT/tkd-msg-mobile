@@ -45,7 +45,7 @@ import MessageFormField from "./forms/MessageFormField";
 
 const PLACEHOLDER_TEXT_MAX_LENGTH = 22;
 
-function MessageForm({ item, setShowSearchBar }) {
+function MessageForm({ item }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();

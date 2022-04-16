@@ -62,12 +62,7 @@ import { selectSocket } from "../../store/socket";
 import messageFuncs from "../../utility/messageFuncs";
 const MAX_TO_RENDER_PER_BATCH = 20;
 
-function MessageList({
-  item,
-  showSearchBar,
-  setShowSearchBar,
-  dispatchScrollToIndex,
-}) {
+function MessageList({ item }) {
   const { _id: roomId, messageSum } = item.route.params;
 
   const dispatch = useDispatch();
@@ -77,7 +72,7 @@ function MessageList({
   let newMessagesOnStart = useRef(null);
   let countTimes = useRef(0);
 
-  const [currentSearchWord, setcurrentSearchWord] = useState(null);
+  const [currentSearchWord, setCurrentSearchWord] = useState(null);
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
   const [searchResultMessageIds, setSearchResultMessageIds] = useState(null);
   const [scrollButtonVisible, setScrollButtonVisible] = useState(false);
@@ -85,6 +80,7 @@ function MessageList({
   const [trigger, setTrigger] = useState(null);
   const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const currentUserId = store.getState().auth.currentUser._id;
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
@@ -116,8 +112,7 @@ function MessageList({
     nav.setOptions({
       headerRight: () => (
         <ShowSearchBarButton
-          onPress={setShowSearchBar}
-          onSearch={() => onSearch()}
+          onPress={() => setShowSearchBar((prevState) => !prevState)}
         />
       ),
     });
@@ -266,7 +261,7 @@ function MessageList({
     const filteredMessageIds = [];
 
     if (searchWord) {
-      setcurrentSearchWord(searchWord);
+      setCurrentSearchWord(searchWord);
       const roomAllMessages = {
         ...store.getState().entities.msgStore.allMessages[roomId].messages,
       };
@@ -284,7 +279,7 @@ function MessageList({
       setSearchResultMessageIds(filteredMessageIds);
     } else {
       setSearchResultMessageIds(null);
-      setcurrentSearchWord(null);
+      setCurrentSearchWord(null);
     }
   };
 
@@ -298,7 +293,11 @@ function MessageList({
   return (
     <View style={styles.container}>
       {showSearchBar && (
-        <AppSearchTextInput setShowSearchBar={setShowSearchBar} />
+        <AppSearchTextInput
+          onSearch={(a) => onSearch(a)}
+          setShowSearchBar={setShowSearchBar}
+          currentSearchWord={currentSearchWord}
+        />
       )}
       {showUnreadMessageButton && newMessagesOnStart.current > 0 && (
         <UnreadMessagesButton
