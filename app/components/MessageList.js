@@ -40,9 +40,10 @@ import {
 } from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
 import {
-  goThrowDeactivated,
-  isGoThrowTwoTimes,
+  pushNotificationPressedDeactivated,
+  pushNotificationPressed,
   messageFormFocusCleared,
+  isPushNotificationPressed,
 } from "../../store/general";
 import colors from "../../config/colors";
 import ScrollDownButton from "./ScrollDownButton";
@@ -73,7 +74,7 @@ function MessageList({ item }) {
   const store = useStore();
   const msgListRef = useRef();
   let newMessagesOnStart = useRef(null);
-  let countTimes = useRef(0);
+  let isNewMessagesChecked = useRef(false);
 
   const [currentSearchWord, setCurrentSearchWord] = useState(null);
   const [allMessagesFetched, setAllMessagesFetched] = useState(false);
@@ -182,10 +183,10 @@ function MessageList({ item }) {
 
   const handleChange = (newState) => {
     if (newState === "active") {
-      countTimes.current = 1;
+      isNewMessagesChecked.current = true;
     } else if (newState === "background" || newState === "inactive") {
       newMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
-      countTimes.current = 0;
+      isNewMessagesChecked.current = false;
     }
   };
 
@@ -193,31 +194,27 @@ function MessageList({ item }) {
     //tämä maku asia
     //tämä maku asia
     //tämä maku asia
-    if (countTimes.current > 0 && !isGoThrowTwoTimes(store)) {
+    if (isNewMessagesChecked.current && !isPushNotificationPressed(store)) {
       setShowUnreadMessageButton(false);
     }
     //tämä maku asia
     //tämä maku asia
     //tämä maku asia
 
-    if (
-      countTimes.current === 0 ||
-      (isGoThrowTwoTimes(store) && countTimes.current === 1)
-    ) {
+    if (!isNewMessagesChecked.current || isPushNotificationPressed(store)) {
       newMessagesOnStart.current += getNewMessagesSum();
       setShowUnreadMessageButton(true); //tämä maku asiaa
       setTrigger(Math.random());
 
-      if (countTimes.current === 1) {
-        dispatch(goThrowDeactivated());
+      if (isNewMessagesChecked.current) {
+        dispatch(pushNotificationPressedDeactivated());
         setLatestSeenMessageId(getLastSeenMessageId());
-        countTimes.current += 1;
       }
     }
 
-    if (countTimes.current === 0) {
+    if (!isNewMessagesChecked.current) {
       setLatestSeenMessageId(getLastSeenMessageId());
-      countTimes.current += 1;
+      isNewMessagesChecked.current = true;
     }
 
     saveMessageSum();

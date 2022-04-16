@@ -44,7 +44,7 @@ import { getAllUsers, usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
 import { getRestMessages, messagesResived } from "./store/msgStore";
 import { createSocketConnection } from "./store/socket";
-import { goThrowTwoTimesActivated } from "./store/general";
+import { pushNotificationPressed } from "./store/general";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -130,9 +130,7 @@ function App() {
       Notifications.addNotificationResponseReceivedListener((response) => {
         const currentRoomId = response.notification.request.content.data.roomId;
 
-        if (store.getState().entities.rooms.activeRoomId !== currentRoomId) {
-          dispatch(goThrowTwoTimesActivated());
-        }
+        dispatch(pushNotificationPressed());
 
         const roomData =
           store.getState().entities.rooms.allRooms[currentRoomId];

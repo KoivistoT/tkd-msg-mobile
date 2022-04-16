@@ -12,7 +12,7 @@ const slice = createSlice({
     loading: false,
     messageFormFocus: false,
     selectedMessage: null,
-    goThrowTwoTimes: false,
+    pushNotificationPressed: false,
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -51,12 +51,12 @@ const slice = createSlice({
       general.selectedMessage = action.payload;
       // console.log(general.selectedMessage, "valittu");
     },
-    goThrowTwoTimesActivated: (general, action) => {
-      general.goThrowTwoTimes = true;
+    pushNotificationPressed: (general, action) => {
+      general.pushNotificationPressed = true;
       // console.log(general.selectedMessage, "valittu");
     },
-    goThrowDeactivated: (general, action) => {
-      general.goThrowTwoTimes = false;
+    pushNotificationPressedDeactivated: (general, action) => {
+      general.pushNotificationPressed = false;
       // console.log(general.selectedMessage, "valittu");
     },
     messageSelectionRemoved: (general, action) => {
@@ -68,8 +68,8 @@ const slice = createSlice({
 export const {
   errorMessageAdded,
   messageFormFocusAdded,
-  goThrowTwoTimesActivated,
-  goThrowDeactivated,
+  pushNotificationPressed,
+  pushNotificationPressedDeactivated,
   messageSelected,
   messageSelectionRemoved,
   messageFormFocusCleared,
@@ -90,6 +90,7 @@ export const selectSelectedMessage = createSelector(
   (general) => general.selectedMessage
 );
 
-export const isGoThrowTwoTimes = (store) =>
-  store.getState().entities.general.goThrowTwoTimes;
+export const isPushNotificationPressed = (store) =>
+  store.getState().entities.general.pushNotificationPressed;
+
 export default slice.reducer;
