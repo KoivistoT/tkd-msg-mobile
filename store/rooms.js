@@ -391,10 +391,10 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     rooms.push({
       roomId,
       lastMessageTimestamp:
-        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || 0,
+        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || null,
     });
   });
-
+  console.log(rooms);
   //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
   //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
   //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
