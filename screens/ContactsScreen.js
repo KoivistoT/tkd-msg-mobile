@@ -57,7 +57,8 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
           style={{
             backgroundColor: item.status === "archived" ? "yellow" : "white",
             flexDirection: "row",
-            margin: 10,
+            marginLeft: 10,
+            marginBottom: 15,
           }}
         >
           <View
