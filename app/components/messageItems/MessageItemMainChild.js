@@ -1,5 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Keyboard } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -36,6 +42,7 @@ import SeenButton from "./SeenButton";
 import Reactions from "./Reactions";
 import MessageText from "./MessageText";
 import { useIsFocused } from "@react-navigation/native";
+
 const SHOW_IMAGES = 2;
 
 function MessageItemMainChild({
@@ -97,8 +104,13 @@ function MessageItemMainChild({
         setShowAllEmojis(true);
         setShowMore(true);
         setShowImages(SHOW_IMAGES);
+
         setTimeout(() => {
-          scrollToMessage(); // tämä ei tarve välttämättä, maku asia
+          scrollToMessage(
+            Dimensions.get("window").height - elementHeight.current * 2 < 0
+              ? -0.3
+              : 0.5
+          ); // tämä ei tarve välttämättä, maku asia
         }, 100); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
       }
     }, 10);
@@ -138,7 +150,7 @@ function MessageItemMainChild({
 
   const messageRef = useRef();
 
-  const scrollToMessage = () => {
+  const scrollToMessage = (position = 0) => {
     const messageIndex = store
       .getState()
       .entities.msgStore.allMessageIds[roomId].findIndex(
@@ -148,7 +160,7 @@ function MessageItemMainChild({
     if (messageIndex !== -1) {
       setTimeout(
         () => {
-          onScrollToIndex(messageIndex, 0.0);
+          onScrollToIndex(messageIndex, position);
         },
         Platform.OS == "ios" ? 100 : 1000
       );
@@ -162,6 +174,7 @@ function MessageItemMainChild({
   const [showMore, setShowMore] = useState(true);
   const [showImages, setShowImages] = useState(SHOW_IMAGES);
   // console.log(showAllEmojis);
+  const elementHeight = useRef(0);
   return (
     // <GestureRecognizer
     //   onSwipeRight={(state) => onSwipeRight(state)}
@@ -214,6 +227,11 @@ function MessageItemMainChild({
           style={{
             flexDirection: "row",
             alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
+          }}
+          onLayout={(event) => {
+            var { height } = event.nativeEvent.layout;
+
+            elementHeight.current = height;
           }}
         >
           <View
