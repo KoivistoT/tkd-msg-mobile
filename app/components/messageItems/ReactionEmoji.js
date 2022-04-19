@@ -1,23 +1,26 @@
 import React from "react";
-import { View, StyleSheet, TouchableNativeFeedback } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
 import sortArray from "../../../utility/sortArray";
 
-function ReactionEmoji({ onPress, reactions, currentUserId }) {
+function ReactionEmoji({ onPress, reactions, currentUserId, onLongPress }) {
   const sortedReactions = sortArray(reactions, "order");
 
   return sortedReactions.map((reaction) => {
     const { name, count, users } = reaction;
 
     return (
-      <TouchableNativeFeedback
+      <TouchableOpacity
+        activeOpacity={1}
         onPress={() => onPress(name)}
-        style={{
-          margin: 20,
-          flexDirection: "row",
-        }}
+        onLongPress={onLongPress}
         key={name}
       >
         <View
@@ -36,14 +39,14 @@ function ReactionEmoji({ onPress, reactions, currentUserId }) {
             margin: 2,
             backgroundColor:
               colors[
-                users?.includes(currentUserId) ? "light" : "backgroundColor1"
+                users?.includes(currentUserId) ? "success" : "backgroundColor1"
               ],
           }}
         >
           <AntDesign name={name} size={16} color={colors[reaction.color]} />
           {count && <AppText style={{ marginLeft: 2 }}>{`${count}`}</AppText>}
         </View>
-      </TouchableNativeFeedback>
+      </TouchableOpacity>
     );
   });
 }
