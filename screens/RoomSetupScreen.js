@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
@@ -36,6 +36,7 @@ import colors from "../config/colors";
 import SectionSeparator from "../app/components/SectionSeparator";
 import AppTitle from "../app/components/AppTitle";
 import UserInfoCard from "../app/components/UserInfoCard";
+import userFuncs from "../utility/userFuncs";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -54,9 +55,11 @@ function RoomSetupScreen(item) {
   const roomMembers = useSelector(selectRoomMembersById(roomId));
 
   const currentUserData = useSelector(selectCurrentUserData);
-
+  const roomData = useSelector(selectRoomDataById(roomId));
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const selectedUsersRef = React.useRef(selectedUsers);
+
+  useEffect(() => {}, [roomData]);
 
   const setSelectedUsers = (data) => {
     selectedUsersRef.current = data;
@@ -166,10 +169,14 @@ function RoomSetupScreen(item) {
           marginBottom: 20,
         }}
       >
-        <AppText>Chat name</AppText>
-        <AppText style={{ fontSize: 20 }}>
-          {roomFuncs.getRoomTitle(item.route.params, roomMembers, allUsers)}
-        </AppText>
+        {roomData.type !== "private" && (
+          <View>
+            <AppText>Chat name</AppText>
+            <AppText style={{ fontSize: 20 }}>
+              {roomFuncs.getRoomTitle(roomData, roomMembers, allUsers)}
+            </AppText>
+          </View>
+        )}
       </View>
 
       <View
@@ -209,7 +216,9 @@ function RoomSetupScreen(item) {
               padding: 10,
             }}
           >
-            <AppText style={{ alignSelf: "center" }}>{description}</AppText>
+            <AppText style={{ alignSelf: "center" }}>
+              {description ? description : "Add description"}
+            </AppText>
           </View>
         </View>
       )}

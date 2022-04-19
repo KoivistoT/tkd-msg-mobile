@@ -23,6 +23,7 @@ const getPrivateRoomTitle = (members, currentUserId, allUsers) => {
   try {
     const otherUserId = members.filter((user) => user !== currentUserId)[0];
     const selectedUser = otherUserId ? otherUserId : currentUserId;
+
     return `${allUsers[selectedUser].firstName} ${allUsers[selectedUser].lastName}`;
   } catch (error) {
     console.log(error, "code 993id");
