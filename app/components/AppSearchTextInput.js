@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
+  Keyboard,
 } from "react-native";
 import { TextInput as NativeTextInput } from "react-native";
 import colors from "../../config/colors";
@@ -15,6 +16,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { messageFormFocusCleared } from "../../store/general";
+import { useDispatch } from "react-redux";
 
 function AppSearchTextInput({
   icon,
@@ -27,6 +30,10 @@ function AppSearchTextInput({
 }) {
   const textInput = useRef(null);
   const [searchWord, setSearchWord] = useState(currentSearchWord);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    textInput.current.focus();
+  }, []);
 
   return (
     <View style={styles.mainContainer}>
@@ -35,7 +42,7 @@ function AppSearchTextInput({
           onPress={() => textInput.current.focus()}
           style={styles.container}
         >
-          <View style={{ width: 260 }}>
+          <View style={{ width: 230 }}>
             <TextInput
               ref={textInput}
               {...ohterProps}
