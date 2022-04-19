@@ -100,6 +100,10 @@ function MessageForm({ item }) {
       dispatch(activeRoomIdCleared());
       dispatch(msgStoreActiveRoomIdCleared());
     };
+    //tarviiko roomData vielä tässä?
+    //tarviiko roomData vielä tässä?
+    //tarviiko roomData vielä tässä?
+    //tarviiko roomData vielä tässä?
   }, [roomMembers, roomData, allUsers]);
 
   const setHeader = () => {

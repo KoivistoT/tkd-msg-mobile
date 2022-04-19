@@ -63,7 +63,9 @@ function ScreenHeaderTitle({
       !showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
     ) {
       return otherUserLastPresent
-        ? timeFuncs.getWeekDayNamesWithTimes(otherUserLastPresent)
+        ? `last present ${timeFuncs.getWeekDayNamesWithTimes(
+            otherUserLastPresent
+          )}`
         : "";
     }
 

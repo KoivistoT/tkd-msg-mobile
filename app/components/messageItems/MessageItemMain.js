@@ -108,6 +108,7 @@ function MessageItemMain({
     //     zIndex: messageId === "625537b0de70ac59a4f011f6" ? 200000 : 2,
     //   }}
     // >
+
     <MemoMessageItemMainChild
       message={message}
       searchWord={searchWord}
@@ -115,6 +116,7 @@ function MessageItemMain({
       allUsers={allUsers}
       onScrollToIndex={onScrollToIndex}
     />
+
     // </View>
     // {/* </Animated.View> */}
   );
