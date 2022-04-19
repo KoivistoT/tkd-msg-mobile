@@ -713,9 +713,6 @@ export const selectRoomMessagesById = (store, roomId) =>
 export const selectRoomMessagesIdsById = (store, roomId) =>
   store.getState().entities.msgStore.allMessageIds[roomId];
 
-export const selectActiveRoomId = (store, roomId) =>
-  store.getState().entities.msgStore.activeRoomId;
-
 export const selectIsLastMessageSentByCurrentUser = (
   store,
   currentUserId,

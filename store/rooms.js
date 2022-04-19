@@ -343,6 +343,10 @@ export const selectAllActiveRoomsIdsOld = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allActiveRoomsIds
 );
+
+export const selectActiveRoomId = (store) =>
+  store.getState().entities.rooms.activeRoomId;
+
 export const selectTypersByRoomId = (roomId, currentUserId) =>
   createSelector(
     (state) => state.entities.rooms,

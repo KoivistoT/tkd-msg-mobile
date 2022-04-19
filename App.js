@@ -36,17 +36,16 @@ import AppSuccessToast from "./app/components/AppSuccessToast";
 
 import asyncStorageFuncs from "./utility/asyncStorageFuncs";
 import {
+  activeRoomIdResived,
   getUserRoomsByUserId,
   notificationResponseResived,
   roomsResived,
+  selectActiveRoomId,
 } from "./store/rooms";
 import { getAllUsers, usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
-import {
-  getRestMessages,
-  messagesResived,
-  selectActiveRoomId,
-} from "./store/msgStore";
+import { getRestMessages, messagesResived } from "./store/msgStore";
+
 import { createSocketConnection } from "./store/socket";
 import { newMessageResived, pushNotificationPressed } from "./store/general";
 import NewMessageNotification from "./app/components/NewMessageNotification";
