@@ -391,10 +391,11 @@ export const selectAllActiveRoomsIds = memoize((state) => {
     rooms.push({
       roomId,
       lastMessageTimestamp:
-        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || null,
+        state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt ||
+        state.entities.rooms.allRooms[roomId]?.createdAt,
     });
   });
-
+  console.log(rooms);
   return sortArray(rooms, "lastMessageTimestamp", "DESC").map(
     (item) => item.roomId
   );
