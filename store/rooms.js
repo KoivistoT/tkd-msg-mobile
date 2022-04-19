@@ -395,7 +395,7 @@ export const selectAllActiveRoomsIds = memoize((state) => {
         state.entities.rooms.allRooms[roomId]?.createdAt,
     });
   });
-  console.log(rooms);
+
   return sortArray(rooms, "lastMessageTimestamp", "DESC").map(
     (item) => item.roomId
   );
