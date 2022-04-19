@@ -394,13 +394,7 @@ export const selectAllActiveRoomsIds = memoize((state) => {
         state.entities.rooms.allRooms[roomId]?.latestMessage?.createdAt || null,
     });
   });
-  console.log(rooms);
-  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
-  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
-  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
-  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
-  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
-  //sitten tulee oikein, jos ne joissa ei ole mitään saa oletusarvon??
+
   return sortArray(rooms, "lastMessageTimestamp", "DESC").map(
     (item) => item.roomId
   );
