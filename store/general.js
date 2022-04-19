@@ -13,6 +13,7 @@ const slice = createSlice({
     messageFormFocus: false,
     selectedMessage: null,
     pushNotificationPressed: false,
+    newMessage: null,
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -62,11 +63,19 @@ const slice = createSlice({
     messageSelectionRemoved: (general, action) => {
       general.selectedMessage = null;
     },
+    newMessageResived: (general, action) => {
+      general.newMessage = action.payload;
+    },
+    newMessageCleared: (general, action) => {
+      general.newMessage = null;
+    },
   },
 });
 
 export const {
   errorMessageAdded,
+  newMessageResived,
+  newMessageCleared,
   messageFormFocusAdded,
   pushNotificationPressed,
   pushNotificationPressedDeactivated,

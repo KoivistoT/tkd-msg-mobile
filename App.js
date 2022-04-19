@@ -42,9 +42,14 @@ import {
 } from "./store/rooms";
 import { getAllUsers, usersResived } from "./store/users";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
-import { getRestMessages, messagesResived } from "./store/msgStore";
+import {
+  getRestMessages,
+  messagesResived,
+  selectActiveRoomId,
+} from "./store/msgStore";
 import { createSocketConnection } from "./store/socket";
-import { pushNotificationPressed } from "./store/general";
+import { newMessageResived, pushNotificationPressed } from "./store/general";
+import NewMessageNotification from "./app/components/NewMessageNotification";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -118,7 +123,16 @@ function App() {
   useEffect(() => {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        // alert("viesti huoneeseen:", notification.request.content.data.roomId);
+        if (
+          notification.request.content.data.roomId !== selectActiveRoomId(store)
+        ) {
+          dispatch(
+            newMessageResived({
+              ...notification.request.content.data,
+            })
+          );
+        }
+        // console.log(notification.request.content.data);
         // const currentRoomId = notification.request.content.data.roomId;
         // const roomData =
         //   store.getState().entities.rooms.allRooms[currentRoomId];
@@ -196,7 +210,7 @@ function App() {
 
       <AppErrorToast />
       <AppSuccessToast />
-
+      <NewMessageNotification />
       <GeneralLoadIndicator />
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}
