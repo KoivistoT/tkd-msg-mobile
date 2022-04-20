@@ -21,7 +21,7 @@ import roomFuncs from "../../utility/roomFuncs";
 class GeneralLoadIndicator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showMessage: false };
+    this.state = { showMessage: false, counter: 0 };
   }
 
   componentDidUpdate(prevProps) {
@@ -34,9 +34,14 @@ class GeneralLoadIndicator extends React.Component {
       this.props.newMessage !== prevProps.newMessage
     ) {
       this.setState({ showMessage: true });
+
+      this.setState({ counter: this.state.counter + 1 });
       setTimeout(() => {
-        this.setState({ showMessage: false });
-      }, 2000);
+        this.setState({ counter: this.state.counter - 1 });
+        if (this.state.counter === 0) {
+          this.setState({ showMessage: false });
+        }
+      }, 3000);
     }
   }
 
