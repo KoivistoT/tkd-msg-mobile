@@ -14,7 +14,13 @@ import defaultStyles from "../../config/styles";
 import { useSelector } from "react-redux";
 import { selectMessageFormFocus } from "../../store/general";
 
-function AppTextInput({ icon, width = "100%", marginTop, ...ohterProps }) {
+function AppTextInput({
+  icon,
+  width = "100%",
+  marginTop,
+  padding,
+  ...ohterProps
+}) {
   const textInput = useRef(null);
   const focus = useSelector(selectMessageFormFocus);
 
@@ -30,14 +36,14 @@ function AppTextInput({ icon, width = "100%", marginTop, ...ohterProps }) {
             name={icon}
             size={20}
             color={defaultStyles.colors.medium}
-            style={styles.icon}
+            style={[styles.icon, { padding }]}
           />
         )}
         <View style={{ width, marginLeft: 5, marginTop: 2 }}>
           <TextInput
             ref={textInput}
             placeholderTextColor={defaultStyles.colors.medium}
-            style={defaultStyles.text}
+            style={[defaultStyles.text, { padding }]}
             {...ohterProps}
           />
         </View>

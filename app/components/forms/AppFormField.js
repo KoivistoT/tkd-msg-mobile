@@ -11,6 +11,8 @@ function AppFormField({
   name,
   width,
   showLabel = false,
+  marginBottom,
+  padding,
   showErrorMessage = true,
   ...otherProps
 }) {
@@ -18,7 +20,7 @@ function AppFormField({
     useFormikContext();
 
   return (
-    <>
+    <View style={{ marginBottom }}>
       {showLabel && (
         <View style={styles.labelFrame}>
           <AppText style={styles.label}>{name}</AppText>
@@ -29,6 +31,7 @@ function AppFormField({
         onChangeText={(text) => setFieldValue(name, text)}
         value={values[name]}
         width={width}
+        padding={padding}
         {...otherProps}
       />
       {showErrorMessage && (
@@ -37,7 +40,7 @@ function AppFormField({
           visible={touched[name]}
         ></ErrorMessage>
       )}
-    </>
+    </View>
   );
 }
 

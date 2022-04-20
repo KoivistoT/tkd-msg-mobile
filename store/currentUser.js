@@ -98,7 +98,7 @@ const slice = createSlice({
       currentUser.tasks = action.payload.tasks;
     },
     loginFailed: (currentUser, action) => {
-      console.log(action.payload, "ei onnistu");
+      // console.log(action.payload, "ei onnistu");
       currentUser.token = null;
       currentUser.error = action.payload;
     },

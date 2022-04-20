@@ -77,7 +77,6 @@ function LoginScreen({ navigation }) {
           style={{
             flex: 1,
             justifyContent: "center",
-            justifyContent: "center",
           }}
         >
           <AppText>TÄSSÄ SPLASH SCREEN</AppText>
@@ -85,44 +84,49 @@ function LoginScreen({ navigation }) {
       )}
       {isAutoLoginChecked && (
         <AppKeyboardDismiss>
-          <AppForm
-            initialValues={{ userName: "timon@posti.fi", password: "12345" }}
-            // initialValues={{ userName: "joo@joo.fi", password: "111111" }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            <>
-              <AppFormField
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="account-outline"
-                keyboardType="email-address"
-                name="userName"
-                placeholder="Username/email"
-              />
+          <View style={{ marginTop: 100, alignSelf: "center", padding: "10%" }}>
+            <AppForm
+              initialValues={{ userName: "timon@posti.fi", password: "12345" }}
+              // initialValues={{ userName: "joo@joo.fi", password: "111111" }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              <>
+                <AppFormField
+                  marginBottom={20}
+                  padding={5}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  icon="account-outline"
+                  keyboardType="email-address"
+                  name="userName"
+                  placeholder="Username/email"
+                />
 
-              <AppFormField
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="lock"
-                name="password"
-                placeholder="Password"
-                secureTextEntry
-                textContentType="password"
-              />
-              <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
-              {/* <TouchableOpacity
+                <AppFormField
+                  padding={5}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  icon="lock"
+                  name="password"
+                  placeholder="Password"
+                  secureTextEntry
+                  textContentType="password"
+                />
+                <ErrorMessage error={isLoginFailed} visible={isLoginFailed} />
+                {/* <TouchableOpacity
             style={{ alignSelf: "flex-start", marginRight: 10 }}
             onPress={() => navigation.navigate("Reset_password")}
           >
             <AppText>Reset password</AppText>
           </TouchableOpacity> */}
-              <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-                {loading && !isLoginFailed && <AppLoadIndicator />}
-                <SubmitButton title="LOGIN" />
-              </View>
-            </>
-          </AppForm>
+                <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+                  {loading && !isLoginFailed && <AppLoadIndicator />}
+                  <SubmitButton title="LOGIN" />
+                </View>
+              </>
+            </AppForm>
+          </View>
         </AppKeyboardDismiss>
       )}
     </Screen>
