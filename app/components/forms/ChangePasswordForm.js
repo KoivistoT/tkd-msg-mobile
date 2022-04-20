@@ -25,7 +25,7 @@ function ChangePasswordForm({ closeModal }) {
     getCurrentLoginData();
   }, []);
 
-  const handleSubmit = async ({ oldPassword, newPassword }) => {
+  const handleSubmit = async ({ currentPassword, newPassword }) => {
     if (!currentLoginData) {
       alert("Something faild");
       closeModal();
@@ -37,18 +37,17 @@ function ChangePasswordForm({ closeModal }) {
   };
 
   const validationSchema = Yup.object().shape({
-    oldPassword: Yup.string()
+    currentPassword: Yup.string()
       .required()
-      .min(5)
       .oneOf(
         [currentLoginData ? currentLoginData.password : " ", null],
-        "Old password is wrong"
+        "Current password is wrong"
       )
-      .label("Old password"),
+      .label("Current password"),
     newPassword: Yup.string().required().min(5).label("New password"),
-    newPasswordAgain: Yup.string()
+    confirmPassword: Yup.string()
       .required()
-      .min(5)
+
       .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
   });
 
@@ -68,8 +67,8 @@ function ChangePasswordForm({ closeModal }) {
               autoCapitalize="none"
               autoCorrect={false}
               // icon="account-outline"
-              name="oldPassword"
-              placeholder={"old password"}
+              name="currentPassword"
+              placeholder={"Current password"}
             />
             <AppFormField
               padding={5}
@@ -79,7 +78,7 @@ function ChangePasswordForm({ closeModal }) {
               autoCorrect={false}
               // icon="account-outline"
               name="newPassword"
-              placeholder={"new password"}
+              placeholder={"New password"}
             />
             <AppFormField
               padding={5}
@@ -88,8 +87,8 @@ function ChangePasswordForm({ closeModal }) {
               autoCapitalize="none"
               autoCorrect={false}
               // icon="account-outline"
-              name="newPasswordAgain"
-              placeholder="new password again"
+              name="confirmPassword"
+              placeholder="Confirm password"
             />
 
             <View
