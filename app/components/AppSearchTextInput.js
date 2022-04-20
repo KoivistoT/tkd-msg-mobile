@@ -26,6 +26,7 @@ function AppSearchTextInput({
   marginTop,
   setShowSearchBar,
   currentSearchWord,
+  setShowUnreadMessageButton,
   ...ohterProps
 }) {
   const textInput = useRef(null);
@@ -33,6 +34,7 @@ function AppSearchTextInput({
   const dispatch = useDispatch();
   useEffect(() => {
     textInput.current.focus();
+    setShowUnreadMessageButton(false);
   }, []);
 
   return (

@@ -304,6 +304,7 @@ function MessageList({ item }) {
           onSearch={(a) => onSearch(a)}
           setShowSearchBar={setShowSearchBar}
           currentSearchWord={currentSearchWord}
+          setShowUnreadMessageButton={setShowUnreadMessageButton}
         />
       )}
       {showUnreadMessageButton && newMessagesOnStart.current > 0 && (
