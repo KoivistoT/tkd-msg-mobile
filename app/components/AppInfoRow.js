@@ -63,23 +63,6 @@ function AppInfoRow({
     }
   };
 
-  const onShake = (timeCap, repeatTimes) => {
-    var counter = 0;
-    var cap = timeCap;
-    var i = setInterval(async function () {
-      setMarginLeft(20);
-      setTimeout(() => {
-        setMarginLeft(5);
-      }, cap / 2);
-
-      cap += timeCap;
-      counter++;
-      if (counter === repeatTimes) {
-        clearInterval(i);
-      }
-    }, cap);
-  };
-
   const [showCanNotEdit, setShowCanNotEdit] = useState(false);
   const onCanNotEdit = () => {
     setShowCanNotEdit(true);
@@ -94,7 +77,6 @@ function AppInfoRow({
       onPress={() =>
         editable ? handlePress() : showCanNotEdit ? null : onCanNotEdit()
       }
-      // onPress={() => (editable ? handlePress() : onShake(50, 4))}
     >
       <View style={styles.columnLeft}>
         <AppText styles={styles.info}>{info}</AppText>
