@@ -33,7 +33,11 @@ function ChangeRoomNameModal({ roomId, roomNameNow }) {
         </Screen>
       </Modal>
 
-      <AppButton onPress={() => setModalVisible(true)} title={"Change name"} />
+      <AppButton
+        onPress={() => setModalVisible(true)}
+        backgroundColor="success"
+        title={"Change name"}
+      />
     </View>
   );
 }

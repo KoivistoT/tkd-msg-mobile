@@ -179,7 +179,7 @@ function RoomSetupScreen(item) {
         }}
       >
         {roomData.type !== "private" && (
-          <View>
+          <View style={{ alignItems: "center" }}>
             <AppText>Chat name</AppText>
             <AppText style={{ fontSize: 20 }}>
               {roomFuncs.getRoomTitle(roomData, roomMembers, allUsers)}
@@ -323,6 +323,9 @@ function RoomSetupScreen(item) {
           marginBottom: 30,
         }}
       >
+        {roomType === "channel" && (
+          <ChangeRoomNameModal roomId={roomId} roomNameNow={roomName} />
+        )}
         {(currentUserData._id === roomCreator ||
           currentUserData.accountType === "admin") && (
           <View>
@@ -349,10 +352,6 @@ function RoomSetupScreen(item) {
             />
           )} */}
           </View>
-        )}
-
-        {roomType === "channel" && (
-          <ChangeRoomNameModal roomId={roomId} roomNameNow={roomName} />
         )}
 
         {(currentUserData.accountType === "admin" ||
