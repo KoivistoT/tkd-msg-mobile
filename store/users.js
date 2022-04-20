@@ -251,6 +251,17 @@ export const editUserData = (
     onError: usersError.type,
   });
 
+export const saveEditedUserdata = (data) =>
+  apiCallBegan({
+    url: url + "/save_edited_user_data",
+    method: "post",
+    data: {
+      data,
+    },
+    onSuccess: requestSuccess.type,
+    onError: usersError.type,
+  });
+
 export const activateUserById = (userId) =>
   apiCallBegan({
     url: url + "/activate_user/" + userId,

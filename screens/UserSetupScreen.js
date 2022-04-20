@@ -13,7 +13,8 @@ function UserSetupScreen() {
 
   return (
     <Screen style={styles.container}>
-      <UserInfoCard userId={currentUserId} />
+      <UserInfoCard userId={currentUserId} isEditable={true} />
+
       <Text>Change login data, password</Text>
       <Text>autologin off on</Text>
       <Text>Logout</Text>

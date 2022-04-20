@@ -33,7 +33,7 @@ function AppTextInput({ icon, width = "100%", marginTop, ...ohterProps }) {
             style={styles.icon}
           />
         )}
-        <View style={{ width: "100%", marginLeft: 5, marginTop: 2 }}>
+        <View style={{ width, marginLeft: 5, marginTop: 2 }}>
           <TextInput
             ref={textInput}
             placeholderTextColor={defaultStyles.colors.medium}
