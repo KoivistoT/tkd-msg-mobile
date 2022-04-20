@@ -9,6 +9,7 @@ import UserInfoCard from "../app/components/UserInfoCard";
 import { selectCurrenUserId } from "../store/currentUser";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import AutoLoginSetupButton from "../app/components/AutoLoginSetupButton";
+import LogoutButton from "../app/components/LogoutButton";
 
 function UserSetupScreen() {
   const store = useStore();
@@ -18,10 +19,8 @@ function UserSetupScreen() {
     <Screen style={styles.container}>
       <UserInfoCard userId={currentUserId} isEditable={true} />
       <AutoLoginSetupButton />
-      <Text>Change login data, password</Text>
-      <Text>autologin off on</Text>
-      <Text>Logout</Text>
-      <Text>edit button tuohon yläkulmaan, jossa boxi</Text>
+      <LogoutButton />
+      <Text>Change password</Text>
     </Screen>
   );
 }

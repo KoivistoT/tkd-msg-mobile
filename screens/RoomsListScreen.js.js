@@ -81,15 +81,6 @@ function RoomsListScreen({ navigation }) {
   //   }
   // }
 
-  const logout = () => {
-    // userOffline();
-
-    asyncStorageFuncs.setData("autoLogin", false);
-    dispatch(disconnectSocket(currentUserId));
-    dispatch(roomStateCleared());
-    dispatch(userLoggedOut());
-  };
-
   const userOnline = () => {
     socket.emit("userOnline", currentUserId);
     socket.on("userOnline", (data) => {
