@@ -25,6 +25,10 @@ class GeneralLoadIndicator extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props.newMessage === null) return;
+    if (!this.props.newMessage.roomId) return;
+    if (!this.props.allRoomData[this.props.newMessage.roomId]) return;
+
     if (
       this.props.newMessage &&
       this.props.newMessage !== prevProps.newMessage

@@ -704,11 +704,10 @@ export const getRestMessages = (object) =>
     onError: messagesError.type,
   });
 
-export const selectLastSeenMessageIdByRoomId = (store, roomId, index) => {
+export const selectLastSeenMessageIdByRoomId = (store, roomId, index) =>
   store.getState().entities.msgStore.allMessageIds[roomId]
     ? store.getState().entities.msgStore.allMessageIds[roomId][index]
     : null;
-};
 
 export const selectRoomMessagesById = (store, roomId) =>
   store.getState().entities.msgStore.allMessages[roomId].messages;

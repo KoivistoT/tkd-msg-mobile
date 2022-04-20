@@ -136,7 +136,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             dispatch(roomAdded(room.data));
             dispatch(getMessagesbyId(roomId));
             dispatch(getRoomImages(roomId));
-            socket.emit("subscribe", roomId);
+            // socket.emit("subscribe", roomId);
             const userId = getState().auth.currentUser._id;
             //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
             //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
@@ -186,7 +186,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
             dispatch(roomRemoved(currentRoomId));
             dispatch(messagesRemoved(currentRoomId));
-            socket.emit("unsubscribe", currentRoomId);
+            // socket.emit("unsubscribe", currentRoomId);
           });
         }
       };
@@ -222,10 +222,10 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     });
 
     // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);
-    getState().auth.currentUser.userRooms.forEach((roomId) => {
-      // console.log("tänne subscripe", roomId);
-      socket.emit("subscribe", roomId);
-    });
+    // getState().auth.currentUser.userRooms.forEach((roomId) => {
+    //   // console.log("tänne subscripe", roomId);
+    //   socket.emit("subscribe", roomId);
+    // });
   } catch (error) {
     dispatch(connectionError(error));
   }
@@ -238,10 +238,11 @@ export const disconnectSocket = (currentUserId) => {
     socket.emit("notTyping", currentUserId);
     // socket.off("userOnline"); // tätä ei kaiketi tarvi, kun socket on off kuitenkin
 
-    await getState().auth.currentUser.userRooms.forEach((roomId) => {
-      socket.emit("unsubscribe", roomId);
-      socket.off("subscribe", roomId);
-    });
+    // await getState().auth.currentUser.userRooms.forEach((roomId) => {
+    //   console.log(roomId, "Täältä poistuu");
+    //   socket.emit("unsubscribe", roomId);
+    //   socket.off("subscribe", roomId);
+    // });
 
     //timeout, koska muuten nuo edellä ei tahdo onnistua, esim userOffline ja notTyping ei mennyt ilman timeoutia, vain toinen meni
     setTimeout(() => {
