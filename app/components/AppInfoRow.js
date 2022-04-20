@@ -91,7 +91,9 @@ function AppInfoRow({
     <TouchableOpacity
       activeOpacity={1}
       style={[styles.container, { marginLeft }]}
-      onPress={() => (editable ? handlePress() : onCanNotEdit())}
+      onPress={() =>
+        editable ? handlePress() : showCanNotEdit ? null : onCanNotEdit()
+      }
       // onPress={() => (editable ? handlePress() : onShake(50, 4))}
     >
       <View style={styles.columnLeft}>
