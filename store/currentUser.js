@@ -98,7 +98,7 @@ const slice = createSlice({
       currentUser.tasks = action.payload.tasks;
     },
     loginFailed: (currentUser, action) => {
-      console.log("ei onnistu", action.payload);
+      console.log(action.payload, "ei onnistu");
       currentUser.token = null;
       currentUser.error = action.payload;
     },
@@ -221,7 +221,7 @@ export const getTasks = (currentUserId) => (dispatch, getState) => {
     apiCallBegan({
       url: url + "/tasks/get_tasks/" + currentUserId,
       onSuccess: tasksResived.type,
-      onError: loginFailed.type,
+      // onError: loginFailed.type,
     })
   );
 };
@@ -231,7 +231,7 @@ export const clearTasks = (currentUserId) => (dispatch, getState) => {
     apiCallBegan({
       url: url + "/tasks/clear_tasks/" + currentUserId,
       onSuccess: tasksCleared.type,
-      onError: loginFailed.type,
+      // onError: loginFailed.type,
     })
   );
 };
@@ -302,10 +302,6 @@ export const getUnseenMessageSum =
 export const logout = () => {
   console.log("tämä suoraan logout siellä missä onkaan");
   userLoggedOut();
-};
-
-export const onLoginFailed = () => {
-  loginFailed();
 };
 
 export const selectLastSeenMessagSumByRoomId = (store, roomId) => {

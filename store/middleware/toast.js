@@ -1,3 +1,4 @@
+import { loginFailed } from "../currentUser";
 import { errorMessageAdded, successMessageAdded } from "../general";
 import { setRoomLoadingToFalse } from "../rooms";
 import { createSocketConnection } from "../socket";
@@ -21,9 +22,9 @@ const toast =
       case "rooms/membersChanged":
         dispatch(successMessageAdded("Users changed"));
         break;
-      case "currentUser/loginFailed":
-        dispatch(errorMessageAdded(action.payload));
-        break;
+      // case "currentUser/loginFailed":
+      //   dispatch(errorMessageAdded(action.payload));
+      //   break;
       case "rooms/roomsError":
         dispatch(errorMessageAdded(action.payload));
         dispatch(setRoomLoadingToFalse());

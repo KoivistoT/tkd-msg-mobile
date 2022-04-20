@@ -25,9 +25,11 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
+  const store = useStore();
   const [loading, setLoading] = useState(false);
   // const store = useStore();
   // console.log(store.getState());
+
   const isLoginFailed = useSelector((state) => state.auth.currentUser.error);
 
   const dispatch = useDispatch();
@@ -42,14 +44,20 @@ function LoginScreen({ navigation }) {
   };
 
   const [isAutoLoginChecked, setIsAutoLoginChecked] = useState(false);
+
   useEffect(() => {
     checkAutologin();
-  }, []);
+
+    if (isLoginFailed) {
+      setIsAutoLoginChecked(true);
+    }
+  }, [isLoginFailed]);
 
   // tämä voi olla muualla
   const checkAutologin = async () => {
     try {
       const autoLogin = await asyncStorageFuncs.getData("autoLogin");
+
       const loginData = await asyncStorageFuncs.getData("loginData");
 
       if (autoLogin && loginData) {
