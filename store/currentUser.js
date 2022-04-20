@@ -183,6 +183,17 @@ export const login = (email, password) =>
     onError: loginFailed.type,
   });
 
+export const editPassword = (email, password) =>
+  //pitääkö olla et katsoo onko jo käuyttäjä
+  apiCallBegan({
+    url: url + "/users/edit_password",
+    method: "post",
+    data: { email, password },
+    onStart: currentUserRequestStarted.type,
+    // onSuccess: userLoggedIn.type,
+    // onError: loginFailed.type,
+  });
+
 export const saveLastPresent = () => (dispatch, getState) => {
   const currentUserId = getState().auth.currentUser._id;
   return dispatch(

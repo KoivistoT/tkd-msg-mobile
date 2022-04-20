@@ -10,6 +10,7 @@ import { selectCurrenUserId } from "../store/currentUser";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import AutoLoginSetupButton from "../app/components/AutoLoginSetupButton";
 import LogoutButton from "../app/components/LogoutButton";
+import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
 
 function UserSetupScreen() {
   const store = useStore();
@@ -20,6 +21,7 @@ function UserSetupScreen() {
       <UserInfoCard userId={currentUserId} isEditable={true} />
       <AutoLoginSetupButton />
       <LogoutButton />
+      <ChangePasswordModal />
       <Text>Change password</Text>
     </Screen>
   );
