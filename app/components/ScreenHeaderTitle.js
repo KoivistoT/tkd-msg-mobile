@@ -109,7 +109,11 @@ function ScreenHeaderTitle({
         {/* <AppText style={styles.title}></AppText> */}
       </View>
 
-      <AppText style={styles.subTitle}>{loading ? "" : getSubTitle()}</AppText>
+      {loading ? (
+        <AppLoadingIndicator />
+      ) : (
+        <AppText style={styles.subTitle}>{getSubTitle()}</AppText>
+      )}
     </TouchableOpacity>
   );
 }
