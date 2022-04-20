@@ -19,7 +19,7 @@ function SenderName({ allUsers, postedByUser, sentBy }) {
 }
 
 const styles = StyleSheet.create({
-  senderName: { paddingRight: 10, marginRight: 44 },
+  senderName: { paddingRight: 10 },
 });
 
 export default SenderName;

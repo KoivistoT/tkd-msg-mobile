@@ -23,9 +23,8 @@ function MessageHeader({
       />
       {/* )} */}
       {!isReplyMessage && <View style={{ marginBottom: 20 }}></View>}
-      <View style={{ position: "absolute", right: 0 }}>
-        <AppText style={styles.messageTimestamp}>{createdAt}</AppText>
-      </View>
+
+      <AppText style={{ fontSize: 10 }}>{createdAt}</AppText>
     </View>
   );
 }
