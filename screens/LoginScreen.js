@@ -36,7 +36,7 @@ function LoginScreen({ navigation }) {
 
   const handleSubmit = async ({ userName, password }) => {
     // dispatch(errorMessageCleared()); // tämän voisti tehdä onStart:issa
-    asyncStorageFuncs.setData("autoLogin", true);
+    // asyncStorageFuncs.setData("autoLogin", true);
     asyncStorageFuncs.setData("loginData", { userName, password });
 
     setLoading(true);
