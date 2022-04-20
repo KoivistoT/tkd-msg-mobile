@@ -81,23 +81,24 @@ class GeneralLoadIndicator extends React.Component {
             onPress={() => goToRoom()}
           >
             {/* <View style={{ alignItems: "center" }}> */}
-            {this.props.allRoomData[this.props.newMessage.roomId].type !==
-              "private" && (
-              <AppText
-                numberOfLines={1}
-                style={{
-                  alignSelf: "center",
-                  overflow: "hidden",
-                  color: colors.white,
-                }}
-              >
-                {roomFuncs.getRoomTitle(
-                  this.props.allRoomData[this.props.newMessage.roomId],
-                  this.props.allUserData,
-                  this.props.currentUserId
-                )}
-              </AppText>
-            )}
+            {this.props.allRoomData[this.props.newMessage.roomId] &&
+              this.props.allRoomData[this.props.newMessage.roomId].type !==
+                "private" && (
+                <AppText
+                  numberOfLines={1}
+                  style={{
+                    alignSelf: "center",
+                    overflow: "hidden",
+                    color: colors.white,
+                  }}
+                >
+                  {roomFuncs.getRoomTitle(
+                    this.props.allRoomData[this.props.newMessage.roomId],
+                    this.props.allUserData,
+                    this.props.currentUserId
+                  )}
+                </AppText>
+              )}
             <AppText style={{ alignSelf: "center", color: colors.white }}>
               {userFuncs.getFullName(
                 this.props.allUserData,

@@ -308,14 +308,17 @@ export const onLoginFailed = () => {
   loginFailed();
 };
 
-export const selectLastSeenMessagSumByRoomId = (store, roomId) =>
-  store.getState().auth.currentUser.last_seen_messages[
-    store
-      .getState()
-      .auth.currentUser.last_seen_messages.findIndex(
-        (object) => object.roomId === roomId
-      )
-  ].lastSeenMessageSum;
+export const selectLastSeenMessagSumByRoomId = (store, roomId) => {
+  const index = store
+    .getState()
+    .auth.currentUser.last_seen_messages.findIndex(
+      (object) => object.roomId === roomId
+    );
+  return index >= 0
+    ? store.getState().auth.currentUser.last_seen_messages[index]
+        .lastSeenMessageSum
+    : null;
+};
 
 export const selectAccountType = (state) => state.auth.currentUser.accountType;
 

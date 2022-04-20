@@ -154,6 +154,8 @@ function MessageList({ item }) {
       return;
     }
 
+    if (!roomMessageIds) return;
+
     if (
       selectIsLastMessageSentByCurrentUser(
         store,
