@@ -37,6 +37,7 @@ import SectionSeparator from "../app/components/SectionSeparator";
 import AppTitle from "../app/components/AppTitle";
 import UserInfoCard from "../app/components/UserInfoCard";
 import userFuncs from "../utility/userFuncs";
+import sortArray from "../utility/sortArray";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function RoomSetupScreen(item) {
     description,
     type: roomType,
     roomName,
+    members,
   } = item.route.params;
 
   const allUsers = useSelector(selectAllUsersMedium);
@@ -58,6 +60,7 @@ function RoomSetupScreen(item) {
   const roomData = useSelector(selectRoomDataById(roomId));
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const selectedUsersRef = React.useRef(selectedUsers);
+  let roomMembersOnStart = useRef(members);
 
   useEffect(() => {}, [roomData]);
 
@@ -68,6 +71,12 @@ function RoomSetupScreen(item) {
 
   const listKeyExtractor = (data) => data._id;
 
+  const checkIsMembersChanged = (a, b) => {
+    return (
+      a.length === b.length &&
+      sortArray([...a]).every((val, index) => val === sortArray([...b])[index])
+    );
+  };
   const onLeaveRoom = async () => {
     let result;
     const activeMembers = roomFuncs.getRoomActiveMembersSum(
@@ -296,14 +305,16 @@ function RoomSetupScreen(item) {
           /> */}
         </View>
       )}
-      {roomType !== "private" && roomStatus !== "archived" && (
-        <AppButton
-          backgroundColor="success"
-          buttonWidth={"100%"}
-          title={"Save changes"}
-          onPress={onSaveChanges}
-        />
-      )}
+      {roomType !== "private" &&
+        roomStatus !== "archived" &&
+        !checkIsMembersChanged(roomMembersOnStart.current, selectedUsers) && (
+          <AppButton
+            backgroundColor="success"
+            buttonWidth={"100%"}
+            title={"Save changes"}
+            onPress={onSaveChanges}
+          />
+        )}
       <SectionSeparator />
       <View
         style={{
