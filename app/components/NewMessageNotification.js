@@ -31,7 +31,8 @@ class GeneralLoadIndicator extends React.Component {
 
     if (
       this.props.newMessage &&
-      this.props.newMessage !== prevProps.newMessage
+      this.props.newMessage !== prevProps.newMessage &&
+      this.props.newMessage.postedByUser !== this.props.currentUserId
     ) {
       this.setState({ showMessage: true });
 
