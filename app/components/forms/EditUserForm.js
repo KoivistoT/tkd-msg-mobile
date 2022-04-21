@@ -31,6 +31,7 @@ const validationSchema = Yup.object().shape({
   accountType: Yup.string().required().min(1).label("AccountType"),
 });
 
+const FIELD_WIDTH = "70%";
 function EditUserForm({ userData, closeModal, hideFields = [] }) {
   const dispatch = useDispatch();
 
@@ -60,7 +61,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
   };
 
   return (
-    <Screen>
+    <View>
       <ScrollView style={styles.container}>
         <AppForm
           initialValues={{
@@ -86,6 +87,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
             )}
 
             <AppFormField
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -95,6 +97,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
               showLabel
             />
             <AppFormField
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -104,6 +107,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
               showLabel
             />
             <AppFormField
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -112,6 +116,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
               showLabel
             />
             <AppFormField
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -121,6 +126,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
               showLabel
             />
             <AppFormField
+              width={FIELD_WIDTH}
               placeholder="Phone"
               autoCorrect={false}
               icon="phone"
@@ -138,7 +144,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
           </View>
         </AppForm>
       </ScrollView>
-    </Screen>
+    </View>
   );
 }
 

@@ -21,9 +21,16 @@ function AppFormField({
     useFormikContext();
 
   return (
-    <View style={{ marginBottom }}>
+    <View style={{ marginBottom, alignSelf: "center" }}>
       {showLabel && (
-        <View style={styles.labelFrame}>
+        <View
+          style={{
+            backgroundColor: colors.primary,
+            marginTop: 10,
+            borderTopEndRadius: 5,
+            borderTopStartRadius: 5,
+          }}
+        >
           <AppText style={styles.label}>{name}</AppText>
         </View>
       )}
@@ -48,16 +55,9 @@ function AppFormField({
 
 const styles = StyleSheet.create({
   label: {
-    alignSelf: "center",
-  },
-  labelFrame: {
-    width: "100%",
-    color: colors.primary,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: colors.primary,
-    marginTop: 10,
+    padding: 5,
+    marginLeft: 5,
+    color: colors.white,
   },
 });
 export default AppFormField;

@@ -47,43 +47,49 @@ function UserDetailsScreen(item) {
   };
 
   return (
-    <Screen>
+    <View style={styles.container}>
       {userData && (
         <View style={{ padding: 20 }}>
           <UserInfoCard userId={userId} isEditable={false} />
 
-          <EditUserModal userId={userData._id} />
-          {userData.status === "archived" ? (
+          <View style={styles.buttonRow}>
+            <EditUserModal userId={userData._id} />
+            {userData.status === "archived" ? (
+              <AppButton
+                title={"activate user"}
+                color="white"
+                backgroundColor="green"
+                onPress={activateUser}
+              />
+            ) : (
+              <AppButton
+                title={"archive user"}
+                color="black"
+                backgroundColor="yellow"
+                onPress={archiveUser}
+              />
+            )}
+          </View>
+          <View style={styles.buttonRow}>
             <AppButton
-              title={"activate user"}
+              title={"delete user"}
               color="white"
-              backgroundColor="green"
-              onPress={activateUser}
+              backgroundColor="danger"
+              onPress={onDeleteUser}
             />
-          ) : (
-            <AppButton
-              title={"archive user"}
-              color="black"
-              backgroundColor="yellow"
-              onPress={archiveUser}
+            <ChangePasswordModal
+              userName={userData.email}
+              requireCurrentPassword={false}
             />
-          )}
-          <AppButton
-            title={"delete user"}
-            color="white"
-            backgroundColor="danger"
-            onPress={onDeleteUser}
-          />
-          <ChangePasswordModal
-            userName={userData.email}
-            requireCurrentPassword={false}
-          />
+          </View>
         </View>
       )}
-      <AppText>vaihda salasana</AppText>
-    </Screen>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {},
+  buttonRow: { flexDirection: "row", alignSelf: "center" },
+});
 export default UserDetailsScreen;

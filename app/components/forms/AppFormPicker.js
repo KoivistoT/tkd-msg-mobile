@@ -14,19 +14,43 @@ function AppFormPicker({ name, width, options, ...otherProps }) {
 
   return (
     <>
-      <AppText style={{ color: colors.primary, alignSelf: "center" }}>
-        {otherProps.placeholder}
-      </AppText>
-      <Picker
-        onBlur={() => setFieldTouched(name)}
-        selectedValue={values[name]}
-        onValueChange={(itemValue) => setFieldValue(name, itemValue)}
+      <View
+        style={{
+          backgroundColor: colors.primary,
+          marginTop: 10,
+          borderTopEndRadius: 5,
+          borderTopStartRadius: 5,
+          top: 70,
+          width: "70%",
+          alignSelf: "center",
+        }}
       >
-        {options.map((item) => (
-          <Picker.Item key={item.value} label={item.label} value={item.value} />
-        ))}
-      </Picker>
-
+        <AppText
+          style={{
+            padding: 5,
+            marginLeft: 5,
+            color: colors.white,
+            alignSelf: "center",
+          }}
+        >
+          {otherProps.placeholder}
+        </AppText>
+      </View>
+      <View style={{ width: "70%", alignSelf: "center", top: 30 }}>
+        <Picker
+          onBlur={() => setFieldTouched(name)}
+          selectedValue={values[name]}
+          onValueChange={(itemValue) => setFieldValue(name, itemValue)}
+        >
+          {options.map((item) => (
+            <Picker.Item
+              key={item.value}
+              label={item.label}
+              value={item.value}
+            />
+          ))}
+        </Picker>
+      </View>
       <ErrorMessage error={errors[name]} visible={touched[name]}></ErrorMessage>
     </>
   );

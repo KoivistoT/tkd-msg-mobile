@@ -40,7 +40,7 @@ function EditUserModal({ userId, hideFields = [], title = "Edit user" }) {
           />
         </Screen>
       </Modal>
-      <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
+      <View style={{ width: "50%", alignSelf: "center" }}>
         <AppButton onPress={() => setModalVisible(true)} title={title} />
       </View>
     </View>
