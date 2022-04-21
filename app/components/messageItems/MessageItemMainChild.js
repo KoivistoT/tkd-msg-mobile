@@ -241,7 +241,9 @@ function MessageItemMainChild({
                 flexDirection: "row",
                 backgroundColor: isCurrentMessageSelected
                   ? colors.khaki
-                  : colors.white,
+                  : sentBy === "me"
+                  ? colors.messageMe
+                  : colors.messageOther,
               },
             ]}
           >
@@ -363,7 +365,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 4,
     alignSelf: "flex-end",
-    backgroundColor: colors.light,
+    backgroundColor: "#43ded6",
     padding: 5,
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
