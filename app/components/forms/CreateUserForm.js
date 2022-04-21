@@ -32,6 +32,9 @@ const validationSchema = Yup.object().shape({
   accountType: Yup.string().required().min(1).label("AccountType"),
 });
 
+const MARGIN_BOTTOM = 10;
+const FIELD_WIDTH = "80%";
+
 function CreateUserForm({ navigation, closeModal }) {
   const [loading, setLoading] = useState(false);
 
@@ -96,6 +99,8 @@ function CreateUserForm({ navigation, closeModal }) {
             ></AppFormPicker>
 
             <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -104,6 +109,8 @@ function CreateUserForm({ navigation, closeModal }) {
               placeholder="Fistname"
             />
             <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -112,6 +119,8 @@ function CreateUserForm({ navigation, closeModal }) {
               placeholder="Lastname"
             />
             <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -119,6 +128,8 @@ function CreateUserForm({ navigation, closeModal }) {
               placeholder="DisplayName"
             />
             <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="account-outline"
@@ -127,6 +138,8 @@ function CreateUserForm({ navigation, closeModal }) {
               placeholder="email"
             />
             <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
               placeholder="Phone"
               autoCorrect={false}
               icon="phone"
@@ -136,6 +149,8 @@ function CreateUserForm({ navigation, closeModal }) {
               name="phone"
             />
             <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
               autoCapitalize="none"
               autoCorrect={false}
               icon="lock"
