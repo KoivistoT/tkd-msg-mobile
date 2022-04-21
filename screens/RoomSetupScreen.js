@@ -71,12 +71,15 @@ function RoomSetupScreen(item) {
 
   const listKeyExtractor = (data) => data._id;
 
-  const checkIsMembersChanged = (a, b) => {
+  const checkIsMembersChanged = () => {
+    const a = roomMembersOnStart.current;
+    const b = selectedUsers;
     return (
       a.length === b.length &&
       sortArray([...a]).every((val, index) => val === sortArray([...b])[index])
     );
   };
+
   const onLeaveRoom = async () => {
     let result;
     const activeMembers = roomFuncs.getRoomActiveMembersSum(
@@ -133,6 +136,8 @@ function RoomSetupScreen(item) {
   };
 
   const onSaveChanges = () => {
+    roomMembersOnStart.current = selectedUsers;
+
     dispatch(change_members(roomId, selectedUsersRef.current));
   };
 
@@ -307,7 +312,7 @@ function RoomSetupScreen(item) {
       )}
       {roomType !== "private" &&
         roomStatus !== "archived" &&
-        !checkIsMembersChanged(roomMembersOnStart.current, selectedUsers) && (
+        !checkIsMembersChanged() && (
           <AppButton
             backgroundColor="success"
             buttonWidth={"100%"}

@@ -51,7 +51,9 @@ class GeneralLoadIndicator extends React.Component {
             }}
           >
             <View style={{ alignItems: "center" }}>
-              <AppText style={{ margin: 20 }}>Loading...</AppText>
+              <AppText style={{ margin: 20, color: colors.primary }}>
+                Uploading image(s)/document
+              </AppText>
               <ActivityIndicator
                 animating={true}
                 size="large"
@@ -61,10 +63,11 @@ class GeneralLoadIndicator extends React.Component {
                   width: "100%",
                   //   height: 80,
                   //   borderRadius: 20,
+
                   padding: 5,
                   alignSelf: "center",
                 }}
-                color={colors.secondary}
+                color={colors.primary}
               />
             </View>
           </View>

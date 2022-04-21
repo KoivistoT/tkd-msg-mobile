@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     margin: 3,
     width: 110,
-    backgroundColor: colors.black,
+    backgroundColor: colors.light,
     borderRadius: 10,
   },
   imageFrame: {
