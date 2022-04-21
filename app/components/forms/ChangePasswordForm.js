@@ -47,7 +47,6 @@ function ChangePasswordForm({ closeModal }) {
     newPassword: Yup.string().required().min(5).label("New password"),
     confirmPassword: Yup.string()
       .required()
-
       .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
   });
 

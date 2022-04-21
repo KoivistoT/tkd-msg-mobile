@@ -148,6 +148,7 @@ function App() {
         const roomData =
           store.getState().entities.rooms.allRooms[currentRoomId];
 
+        if (!roomData) return;
         navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
       });
 

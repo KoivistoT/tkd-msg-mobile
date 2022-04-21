@@ -70,6 +70,7 @@ const api =
         if (responseRoomId) {
           try {
             const roomData = getState().entities.rooms.allRooms[responseRoomId];
+            if (!roomData) return;
             navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
             dispatch(notificationResponseCleared());
           } catch (error) {
