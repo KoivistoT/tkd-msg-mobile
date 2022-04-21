@@ -10,7 +10,7 @@ function AppButton({
   color = "white",
   width,
   backgroundColor = "primary",
-  buttonWidth,
+  buttonWidth = 150,
   fontSize,
   fontWeight,
   iconSize,

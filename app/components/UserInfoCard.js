@@ -30,7 +30,7 @@ function UserInfoCard({ userId, hideFields = [], isEditable = false }) {
   };
 
   return (
-    <Screen>
+    <View style={{ marginBottom: 20 }}>
       {userData && (
         <View style={styles.container}>
           <View style={{ alignItems: "center" }}>
@@ -52,7 +52,7 @@ function UserInfoCard({ userId, hideFields = [], isEditable = false }) {
           </View>
         </View>
       )}
-    </Screen>
+    </View>
   );
 }
 

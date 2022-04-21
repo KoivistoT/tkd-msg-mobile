@@ -323,7 +323,6 @@ function RoomSetupScreen(item) {
       <SectionSeparator />
       <View
         style={{
-          flexDirection: "row",
           justifyContent: "center",
           marginBottom: 30,
         }}

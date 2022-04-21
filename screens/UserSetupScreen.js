@@ -20,9 +20,8 @@ function UserSetupScreen() {
     <Screen style={styles.container}>
       <UserInfoCard userId={currentUserId} isEditable={true} />
       <AutoLoginSetupButton />
-      <LogoutButton />
       <ChangePasswordModal />
-      <Text>Change password</Text>
+      <LogoutButton />
     </Screen>
   );
 }
