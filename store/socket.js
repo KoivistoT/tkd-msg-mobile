@@ -10,6 +10,7 @@ import {
   removeOlderTasksItemsById,
   removeTaskItemById,
   saveLastPresent,
+  saveLastSeenMessageSum,
   unseenMessagesRemoved,
 } from "./currentUser";
 
@@ -132,7 +133,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       const taskActions = (taskGroupType, data) => {
         if (taskGroupType === "roomAdded") {
           data.forEach((room) => {
-            const { _id: roomId, roomCreator } = room.data;
+            const { _id: roomId, roomCreator, messageSum } = room.data;
             dispatch(roomAdded(room.data));
             dispatch(getMessagesbyId(roomId));
             dispatch(getRoomImages(roomId));
@@ -140,6 +141,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             const userId = getState().auth.currentUser._id;
             //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
             //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
+            dispatch(saveLastSeenMessageSum(userId, roomId, messageSum));
             if (roomCreator === userId) {
               navigationRef.current.navigate(routes.MESSAGE_SCREEN, room.data);
             }
