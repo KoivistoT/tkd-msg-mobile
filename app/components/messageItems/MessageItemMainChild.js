@@ -263,6 +263,7 @@ function MessageItemMainChild({
               <TouchableOpacity
                 activeOpacity={1}
                 onLongPress={() => onSelectMessage()}
+                onPress={() => onRemoveSelections()}
               >
                 <MessageHeader
                   sentBy={sentBy}
