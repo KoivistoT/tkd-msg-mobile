@@ -23,7 +23,7 @@ import {
   currentUserLastSeenMessagesResived,
   saveCurrentUserPushToken,
   getCurrentUserById,
-  selectCurrenUserId,
+  selectCurrentUserId,
 } from "./store/currentUser";
 
 import AuthNavigator from "./app/navigation/AuthNavigator";
@@ -78,7 +78,7 @@ function App() {
     dispatch(createSocketConnection());
     isLoggedIn.current = true;
     // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
-    const currentUserId = selectCurrenUserId(store);
+    const currentUserId = selectCurrentUserId(store);
 
     dispatch(clearTasks(currentUserId));
 

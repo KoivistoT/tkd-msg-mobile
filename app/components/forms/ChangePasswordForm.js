@@ -11,7 +11,11 @@ import AppKeyboardDismiss from "../AppKeyboardDismiss";
 import asyncStorageFuncs from "../../../utility/asyncStorageFuncs";
 import { editPassword } from "../../../store/currentUser";
 
-function ChangePasswordForm({ closeModal }) {
+function ChangePasswordForm({
+  closeModal,
+  requireCurrentPassword = true,
+  userName,
+}) {
   const dispatch = useDispatch();
 
   const [currentLoginData, setCurrentLoginData] = useState(null);
@@ -32,23 +36,30 @@ function ChangePasswordForm({ closeModal }) {
       return;
     }
 
-    dispatch(editPassword(currentLoginData.userName, newPassword));
+    dispatch(editPassword(userName, newPassword));
     closeModal();
   };
 
-  const validationSchema = Yup.object().shape({
-    currentPassword: Yup.string()
-      .required()
-      .oneOf(
-        [currentLoginData ? currentLoginData.password : " ", null],
-        "Current password is wrong"
-      )
-      .label("Current password"),
-    newPassword: Yup.string().required().min(5).label("New password"),
-    confirmPassword: Yup.string()
-      .required()
-      .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
-  });
+  const validationSchema = requireCurrentPassword
+    ? Yup.object().shape({
+        currentPassword: Yup.string()
+          .required()
+          .oneOf(
+            [currentLoginData ? currentLoginData.password : " ", null],
+            "Current password is wrong"
+          )
+          .label("Current password"),
+        newPassword: Yup.string().required().min(5).label("New password"),
+        confirmPassword: Yup.string()
+          .required()
+          .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
+      })
+    : Yup.object().shape({
+        newPassword: Yup.string().required().min(5).label("New password"),
+        confirmPassword: Yup.string()
+          .required()
+          .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
+      });
 
   return (
     <Screen style={styles.container}>
@@ -59,16 +70,18 @@ function ChangePasswordForm({ closeModal }) {
           validationSchema={validationSchema}
         >
           <>
-            <AppFormField
-              padding={5}
-              marginBottom={10}
-              secureTextEntry
-              autoCapitalize="none"
-              autoCorrect={false}
-              // icon="account-outline"
-              name="currentPassword"
-              placeholder={"Current password"}
-            />
+            {requireCurrentPassword && (
+              <AppFormField
+                padding={5}
+                marginBottom={10}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                // icon="account-outline"
+                name="currentPassword"
+                placeholder={"Current password"}
+              />
+            )}
             <AppFormField
               padding={5}
               marginBottom={10}

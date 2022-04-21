@@ -25,7 +25,7 @@ import MessageHeader from "./MessageHeader";
 import messageFuncs from "../../../utility/messageFuncs";
 import MessageItemReply from "./MessageItemReply";
 import timeFuncs from "../../../utility/timeFuncs";
-import { selectCurrenUserId } from "../../../store/currentUser";
+import { selectCurrentUserId } from "../../../store/currentUser";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
 function ReadByList(item) {
   const {
@@ -43,7 +43,7 @@ function ReadByList(item) {
 
   const store = useStore();
   const dispatch = useDispatch();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const roomMemebers = useSelector(selectRoomMembersById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);
   const currentMessage = useSelector(selectMessageById(roomId, messageId));

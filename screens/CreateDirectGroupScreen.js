@@ -20,13 +20,13 @@ import Screen from "../app/components/Screen";
 import AppText from "../app/components/AppText";
 import AppButton from "../app/components/AppButton";
 import colors from "../config/colors";
-import { selectCurrenUserId } from "../store/currentUser";
+import { selectCurrentUserId } from "../store/currentUser";
 
 function CreateDirectGroupScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const store = useStore();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const allUsers = useSelector(selectAllUsersMedium);
 
   const listKeyExtractor = (data) => data._id;

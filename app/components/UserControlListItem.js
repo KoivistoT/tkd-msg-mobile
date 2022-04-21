@@ -11,7 +11,7 @@ function UserControlListItem({ item, onPress }) {
       onPress={onPress}
       style={{
         backgroundColor:
-          colors[item.status === "archived" ? "yellow" : "primary"],
+          colors[item.status === "archived" ? "khaki" : "primary"],
         flexDirection: "row",
         paddingHorizontal: 20,
         padding: 10,
@@ -22,13 +22,15 @@ function UserControlListItem({ item, onPress }) {
       }}
     >
       <AppText
-        style={{ color: colors.white }}
+        style={{
+          color: colors[item.status === "archived" ? "black" : "white"],
+        }}
       >{`${item.firstName} ${item.lastName}`}</AppText>
       <MaterialCommunityIcons
         style={{ position: "absolute", right: 5, alignSelf: "center" }}
         name="chevron-right"
         size={25}
-        color={colors.white}
+        color={colors[item.status === "archived" ? "black" : "white"]}
       />
     </TouchableOpacity>
   );

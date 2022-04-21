@@ -7,8 +7,18 @@ import AppButton from "../AppButton";
 import Screen from "../Screen";
 import ChangeRoomNameForm from "../forms/ChangeRoomNameForm";
 import ChangePasswordForm from "../forms/ChangePasswordForm";
-
-function ChangePasswordModal({ roomId, roomNameNow }) {
+import {
+  selectCurrentUserId,
+  selectUserName,
+} from "../../../store/currentUser";
+import { useStore } from "react-redux";
+selectCurrentUserId;
+function ChangePasswordModal({
+  roomId,
+  roomNameNow,
+  requireCurrentPassword,
+  userName,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -27,7 +37,9 @@ function ChangePasswordModal({ roomId, roomNameNow }) {
           </TouchableOpacity>
 
           <ChangePasswordForm
+            requireCurrentPassword={requireCurrentPassword}
             roomId={roomId}
+            userName={userName}
             roomNameNow={roomNameNow}
             closeModal={() => setModalVisible(false)}
           />

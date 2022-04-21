@@ -18,7 +18,7 @@ import {
 import { useDispatch, useSelector, useStore } from "react-redux";
 import ReactionEmoji from "./ReactionEmoji";
 import AddReactionButton from "./AddReactionButton";
-import { selectCurrenUserId } from "../../../store/currentUser";
+import { selectCurrentUserId } from "../../../store/currentUser";
 import colors from "../../../config/colors";
 import Screen from "../Screen";
 import AppText from "../AppText";
@@ -31,7 +31,7 @@ const Reactions = ({ message, showAllEmojis }) => {
 
   const store = useStore();
 
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const onReaction = (reaction) => {
     dispatch(addReaction(roomId, messageId, reaction, currentUserId));
   };

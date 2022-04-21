@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch, useStore } from "react-redux";
-import { selectCurrenUserId, userLoggedOut } from "../../store/currentUser";
+import { selectCurrentUserId, userLoggedOut } from "../../store/currentUser";
 import { roomStateCleared } from "../../store/rooms";
 import { disconnectSocket } from "../../store/socket";
 import asyncStorageFuncs from "../../utility/asyncStorageFuncs";
@@ -9,7 +9,7 @@ import AppButton from "./AppButton";
 
 function LogoutButton(props) {
   const store = useStore();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const dispatch = useDispatch();
 
   const logout = () => {

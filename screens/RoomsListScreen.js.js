@@ -16,7 +16,7 @@ import {
   getTasks,
   selectTasks,
   userLoggedOut,
-  selectCurrenUserId,
+  selectCurrentUserId,
 } from "../store/currentUser";
 import { WebView } from "react-native-webview";
 import { useIsFocused } from "@react-navigation/native";
@@ -56,7 +56,7 @@ function RoomsListScreen({ navigation }) {
   const store = useStore();
   const socket = useSelector(selectSocket);
   const isFocused = useIsFocused();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const currentUserRooms = store.getState().auth.currentUser.userRooms;
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);

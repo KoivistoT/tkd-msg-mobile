@@ -21,13 +21,13 @@ import {
 import ListItemSeparator from "../ListItemSeparator";
 import AppCheckBox from "../AppCheckBox";
 import { createDirectRoom } from "../../../store/rooms";
-import { selectCurrenUserId } from "../../../store/currentUser";
+import { selectCurrentUserId } from "../../../store/currentUser";
 
 function NewDirectRoomModal() {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const store = useStore();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const allUsers = useSelector(selectAllUsersMinimal);
 
   const listKeyExtractor = (data) => data._id;

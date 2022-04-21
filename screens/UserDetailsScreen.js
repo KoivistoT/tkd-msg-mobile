@@ -15,6 +15,7 @@ import {
 } from "../store/users";
 
 import confirmAlert from "../utility/confirmAlert";
+import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
 
 function UserDetailsScreen(item) {
   const dispatch = useDispatch();
@@ -48,22 +49,8 @@ function UserDetailsScreen(item) {
   return (
     <Screen>
       {userData && (
-        <View>
-          <UserInfoCard userId={userId} />
-          {/* <View style={{ flexDirection: "row" }}>
-            <AppText>{userData.firstName} </AppText>
-            <AppText>{userData.lastName}</AppText>
-          </View> */}
-          {/* <AppText>User channels:</AppText>
-          {userData.userRooms.length > 0 && (
-            <FlatList
-              ItemSeparatorComponent={() => <ListItemSeparator />}
-              data={userData.userRooms}
-              bounces={false}
-              keyExtractor={(data) => data}
-              renderItem={userItem}
-            />
-          )} */}
+        <View style={{ padding: 20 }}>
+          <UserInfoCard userId={userId} isEditable={false} />
 
           <EditUserModal userId={userData._id} />
           {userData.status === "archived" ? (
@@ -87,8 +74,10 @@ function UserDetailsScreen(item) {
             backgroundColor="danger"
             onPress={onDeleteUser}
           />
+          <ChangePasswordModal requireCurrentPassword={false} />
         </View>
       )}
+      <AppText>vaihda salasana</AppText>
     </Screen>
   );
 }

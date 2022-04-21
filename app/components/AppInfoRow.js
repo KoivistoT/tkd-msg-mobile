@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useDispatch, useStore } from "react-redux";
 import colors from "../../config/colors";
-import { selectCurrenUserId } from "../../store/currentUser";
+import { selectCurrentUserId } from "../../store/currentUser";
 import { editUserData, saveEditedUserdata } from "../../store/users";
 import AppText from "./AppText";
 import AppTextInput from "./AppTextInput";
@@ -22,6 +22,7 @@ function AppInfoRow({
   editable,
   selectedField,
   setSelectedField,
+  isEditable,
 }) {
   const [fieldValue, setFieldValue] = useState(value);
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ function AppInfoRow({
   const store = useStore();
   const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const textInput = useRef(null);
 
   useEffect(() => {
@@ -75,7 +76,13 @@ function AppInfoRow({
       activeOpacity={1}
       style={[styles.container, { marginLeft }]}
       onPress={() =>
-        editable ? handlePress() : showCanNotEdit ? null : onCanNotEdit()
+        editable
+          ? handlePress()
+          : showCanNotEdit
+          ? null
+          : isEditable
+          ? onCanNotEdit()
+          : null
       }
     >
       <View style={styles.columnLeft}>

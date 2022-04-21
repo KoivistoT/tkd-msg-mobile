@@ -25,12 +25,12 @@ import sortArray from "../utility/sortArray";
 import roomFuncs from "../utility/roomFuncs";
 import OnlineIndicator from "../app/components/OnlineIndicator";
 import userFuncs from "../utility/userFuncs";
-import { selectCurrenUserId } from "../store/currentUser";
+import { selectCurrentUserId } from "../store/currentUser";
 
 function ContactsScreen({ navigation, showInfoButton = true }) {
   const dispatch = useDispatch();
   const store = useStore();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const allUsers = useSelector(selectAllUsersMedium);
   const usersOnline = useSelector(selectUsersOnline);
   const allRooms = useSelector(selectUserRooms);

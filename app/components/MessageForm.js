@@ -31,7 +31,7 @@ import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
 import {
   saveLastSeenMessageSum,
-  selectCurrenUserId,
+  selectCurrentUserId,
 } from "../../store/currentUser";
 import { selectSocket } from "../../store/socket";
 import {
@@ -52,7 +52,7 @@ function MessageForm({ item }) {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const [photos, setPhotos] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   let documentURL = useRef(null);

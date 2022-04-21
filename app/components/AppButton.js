@@ -31,7 +31,7 @@ function AppButton({
             flexDirection: "row",
             justifyContent: "center",
             backgroundColor: colors[backgroundColor],
-            width: buttonWidth,
+            minWidth: buttonWidth,
             margin: margin,
           },
         ]}

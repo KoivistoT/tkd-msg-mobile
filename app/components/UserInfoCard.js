@@ -17,6 +17,7 @@ function UserInfoCard({ userId, hideFields = [], isEditable = false }) {
     return hideFields.includes(fieldName) ? null : (
       <AppInfoRow
         editable={editable}
+        isEditable={isEditable}
         key={fieldName}
         fieldName={fieldName}
         info={label}
@@ -68,6 +69,11 @@ const styles = StyleSheet.create({
 
 const allFields = [
   {
+    fieldName: "status",
+    label: "Status",
+    editable: false,
+  },
+  {
     fieldName: "email",
     label: "Email",
     editable: false,
@@ -75,6 +81,7 @@ const allFields = [
   {
     fieldName: "accountType",
     label: "Account type",
+    toUpperCase: true,
   },
   {
     fieldName: "firstName",
@@ -90,7 +97,7 @@ const allFields = [
   {
     fieldName: "displayName",
     label: "Display name",
-    toUpperCase: true,
+    toUpperCase: false,
     editable: true,
   },
   {

@@ -54,7 +54,7 @@ import {
   getUnseenMessageSum,
   selectCurrentRoomNewMessagesSum,
   selectLastSeenMessagSumByRoomId,
-  selectCurrenUserId,
+  selectCurrentUserId,
 } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
 import AppText from "./AppText";
@@ -84,7 +84,7 @@ function MessageList({ item }) {
   const [latestSeenMessageId, setLatestSeenMessageId] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const currentUserId = selectCurrenUserId(store);
+  const currentUserId = selectCurrentUserId(store);
   const typer = useSelector(selectTypersByRoomId(roomId, currentUserId));
   const roomMessageIds = useSelector(selectRoomMessageIdsByRoomId(roomId));
   const currentRoomMessageSum = useSelector(

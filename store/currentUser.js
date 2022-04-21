@@ -329,8 +329,11 @@ export const selectLastSeenMessagSumByRoomId = (store, roomId) => {
 
 export const selectAccountType = (state) => state.auth.currentUser.accountType;
 
-export const selectCurrenUserId = (store) =>
+export const selectCurrentUserId = (store) =>
   store.getState().auth.currentUser._id;
+
+export const selectUserName = (store) =>
+  store.getState().auth.currentUser.email;
 
 export const selectCurrentUserToken = createSelector(
   (state) => state.auth,
