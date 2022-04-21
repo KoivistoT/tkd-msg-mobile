@@ -49,7 +49,7 @@ function RoomSetupScreen(item) {
     roomCreator,
     description,
     type: roomType,
-    roomName,
+
     members,
   } = item.route.params;
 
@@ -329,20 +329,23 @@ function RoomSetupScreen(item) {
         }}
       >
         {roomType === "channel" && (
-          <ChangeRoomNameModal roomId={roomId} roomNameNow={roomName} />
+          <ChangeRoomNameModal
+            roomId={roomId}
+            roomNameNow={roomData.roomName}
+          />
         )}
-        {(currentUserData._id === roomCreator ||
-          currentUserData.accountType === "admin") && (
-          <View>
-            {roomType !== "private" && (
-              <AppButton
-                // title={`Leave ${roomType}`}
-                title={`Leave chat`}
-                onPress={onLeaveRoom}
-                backgroundColor={"primary"}
-              />
-            )}
-            {/* {roomStatus === "archived" ? (
+        {/* {(currentUserData._id === roomCreator ||
+          currentUserData.accountType === "admin") && ( */}
+        <View>
+          {roomType !== "private" && (
+            <AppButton
+              // title={`Leave ${roomType}`}
+              title={`Leave chat`}
+              onPress={onLeaveRoom}
+              backgroundColor={"primary"}
+            />
+          )}
+          {/* {roomStatus === "archived" ? (
             <AppButton
               title={`Activate ${roomType}`}
               onPress={onActivateRoom}
@@ -356,8 +359,8 @@ function RoomSetupScreen(item) {
               backgroundColor={"yellow"}
             />
           )} */}
-          </View>
-        )}
+        </View>
+        {/* )} */}
 
         {(currentUserData.accountType === "admin" ||
           currentUserData._id === roomCreator ||

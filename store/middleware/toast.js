@@ -29,6 +29,8 @@ const toast =
         dispatch(errorMessageAdded(action.payload));
         dispatch(setRoomLoadingToFalse());
         break;
+      case "rooms/roomNameChanged":
+        break;
       // case "rooms/roomCreated":
       //   dispatch(errorMessageAdded(action.payload));
       //   break;

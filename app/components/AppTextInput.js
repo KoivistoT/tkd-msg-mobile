@@ -19,6 +19,7 @@ function AppTextInput({
   width = "100%",
   marginTop,
   padding,
+  autoFocus = false,
   ...ohterProps
 }) {
   const textInput = useRef(null);
@@ -41,6 +42,7 @@ function AppTextInput({
         )}
         <View style={{ width, marginLeft: 5, marginTop: 2 }}>
           <TextInput
+            autoFocus={autoFocus}
             ref={textInput}
             placeholderTextColor={defaultStyles.colors.medium}
             style={[defaultStyles.text, { padding }]}

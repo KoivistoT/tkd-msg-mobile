@@ -14,6 +14,7 @@ function AppFormField({
   marginBottom,
   padding,
   showErrorMessage = true,
+  autoFocus = false,
   ...otherProps
 }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
@@ -27,6 +28,7 @@ function AppFormField({
         </View>
       )}
       <AppTextInput
+        autoFocus={autoFocus}
         onBlur={() => setFieldTouched(name)}
         onChangeText={(text) => setFieldValue(name, text)}
         value={values[name]}
