@@ -198,23 +198,31 @@ function MessageItemMainChild({
 
       rightThreshold={1}
       friction={3}
-      onSwipeableRightWillOpen={() => {
-        if (is_deleted) {
-          messageRef.current?.close();
-          return;
-        }
+      onSwipeableRightWillOpen={
+        sentBy === "me"
+          ? () => {
+              if (is_deleted) {
+                messageRef.current?.close();
+                return;
+              }
 
-        onWhoHasSeen();
-        messageRef.current?.close();
-      }}
-      renderRightActions={() => (
-        <Feather
-          name="eye"
-          size={24}
-          color={colors.white}
-          style={styles.optionIcon}
-        />
-      )}
+              onWhoHasSeen();
+              messageRef.current?.close();
+            }
+          : null
+      }
+      renderRightActions={
+        sentBy === "me"
+          ? () => (
+              <Feather
+                name="eye"
+                size={24}
+                color={colors.white}
+                style={styles.optionIcon}
+              />
+            )
+          : null
+      }
     >
       <TouchableOpacity
         activeOpacity={1}

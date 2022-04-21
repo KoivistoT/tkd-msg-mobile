@@ -32,7 +32,7 @@ const MessageOptionsButtonGroup = ({
         }}
       >
         {!isDeleted && <DeleteButton onPress={() => onDelete()} />}
-        <SeenButton onPress={() => onSeen()}></SeenButton>
+        {sentBy === "me" && <SeenButton onPress={() => onSeen()}></SeenButton>}
         <ReplyButton onPress={onReply} />
       </View>
     </View>
