@@ -174,6 +174,7 @@ function MessageForm({ item }) {
     let documentDisplayName = null;
 
     if (photos.length !== 0) {
+      Keyboard.dismiss();
       dispatch(startLoad());
       messageType = "image";
       const downloadUris = await fileFuncs.saveImagesToFirebase(
@@ -184,6 +185,7 @@ function MessageForm({ item }) {
     }
 
     if (documentURL.current) {
+      Keyboard.dismiss();
       dispatch(startLoad());
       messageType = "document";
       documentDownloadURL = await fileFuncs.uploadDocumentToFireBase(
@@ -251,7 +253,6 @@ function MessageForm({ item }) {
     documentURL.current = null;
     setPhotos([]);
     setShowOptions(false);
-    // Keyboard.dismiss();
   };
 
   return (

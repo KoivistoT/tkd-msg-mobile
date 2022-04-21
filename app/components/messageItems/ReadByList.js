@@ -26,6 +26,7 @@ import messageFuncs from "../../../utility/messageFuncs";
 import MessageItemReply from "./MessageItemReply";
 import timeFuncs from "../../../utility/timeFuncs";
 import { selectCurrenUserId } from "../../../store/currentUser";
+import ShowDocumentModal from "../modals/ShowDocumentModal";
 function ReadByList(item) {
   const {
     _id: messageId,
@@ -35,7 +36,8 @@ function ReadByList(item) {
     postedByUser,
     createdAt,
     is_deleted,
-    messageType,
+    documentData,
+    type: messageType,
     replyMessageId,
   } = item.route.params;
 
@@ -131,7 +133,13 @@ function ReadByList(item) {
     <Screen>
       <ScrollView>
         <View
-          style={{ padding: 20, borderWidth: 1, margin: 7, borderRadius: 10 }}
+          style={{
+            padding: 10,
+            paddingBottom: 0,
+            backgroundColor: colors.background1,
+            margin: 7,
+            borderRadius: 6,
+          }}
         >
           <MessageHeader
             sentBy={sentBy}
@@ -141,9 +149,17 @@ function ReadByList(item) {
             createdAt={createdAt.slice(11, 16)}
           />
 
-          {messageType === "image" && <MessageItemImage item={message} />}
+          {messageType === "image" && (
+            <MessageItemImage
+              SHOW_IMAGES={2}
+              item={item.route.params}
+              showImages={2}
+              disapleOnPress
+            />
+          )}
           {messageType === "document" && (
             <ShowDocumentModal
+              disapleOnPress
               name={documentData.documentDisplayName}
               url={documentData.documentDownloadURL}
             />
@@ -164,7 +180,10 @@ function ReadByList(item) {
             <></>
           )}
 
-          <AppText numberOfLines={10} style={{ overflow: "hidden" }}>
+          <AppText
+            numberOfLines={3}
+            style={{ overflow: "hidden", paddingBottom: 10 }}
+          >
             {messageFuncs.autolinkText(messageBody, null)}
           </AppText>
         </View>

@@ -24,7 +24,7 @@ import { selectRoomImagesByRoomId } from "../../../store/msgStore";
 import { WebView } from "react-native-webview";
 import AppButton from "../AppButton";
 import fileFuncs from "../../../utility/fileFuncs";
-function ShowDocumentModal({ name, url }) {
+function ShowDocumentModal({ name, url, disapleOnPress = false }) {
   const [modalVisible, setModalVisible] = useState(false);
   const onClose = () => {
     setModalVisible(false);
@@ -96,7 +96,19 @@ function ShowDocumentModal({ name, url }) {
           </TouchableOpacity>
         </View>
       </Modal>
-
+      {disapleOnPress && (
+        <View
+          style={{
+            position: "absolute",
+            opacity: 0,
+            flex: 1,
+            backgroundColor: "red",
+            zIndex: 2,
+            height: "100%",
+            width: "100%",
+          }}
+        ></View>
+      )}
       <TouchableOpacity
         activeOpacity="0.8"
         onPress={() => setModalVisible(true)}

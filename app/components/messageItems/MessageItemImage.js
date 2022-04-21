@@ -10,6 +10,7 @@ function MessageItemImage({
   item,
   showImages,
   setShowImages,
+  disapleOnPress = false,
   SHOW_IMAGES,
 }) {
   const [isMoreImages, setIsMoreImages] = useState(false);
@@ -26,6 +27,19 @@ function MessageItemImage({
 
   return (
     <View>
+      {disapleOnPress && (
+        <View
+          style={{
+            position: "absolute",
+            opacity: 0,
+            flex: 1,
+            backgroundColor: "red",
+            zIndex: 2,
+            height: "100%",
+            width: "100%",
+          }}
+        ></View>
+      )}
       <View style={styles.ImageModalContainer}>
         {item.imageURLs.slice(0, showImages).map((url) => (
           <ShowImageModal
@@ -38,12 +52,22 @@ function MessageItemImage({
       </View>
       {isMoreImages && (
         <TouchableOpacity
+          activeOpacity={1}
           style={styles.moreHideButton}
           onPress={() => onMoreLess()}
         >
-          <AppText style={styles.moreHideText}>
+          <AppText
+            style={{
+              color: disapleOnPress ? colors.black : colors.primary,
+              marginRight: 10,
+            }}
+          >
             {showImages === SHOW_IMAGES
-              ? `${item.imageURLs.length - SHOW_IMAGES} More image(s)`
+              ? `${disapleOnPress ? "(" : ""}${
+                  item.imageURLs.length - SHOW_IMAGES
+                } More image${
+                  item.imageURLs.length - SHOW_IMAGES > 1 ? `s` : ""
+                }${disapleOnPress ? ")" : ""}`
               : "Hide images"}
           </AppText>
         </TouchableOpacity>
@@ -56,9 +80,7 @@ const styles = StyleSheet.create({
   moreHideButton: {
     alignSelf: "flex-end",
   },
-  moreHideText: {
-    color: colors.secondary,
-  },
+
   ImageModalContainer: {
     justifyContent: "center",
     flexDirection: "row",
