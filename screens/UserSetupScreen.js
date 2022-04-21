@@ -6,7 +6,7 @@ import Screen from "../app/components/Screen";
 import AppButton from "../app/components/AppButton";
 
 import UserInfoCard from "../app/components/UserInfoCard";
-import { selectCurrentUserId } from "../store/currentUser";
+import { selectCurrentUserId, selectUserName } from "../store/currentUser";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import AutoLoginSetupButton from "../app/components/AutoLoginSetupButton";
 import LogoutButton from "../app/components/LogoutButton";
@@ -15,12 +15,12 @@ import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
 function UserSetupScreen() {
   const store = useStore();
   const currentUserId = selectCurrentUserId(store);
-
+  const userName = selectUserName(store);
   return (
     <Screen style={styles.container}>
       <UserInfoCard userId={currentUserId} isEditable={true} />
       <AutoLoginSetupButton />
-      <ChangePasswordModal />
+      <ChangePasswordModal userName={userName} />
       <LogoutButton />
     </Screen>
   );

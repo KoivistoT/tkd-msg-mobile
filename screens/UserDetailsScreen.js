@@ -74,7 +74,10 @@ function UserDetailsScreen(item) {
             backgroundColor="danger"
             onPress={onDeleteUser}
           />
-          <ChangePasswordModal requireCurrentPassword={false} />
+          <ChangePasswordModal
+            userName={userData.email}
+            requireCurrentPassword={false}
+          />
         </View>
       )}
       <AppText>vaihda salasana</AppText>

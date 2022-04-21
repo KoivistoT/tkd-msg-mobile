@@ -29,7 +29,7 @@ function ChangePasswordForm({
     getCurrentLoginData();
   }, []);
 
-  const handleSubmit = async ({ currentPassword, newPassword }) => {
+  const handleSubmit = async ({ newPassword }) => {
     if (!currentLoginData) {
       alert("Something faild");
       closeModal();
