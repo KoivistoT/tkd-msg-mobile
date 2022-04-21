@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import * as Yup from "yup";
 import Screen from "../Screen";
 import AppForm from "./AppForm";
@@ -13,6 +13,7 @@ import {
   selectRoomDataById,
   selectRoomLoading,
   selectRoomRequestState,
+  setLoading,
 } from "../../../store/rooms";
 import colors from "../../../config/colors";
 
@@ -26,9 +27,17 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
   const roomData = useSelector(selectRoomDataById(roomId));
   const requestState = useSelector(selectRoomRequestState);
 
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (requestState === true) {
+    if (requestState === "started") {
+      setLoading(true);
+    }
+    if (!requestState) {
+      setLoading(false);
+    }
+    if (requestState === "succeed") {
       dispatch(requestStateCleared());
+      setLoading(false);
       closeModal();
     }
   }, [requestState]);
@@ -63,7 +72,13 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
           <View
             style={{ flexDirection: "row", alignSelf: "center", marginTop: 20 }}
           >
-            <SubmitButton title="Save new name" />
+            {loading ? (
+              <View style={{ height: 45 }}>
+                <ActivityIndicator />
+              </View>
+            ) : (
+              <SubmitButton title="Save new name" />
+            )}
           </View>
         </>
       </AppForm>

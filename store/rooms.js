@@ -19,7 +19,7 @@ const slice = createSlice({
     roomsFetched: false,
     lastNotificationResponseRoomId: null,
     typers: [],
-    requestSucceed: null,
+    requestState: null,
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
@@ -57,15 +57,15 @@ const slice = createSlice({
       rooms.successMessage = null;
     },
     requestStarted: (rooms, action) => {
-      rooms.requestSucceed = null;
+      rooms.requestState = "started";
       rooms.loading = true;
     },
     requestSucceed: (rooms, action) => {
-      rooms.requestSucceed = true;
+      rooms.requestState = "succeed";
       rooms.loading = false;
     },
     requestStateCleared: (rooms, action) => {
-      rooms.requestSucceed = null;
+      rooms.requestState = null;
     },
 
     roomTasksResived: (rooms, action) => {
@@ -348,7 +348,7 @@ export const selectRoomLoading = createSelector(
 
 export const selectRoomRequestState = createSelector(
   (state) => state.entities.rooms,
-  (rooms) => rooms.requestSucceed
+  (rooms) => rooms.requestState
 );
 
 export const selectAllActiveRoomsIdsOld = createSelector(
