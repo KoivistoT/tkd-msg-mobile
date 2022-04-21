@@ -24,7 +24,7 @@ function UnreadMessagesButton({
       activeOpacity={1}
       style={styles.container}
       onPress={() => {
-        onPress(unreadMessagesOnStart - 1, 0.5);
+        onPress(unreadMessagesOnStart - 1, 1);
         setShowUnreadMessageButton(false);
       }}
     >
