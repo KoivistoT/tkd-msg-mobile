@@ -16,13 +16,10 @@ function UsersControlScreen({ navigation }) {
 
   const listItem = ({ item }) =>
     item.status === "deleted" ? null : (
-      <View key={item._id}>
-        <UserControlListItem
-          onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
-          item={item}
-        />
-        <ListItemSeparator />
-      </View>
+      <UserControlListItem
+        onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
+        item={item}
+      />
     );
 
   return (

@@ -11,6 +11,34 @@ function ControlScreen({ navigation }) {
   const data = [
     { name: "Users", id: "2", onPress: routes.USERS_CONTROL_SCREEN },
   ];
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={{
+        paddingHorizontal: 20,
+        padding: 10,
+        backgroundColor: colors.primary,
+        width: "90%",
+        alignSelf: "center",
+        borderRadius: 5,
+      }}
+      onPress={() => navigation.navigate(item.onPress, item)}
+    >
+      <View style={{ flexDirection: "row" }}>
+        <View>
+          <AppText style={styles.name}>{item.name}</AppText>
+        </View>
+
+        <MaterialCommunityIcons
+          style={{ position: "absolute", right: 0, alignSelf: "center" }}
+          name="chevron-right"
+          size={25}
+          color={colors.white}
+        />
+      </View>
+    </TouchableOpacity>
+  );
   // console.log("control screen päivittyy");
   return (
     <Screen>
@@ -19,28 +47,11 @@ function ControlScreen({ navigation }) {
         data={data}
         bounces={false}
         keyExtractor={(data) => data.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate(item.onPress, item)}
-          >
-            <View>
-              <View>
-                <AppText style={styles.name}>{item.name}</AppText>
-              </View>
-
-              <MaterialCommunityIcons
-                name="chevron-right"
-                size={25}
-                color={colors.dark}
-              />
-            </View>
-          </TouchableOpacity>
-        )}
+        renderItem={renderItem}
       />
     </Screen>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({ name: { color: colors.white } });
 export default ControlScreen;

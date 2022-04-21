@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppButton from "../app/components/AppButton";
+import UserInfoCard from "../app/components/UserInfoCard";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import EditUserModal from "../app/components/modals/EditUserModal";
@@ -48,10 +49,11 @@ function UserDetailsScreen(item) {
     <Screen>
       {userData && (
         <View>
-          <View style={{ flexDirection: "row" }}>
+          <UserInfoCard userId={userId} />
+          {/* <View style={{ flexDirection: "row" }}>
             <AppText>{userData.firstName} </AppText>
             <AppText>{userData.lastName}</AppText>
-          </View>
+          </View> */}
           {/* <AppText>User channels:</AppText>
           {userData.userRooms.length > 0 && (
             <FlatList
