@@ -148,6 +148,7 @@ const slice = createSlice({
 
     roomsError: (rooms, action) => {
       rooms.errorMessage = action.payload;
+      rooms.requestState = "error";
       rooms.loading = false;
     },
     roomRemoved: (rooms, action) => {
@@ -340,6 +341,8 @@ export const selectRoomsFetched = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.roomsFetched
 );
+export const selectRoomsErrorMessage = (store) =>
+  store.getState().entities.rooms.errorMessage;
 
 export const selectRoomLoading = createSelector(
   (state) => state.entities.rooms,

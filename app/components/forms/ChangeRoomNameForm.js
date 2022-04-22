@@ -61,26 +61,15 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
             // icon="account-outline"
             autoFocus
             name="newRoomName"
-            placeholder={roomNameNow}
+            placeholder={"Room name"}
           />
           <AppButtonWithLoad
             listenRequest="rooms"
             succeedFunctions={[() => closeModal()]}
-            successMessage={"jee joo"}
+            successMessage="New name saved!"
           >
             <SubmitButton title="Save new name" />
           </AppButtonWithLoad>
-          {/* <View
-            style={{ flexDirection: "row", alignSelf: "center", marginTop: 20 }}
-          >
-            {loading ? (
-              <View style={{ height: 45 }}>
-                <ActivityIndicator />
-              </View>
-            ) : (
-              <SubmitButton title="Save new name" />
-            )}
-          </View> */}
         </>
       </AppForm>
     </View>

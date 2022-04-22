@@ -19,16 +19,16 @@ const toast =
       // case "users/usersResived": // tämä ei ole toastiin kuuluva
       //   dispatch(createSocketConnection());
       //   break;
-      case "rooms/membersChanged":
-        dispatch(successMessageAdded("Users changed"));
-        break;
+      // case "rooms/membersChanged":
+      //   dispatch(successMessageAdded("Users changed"));
+      //   break;
       // case "currentUser/loginFailed":
       //   dispatch(errorMessageAdded(action.payload));
       //   break;
-      case "rooms/roomsError":
-        dispatch(errorMessageAdded(action.payload));
-        dispatch(setRoomLoadingToFalse());
-        break;
+      // case "rooms/roomsError":
+      //   dispatch(errorMessageAdded(action.payload));
+      //   dispatch(setRoomLoadingToFalse());
+      //   break;
       case "rooms/roomNameChanged":
         break;
       // case "rooms/roomCreated":

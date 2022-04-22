@@ -1,15 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { successMessageAdded } from "../../../store/general";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { errorMessageAdded, successMessageAdded } from "../../../store/general";
 import {
   requestStateCleared,
   selectRoomRequestState,
+  selectRoomsErrorMessage,
 } from "../../../store/rooms";
+import AppButton from "../AppButton";
 import AppLoadingIndicator from "../AppLoadingIndicator";
 
 const STATE_LISTENERS = {
-  rooms: { selector: selectRoomRequestState, clear: requestStateCleared },
+  rooms: {
+    selector: selectRoomRequestState,
+    clear: requestStateCleared,
+    errorMessage: (store) => selectRoomsErrorMessage(store),
+  },
 };
 
 function AppButtonWithLoad({
@@ -18,11 +24,15 @@ function AppButtonWithLoad({
   initFunctions = [],
   startedFunctions = [],
   succeedFunctions = [],
+  errorFunctions = [],
   loaderType = "circle",
   successMessage = null,
+  onPress = null,
+  title = null,
 }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const store = useStore();
 
   const requestState = useSelector(STATE_LISTENERS[listenRequest].selector);
   const clearFunction = () => dispatch(STATE_LISTENERS[listenRequest].clear());
@@ -44,6 +54,14 @@ function AppButtonWithLoad({
           dispatch(successMessageAdded(successMessage));
         }
         setLoading(false);
+        break;
+      case "error":
+        setLoading(false);
+        dispatch(
+          errorMessageAdded(STATE_LISTENERS[listenRequest].errorMessage(store))
+        );
+        doFunctions(errorFunctions);
+        clearFunction();
         break;
       default:
         clearFunction();
@@ -75,8 +93,10 @@ function AppButtonWithLoad({
             <ActivityIndicator />
           )}
         </View>
-      ) : (
+      ) : children ? (
         <>{children}</>
+      ) : (
+        <AppButton title={title} onPress={onPress} />
       )}
     </View>
   );
