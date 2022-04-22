@@ -20,7 +20,6 @@ const slice = createSlice({
     lastNotificationResponseRoomId: null,
     typers: [],
     requestState: null,
-    requestId: null,
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
@@ -60,6 +59,9 @@ const slice = createSlice({
     requestStarted: (rooms, action) => {
       rooms.requestState = "started";
       rooms.loading = true;
+    },
+    testijoo: (rooms, action) => {
+      alert("testijoo", action.payload);
     },
     requestSucceed: (rooms, action) => {
       rooms.requestState = "succeed";
@@ -164,9 +166,7 @@ const slice = createSlice({
     roomCreated: (rooms, action) => {
       rooms.loading = false;
     },
-    requestIdResived: (rooms, action) => {
-      rooms.requestId = action.payload;
-    },
+
     roomAdded: (rooms, action) => {
       const { _id: roomId, status } = action.payload;
       if (rooms.allRooms[roomId] !== undefined) {
@@ -207,9 +207,10 @@ export const {
   notificationResponseResived,
   notificationResponseCleared,
   requestSucceed,
-  requestIdResived,
+
   roomNameChanged,
   roomTasksResived,
+  testijoo,
   requestStarted,
 } = slice.actions;
 export default slice.reducer;
@@ -261,11 +262,12 @@ export const createPrivateRoom = (userId = null, otherUserId = null) =>
     onError: roomsError.type,
   });
 
-export const changeRoomName = (roomId, newRoomName) =>
+export const changeRoomName = (roomId, newRoomName, requestId) =>
   apiCallBegan({
     url: url + "/rooms/change_room_name",
     method: "post",
     data: { roomId, newRoomName },
+    followRequestState: requestId,
     onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
@@ -298,7 +300,7 @@ export const leave_room = (roomId, userId) =>
     onError: roomsError.type,
   });
 
-export const activateRoom = (roomId, userId) =>
+export const activateRoom = (roomId, userId, requestId) =>
   apiCallBegan({
     url: url + "/rooms/activate_room/",
     method: "post",

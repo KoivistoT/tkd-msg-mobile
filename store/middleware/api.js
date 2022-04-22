@@ -8,18 +8,33 @@ import { errorMessageAdded } from "../general";
 import { createSocketConnection } from "../socket";
 import { getRestMessages } from "../msgStore";
 import routes from "../../app/navigation/routes";
-import { notificationResponseCleared } from "../rooms";
+import { notificationResponseCleared, roomRequestIdResived } from "../rooms";
 const api =
   ({ dispatch, getState }) =>
   (next) =>
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
-    const { url, method, data, onStart, onSuccess, onError, onInitSuccess } =
-      action.payload;
+    const {
+      url,
+      method,
+      data,
+      onStart,
+      onSuccess,
+      onError,
+      onInitSuccess,
+      followRequestState,
+    } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
     next(action);
+
+    if (followRequestState) {
+      console.log(followRequestState, "seuraako");
+      alert(
+        "tähän request id, joka mene generaaliin, josta loaderi katsoo onko lataus indicaattori"
+      );
+    }
     // console.log(onStart);
     try {
       axios.defaults.headers.common["x-auth-token"] = selectCurrentUserToken(

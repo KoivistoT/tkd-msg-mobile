@@ -41,7 +41,8 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
     if (roomData.roomName === newRoomName) {
       closeModal();
     } else {
-      dispatch(changeRoomName(roomId, newRoomName));
+      const requestId = Date.now();
+      dispatch(changeRoomName(roomId, newRoomName, requestId));
     }
   };
 

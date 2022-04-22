@@ -35,9 +35,9 @@ function AppButtonWithLoader({
   const dispatch = useDispatch();
   const store = useStore();
 
-  const requestState = useSelector(STATE_LISTENERS[listenRequest].selector);
+  const requestState = useSelector(STATE_LISTENERS[listenRequest].selector); // täne saa id:n selector id:llä, loader id, mut miten sen lisää ja poistaa
   const clearFunction = () => dispatch(STATE_LISTENERS[listenRequest].clear());
-
+  alert("genrealissa tuo seuranta request statesta idn avulla");
   // console.log("jaahas");
 
   useEffect(() => {
