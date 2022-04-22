@@ -237,10 +237,11 @@ export const createChannel = (userId, roomName, description) =>
     onError: roomsError.type,
   });
 
-export const deleteRoom = (roomId) =>
+export const deleteRoom = (roomId, requestId) =>
   apiCallBegan({
     url: url + "/rooms/delete_room/" + roomId,
     onStart: requestStarted.type,
+    followRequestState: requestId,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
@@ -290,11 +291,12 @@ export const change_members = (roomId, members) =>
     onError: roomsError.type,
   });
 
-export const leave_room = (roomId, userId) =>
+export const leave_room = (roomId, userId, requestId) =>
   apiCallBegan({
     url: url + "/rooms/leave_room",
     method: "post",
     data: { roomId, userId },
+    followRequestState: requestId,
     onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
@@ -334,7 +336,7 @@ export const selectRoomDataById = (roomId) =>
   );
 
 export const selectMessageSumByRoomId = (store, roomId) =>
-  store.getState().entities.rooms.allRooms[roomId].messageSum;
+  store.getState().entities.rooms.allRooms[roomId]?.messageSum;
 
 export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
@@ -387,12 +389,12 @@ export const selectTypersByRoomId = (roomId, currentUserId) =>
 export const selectRoomMessageSumByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.rooms,
-    (rooms) => rooms.allRooms[roomId].messageSum
+    (rooms) => rooms.allRooms[roomId]?.messageSum
   );
 
 export const selectUnreadSum = (roomId) =>
   createSelector(
-    (state) => state.entities.rooms.allRooms[roomId].messageSum,
+    (state) => state.entities.rooms.allRooms[roomId]?.messageSum,
     (state) => state.auth.currentUser.last_seen_messages,
     (messageSum, last_seen_messages) => {
       const condition =

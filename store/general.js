@@ -14,6 +14,7 @@ const slice = createSlice({
     selectedMessage: null,
     pushNotificationPressed: false,
     newMessage: null,
+    requestStates: [],
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -69,11 +70,33 @@ const slice = createSlice({
     newMessageCleared: (general, action) => {
       general.newMessage = null;
     },
+    requestStateResived: (general, action) => {
+      general.requestStates.push(action.payload);
+      // console.log(general.requestStates, "tämä on joo1");
+    },
+    requestStateUpdated: (general, action) => {
+      const { state, id } = action.payload;
+      const index = general.requestStates.findIndex((item) => item.id === id);
+      if (index >= 0) {
+        general.requestStates[index].state = state;
+      }
+    },
+    requestStateRemoved: (general, action) => {
+      const { id } = action.payload;
+      const index = general.requestStates.findIndex((item) => item.id === id);
+      if (index >= 0) {
+        general.requestStates.splice(index, 1);
+      }
+      // console.log(id, "oli", general.requestStates, "tämä on joo3");
+    },
   },
 });
 
 export const {
   errorMessageAdded,
+  requestStateUpdated,
+  requestStateRemoved,
+  requestStateResived,
   newMessageResived,
   newMessageCleared,
   messageFormFocusAdded,
@@ -101,5 +124,11 @@ export const selectSelectedMessage = createSelector(
 
 export const isPushNotificationPressed = (store) =>
   store.getState().entities.general.pushNotificationPressed;
+
+export const selectRequestStateById = (id) =>
+  createSelector(
+    (state) => state.entities.general,
+    (general) => general.requestStates.filter((request) => request.id === id)
+  );
 
 export default slice.reducer;

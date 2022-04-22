@@ -41,8 +41,7 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
     if (roomData.roomName === newRoomName) {
       closeModal();
     } else {
-      const requestId = Date.now();
-      dispatch(changeRoomName(roomId, newRoomName, requestId));
+      dispatch(changeRoomName(roomId, newRoomName, "changeRoomName"));
     }
   };
 
@@ -65,8 +64,8 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
             placeholder={"Room name"}
           />
           <AppButtonWithLoader
-            id="a1a1"
-            listenRequest="rooms"
+            // id="a1a1" // id voisi tulla tuolta konmpnetista date now
+            requestId="changeRoomName"
             succeedFunctions={[() => closeModal()]}
             successMessage="New name saved!"
           >

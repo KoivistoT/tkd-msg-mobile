@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { errorMessageAdded, successMessageAdded } from "../../../store/general";
+import {
+  errorMessageAdded,
+  requestStateRemoved,
+  requestStatesRemoved,
+  selectRequestStateById,
+  successMessageAdded,
+} from "../../../store/general";
 import {
   requestStateCleared,
   selectRoomRequestState,
@@ -10,17 +16,17 @@ import {
 import AppButton from "../AppButton";
 import AppLoadingIndicator from "../AppLoadingIndicator";
 
-const STATE_LISTENERS = {
-  rooms: {
-    selector: selectRoomRequestState,
-    clear: requestStateCleared,
-    errorMessage: (store) => selectRoomsErrorMessage(store),
-  },
-};
+// const STATE_LISTENERS = {
+//   rooms: {
+//     selector: selectRoomRequestState,
+//     clear: requestStateCleared,
+//     errorMessage: (store) => selectRoomsErrorMessage(store),
+//   },
+// };
 
 function AppButtonWithLoader({
   children = null,
-  listenRequest,
+  requestId,
   initFunctions = [],
   startedFunctions = [],
   succeedFunctions = [],
@@ -35,20 +41,19 @@ function AppButtonWithLoader({
   const dispatch = useDispatch();
   const store = useStore();
 
-  const requestState = useSelector(STATE_LISTENERS[listenRequest].selector); // täne saa id:n selector id:llä, loader id, mut miten sen lisää ja poistaa
-  const clearFunction = () => dispatch(STATE_LISTENERS[listenRequest].clear());
-  alert("genrealissa tuo seuranta request statesta idn avulla");
+  const requestState = useSelector(selectRequestStateById(requestId)); // täne saa id:n selector id:llä, loader id, mut miten sen lisää ja poistaa
+  const clearFunction = () => dispatch(requestStateRemoved({ id: requestId }));
+
   // console.log("jaahas");
 
   useEffect(() => {
-    if (requestState) stateFunctions(requestState);
+    if (requestState.length > 0) stateFunctions(requestState);
   }, [requestState]);
 
   let initDone = useRef(false);
   const stateFunctions = (requestState) => {
-    // console.log("täällä päivittää joo", requestState);
+    console.log("täällä päivittää joo", requestState);
     if (!initDone.current) {
-      clearFunction();
       initDone.current = true;
     }
     switch (requestState) {
@@ -58,22 +63,20 @@ function AppButtonWithLoader({
         break;
       case "succeed":
         clearFunction();
+
+        setLoading(false);
         doFunctions(succeedFunctions);
         if (successMessage) {
           dispatch(successMessageAdded(successMessage));
         }
-        setLoading(false);
+
         break;
       case "error":
         setLoading(false);
-        dispatch(
-          errorMessageAdded(STATE_LISTENERS[listenRequest].errorMessage(store))
-        );
         doFunctions(errorFunctions);
         clearFunction();
         break;
       default:
-        clearFunction();
         doFunctions(initFunctions);
         setLoading(false);
         break;

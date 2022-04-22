@@ -4,7 +4,11 @@ import { navigationRef } from "../../app/navigation/rootNavigation";
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
 import { clearTasks, selectCurrentUserToken } from "../currentUser";
-import { errorMessageAdded } from "../general";
+import {
+  errorMessageAdded,
+  requestStateResived,
+  requestStateUpdated,
+} from "../general";
 import { createSocketConnection } from "../socket";
 import { getRestMessages } from "../msgStore";
 import routes from "../../app/navigation/routes";
@@ -30,9 +34,8 @@ const api =
     next(action);
 
     if (followRequestState) {
-      console.log(followRequestState, "seuraako");
-      alert(
-        "tähän request id, joka mene generaaliin, josta loaderi katsoo onko lataus indicaattori"
+      dispatch(
+        requestStateResived({ id: followRequestState, state: "started" })
       );
     }
     // console.log(onStart);
@@ -97,6 +100,11 @@ const api =
         return;
       }
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
+      if (onSuccess && followRequestState) {
+        dispatch(
+          requestStateUpdated({ id: followRequestState, state: "succeed" })
+        );
+      }
     } catch (error) {
       dispatch(actions.apiCallFailed(error.message));
       console.log(error, "täältä tulee error1");
@@ -116,6 +124,11 @@ const api =
         });
         // dispatch(errorMessageAdded(error.response.data));
       }
+      if (onError && followRequestState)
+        dispatch(
+          requestStateUpdated({ id: followRequestState, state: "error" })
+        );
+      dispatch(errorMessageAdded(error.response.data));
     }
   };
 
