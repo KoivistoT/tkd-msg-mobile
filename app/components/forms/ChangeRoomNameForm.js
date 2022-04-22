@@ -16,6 +16,7 @@ import {
   setLoading,
 } from "../../../store/rooms";
 import colors from "../../../config/colors";
+import AppButtonWithLoad from "../messageItems/AppButtonWithLoad";
 
 const validationSchema = Yup.object().shape({
   newRoomName: Yup.string().required().min(1).label("New channel name"),
@@ -25,22 +26,16 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
   const dispatch = useDispatch();
 
   const roomData = useSelector(selectRoomDataById(roomId));
-  const requestState = useSelector(selectRoomRequestState);
 
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (requestState === "started") {
-      setLoading(true);
-    }
-    if (!requestState) {
-      setLoading(false);
-    }
-    if (requestState === "succeed") {
-      dispatch(requestStateCleared());
-      setLoading(false);
-      closeModal();
-    }
-  }, [requestState]);
+  // const [loading, setLoading] = useState(false);
+  // useEffect(() => {
+  //   if (requestState === "started") {
+  //   }
+  //   if (!requestState) {
+  //   }
+  //   if (requestState === "succeed") {
+  //   }
+  // }, [requestState]);
 
   const handleSubmit = async ({ newRoomName }) => {
     if (roomData.roomName === newRoomName) {
@@ -68,8 +63,14 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
             name="newRoomName"
             placeholder={roomNameNow}
           />
-
-          <View
+          <AppButtonWithLoad
+            listenRequest="rooms"
+            succeedFunctions={[() => closeModal()]}
+            successMessage={"jee joo"}
+          >
+            <SubmitButton title="Save new name" />
+          </AppButtonWithLoad>
+          {/* <View
             style={{ flexDirection: "row", alignSelf: "center", marginTop: 20 }}
           >
             {loading ? (
@@ -79,7 +80,7 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
             ) : (
               <SubmitButton title="Save new name" />
             )}
-          </View>
+          </View> */}
         </>
       </AppForm>
     </View>
