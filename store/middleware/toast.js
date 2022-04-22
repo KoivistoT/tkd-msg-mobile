@@ -15,6 +15,20 @@ const toast =
     //   console.log("Toastify:", action.payload);
     // } else return next(action);
 
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    // console.log(action.type);
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+    //katso mitä kaikke menee milloinkin, välillä turhia???
+
     switch (action.type) {
       // case "users/usersResived": // tämä ei ole toastiin kuuluva
       //   dispatch(createSocketConnection());
@@ -29,8 +43,8 @@ const toast =
       //   dispatch(errorMessageAdded(action.payload));
       //   dispatch(setRoomLoadingToFalse());
       //   break;
-      case "rooms/roomNameChanged":
-        break;
+      // case "rooms/roomNameChanged":
+      //   break;
       // case "rooms/roomCreated":
       //   dispatch(errorMessageAdded(action.payload));
       //   break;

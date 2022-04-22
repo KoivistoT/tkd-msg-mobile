@@ -38,6 +38,7 @@ import AppTitle from "../app/components/AppTitle";
 import UserInfoCard from "../app/components/UserInfoCard";
 import userFuncs from "../utility/userFuncs";
 import sortArray from "../utility/sortArray";
+import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -97,10 +98,10 @@ function RoomSetupScreen(item) {
 
     if (!result) return;
 
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
-    setTimeout(() => {
-      dispatch(leave_room(roomId, currentUserData._id));
-    }, 800);
+    // navigationRef.current.navigate(routes.ROOM_SCREEN);
+    // setTimeout(() => {
+    //   dispatch(leave_room(roomId, currentUserData._id));
+    // }, 800);
   };
 
   const onActivateRoom = async () => {
@@ -134,7 +135,7 @@ function RoomSetupScreen(item) {
 
     dispatch(archiveRoomById(roomId));
   };
-
+  // console.log("tämä päivittyy");
   const onSaveChanges = () => {
     roomMembersOnStart.current = selectedUsers;
 
@@ -337,11 +338,22 @@ function RoomSetupScreen(item) {
           currentUserData.accountType === "admin") && ( */}
         <View>
           {roomType !== "private" && (
+            //   <AppButtonWithLoader
+            //     id="b2b2"
+            //     succeedFunctions={[
+            //       () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+            //       () => dispatch(leave_room(roomId, currentUserData._id)),
+            //     ]}
+            //     listenRequest="rooms"
+            //     title="Leave chat"
+            //     onPress={onLeaveRoom}
+            //     backgroundColor="primary"
+            //   />
+            // )
             <AppButton
               // title={`Leave ${roomType}`}
               title={`Leave chat`}
               onPress={onLeaveRoom}
-              backgroundColor={"primary"}
             />
           )}
           {/* {roomStatus === "archived" ? (

@@ -98,7 +98,7 @@ function MessageForm({ item }) {
     return () => {
       hideSubscription.remove();
       dispatch(activeRoomIdCleared());
-      dispatch(msgStoreActiveRoomIdCleared());
+      // dispatch(msgStoreActiveRoomIdCleared());
     };
     //tarviiko roomData vielä tässä?
     //tarviiko roomData vielä tässä?
@@ -236,7 +236,7 @@ function MessageForm({ item }) {
 
     resetForm();
     clearStates();
-    dispatch(endLoad());
+    // dispatch(endLoad());
 
     if (currentRoomStatus === "draft") {
       dispatch(activateDraftRoom(currentRoomId, currentUserId));

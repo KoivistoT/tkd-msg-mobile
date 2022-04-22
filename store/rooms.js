@@ -20,6 +20,7 @@ const slice = createSlice({
     lastNotificationResponseRoomId: null,
     typers: [],
     requestState: null,
+    requestId: null,
   },
   reducers: {
     roomNewTasksResived: (rooms, action) => {
@@ -163,6 +164,9 @@ const slice = createSlice({
     roomCreated: (rooms, action) => {
       rooms.loading = false;
     },
+    requestIdResived: (rooms, action) => {
+      rooms.requestId = action.payload;
+    },
     roomAdded: (rooms, action) => {
       const { _id: roomId, status } = action.payload;
       if (rooms.allRooms[roomId] !== undefined) {
@@ -203,6 +207,7 @@ export const {
   notificationResponseResived,
   notificationResponseCleared,
   requestSucceed,
+  requestIdResived,
   roomNameChanged,
   roomTasksResived,
   requestStarted,
@@ -288,6 +293,7 @@ export const leave_room = (roomId, userId) =>
     url: url + "/rooms/leave_room",
     method: "post",
     data: { roomId, userId },
+    onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });

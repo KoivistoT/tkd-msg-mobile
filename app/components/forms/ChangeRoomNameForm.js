@@ -16,7 +16,7 @@ import {
   setLoading,
 } from "../../../store/rooms";
 import colors from "../../../config/colors";
-import AppButtonWithLoad from "../messageItems/AppButtonWithLoad";
+import AppButtonWithLoader from "../messageItems/AppButtonWithLoader";
 
 const validationSchema = Yup.object().shape({
   newRoomName: Yup.string().required().min(1).label("New channel name"),
@@ -63,13 +63,14 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
             name="newRoomName"
             placeholder={"Room name"}
           />
-          <AppButtonWithLoad
+          <AppButtonWithLoader
+            id="a1a1"
             listenRequest="rooms"
             succeedFunctions={[() => closeModal()]}
             successMessage="New name saved!"
           >
             <SubmitButton title="Save new name" />
-          </AppButtonWithLoad>
+          </AppButtonWithLoader>
         </>
       </AppForm>
     </View>

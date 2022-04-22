@@ -18,9 +18,9 @@ const STATE_LISTENERS = {
   },
 };
 
-function AppButtonWithLoad({
-  children,
-  listenRequest = null,
+function AppButtonWithLoader({
+  children = null,
+  listenRequest,
   initFunctions = [],
   startedFunctions = [],
   succeedFunctions = [],
@@ -29,6 +29,7 @@ function AppButtonWithLoad({
   successMessage = null,
   onPress = null,
   title = null,
+  backgroundColor = null,
 }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -37,15 +38,23 @@ function AppButtonWithLoad({
   const requestState = useSelector(STATE_LISTENERS[listenRequest].selector);
   const clearFunction = () => dispatch(STATE_LISTENERS[listenRequest].clear());
 
+  // console.log("jaahas");
+
   useEffect(() => {
-    stateFunctions(requestState);
+    if (requestState) stateFunctions(requestState);
   }, [requestState]);
 
+  let initDone = useRef(false);
   const stateFunctions = (requestState) => {
+    // console.log("täällä päivittää joo", requestState);
+    if (!initDone.current) {
+      clearFunction();
+      initDone.current = true;
+    }
     switch (requestState) {
       case "started":
         setLoading(true);
-        doFunctions(startedFunctions);
+        // doFunctions(startedFunctions);
         break;
       case "succeed":
         clearFunction();
@@ -96,7 +105,11 @@ function AppButtonWithLoad({
       ) : children ? (
         <>{children}</>
       ) : (
-        <AppButton title={title} onPress={onPress} />
+        <AppButton
+          backgroundColor={backgroundColor}
+          title={title}
+          onPress={onPress}
+        />
       )}
     </View>
   );
@@ -106,4 +119,4 @@ const styles = StyleSheet.create({
   container: { flexDirection: "row", alignSelf: "center", marginTop: 20 },
 });
 
-export default AppButtonWithLoad;
+export default AppButtonWithLoader;
