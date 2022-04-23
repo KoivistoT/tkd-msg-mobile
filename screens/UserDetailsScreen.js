@@ -36,14 +36,14 @@ function UserDetailsScreen(item) {
   const archiveUser = async () => {
     const result = await confirmAlert("Haluatko arkistoida käyttäjän?", "");
     if (!result) return;
-    dispatch(archiveOrDeleteUserById(userId, "archived", requestId));
+    dispatch(archiveOrDeleteUserById(userId, "archived", "archiveUser"));
     console.log("ilmoitus, että käyttäjä arkistoitu");
   };
 
   const activateUser = async () => {
     const result = await confirmAlert("Haluatko aktivoida käyttäjän?", "");
     if (!result) return;
-    dispatch(activateUserById(userId, requestId));
+    dispatch(activateUserById(userId, "activateUser"));
     console.log("ilmoitus, että käyttäjä aktivoitu");
   };
 
@@ -64,7 +64,7 @@ function UserDetailsScreen(item) {
               // />
               <AppButtonWithLoader
                 successMessage={"Activated"}
-                requestId={requestId}
+                requestId={"activateUser"}
                 onPress={activateUser}
                 title={"activate user"}
                 backgroundColor="green"
@@ -72,7 +72,7 @@ function UserDetailsScreen(item) {
             ) : (
               <AppButtonWithLoader
                 successMessage={"Archived"}
-                requestId={requestId}
+                requestId={"archiveUser"}
                 onPress={archiveUser}
                 color="black"
                 title={"archive user"}

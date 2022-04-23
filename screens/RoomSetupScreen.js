@@ -100,7 +100,7 @@ function RoomSetupScreen(item) {
 
     // navigationRef.current.navigate(routes.ROOM_SCREEN);
     // setTimeout(() => {
-    dispatch(leave_room(roomId, currentUserData._id, requestId));
+    dispatch(leave_room(roomId, currentUserData._id, "leaveRoom"));
     // }, 800);
   };
 
@@ -116,7 +116,7 @@ function RoomSetupScreen(item) {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) return;
 
-    dispatch(deleteRoom(roomId, requestId));
+    dispatch(deleteRoom(roomId, "deleteRoomSetup"));
 
     // setTimeout(() => {
     //    dispatch(setRoomLoadingToFalse());
@@ -344,7 +344,7 @@ function RoomSetupScreen(item) {
               title={`Leave ${roomType}`}
               onPress={onLeaveRoom}
               backgroundColor={"primary"}
-              requestId={requestId}
+              requestId={"leaveRoom"}
             />
             // <AppButton
             //   // title={`Leave ${roomType}`}
@@ -375,7 +375,7 @@ function RoomSetupScreen(item) {
           roomType === "private") && (
           <AppButtonWithLoader
             title="Delete chat"
-            requestId={requestId}
+            requestId={"deleteRoomSetup"}
             backgroundColor="danger"
             onPress={onDeleteRoom}
             succeedFunctions={[

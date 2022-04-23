@@ -127,7 +127,10 @@ export const isPushNotificationPressed = (store) =>
 export const selectRequestStateById = (id) =>
   createSelector(
     (state) => state.entities.general,
-    (general) => general.requestStates.filter((request) => request.id === id)
+    (general) => {
+      // console.log("computtaa");
+      return general.requestStates.filter((request) => request.id === id);
+    }
   );
 
 export default slice.reducer;

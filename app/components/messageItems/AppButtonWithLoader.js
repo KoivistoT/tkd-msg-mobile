@@ -48,7 +48,7 @@ function AppButtonWithLoader({
   useEffect(() => {
     if (requestState.length > 0) stateFunctions(requestState[0].state);
   }, [requestState]);
-
+  // console.log("päivittää täällä");
   let prevState = useRef(null);
   let initDone = useRef(false);
   const stateFunctions = (requestState) => {
@@ -57,7 +57,7 @@ function AppButtonWithLoader({
     }
 
     if (requestState === prevState.current) return;
-
+    // console.log("täsäs joo");
     switch (requestState) {
       case "started":
         prevState.current = requestState;
