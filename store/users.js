@@ -65,9 +65,7 @@ const slice = createSlice({
       //   console.log("eivät ole samoja");
       // }
     },
-    requestSuccess: (users, action) => {
-      users.loading = false;
-    },
+
     userTasksResived: (users, action) => {
       let newState = { ...users };
 
@@ -114,6 +112,8 @@ const slice = createSlice({
     channelsResived: (users, action) => {
       users.allChannels = action.payload;
     },
+    requestSucceed: (users, action) => {},
+    requestStarted: (users, action) => {},
     userLastPresentResived: (users, action) => {
       const { userId, last_present } = action.payload;
       users.allUsers[userId].last_present = last_present;
@@ -128,11 +128,9 @@ export const {
   usersOnlineResived,
   userLastPresentResived,
   channelsResived,
-
+  requestStarted,
   usersErrorCleared,
-
-  requestSuccess,
-
+  requestSucceed,
   userTasksResived,
   itemAdded,
 } = slice.actions;
@@ -178,7 +176,7 @@ export const getAllChannels = () =>
     onError: usersError.type,
   });
 
-export const archiveOrDeleteUserById = (userId, status) =>
+export const archiveOrDeleteUserById = (userId, status, requestId) =>
   apiCallBegan({
     url: url + "/archive_or_delete_user",
     method: "post",
@@ -186,7 +184,9 @@ export const archiveOrDeleteUserById = (userId, status) =>
       userId,
       status,
     },
-    // onSuccess: userControlUserDeleted.type,
+    followRequestState: requestId,
+    onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
     onError: usersError.type,
   });
 export const getUserLastPresentByUserId = (userId) =>
@@ -223,7 +223,7 @@ export const createUser = (
       phone,
       status,
     },
-    onSuccess: requestSuccess.type,
+    onSuccess: requestSucceed.type,
     onError: usersError.type,
   });
 export const editUserData = (
@@ -247,7 +247,7 @@ export const editUserData = (
       phone,
       userId,
     },
-    onSuccess: requestSuccess.type,
+    onSuccess: requestSucceed.type,
     onError: usersError.type,
   });
 
@@ -258,14 +258,16 @@ export const saveEditedUserdata = (data) =>
     data: {
       data,
     },
-    onSuccess: requestSuccess.type,
+    onSuccess: requestSucceed.type,
     onError: usersError.type,
   });
 
-export const activateUserById = (userId) =>
+export const activateUserById = (userId, requestId) =>
   apiCallBegan({
     url: url + "/activate_user/" + userId,
-    onSuccess: requestSuccess.type,
+    followRequestState: requestId,
+    onSuccess: requestSucceed.type,
+    onStart: requestStarted.type,
     onError: usersError.type,
   });
 

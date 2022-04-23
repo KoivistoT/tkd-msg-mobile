@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 
 function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
   const dispatch = useDispatch();
-
+  const requestId = Date.now();
   const roomData = useSelector(selectRoomDataById(roomId));
 
   // const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
     if (roomData.roomName === newRoomName) {
       closeModal();
     } else {
-      dispatch(changeRoomName(roomId, newRoomName, "changeRoomName"));
+      dispatch(changeRoomName(roomId, newRoomName, requestId));
     }
   };
 
@@ -65,7 +65,7 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
           />
           <AppButtonWithLoader
             // id="a1a1" // id voisi tulla tuolta konmpnetista date now
-            requestId="changeRoomName"
+            requestId={requestId}
             succeedFunctions={[() => closeModal()]}
             successMessage="New name saved!"
           >

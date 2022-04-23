@@ -34,6 +34,7 @@ function AppButtonWithLoader({
   loaderType = "circle",
   successMessage = null,
   onPress = null,
+  color,
   title = null,
   backgroundColor = null,
 }) {
@@ -44,41 +45,47 @@ function AppButtonWithLoader({
   const requestState = useSelector(selectRequestStateById(requestId)); // täne saa id:n selector id:llä, loader id, mut miten sen lisää ja poistaa
   const clearFunction = () => dispatch(requestStateRemoved({ id: requestId }));
 
-  // console.log("jaahas");
-
   useEffect(() => {
-    if (requestState.length > 0) stateFunctions(requestState);
+    if (requestState.length > 0) stateFunctions(requestState[0].state);
   }, [requestState]);
 
+  let prevState = useRef(null);
   let initDone = useRef(false);
   const stateFunctions = (requestState) => {
-    console.log("täällä päivittää joo", requestState);
     if (!initDone.current) {
       initDone.current = true;
     }
+
+    if (requestState === prevState.current) return;
+
     switch (requestState) {
       case "started":
+        prevState.current = requestState;
         setLoading(true);
+        // console.log("käy täällä started");
         // doFunctions(startedFunctions);
+
         break;
       case "succeed":
-        clearFunction();
-
-        setLoading(false);
+        prevState.current = requestState;
         doFunctions(succeedFunctions);
         if (successMessage) {
           dispatch(successMessageAdded(successMessage));
         }
-
+        setLoading(false);
+        clearFunction();
         break;
       case "error":
+        prevState.current = requestState;
         setLoading(false);
         doFunctions(errorFunctions);
         clearFunction();
         break;
       default:
+        prevState.current = requestState;
         doFunctions(initFunctions);
         setLoading(false);
+        // clearFunction(); ????
         break;
     }
   };
@@ -109,6 +116,7 @@ function AppButtonWithLoader({
         <>{children}</>
       ) : (
         <AppButton
+          color={color}
           backgroundColor={backgroundColor}
           title={title}
           onPress={onPress}

@@ -16,18 +16,19 @@ import {
 
 import confirmAlert from "../utility/confirmAlert";
 import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
+import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
 
 function UserDetailsScreen(item) {
   const dispatch = useDispatch();
 
   const userId = item.route.params._id;
-
+  const requestId = Date.now();
   const userData = useSelector(selectUserById(userId));
 
   const onDeleteUser = async () => {
     const result = await confirmAlert("Haluatko poistaa käyttäjän", "");
     if (!result) return;
-    dispatch(archiveOrDeleteUserById(userId, "deleted"));
+    dispatch(archiveOrDeleteUserById(userId, "deleted", requestId));
     navigationRef.current.goBack();
     console.log("ilmoitus, että käyttäjä poistettu");
   };
@@ -35,14 +36,14 @@ function UserDetailsScreen(item) {
   const archiveUser = async () => {
     const result = await confirmAlert("Haluatko arkistoida käyttäjän?", "");
     if (!result) return;
-    dispatch(archiveOrDeleteUserById(userId, "archived"));
+    dispatch(archiveOrDeleteUserById(userId, "archived", requestId));
     console.log("ilmoitus, että käyttäjä arkistoitu");
   };
 
   const activateUser = async () => {
     const result = await confirmAlert("Haluatko aktivoida käyttäjän?", "");
     if (!result) return;
-    dispatch(activateUserById(userId));
+    dispatch(activateUserById(userId, requestId));
     console.log("ilmoitus, että käyttäjä aktivoitu");
   };
 
@@ -55,19 +56,34 @@ function UserDetailsScreen(item) {
           <View style={styles.buttonRow}>
             <EditUserModal userId={userData._id} />
             {userData.status === "archived" ? (
-              <AppButton
-                title={"activate user"}
-                color="white"
-                backgroundColor="green"
+              // <AppButton
+              //   title={"activate user"}
+              //   color="white"
+              //   backgroundColor="green"
+              //   onPress={activateUser}
+              // />
+              <AppButtonWithLoader
+                successMessage={"Activated"}
+                requestId={requestId}
                 onPress={activateUser}
+                title={"activate user"}
+                backgroundColor="green"
               />
             ) : (
-              <AppButton
-                title={"archive user"}
-                color="black"
-                backgroundColor="yellow"
+              <AppButtonWithLoader
+                successMessage={"Archived"}
+                requestId={requestId}
                 onPress={archiveUser}
+                color="black"
+                title={"archive user"}
+                backgroundColor="yellow"
               />
+              // <AppButton
+              //   title={"archive user"}
+              //   color="black"
+              //   backgroundColor="yellow"
+              //   onPress={archiveUser}
+              // />
             )}
           </View>
           <View style={styles.buttonRow}>

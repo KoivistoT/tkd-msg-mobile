@@ -34,6 +34,7 @@ const api =
     next(action);
 
     if (followRequestState) {
+      console.log(followRequestState, "lkj");
       dispatch(
         requestStateResived({ id: followRequestState, state: "started" })
       );
