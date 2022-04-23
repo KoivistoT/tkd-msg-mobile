@@ -72,7 +72,7 @@ const slice = createSlice({
     },
     requestStateResived: (general, action) => {
       general.requestStates.push(action.payload);
-      console.log(general.requestStates, "tämä on joo1");
+      // console.log(general.requestStates, "tämä on joo1");
     },
     requestStateUpdated: (general, action) => {
       const { state, id } = action.payload;

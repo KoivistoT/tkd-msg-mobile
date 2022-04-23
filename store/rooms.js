@@ -240,8 +240,8 @@ export const createChannel = (userId, roomName, description) =>
 export const deleteRoom = (roomId, requestId) =>
   apiCallBegan({
     url: url + "/rooms/delete_room/" + roomId,
-    onStart: requestStarted.type,
     followRequestState: requestId,
+    onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });

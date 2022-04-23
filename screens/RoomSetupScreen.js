@@ -38,6 +38,7 @@ import AppTitle from "../app/components/AppTitle";
 import UserInfoCard from "../app/components/UserInfoCard";
 import userFuncs from "../utility/userFuncs";
 import sortArray from "../utility/sortArray";
+import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ function RoomSetupScreen(item) {
 
   const allUsers = useSelector(selectAllUsersMedium);
   const roomMembers = useSelector(selectRoomMembersById(roomId));
-
+  const requestId = Date.now();
   const currentUserData = useSelector(selectCurrentUserData);
   const roomData = useSelector(selectRoomDataById(roomId));
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
@@ -97,10 +98,10 @@ function RoomSetupScreen(item) {
 
     if (!result) return;
 
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
-    setTimeout(() => {
-      dispatch(leave_room(roomId, currentUserData._id));
-    }, 800);
+    // navigationRef.current.navigate(routes.ROOM_SCREEN);
+    // setTimeout(() => {
+    dispatch(leave_room(roomId, currentUserData._id, requestId));
+    // }, 800);
   };
 
   const onActivateRoom = async () => {
@@ -115,8 +116,7 @@ function RoomSetupScreen(item) {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) return;
 
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
-    dispatch(deleteRoom(roomId));
+    dispatch(deleteRoom(roomId, requestId));
 
     // setTimeout(() => {
     //    dispatch(setRoomLoadingToFalse());
@@ -183,7 +183,7 @@ function RoomSetupScreen(item) {
           marginBottom: 20,
         }}
       >
-        {roomData.type !== "private" && (
+        {roomData?.type !== "private" && (
           <View style={{ alignItems: "center" }}>
             <AppText>Chat name</AppText>
             <AppText style={{ fontSize: 20 }}>
@@ -330,19 +330,28 @@ function RoomSetupScreen(item) {
         {roomType === "channel" && (
           <ChangeRoomNameModal
             roomId={roomId}
-            roomNameNow={roomData.roomName}
+            roomNameNow={roomData?.roomName}
           />
         )}
         {/* {(currentUserData._id === roomCreator ||
           currentUserData.accountType === "admin") && ( */}
         <View>
           {roomType !== "private" && (
-            <AppButton
-              // title={`Leave ${roomType}`}
-              title={`Leave chat`}
+            <AppButtonWithLoader
+              succeedFunctions={[
+                () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+              ]}
+              title={`Leave ${roomType}`}
               onPress={onLeaveRoom}
               backgroundColor={"primary"}
+              requestId={requestId}
             />
+            // <AppButton
+            //   // title={`Leave ${roomType}`}
+            //   title={`Leave chat`}
+            //   onPress={onLeaveRoom}
+            //   backgroundColor={"primary"}
+            // />
           )}
           {/* {roomStatus === "archived" ? (
             <AppButton
@@ -364,11 +373,20 @@ function RoomSetupScreen(item) {
         {(currentUserData.accountType === "admin" ||
           currentUserData._id === roomCreator ||
           roomType === "private") && (
-          <AppButton
-            title={`Delete chat`}
+          <AppButtonWithLoader
+            title="Delete chat"
+            requestId={requestId}
+            backgroundColor="danger"
             onPress={onDeleteRoom}
-            backgroundColor={"danger"}
+            succeedFunctions={[
+              () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+            ]}
           />
+          // <AppButton
+          //   title={`Delete chat`}
+          //   onPress={onDeleteRoom}
+          //   backgroundColor={"danger"}
+          // />
         )}
       </View>
     </ScrollView>
