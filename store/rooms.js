@@ -157,12 +157,10 @@ const slice = createSlice({
     },
     roomRemoved: (rooms, action) => {
       const currentRoomId = action.payload;
-      console.log(rooms.allActiveRoomsIds, "tässä ennben");
       delete rooms.allRooms[currentRoomId];
       rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
         (roomId) => roomId !== currentRoomId
       );
-      console.log(rooms.allActiveRoomsIds, "tässä jälkeen");
     },
 
     roomCreated: (rooms, action) => {

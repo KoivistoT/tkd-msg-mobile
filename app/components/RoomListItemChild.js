@@ -16,11 +16,17 @@ import { selectLastSeenMessagesById } from "../../store/currentUser";
 import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 import { Swipeable } from "react-native-gesture-handler";
 import RoomListRightAction from "./RoomListRightAction";
-import { deleteRoom, selectTypersByRoomId } from "../../store/rooms";
+import {
+  deleteRoom,
+  roomRemoved,
+  selectTypersByRoomId,
+} from "../../store/rooms";
 import AppIcon from "./AppIcon";
 import colors from "../../config/colors";
 import AppLoadingIndicator from "./AppLoadingIndicator";
 import timeFuncs from "../../utility/timeFuncs";
+import { messagesRemoved } from "../../store/msgStore";
+import { navigationRef } from "../navigation/rootNavigation";
 
 function RoomListItemChild({
   item,
@@ -37,11 +43,12 @@ function RoomListItemChild({
 
   const onDeleteRoom = async () => {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
-    if (!result) {
-      roomRef.current?.close();
-      return;
-    }
-    dispatch(deleteRoom(roomId));
+    if (!result) return;
+
+    dispatch(deleteRoom(roomId, currentUserId, "deleteRoomSetup"));
+    dispatch(roomRemoved(roomId));
+    dispatch(messagesRemoved(roomId));
+    navigationRef.current.navigate(routes.ROOM_SCREEN);
   };
   const onGetIcon = () => {
     if (type === "private") return "user";
