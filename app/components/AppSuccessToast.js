@@ -13,7 +13,9 @@ class AppSuccessToast extends React.Component {
         this.props.successMessage,
         this.props.successMessageVisibleTime
       );
-      // this.props.clearSuccessMessage(); // ei tuolla pidä muuttaa mitää, jotta ei rendaa
+      setTimeout(() => {
+        this.props.clearSuccessMessage();
+      }, this.props.successMessageVisibleTime);
     }
   }
 
