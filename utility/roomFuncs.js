@@ -39,6 +39,7 @@ const getPrivateRoomOtherUserName = (members, currentUserId, allUsers) => {
 
 const getPrivateRoomOtherUserId = (members, currentUserId) => {
   try {
+    if (!members || members.length < 2 || !currentUserId) return;
     const otherUserId = members.filter((user) => user !== currentUserId)[0];
     return otherUserId ? otherUserId : currentUserId;
   } catch (error) {

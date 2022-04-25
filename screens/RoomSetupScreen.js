@@ -100,10 +100,14 @@ function RoomSetupScreen(item) {
 
     if (!result) return;
 
-    // navigationRef.current.navigate(routes.ROOM_SCREEN);
-    // setTimeout(() => {
     dispatch(leave_room(roomId, currentUserData._id, "leaveRoom"));
-    // }, 800);
+    removeRoomAndNavigate(roomId);
+  };
+
+  const removeRoomAndNavigate = (roomId) => {
+    dispatch(roomRemoved(roomId));
+    dispatch(messagesRemoved(roomId));
+    navigationRef.current.navigate(routes.ROOM_SCREEN);
   };
 
   const onActivateRoom = async () => {
@@ -119,9 +123,7 @@ function RoomSetupScreen(item) {
     if (!result) return;
 
     dispatch(deleteRoom(roomId, currentUserData._id, "deleteRoomSetup"));
-    dispatch(roomRemoved(roomId));
-    dispatch(messagesRemoved(roomId));
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
+    removeRoomAndNavigate(roomId);
   };
   const onArchiveRoom = async () => {
     const result = await confirmAlert(
@@ -338,21 +340,21 @@ function RoomSetupScreen(item) {
           currentUserData.accountType === "admin") && ( */}
         <View>
           {roomType !== "private" && (
-            <AppButtonWithLoader
-              succeedFunctions={[
-                () => navigationRef.current.navigate(routes.ROOM_SCREEN),
-              ]}
-              title={`Leave ${roomType}`}
-              onPress={onLeaveRoom}
-              backgroundColor={"primary"}
-              requestId={"leaveRoom"}
-            />
-            // <AppButton
-            //   // title={`Leave ${roomType}`}
-            //   title={`Leave chat`}
+            // <AppButtonWithLoader
+            //   succeedFunctions={[
+            //     () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+            //   ]}
+            //   title={`Leave ${roomType}`}
             //   onPress={onLeaveRoom}
             //   backgroundColor={"primary"}
+            //   requestId={"leaveRoom"}
             // />
+            <AppButton
+              // title={`Leave ${roomType}`}
+              title={`Leave chat`}
+              onPress={onLeaveRoom}
+              backgroundColor={"primary"}
+            />
           )}
           {/* {roomStatus === "archived" ? (
             <AppButton

@@ -237,27 +237,17 @@ export const createChannel = (userId, roomName, description) =>
     onError: roomsError.type,
   });
 
-export const deleteRoom =
-  (roomId, currentUserId, requestId) => (dispatch, getState) => {
-    // dispatch(fefawf)
-    //pitääkö enesin mennä pois!!! navref
-    //pitääkö enesin mennä pois!!! navref
-    //pitääkö enesin mennä pois!!! navref
-    //pitääkö enesin mennä pois!!! navrefs
-    // navigationRef.current.navigate(routes.ROOM_SCREEN);
+export const deleteRoom = (roomId, currentUserId, requestId) =>
+  apiCallBegan({
+    url: url + "/rooms/delete_room/",
+    method: "post",
+    data: { roomId, currentUserId },
+    followRequestState: requestId,
+    onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
+    onError: roomsError.type,
+  });
 
-    return dispatch(
-      apiCallBegan({
-        url: url + "/rooms/delete_room/",
-        method: "post",
-        data: { roomId, currentUserId },
-        followRequestState: requestId,
-        onStart: requestStarted.type,
-        onSuccess: requestSucceed.type,
-        onError: roomsError.type,
-      })
-    );
-  };
 export const getUserRoomsByUserId = (currentUserId) =>
   apiCallBegan({
     url: url + "/rooms/all_user_rooms/" + currentUserId,
