@@ -23,14 +23,14 @@ function ScreenHeaderTitle({
   currentUserId,
   otherUserId,
 }) {
-  const usersOnline = useSelector(selectUsersOnline);
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
+  const usersOnline = useSelector(selectUsersOnline);
   const otherUserLastPresent = useSelector(
     selectLastPresentByUserId(otherUserId)
   );
 
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (
       otherUserId &&
