@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import colors from "../../../config/colors";
 import {
   errorMessageAdded,
   requestStateRemoved,
@@ -98,21 +99,23 @@ function AppButtonWithLoader({
 
   return (
     <View style={styles.container}>
-      {loading ? (
+      {loading && (
         <View
           style={{
-            height: 45,
-            alignSelf: "center",
-            flexDirection: "row",
+            top: 14,
+            position: "absolute",
+            zIndex: 2,
+            flex: 1,
           }}
         >
           {loaderType === "dots" ? (
             <AppLoadingIndicator />
           ) : (
-            <ActivityIndicator />
+            <ActivityIndicator color={colors.danger} />
           )}
         </View>
-      ) : children ? (
+      )}
+      {children ? (
         <>{children}</>
       ) : (
         <AppButton
@@ -127,7 +130,7 @@ function AppButtonWithLoader({
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row", alignSelf: "center", marginTop: 20 },
+  container: { alignSelf: "center", marginTop: 20 },
 });
 
 export default AppButtonWithLoader;
