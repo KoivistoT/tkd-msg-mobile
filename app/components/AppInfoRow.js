@@ -9,8 +9,13 @@ import {
 import { useDispatch, useStore } from "react-redux";
 import colors from "../../config/colors";
 import { selectCurrentUserId } from "../../store/currentUser";
-import { editUserData, saveEditedUserdata } from "../../store/users";
+import {
+  editUserData,
+  saveEditedUserdata,
+  userDataFieldEdited,
+} from "../../store/users";
 import AppText from "./AppText";
+import createTask from "../../utility/createTask";
 import AppTextInput from "./AppTextInput";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -54,13 +59,9 @@ function AppInfoRow({
     setEdit(false);
 
     if (save && fieldValue !== value) {
-      setLoading(true);
-      dispatch(
-        saveEditedUserdata({ currentUserId, fieldName, value: fieldValue })
-      );
-      setTimeout(() => {
-        setLoading(false);
-      }, 200);
+      const payload = { currentUserId, fieldName, value: fieldValue };
+      dispatch(userDataFieldEdited(payload));
+      dispatch(saveEditedUserdata(payload));
     }
   };
 

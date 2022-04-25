@@ -13,6 +13,7 @@ function UserInfoCard({ userId, hideFields = [], isEditable = false }) {
   const userData = useSelector(selectUserById(userId));
 
   const [selectedField, setSelectedField] = useState(null);
+
   const addField = (fieldName, label, toUpperCase = false, editable) => {
     return hideFields.includes(fieldName) ? null : (
       <AppInfoRow

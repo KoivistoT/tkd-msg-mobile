@@ -112,6 +112,10 @@ const slice = createSlice({
     channelsResived: (users, action) => {
       users.allChannels = action.payload;
     },
+    userDataFieldEdited: (users, action) => {
+      const { currentUserId, fieldName, value } = action.payload;
+      users.allUsers[currentUserId][fieldName] = value;
+    },
     requestSucceed: (users, action) => {},
     requestStarted: (users, action) => {},
     userLastPresentResived: (users, action) => {
@@ -123,6 +127,7 @@ const slice = createSlice({
 
 export const {
   usersResived,
+  userDataFieldEdited,
   usersError,
   userCreated,
   usersOnlineResived,
