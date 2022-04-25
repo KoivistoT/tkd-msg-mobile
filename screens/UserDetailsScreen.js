@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import UserInfoCard from "../app/components/UserInfoCard";
-import AppText from "../app/components/AppText";
-import ListItemSeparator from "../app/components/ListItemSeparator";
 import EditUserModal from "../app/components/modals/EditUserModal";
-import Screen from "../app/components/Screen";
 import { navigationRef } from "../app/navigation/rootNavigation";
 import {
   selectUserById,
@@ -14,10 +11,8 @@ import {
   archiveOrDeleteUserById,
   userTasksResived,
 } from "../store/users";
-
 import confirmAlert from "../utility/confirmAlert";
 import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
-import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
 import { selectCurrentUserId } from "../store/currentUser";
 import createTask from "../utility/createTask";
 import { successMessageAdded } from "../store/general";
@@ -75,11 +70,9 @@ function UserDetailsScreen(item) {
     const newTask = createTask(USER_ACTIONS[action].taskName, userId);
     dispatch(userTasksResived(newTask));
 
-    if (action === "activateUser") {
-      dispatch(activateUserById(userId, action, currentUserId));
-    } else {
-      dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
-    }
+    action === "activateUser"
+      ? dispatch(activateUserById(userId, action, currentUserId))
+      : dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
 
     dispatch(successMessageAdded(USER_ACTIONS[action].successMessage));
   };
@@ -100,21 +93,6 @@ function UserDetailsScreen(item) {
                 onPress={activateUser}
               />
             ) : (
-              // <AppButtonWithLoader
-              //   successMessage={"Activated"}
-              //   requestId={"activateUser"}
-              //   onPress={activateUser}
-              //   title={"activate user"}
-              //   backgroundColor="green"
-              // />
-              // <AppButtonWithLoader
-              //   successMessage={"Archived"}
-              //   requestId={"archiveUser"}
-              //   onPress={archiveUser}
-              //   color="black"
-              //   title={"archive user"}
-              //   backgroundColor="yellow"
-              // />
               <AppButton
                 title={"archive user"}
                 color="black"
