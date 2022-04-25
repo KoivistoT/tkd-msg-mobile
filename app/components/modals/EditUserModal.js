@@ -22,23 +22,24 @@ function EditUserModal({ userId, hideFields = [], title = "Edit user" }) {
   return (
     <View>
       <Modal visible={modalVisible} animationType="slide" style={styles.modal}>
-        <Screen>
-          <TouchableOpacity
-            onPress={() => setModalVisible(false)}
-            style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
-          >
-            <MaterialCommunityIcons
-              name="close"
-              size={25}
-              color={colors.dark}
-            />
-          </TouchableOpacity>
-          <EditUserForm
-            hideFields={hideFields}
-            userData={userData}
-            closeModal={() => setModalVisible(false)}
-          />
-        </Screen>
+        <TouchableOpacity
+          onPress={() => setModalVisible(false)}
+          style={{
+            position: "absolute",
+            alignSelf: "flex-end",
+            padding: 20,
+            top: 10,
+            zIndex: 2,
+          }}
+        >
+          <MaterialCommunityIcons name="close" size={25} color={colors.dark} />
+        </TouchableOpacity>
+
+        <EditUserForm
+          hideFields={hideFields}
+          userData={userData}
+          closeModal={() => setModalVisible(false)}
+        />
       </Modal>
       <View style={{ width: "50%", alignSelf: "center" }}>
         <AppButton onPress={() => setModalVisible(true)} title={title} />

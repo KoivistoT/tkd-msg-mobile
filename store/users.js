@@ -113,9 +113,12 @@ const slice = createSlice({
       users.allChannels = action.payload;
     },
     userDataFieldEdited: (users, action) => {
-      const { currentUserId, fieldName, value } = action.payload;
-      users.allUsers[currentUserId][fieldName] = value;
+      action.payload.forEach((item) => {
+        const { currentUserId, fieldName, value } = item;
+        users.allUsers[currentUserId][fieldName] = value;
+      });
     },
+
     requestSucceed: (users, action) => {},
     requestStarted: (users, action) => {},
     userLastPresentResived: (users, action) => {
@@ -129,6 +132,7 @@ export const {
   usersResived,
   userDataFieldEdited,
   usersError,
+
   userCreated,
   usersOnlineResived,
   userLastPresentResived,
@@ -231,27 +235,12 @@ export const createUser = (
     onSuccess: requestSucceed.type,
     onError: usersError.type,
   });
-export const editUserData = (
-  accountType,
-  displayName,
-  firstName,
-  lastName,
-  email,
-  phone,
-  userId
-) =>
+
+export const editUserData = (data) =>
   apiCallBegan({
     url: url + "/edit_user_data",
     method: "post",
-    data: {
-      accountType,
-      displayName,
-      firstName,
-      lastName,
-      email,
-      phone,
-      userId,
-    },
+    data,
     onSuccess: requestSucceed.type,
     onError: usersError.type,
   });

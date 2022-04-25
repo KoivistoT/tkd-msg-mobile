@@ -51,7 +51,7 @@ function UserDetailsScreen(item) {
     <View style={styles.container}>
       {userData && (
         <View style={{ padding: 20 }}>
-          <UserInfoCard userId={userId} isEditable={false} />
+          <UserInfoCard userId={userId} />
 
           <View style={styles.buttonRow}>
             <EditUserModal userId={userData._id} />

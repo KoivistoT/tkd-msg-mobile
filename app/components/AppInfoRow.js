@@ -60,7 +60,7 @@ function AppInfoRow({
 
     if (save && fieldValue !== value) {
       const payload = { currentUserId, fieldName, value: fieldValue };
-      dispatch(userDataFieldEdited(payload));
+      dispatch(userDataFieldEdited([payload]));
       dispatch(saveEditedUserdata(payload));
     }
   };
