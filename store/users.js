@@ -185,15 +185,16 @@ export const getAllChannels = () =>
     onError: usersError.type,
   });
 
-export const archiveOrDeleteUserById = (userId, status, requestId) =>
+export const archiveOrDeleteUserById = (userId, status, currentUserId) =>
   apiCallBegan({
     url: url + "/archive_or_delete_user",
     method: "post",
     data: {
       userId,
       status,
+      currentUserId,
     },
-    followRequestState: requestId,
+
     onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: usersError.type,
@@ -256,10 +257,15 @@ export const saveEditedUserdata = (data) =>
     onError: usersError.type,
   });
 
-export const activateUserById = (userId, requestId) =>
+export const activateUserById = (userId, currentUserId) =>
   apiCallBegan({
-    url: url + "/activate_user/" + userId,
-    followRequestState: requestId,
+    url: url + "/activate_user/",
+    method: "post",
+    data: {
+      userId,
+      currentUserId,
+    },
+
     onSuccess: requestSucceed.type,
     onStart: requestStarted.type,
     onError: usersError.type,

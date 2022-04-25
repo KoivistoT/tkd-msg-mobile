@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import UserInfoCard from "../app/components/UserInfoCard";
 import AppText from "../app/components/AppText";
@@ -12,39 +12,76 @@ import {
   selectUserById,
   activateUserById,
   archiveOrDeleteUserById,
+  userTasksResived,
 } from "../store/users";
 
 import confirmAlert from "../utility/confirmAlert";
 import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
 import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
+import { selectCurrentUserId } from "../store/currentUser";
+import createTask from "../utility/createTask";
+import { successMessageAdded } from "../store/general";
+
+const USER_ACTIONS = {
+  delete: {
+    taskName: "userDeleted",
+    questionTitle: "Haluatko poistaa käyttäjän",
+    questionBody: "",
+    successMessage: "User deleted",
+  },
+  archived: {
+    taskName: "userArchived",
+    questionTitle: "Haluatko arkistoida käyttäjän?",
+    questionBody: "",
+    successMessage: "User archived",
+  },
+  activateUser: {
+    taskName: "userActivated",
+    questionTitle: "Haluatko aktivoida käyttäjän?",
+    questionBody: "",
+    successMessage: "User activated",
+  },
+};
 
 function UserDetailsScreen(item) {
   const dispatch = useDispatch();
 
   const userId = item.route.params._id;
-  const requestId = Date.now();
+
   const userData = useSelector(selectUserById(userId));
+  const store = useStore();
+  const currentUserId = selectCurrentUserId(store);
 
   const onDeleteUser = async () => {
-    const result = await confirmAlert("Haluatko poistaa käyttäjän", "");
-    if (!result) return;
-    dispatch(archiveOrDeleteUserById(userId, "deleted", requestId));
+    handleUserState("deleted");
     navigationRef.current.goBack();
-    console.log("ilmoitus, että käyttäjä poistettu");
   };
 
   const archiveUser = async () => {
-    const result = await confirmAlert("Haluatko arkistoida käyttäjän?", "");
-    if (!result) return;
-    dispatch(archiveOrDeleteUserById(userId, "archived", "archiveUser"));
-    console.log("ilmoitus, että käyttäjä arkistoitu");
+    handleUserState("archived");
   };
 
   const activateUser = async () => {
-    const result = await confirmAlert("Haluatko aktivoida käyttäjän?", "");
+    handleUserState("activateUser");
+  };
+
+  const handleUserState = async (action) => {
+    const result = await confirmAlert(
+      USER_ACTIONS[action].questionTitle,
+      USER_ACTIONS[action].questionBody
+    );
     if (!result) return;
-    dispatch(activateUserById(userId, "activateUser"));
-    console.log("ilmoitus, että käyttäjä aktivoitu");
+
+    const newTask = createTask(USER_ACTIONS[action].taskName, userId);
+    dispatch(userTasksResived(newTask));
+
+    if (action === "activateUser") {
+      dispatch(activateUserById(userId, action, currentUserId));
+    } else {
+      dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
+    }
+
+    dispatch(successMessageAdded(USER_ACTIONS[action].successMessage));
   };
 
   return (
@@ -56,34 +93,34 @@ function UserDetailsScreen(item) {
           <View style={styles.buttonRow}>
             <EditUserModal userId={userData._id} />
             {userData.status === "archived" ? (
-              // <AppButton
-              //   title={"activate user"}
-              //   color="white"
-              //   backgroundColor="green"
-              //   onPress={activateUser}
-              // />
-              <AppButtonWithLoader
-                successMessage={"Activated"}
-                requestId={"activateUser"}
-                onPress={activateUser}
+              <AppButton
                 title={"activate user"}
+                color="white"
                 backgroundColor="green"
+                onPress={activateUser}
               />
             ) : (
-              <AppButtonWithLoader
-                successMessage={"Archived"}
-                requestId={"archiveUser"}
-                onPress={archiveUser}
-                color="black"
-                title={"archive user"}
-                backgroundColor="yellow"
-              />
-              // <AppButton
-              //   title={"archive user"}
-              //   color="black"
-              //   backgroundColor="yellow"
-              //   onPress={archiveUser}
+              // <AppButtonWithLoader
+              //   successMessage={"Activated"}
+              //   requestId={"activateUser"}
+              //   onPress={activateUser}
+              //   title={"activate user"}
+              //   backgroundColor="green"
               // />
+              // <AppButtonWithLoader
+              //   successMessage={"Archived"}
+              //   requestId={"archiveUser"}
+              //   onPress={archiveUser}
+              //   color="black"
+              //   title={"archive user"}
+              //   backgroundColor="yellow"
+              // />
+              <AppButton
+                title={"archive user"}
+                color="black"
+                backgroundColor="yellow"
+                onPress={archiveUser}
+              />
             )}
           </View>
           <View style={styles.buttonRow}>
