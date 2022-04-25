@@ -148,6 +148,7 @@ function RoomSetupScreen(item) {
       members: newMemebers,
     });
     dispatch(roomTasksResived(newTask));
+
     dispatch(change_members(roomId, newMemebers, currentUserData._id));
   };
 

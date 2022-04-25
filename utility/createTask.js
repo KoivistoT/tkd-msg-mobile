@@ -1,7 +1,6 @@
-export default createTask = (taskType, data, taskId = null) => [
+export default createTask = (taskType, data) => [
   {
     taskType,
     data,
-    taskId,
   },
 ];
