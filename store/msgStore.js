@@ -6,7 +6,7 @@ import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
-import { requestStarted, requestSucceed } from "./rooms";
+
 import sortArray from "../utility/sortArray";
 import sortObjectsByfield from "../utility/sortObjectsByfield";
 const slice = createSlice({
@@ -569,6 +569,24 @@ const slice = createSlice({
       msgStore.messageSendError = null;
     },
     reactionAdded: (msgStore, action) => {
+      const { roomId, messageId, reaction, currentUserId } = action.payload;
+      try {
+        const reactionObject = { reactionByUser: currentUserId, reaction };
+        const reactions =
+          msgStore.allMessages[roomId].messages[messageId].reactions;
+
+        const index = reactions.findIndex(
+          (item) =>
+            item.reactionByUser === currentUserId && item.reaction === reaction
+        );
+
+        index < 0 ? reactions.push(reactionObject) : reactions.splice(index, 1);
+      } catch (error) {
+        console.log(error, "code 9277711");
+      }
+    },
+
+    requestSucceed: (msgStore, action) => {
       // console.log("add reaction");
     },
     addReactionError: (msgStore, action) => {
@@ -579,6 +597,7 @@ const slice = createSlice({
 
 export const {
   messagesResived,
+  requestSucceed,
   roomMessagesMoveToStorage,
   msgNewTasksResived,
   oneRoomMessagesResived,
@@ -637,17 +656,18 @@ export const addReaction = (roomId, messageId, reaction, currentUserId) =>
       reaction,
       currentUserId,
     },
-    onSuccess: reactionAdded.type,
+    onSuccess: requestSucceed.type,
     onError: addReactionError.type,
   });
 
-export const deleteMessageById = (roomId, messageId) =>
+export const deleteMessageById = (roomId, messageId, currentUserId) =>
   apiCallBegan({
     url: url + "/messages/delete/",
     method: "post",
     data: {
       roomId,
       messageId,
+      currentUserId,
     },
 
     onSuccess: requestSucceed.type,

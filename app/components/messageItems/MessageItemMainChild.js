@@ -20,6 +20,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import {
   deleteMessageById,
+  msgTasksResived,
   replyMessageIdCleared,
   replyMessageIdResived,
 } from "../../../store/msgStore";
@@ -27,6 +28,7 @@ import MessageItemReply from "./MessageItemReply";
 import { navigationRef } from "../../navigation/rootNavigation";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
 import messageFuncs from "../../../utility/messageFuncs";
+import createTask from "../../../utility/createTask";
 import {
   messageFormFocusAdded,
   messageSelected,
@@ -42,6 +44,8 @@ import SeenButton from "./SeenButton";
 import Reactions from "./Reactions";
 import MessageText from "./MessageText";
 import { useIsFocused } from "@react-navigation/native";
+import { selectCurrentUserId } from "../../../store/currentUser";
+import confirmAlert from "../../../utility/confirmAlert";
 
 const SHOW_IMAGES = 2;
 
@@ -77,6 +81,7 @@ function MessageItemMainChild({
     navigationRef.current.navigate(routes.READ_BY_LIST, message);
   };
   const selectedMessage = useSelector(selectSelectedMessage);
+  const currentUserId = selectCurrentUserId(store);
 
   // const [roomType, setRoomType] = useState(null);
   const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
@@ -143,9 +148,14 @@ function MessageItemMainChild({
       })
     );
   };
-  const onDeleteMessage = () => {
+  const onDeleteMessage = async () => {
+    const result = await confirmAlert("Haluatko poistaa viestin?", "");
+    if (!result) return;
+
     dispatch(messageSelectionRemoved());
-    dispatch(deleteMessageById(roomId, messageId));
+    const newTask = createTask("messageDeleted", { roomId, messageId });
+    dispatch(msgTasksResived(newTask));
+    dispatch(deleteMessageById(roomId, messageId, currentUserId));
   };
 
   const messageRef = useRef();

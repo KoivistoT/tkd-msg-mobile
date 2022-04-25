@@ -13,6 +13,7 @@ import DeleteButton from "./DeleteButton";
 import ReplyButton from "./ReplyButton";
 import {
   addReaction,
+  reactionAdded,
   selectReactionsMessageById,
 } from "../../../store/msgStore";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -33,6 +34,7 @@ const Reactions = ({ message, showAllEmojis }) => {
 
   const currentUserId = selectCurrentUserId(store);
   const onReaction = (reaction) => {
+    dispatch(reactionAdded({ roomId, messageId, reaction, currentUserId }));
     dispatch(addReaction(roomId, messageId, reaction, currentUserId));
   };
   //pitää ensi tehdä niin, että on group, missä jokaisen erilaisessa reactionissa on kaikki saman reagtionit
