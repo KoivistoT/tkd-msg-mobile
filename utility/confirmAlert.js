@@ -4,7 +4,7 @@ let reply = false;
 
 export default confirmAlert = async (
   title = "",
-  text = "",
+  text = " ",
   option1 = "No",
   option2 = "Yes"
 ) => {

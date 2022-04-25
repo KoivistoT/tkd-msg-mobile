@@ -200,6 +200,12 @@ function RoomSetupScreen(item) {
             <AppText style={{ fontSize: 20 }}>
               {roomFuncs.getRoomTitle(roomData, roomMembers, allUsers)}
             </AppText>
+            {roomType === "channel" && (
+              <ChangeRoomNameModal
+                roomId={roomId}
+                roomNameNow={roomData?.roomName}
+              />
+            )}
           </View>
         )}
       </View>
@@ -338,12 +344,6 @@ function RoomSetupScreen(item) {
           marginBottom: 30,
         }}
       >
-        {roomType === "channel" && (
-          <ChangeRoomNameModal
-            roomId={roomId}
-            roomNameNow={roomData?.roomName}
-          />
-        )}
         {/* {(currentUserData._id === roomCreator ||
           currentUserData.accountType === "admin") && ( */}
         <View>

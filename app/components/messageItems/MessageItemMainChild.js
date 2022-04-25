@@ -356,6 +356,7 @@ function MessageItemMainChild({
             {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
 
             <Reactions
+              onRemoveSelections={() => onRemoveSelections()}
               showAllEmojis={showAllEmojis}
               message={message}
               sentBy={sentBy}

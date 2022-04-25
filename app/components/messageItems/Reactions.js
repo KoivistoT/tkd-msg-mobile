@@ -25,7 +25,7 @@ import Screen from "../Screen";
 import AppText from "../AppText";
 import ReactionDetailsButtons from "./ReactionDetailsButtons";
 
-const Reactions = ({ message, showAllEmojis }) => {
+const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
   const { roomId, _id: messageId, reactions } = message;
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ const Reactions = ({ message, showAllEmojis }) => {
 
   const currentUserId = selectCurrentUserId(store);
   const onReaction = (reaction) => {
+    onRemoveSelections();
     dispatch(reactionAdded({ roomId, messageId, reaction, currentUserId }));
     dispatch(addReaction(roomId, messageId, reaction, currentUserId));
   };

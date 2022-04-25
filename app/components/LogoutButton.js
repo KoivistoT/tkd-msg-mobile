@@ -5,6 +5,7 @@ import { selectCurrentUserId, userLoggedOut } from "../../store/currentUser";
 import { roomStateCleared } from "../../store/rooms";
 import { disconnectSocket } from "../../store/socket";
 import asyncStorageFuncs from "../../utility/asyncStorageFuncs";
+import confirmAlert from "../../utility/confirmAlert";
 import AppButton from "./AppButton";
 
 function LogoutButton(props) {
@@ -12,8 +13,9 @@ function LogoutButton(props) {
   const currentUserId = selectCurrentUserId(store);
   const dispatch = useDispatch();
 
-  const logout = () => {
-    // userOffline();
+  const logout = async () => {
+    const result = await confirmAlert("Haluatko kirjauta ulos?", " ");
+    if (!result) return;
 
     asyncStorageFuncs.setData("autoLogin", false);
     dispatch(disconnectSocket(currentUserId));

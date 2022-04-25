@@ -6,28 +6,45 @@ import { Feather } from "@expo/vector-icons";
 import { navigationRef } from "../navigation/rootNavigation";
 import routes from "../navigation/routes";
 
-function RoomListRightAction({ onPress, item, onClose }) {
+function RoomListRightAction({
+  onPress,
+  roomCreator,
+  item,
+  onClose,
+  currentUserData,
+  roomType,
+}) {
   const onGoSetupScreen = () => {
     navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, item);
     onClose();
   };
+  console.log(
+    currentUserData.accountType === "admin" ||
+      currentUserData._id === roomCreator ||
+      roomType === "private"
+  );
   return (
     <View style={{ flexDirection: "row" }}>
-      <TouchableOpacity
-        onPress={onPress}
-        style={{
-          width: 80,
-          backgroundColor: colors.danger,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <MaterialCommunityIcons
-          name="delete-outline"
-          size={24}
-          color={colors.white}
-        />
-      </TouchableOpacity>
+      {(currentUserData.accountType === "admin" ||
+        currentUserData._id === roomCreator ||
+        roomType === "private") && (
+        <TouchableOpacity
+          onPress={onPress}
+          style={{
+            width: 80,
+            backgroundColor: colors.danger,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="delete-outline"
+            size={24}
+            color={colors.white}
+          />
+        </TouchableOpacity>
+      )}
+
       <TouchableOpacity
         onPress={() => onGoSetupScreen()}
         style={{

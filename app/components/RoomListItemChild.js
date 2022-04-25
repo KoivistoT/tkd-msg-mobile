@@ -12,7 +12,10 @@ import userFuncs from "../../utility/userFuncs";
 import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { selectLastSeenMessagesById } from "../../store/currentUser";
+import {
+  selectCurrentUserData,
+  selectLastSeenMessagesById,
+} from "../../store/currentUser";
 import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 import { Swipeable } from "react-native-gesture-handler";
 import RoomListRightAction from "./RoomListRightAction";
@@ -35,12 +38,12 @@ function RoomListItemChild({
   navigation,
   roomId,
 }) {
-  const { status, type, members, latestMessage } = item;
+  const { status, type, members, latestMessage, roomCreator } = item;
   const roomRef = useRef(null);
   const dispatch = useDispatch();
 
   const typer = useSelector(selectTypersByRoomId(roomId));
-
+  const currentUserData = useSelector(selectCurrentUserData);
   const onDeleteRoom = async () => {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) return;
@@ -63,6 +66,9 @@ function RoomListItemChild({
         rightThreshold={80}
         renderRightActions={() => (
           <RoomListRightAction
+            currentUserData={currentUserData}
+            roomType={type}
+            roomCreator={roomCreator}
             onPress={() => onDeleteRoom()}
             item={item}
             onClose={() => roomRef.current?.close()}
