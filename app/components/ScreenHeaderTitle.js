@@ -27,9 +27,10 @@ function ScreenHeaderTitle({
   const usersOnline = useSelector(selectUsersOnline);
   const dispatch = useDispatch();
 
-  const otherUserLastPresent = useSelector(
-    selectLastPresentByUserId(otherUserId)
-  );
+  const otherUserLastPresent =
+    currentRoomType === "private"
+      ? useSelector(selectLastPresentByUserId(otherUserId))
+      : null;
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {

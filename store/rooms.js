@@ -6,6 +6,7 @@ import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import memoize from "proxy-memoize";
 import sortArray from "../utility/sortArray";
+// import { messagesRemoved } from "./msgStore";
 const slice = createSlice({
   name: "rooms",
   initialState: {
@@ -156,11 +157,12 @@ const slice = createSlice({
     },
     roomRemoved: (rooms, action) => {
       const currentRoomId = action.payload;
-
+      console.log(rooms.allActiveRoomsIds, "tässä ennben");
       delete rooms.allRooms[currentRoomId];
       rooms.allActiveRoomsIds = rooms.allActiveRoomsIds.filter(
         (roomId) => roomId !== currentRoomId
       );
+      console.log(rooms.allActiveRoomsIds, "tässä jälkeen");
     },
 
     roomCreated: (rooms, action) => {
@@ -237,14 +239,27 @@ export const createChannel = (userId, roomName, description) =>
     onError: roomsError.type,
   });
 
-export const deleteRoom = (roomId, requestId) =>
-  apiCallBegan({
-    url: url + "/rooms/delete_room/" + roomId,
-    followRequestState: requestId,
-    onStart: requestStarted.type,
-    onSuccess: requestSucceed.type,
-    onError: roomsError.type,
-  });
+export const deleteRoom =
+  (roomId, currentUserId, requestId) => (dispatch, getState) => {
+    // dispatch(fefawf)
+    //pitääkö enesin mennä pois!!! navref
+    //pitääkö enesin mennä pois!!! navref
+    //pitääkö enesin mennä pois!!! navref
+    //pitääkö enesin mennä pois!!! navrefs
+    // navigationRef.current.navigate(routes.ROOM_SCREEN);
+
+    return dispatch(
+      apiCallBegan({
+        url: url + "/rooms/delete_room/",
+        method: "post",
+        data: { roomId, currentUserId },
+        followRequestState: requestId,
+        onStart: requestStarted.type,
+        onSuccess: requestSucceed.type,
+        onError: roomsError.type,
+      })
+    );
+  };
 export const getUserRoomsByUserId = (currentUserId) =>
   apiCallBegan({
     url: url + "/rooms/all_user_rooms/" + currentUserId,
@@ -291,16 +306,22 @@ export const change_members = (roomId, members) =>
     onError: roomsError.type,
   });
 
-export const leave_room = (roomId, userId, requestId) =>
-  apiCallBegan({
-    url: url + "/rooms/leave_room",
-    method: "post",
-    data: { roomId, userId },
-    followRequestState: requestId,
-    onStart: requestStarted.type,
-    onSuccess: requestSucceed.type,
-    onError: roomsError.type,
-  });
+export const leave_room =
+  (roomId, userId, requestId) => (dispatch, getState) => {
+    // dispatch(fefawf)
+
+    return dispatch(
+      apiCallBegan({
+        url: url + "/rooms/leave_room",
+        method: "post",
+        data: { roomId, userId },
+        followRequestState: requestId,
+        onStart: requestStarted.type,
+        onSuccess: requestSucceed.type,
+        onError: roomsError.type,
+      })
+    );
+  };
 
 export const activateRoom = (roomId, userId, requestId) =>
   apiCallBegan({

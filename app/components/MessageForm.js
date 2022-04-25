@@ -116,10 +116,11 @@ function MessageForm({ item }) {
           currentRoomMembers={currentRoomMembers}
           currentUserId={currentUserId}
           allUsers={allUsers}
-          otherUserId={roomFuncs.getPrivateRoomOtherUserId(
-            roomMembers,
-            currentUserId
-          )}
+          otherUserId={
+            currentRoomType === "private"
+              ? roomFuncs.getPrivateRoomOtherUserId(roomMembers, currentUserId)
+              : null
+          }
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }

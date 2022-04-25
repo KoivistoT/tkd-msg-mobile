@@ -186,8 +186,14 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           data.forEach((room) => {
             const currentRoomId = room.data;
 
-            dispatch(roomRemoved(currentRoomId));
-            dispatch(messagesRemoved(currentRoomId));
+            if (getState().entities.rooms.activeRoomId === currentRoomId) {
+              navigationRef.current.navigate(routes.ROOM_SCREEN);
+            }
+            setTimeout(() => {
+              dispatch(roomRemoved(currentRoomId));
+              dispatch(messagesRemoved(currentRoomId));
+            }, 500);
+
             // socket.emit("unsubscribe", currentRoomId);
           });
         }

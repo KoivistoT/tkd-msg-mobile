@@ -22,6 +22,7 @@ import {
   setRoomLoadingToFalse,
   setRoomLoadingToTrue,
   selectRoomMembersById,
+  roomRemoved,
 } from "../store/rooms";
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
@@ -39,6 +40,7 @@ import UserInfoCard from "../app/components/UserInfoCard";
 import userFuncs from "../utility/userFuncs";
 import sortArray from "../utility/sortArray";
 import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
+import { messagesRemoved } from "../store/msgStore";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -116,7 +118,10 @@ function RoomSetupScreen(item) {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) return;
 
-    dispatch(deleteRoom(roomId, "deleteRoomSetup"));
+    dispatch(deleteRoom(roomId, currentUserData._id, "deleteRoomSetup"));
+    dispatch(roomRemoved(roomId));
+    dispatch(messagesRemoved(roomId));
+    navigationRef.current.navigate(routes.ROOM_SCREEN);
 
     // setTimeout(() => {
     //    dispatch(setRoomLoadingToFalse());
@@ -373,20 +378,20 @@ function RoomSetupScreen(item) {
         {(currentUserData.accountType === "admin" ||
           currentUserData._id === roomCreator ||
           roomType === "private") && (
-          <AppButtonWithLoader
-            title="Delete chat"
-            requestId={"deleteRoomSetup"}
-            backgroundColor="danger"
-            onPress={onDeleteRoom}
-            succeedFunctions={[
-              () => navigationRef.current.navigate(routes.ROOM_SCREEN),
-            ]}
-          />
-          // <AppButton
-          //   title={`Delete chat`}
+          // <AppButtonWithLoader
+          //   title="Delete chat"
+          //   requestId={"deleteRoomSetup"}
+          //   backgroundColor="danger"
           //   onPress={onDeleteRoom}
-          //   backgroundColor={"danger"}
+          //   succeedFunctions={[
+          //     () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+          //   ]}
           // />
+          <AppButton
+            title={`Delete chat`}
+            onPress={onDeleteRoom}
+            backgroundColor={"danger"}
+          />
         )}
       </View>
     </ScrollView>
