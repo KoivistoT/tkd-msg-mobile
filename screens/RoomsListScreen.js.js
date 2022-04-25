@@ -27,6 +27,7 @@ import {
 } from "../store/socket";
 import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
 import {
+  activeRoomIdCleared,
   notificationResponseCleared,
   roomLatestMessageChanged,
   roomStateCleared,
@@ -128,6 +129,7 @@ function RoomsListScreen({ navigation }) {
   };
 
   useEffect(() => {
+    dispatch(activeRoomIdCleared());
     var appStateListener = AppState.addEventListener("change", handleChange);
     return () => {
       appStateListener?.remove();

@@ -4,10 +4,16 @@ import { View, Text, Platform, StyleSheet, TextInput } from "react-native";
 import { useFormikContext } from "formik";
 import AppButton from "../AppButton";
 
-function SubmitButton({ title, buttonWidth }) {
+function SubmitButton({ title, buttonWidth, backgroundColor, color }) {
   const { handleSubmit } = useFormikContext();
   return (
-    <AppButton buttonWidth={buttonWidth} title={title} onPress={handleSubmit} />
+    <AppButton
+      color={color}
+      backgroundColor={backgroundColor}
+      buttonWidth={buttonWidth}
+      title={title}
+      onPress={handleSubmit}
+    />
   );
 }
 

@@ -62,8 +62,8 @@ function ChangePasswordForm({
       });
 
   return (
-    <Screen style={styles.container}>
-      <AppKeyboardDismiss>
+    <AppKeyboardDismiss>
+      <View style={styles.container}>
         <AppForm
           initialValues={{}}
           onSubmit={handleSubmit}
@@ -110,12 +110,16 @@ function ChangePasswordForm({
                 marginTop: 20,
               }}
             >
-              <SubmitButton title="Save new password" />
+              <SubmitButton
+                backgroundColor="white"
+                color="black"
+                title="Save new password"
+              />
             </View>
           </>
         </AppForm>
-      </AppKeyboardDismiss>
-    </Screen>
+      </View>
+    </AppKeyboardDismiss>
   );
 }
 
@@ -124,7 +128,6 @@ const styles = StyleSheet.create({
     padding: 20,
 
     marginHorizontal: 10,
-    flex: 1,
   },
 });
 export default ChangePasswordForm;

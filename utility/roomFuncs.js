@@ -39,8 +39,13 @@ const getPrivateRoomOtherUserName = (members, currentUserId, allUsers) => {
 
 const getPrivateRoomOtherUserId = (members, currentUserId) => {
   try {
+    if (members.length === 1 && members[0] === currentUserId) {
+      return currentUserId;
+    }
+
     if (!members || members.length < 2 || !currentUserId) return;
     const otherUserId = members.filter((user) => user !== currentUserId)[0];
+
     return otherUserId ? otherUserId : currentUserId;
   } catch (error) {
     console.log(error, "code 2883882");

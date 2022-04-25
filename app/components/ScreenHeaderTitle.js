@@ -15,7 +15,6 @@ import timeFuncs from "../../utility/timeFuncs";
 
 function ScreenHeaderTitle({
   title,
-
   action = null,
   allUsers,
   currentRoomType,
@@ -27,10 +26,9 @@ function ScreenHeaderTitle({
   const usersOnline = useSelector(selectUsersOnline);
   const dispatch = useDispatch();
 
-  const otherUserLastPresent =
-    currentRoomType === "private"
-      ? useSelector(selectLastPresentByUserId(otherUserId))
-      : null;
+  const otherUserLastPresent = useSelector(
+    selectLastPresentByUserId(otherUserId)
+  );
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -56,7 +54,7 @@ function ScreenHeaderTitle({
       currentRoomType === "private" &&
       showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
     ) {
-      return "View details";
+      return "Present now";
     }
 
     if (

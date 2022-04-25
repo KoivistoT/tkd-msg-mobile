@@ -21,7 +21,10 @@ class GeneralLoadIndicator extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.loading !== prevProps.loading) {
+    if (
+      this.props.loading !== prevProps.loading &&
+      this.props.room_loading !== prevProps.room_loading
+    ) {
       if (this.props.loading === false) {
         setTimeout(() => {
           this.setState({ showIndicator: this.props.loading });
@@ -79,6 +82,7 @@ class GeneralLoadIndicator extends React.Component {
 
 const mapStateToProps = (state) => ({
   loading: state.entities.general.loading, //onko oikein
+  room_loading: state.entities.rooms.loading, //onko oikein
 });
 
 const mapDispatchToProps = (dispatch) => ({

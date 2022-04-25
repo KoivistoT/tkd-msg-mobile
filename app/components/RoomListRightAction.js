@@ -18,11 +18,7 @@ function RoomListRightAction({
     navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, item);
     onClose();
   };
-  console.log(
-    currentUserData.accountType === "admin" ||
-      currentUserData._id === roomCreator ||
-      roomType === "private"
-  );
+
   return (
     <View style={{ flexDirection: "row" }}>
       {(currentUserData.accountType === "admin" ||

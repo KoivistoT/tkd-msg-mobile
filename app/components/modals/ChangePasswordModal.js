@@ -23,8 +23,16 @@ function ChangePasswordModal({
 
   return (
     <View>
-      <Modal visible={modalVisible} animationType="slide" style={styles.modal}>
-        <Screen>
+      <Modal
+        visible={modalVisible}
+        style={styles.modal}
+        transparent
+        backdropOpacity={0.3}
+        statusBarTranslucent
+        animationType="slide"
+        backdropColor="black"
+      >
+        <View style={styles.container}>
           <TouchableOpacity
             onPress={() => setModalVisible(false)}
             style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
@@ -32,7 +40,7 @@ function ChangePasswordModal({
             <MaterialCommunityIcons
               name="close"
               size={25}
-              color={colors.dark}
+              color={colors.white}
             />
           </TouchableOpacity>
 
@@ -43,7 +51,7 @@ function ChangePasswordModal({
             roomNameNow={roomNameNow}
             closeModal={() => setModalVisible(false)}
           />
-        </Screen>
+        </View>
       </Modal>
 
       <AppButton
@@ -57,13 +65,19 @@ function ChangePasswordModal({
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: colors.white,
     // marginHorizontal: 30,
     // marginVertical: 100,
-
     // marginTop: Constants.statusBarHeight,
-    borderRadius: 5,
     // paddingTop: Constants.statusBarHeight,
+  },
+  container: {
+    backgroundColor: colors.primary,
+    paddingBottom: 20,
+    borderRadius: 10,
+    flex: 1,
+    alignSelf: "center",
+    marginVertical: "5%",
+    marginHorizontal: "5%",
   },
   button: {},
 });

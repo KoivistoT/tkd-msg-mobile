@@ -220,7 +220,7 @@ function RoomSetupScreen(item) {
         <AppText>{`Chat type: ${roomType}`}</AppText>
         <AppText
           style={{
-            color: roomStatus === "active" ? colors.success : colors.yellow,
+            color: roomStatus === "active" ? colors.success : colors.lightgrey,
             marginLeft: 5,
           }}
         >{`(${roomStatus})`}</AppText>

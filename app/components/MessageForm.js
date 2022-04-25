@@ -73,38 +73,39 @@ function MessageForm({ item }) {
 
   const socket = useSelector(selectSocket);
 
-  const otherUser =
-    currentRoomType === "private"
-      ? roomFuncs.getPrivateRoomOtherUserName(
-          currentRoomMembers,
-          currentUserId,
-          allUsers
-        )
-      : "";
+  let otherUserId = useRef(null);
+  let roomIdRef = useRef(null);
+
+  const setOtherUser = () => {
+    otherUserId.current =
+      currentRoomType === "private"
+        ? roomFuncs.getPrivateRoomOtherUserId(currentRoomMembers, currentUserId)
+        : null;
+  };
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
 
-    // saveMessageSum();
-
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      dispatch(messageFormFocusCleared());
-    });
+    if (!otherUserId.current || currentRoomId !== roomIdRef.current) {
+      roomIdRef.current = currentRoomId;
+      setOtherUser();
+    }
 
     //onko tähän parempi ratkaisu, tämän pitää olla muualla
     //ainakin header set ref jos ei muuta, ettei aina laita uusiksi
 
     setHeader();
+  }, [roomMembers, allUsers, currentRoomId]);
+
+  useEffect(() => {
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      dispatch(messageFormFocusCleared());
+    });
+
     return () => {
       hideSubscription.remove();
-      dispatch(activeRoomIdCleared());
-      // dispatch(msgStoreActiveRoomIdCleared());
     };
-    //tarviiko roomData vielä tässä?
-    //tarviiko roomData vielä tässä?
-    //tarviiko roomData vielä tässä?
-    //tarviiko roomData vielä tässä?
-  }, [roomMembers, roomData, allUsers]);
+  }, []);
 
   const setHeader = () => {
     nav.setOptions({
@@ -116,35 +117,13 @@ function MessageForm({ item }) {
           currentRoomMembers={currentRoomMembers}
           currentUserId={currentUserId}
           allUsers={allUsers}
-          otherUserId={
-            currentRoomType === "private"
-              ? roomFuncs.getPrivateRoomOtherUserId(roomMembers, currentUserId)
-              : null
-          }
+          otherUserId={otherUserId.current}
           action={() =>
             navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
           }
         />
       ),
     });
-  };
-
-  const saveMessageSum = () => {
-    const unreadMessagesSum = messageFuncs.getLastSeenMessage(
-      store.getState(),
-      currentRoomId,
-      currentRoomMessageSum
-    );
-
-    if (unreadMessagesSum !== 0) {
-      dispatch(
-        saveLastSeenMessageSum(
-          currentUserId,
-          currentRoomId,
-          currentRoomMessageSum
-        )
-      );
-    }
   };
 
   const handleSubmit = async ({ message }, { resetForm }) => {
@@ -260,8 +239,8 @@ function MessageForm({ item }) {
     <>
       {getReplyItem() && <ReplyItem item={getReplyItem()} />}
       {currentRoomStatus !== "archived" &&
-        otherUser.status !== "deleted" &&
-        otherUser.status !== "archived" && (
+        allUsers[otherUserId.current]?.status !== "deleted" &&
+        allUsers[otherUserId.current]?.status !== "archived" && (
           <View
             style={{
               marginBottom: Platform.OS == "ios" ? 10 : 0,
@@ -348,11 +327,15 @@ function MessageForm({ item }) {
         </AppText>
       )}
 
-      {(otherUser.status === "deleted" || otherUser.status === "archived") && (
-        <AppText>
-          {`Käyttäjä ${otherUser.firstName} ${otherUser.lastName} on poistettu. Et voi lähettää hänelle viestejä.`}
-        </AppText>
-      )}
+      {otherUserId.current &&
+        (allUsers[otherUserId.current].status === "deleted" ||
+          allUsers[otherUserId.current].status === "archived") && (
+          <AppText>
+            {`Käyttäjä ${allUsers[otherUserId.current].firstName} ${
+              allUsers[otherUserId.current].lastName
+            } on poistettu. Et voi lähettää hänelle viestejä.`}
+          </AppText>
+        )}
     </>
   );
 }

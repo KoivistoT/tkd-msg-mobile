@@ -280,7 +280,7 @@ export const selectUserById = (userId) =>
 export const selectLastPresentByUserId = (userId) =>
   createSelector(
     (state) => state.entities.users,
-    (users) => users.allUsers[userId].last_present
+    (users) => users.allUsers[userId]?.last_present
   );
 
 export const selectUsersOnline = createSelector(
