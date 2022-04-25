@@ -23,6 +23,7 @@ import {
   setRoomLoadingToTrue,
   selectRoomMembersById,
   roomRemoved,
+  roomTasksResived,
 } from "../store/rooms";
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
@@ -41,6 +42,7 @@ import userFuncs from "../utility/userFuncs";
 import sortArray from "../utility/sortArray";
 import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
 import { messagesRemoved } from "../store/msgStore";
+import createTask from "../utility/createTask";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -140,8 +142,13 @@ function RoomSetupScreen(item) {
 
   const onSaveChanges = () => {
     roomMembersOnStart.current = selectedUsers;
-
-    dispatch(change_members(roomId, selectedUsersRef.current));
+    const newMemebers = selectedUsersRef.current;
+    const newTask = createTask("membersChanged", {
+      _id: roomId,
+      members: newMemebers,
+    });
+    dispatch(roomTasksResived(newTask));
+    dispatch(change_members(roomId, newMemebers, currentUserData._id));
   };
 
   const selectUser = (userId) => {

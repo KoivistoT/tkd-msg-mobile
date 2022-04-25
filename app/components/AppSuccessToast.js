@@ -27,7 +27,7 @@ class AppSuccessToast extends React.Component {
           alignSelf: "center",
           zIndex: 100,
           width: "100%",
-          marginTop: Constants.statusBarHeight,
+          marginTop: Constants.statusBarHeight * 3,
         }}
       >
         <Toast

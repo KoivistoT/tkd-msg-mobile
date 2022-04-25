@@ -285,11 +285,11 @@ export const archiveRoomById = (roomId) =>
     onError: roomsError.type,
   });
 
-export const change_members = (roomId, members) =>
+export const change_members = (roomId, members, currentUserId) =>
   apiCallBegan({
     url: url + "/rooms/change_members",
     method: "post",
-    data: { roomId, members },
+    data: { roomId, members, currentUserId },
     // onSuccess: membersChanged.type,
     onError: roomsError.type,
   });
