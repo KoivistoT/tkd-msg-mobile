@@ -18,31 +18,31 @@ function MessageItemMain({
   searchWord,
   index,
 }) {
-  let [elementHeight, setElemetHeight] = useState(57.5);
-
-  let _animated = new Animated.Value(elementHeight);
-  // let _animated = new Animated.Value(0);
-  const rowStyles = [
-    styles.row,
-    // { opacity: _animated },
-    {
-      // transform: [
-      //   { scale: _animated },
-      //   {
-      //     rotate: _animated.interpolate({
-      //       // inputRange: [0, 1],
-      //       // // outputRange: ["35deg", "0deg"],
-      //       // // extrapolate: "clamp",
-      //       // outputRange: ["90deg", "0deg"],
-      //       // extrapolate: "clamp",
-      //       inputRange: [0, 1],
-      //       outputRange: [-100, 0],
-      //     }),
-      //   },
-      // ],
-      transform: [{ translateY: _animated }],
-    },
-  ];
+  // let [elementHeight, setElemetHeight] = useState(57.5);
+  // console.log("tämä päicittyy");
+  // let _animated = new Animated.Value(elementHeight);
+  // // let _animated = new Animated.Value(0);
+  // const rowStyles = [
+  //   styles.row,
+  //   // { opacity: _animated },
+  //   {
+  //     // transform: [
+  //     //   { scale: _animated },
+  //     //   {
+  //     //     rotate: _animated.interpolate({
+  //     //       // inputRange: [0, 1],
+  //     //       // // outputRange: ["35deg", "0deg"],
+  //     //       // // extrapolate: "clamp",
+  //     //       // outputRange: ["90deg", "0deg"],
+  //     //       // extrapolate: "clamp",
+  //     //       inputRange: [0, 1],
+  //     //       outputRange: [-100, 0],
+  //     //     }),
+  //     //   },
+  //     // ],
+  //     transform: [{ translateY: _animated }],
+  //   },
+  // ];
   const store = useStore();
   // console.log(
   //   "https://stackoverflow.com/questions/56020794/react-native-components-with-zindex-in-flatlist-does-not-seem-to-work"
@@ -58,8 +58,8 @@ function MessageItemMain({
   //   //   dispatch(messageSelectionRemoved())
   //   // }
   // }, [selectedMessage]);
-  const animated = new Animated.Value(0);
-  const duration = 5000;
+  // const animated = new Animated.Value(0);
+  // const duration = 5000;
   const message = useSelector(selectMessageById(roomId, messageId));
 
   // const testi = useSelector(selectReactionsMessageById(roomId, messageId));
@@ -72,7 +72,7 @@ function MessageItemMain({
   //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
   // const message =
   //   store.getState().entities.msgStore.allMessages[roomId].messages[messageId];
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(300));
+  // const [bounceValue, setBounceValue] = useState(new Animated.Value(300));
   // useEffect(() => {
   //   Animated.timing(_animated, {
   //     toValue: 0,
@@ -84,9 +84,9 @@ function MessageItemMain({
   const sentBy = message.postedByUser === currentUserId ? "me" : "otherUser";
   const allUsers = store.getState().entities.users.allUsers;
 
-  const trans = {
-    transform: [{ translateX: _animated }],
-  };
+  // const trans = {
+  //   transform: [{ translateX: _animated }],
+  // };
   // console.log(messageId);
   return (
     // <Animated.View

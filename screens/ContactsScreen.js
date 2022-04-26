@@ -34,10 +34,8 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
   const allUsers = useSelector(selectAllUsersMedium);
   const usersOnline = useSelector(selectUsersOnline);
   const allRooms = useSelector(selectUserRooms);
-  // console.log(usersOnline, "userit online");
   const listKeyExtractor = (data) => data._id;
 
-  console.log("tämä päitty");
   const onStartConversation = (item) => {
     roomFuncs.startPrivateConversation(item, currentUserId, allRooms, () =>
       dispatch(createPrivateRoom(currentUserId, item._id))
