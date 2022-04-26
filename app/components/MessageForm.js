@@ -185,7 +185,7 @@ function MessageForm({ item }) {
   };
 
   const getReplyItem = () => {
-    roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
+    return roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
   };
 
   const clearStates = () => {
