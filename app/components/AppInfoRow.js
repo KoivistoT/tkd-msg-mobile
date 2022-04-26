@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
+  Linking,
 } from "react-native";
 import { useDispatch, useStore } from "react-redux";
 import colors from "../../config/colors";
@@ -20,6 +21,8 @@ import AppTextInput from "./AppTextInput";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppLoadingIndicator from "./AppLoadingIndicator";
+import phoneCall from "../../utility/phoneCall";
+
 function AppInfoRow({
   info,
   value,
@@ -72,6 +75,7 @@ function AppInfoRow({
       setShowCanNotEdit(false);
     }, 2000);
   };
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -129,6 +133,19 @@ function AppInfoRow({
       {!edit && !loading && (
         <View style={styles.columnRight}>
           <AppText style={styles.value}>{value}</AppText>
+
+          {fieldName === "phone" && value !== "" && !isEditable && (
+            <TouchableOpacity
+              style={styles.callButton}
+              onPress={() => phoneCall(value)}
+            >
+              <MaterialCommunityIcons
+                name="phone-outline"
+                size={20}
+                color={colors.success}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       )}
       {loading && (
@@ -177,7 +194,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
-
+  callButton: { paddingLeft: 5 },
   icon: { alignSelf: "center" },
   loadingIndicator: {
     marginLeft: 10,
@@ -198,7 +215,7 @@ const styles = StyleSheet.create({
   info: {},
   value: { marginLeft: 10 },
   columnLeft: { width: "40%" },
-  columnRight: { width: "60%" },
+  columnRight: { width: "60%", flexDirection: "row" },
 });
 
 export default AppInfoRow;
