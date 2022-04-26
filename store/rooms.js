@@ -56,6 +56,11 @@ const slice = createSlice({
       rooms.errorMessage = null;
       rooms.successMessage = null;
     },
+    roomsErrorMessageCleared: (rooms, action) => {
+      rooms.loading = false;
+
+      rooms.errorMessage = null;
+    },
     requestStarted: (rooms, action) => {
       rooms.requestState = "started";
       rooms.loading = true;
@@ -200,6 +205,7 @@ export const {
   setRoomLoadingToTrue,
   roomStateCleared,
   typersResived,
+  roomsErrorMessageCleared,
   roomRemoved,
   roomNewTasksResived,
   roomAdded,
