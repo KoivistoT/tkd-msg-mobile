@@ -22,7 +22,7 @@ class GeneralLoadIndicator extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (
-      this.props.loading !== prevProps.loading &&
+      this.props.loading !== prevProps.loading ||
       this.props.room_loading !== prevProps.room_loading
     ) {
       if (this.props.loading === false) {

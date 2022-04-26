@@ -19,7 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import AppForm from "./forms/AppForm";
 import SendButton from "./SendButton";
 import fileFuncs from "../../utility/fileFuncs";
-import { navigationRef } from "../../app/navigation/rootNavigation";
+import { navigate } from "../../app/navigation/rootNavigation";
 
 import AppText from "./AppText";
 
@@ -118,9 +118,7 @@ function MessageForm({ item }) {
           currentUserId={currentUserId}
           allUsers={allUsers}
           otherUserId={otherUserId.current}
-          action={() =>
-            navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, roomData)
-          }
+          action={() => navigate(routes.ROOM_SETUP_SCREEN, roomData)}
         />
       ),
     });

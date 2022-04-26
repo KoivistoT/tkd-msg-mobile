@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.background1,
   },
   touchMargin: {
-    width: 25,
+    width: 10,
     position: "absolute",
 
     height: "100%",
