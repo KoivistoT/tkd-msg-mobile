@@ -18,7 +18,7 @@ import createTask from "../utility/createTask";
 import { successMessageAdded } from "../store/general";
 
 const USER_ACTIONS = {
-  delete: {
+  deleted: {
     taskName: "userDeleted",
     questionTitle: "Haluatko poistaa käyttäjän",
     questionBody: "",
@@ -49,7 +49,6 @@ function UserDetailsScreen(item) {
 
   const onDeleteUser = async () => {
     handleUserState("deleted");
-    navigationRef.current.goBack();
   };
 
   const archiveUser = async () => {
@@ -71,9 +70,16 @@ function UserDetailsScreen(item) {
     const newTask = createTask(USER_ACTIONS[action].taskName, userId);
     dispatch(userTasksResived(newTask));
 
-    action === "activateUser"
-      ? dispatch(activateUserById(userId, action, currentUserId))
-      : dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
+    if (action === "activateUser") {
+      dispatch(activateUserById(userId, action, currentUserId));
+    }
+    if (action === "archived") {
+      dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
+    }
+    if (action === "deleted") {
+      dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
+      navigationRef.current.goBack();
+    }
 
     dispatch(successMessageAdded(USER_ACTIONS[action].successMessage));
   };
