@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import { StyleSheet, View, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import AppButton from "../app/components/AppButton";
-
+import Constants from "expo-constants";
 import UserInfoCard from "../app/components/UserInfoCard";
 import { selectCurrentUserId, selectUserName } from "../store/currentUser";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
@@ -17,16 +23,30 @@ function UserSetupScreen() {
   const currentUserId = selectCurrentUserId(store);
   const userName = selectUserName(store);
   return (
-    <Screen style={styles.container}>
-      <UserInfoCard userId={currentUserId} isEditable={true} />
-      <AutoLoginSetupButton />
-      <ChangePasswordModal userName={userName} />
-      <LogoutButton />
-    </Screen>
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : ""}
+        style={styles.container}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <UserInfoCard userId={currentUserId} isEditable={true} />
+          <View style={{ marginBottom: 40 }}>
+            <AutoLoginSetupButton />
+            <ChangePasswordModal userName={userName} />
+            <LogoutButton />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    justifyContent: "center",
+    padding: 20,
+  },
 });
 export default UserSetupScreen;
