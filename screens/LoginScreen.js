@@ -21,7 +21,7 @@ import AppText from "../app/components/AppText";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
-  password: Yup.string().required().min(4).label("Password"),
+  password: Yup.string().required().min(5).label("Password"),
 });
 
 function LoginScreen({ navigation }) {
