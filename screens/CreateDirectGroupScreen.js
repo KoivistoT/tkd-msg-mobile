@@ -21,6 +21,7 @@ import AppText from "../app/components/AppText";
 import AppButton from "../app/components/AppButton";
 import colors from "../config/colors";
 import { selectCurrentUserId } from "../store/currentUser";
+import AppTitle from "../app/components/AppTitle";
 
 function CreateDirectGroupScreen() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,16 +54,18 @@ function CreateDirectGroupScreen() {
   };
 
   const listItem = ({ item }) => {
-    if (item._id == currentUserId) return;
     if (item.status !== "active") return;
-
+    const isCurrentUser = item._id === currentUserId ? true : false;
     return (
       <>
         <AppCheckBox
           label={`${item.firstName} ${item.lastName}`}
           onPressItem={item._id}
           onPress={(userId) => selectUser(userId)}
+          disabled={isCurrentUser}
+          initialValue={isCurrentUser}
         />
+
         <ListItemSeparator />
       </>
     );
@@ -70,17 +73,18 @@ function CreateDirectGroupScreen() {
 
   return (
     <Screen style={styles.modal}>
-      <AppButton title="Create group" onPress={onCreateRoom} />
-      <View>
+      {/* <View style={styles.selectedUsers}>
         {Object.keys(allUsers).length !== 0 &&
           selectedUsers.map((item) => (
-            <AppText key={item}>
+            <AppText key={item} style={styles.userName}>
               {allUsers
                 ? `${allUsers[item].firstName} ${allUsers[item].lastName}`
                 : ""}
             </AppText>
           ))}
-      </View>
+      </View> */}
+      <AppTitle>Select users</AppTitle>
+
       <View style={styles.usersList}>
         {allUsers && (
           <FlatList
@@ -91,6 +95,7 @@ function CreateDirectGroupScreen() {
             renderItem={listItem}
           />
         )}
+        <AppButton title="Submit" onPress={onCreateRoom} />
       </View>
     </Screen>
   );
@@ -98,7 +103,9 @@ function CreateDirectGroupScreen() {
 
 const styles = StyleSheet.create({
   name: { marginLeft: 20 },
-  usersList: { margin: 20 },
+  usersList: { padding: 20, marginBottom: 100 },
+  selectedUsers: { margin: 20 },
+  userName: { margin: 5, backgroundColor: colors.primary },
 });
 
 function areEqual(prevProps, nextProps) {
