@@ -1,27 +1,17 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import MessageForm from "../app/components/MessageForm";
-import Screen from "../app/components/Screen";
 import MessageList from "../app/components/MessageList";
 import { KeyboardAvoidingView, StyleSheet } from "react-native";
+
 function MessageScreen(item) {
-  // const [dispatchScrollToIndex, setDispatchScrollToIndex] = useState(false);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : ""}
       style={styles.container}
       keyboardVerticalOffset={60}
     >
-      <MessageList
-        // dispatchScrollToIndex={dispatchScrollToIndex}
-        item={item}
-        // showSearchBar={showSearchBar}
-        // setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
-      />
-      <MessageForm
-        item={item}
-        // setDispatchScrollToIndex={setDispatchScrollToIndex}
-        // setShowSearchBar={() => setShowSearchBar((prevState) => !prevState)}
-      />
+      <MessageList item={item} />
+      <MessageForm item={item} />
     </KeyboardAvoidingView>
   );
 }
