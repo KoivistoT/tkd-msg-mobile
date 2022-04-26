@@ -64,7 +64,7 @@ function UserDetailsScreen(item) {
       USER_ACTIONS[action].questionTitle,
       USER_ACTIONS[action].questionBody
     );
-    console.log(result, "tässä result");
+
     if (!result) return;
 
     const newTask = createTask(USER_ACTIONS[action].taskName, userId);
