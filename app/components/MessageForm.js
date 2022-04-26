@@ -132,7 +132,7 @@ function MessageForm({ item }) {
     //   store.getState().entities.msgStore.allMessages[currentRoomId].messages;
     // } catch (error) {
     //   console.log(error, "code 99292292");
-    //   navigationRef.current.goBack();
+    //   navigate.goBack();
     //   alert("tämä paremmin, huonetta ei ole enää");
     // }
     // !! katso tämä vielä kuntoon

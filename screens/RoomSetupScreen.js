@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import { navigationRef } from "../app/navigation/rootNavigation";
+import { navigate } from "../app/navigation/rootNavigation";
 import {
   allUsers,
   selectAllUsers,
@@ -109,7 +109,7 @@ function RoomSetupScreen(item) {
   const removeRoomAndNavigate = (roomId) => {
     dispatch(roomRemoved(roomId));
     dispatch(messagesRemoved(roomId));
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
+    navigate(routes.ROOM_SCREEN);
   };
 
   const onActivateRoom = async () => {
@@ -117,7 +117,7 @@ function RoomSetupScreen(item) {
     if (!result) return;
 
     dispatch(activateRoom(roomId, currentUserData._id));
-    navigationRef.current.goBack();
+    goBack();
   };
 
   const onDeleteRoom = async () => {
@@ -134,7 +134,7 @@ function RoomSetupScreen(item) {
     );
     if (!result) return;
 
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
+    navigate(routes.ROOM_SCREEN);
     console.log("ilmoita, että arhived");
 
     dispatch(archiveRoomById(roomId));
@@ -350,7 +350,7 @@ function RoomSetupScreen(item) {
           {roomType !== "private" && (
             // <AppButtonWithLoader
             //   succeedFunctions={[
-            //     () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+            //     () => navigate(routes.ROOM_SCREEN),
             //   ]}
             //   title={`Leave ${roomType}`}
             //   onPress={onLeaveRoom}
@@ -390,7 +390,7 @@ function RoomSetupScreen(item) {
           //   backgroundColor="danger"
           //   onPress={onDeleteRoom}
           //   succeedFunctions={[
-          //     () => navigationRef.current.navigate(routes.ROOM_SCREEN),
+          //     () => navigate(routes.ROOM_SCREEN),
           //   ]}
           // />
           <AppButton

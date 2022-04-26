@@ -29,7 +29,7 @@ import colors from "../../config/colors";
 import AppLoadingIndicator from "./AppLoadingIndicator";
 import timeFuncs from "../../utility/timeFuncs";
 import { messagesRemoved } from "../../store/msgStore";
-import { navigationRef } from "../navigation/rootNavigation";
+import { navigate } from "../navigation/rootNavigation";
 
 function RoomListItemChild({
   item,
@@ -51,7 +51,7 @@ function RoomListItemChild({
     dispatch(deleteRoom(roomId, currentUserId, "deleteRoomSetup"));
     dispatch(roomRemoved(roomId));
     dispatch(messagesRemoved(roomId));
-    navigationRef.current.navigate(routes.ROOM_SCREEN);
+    navigate(routes.ROOM_SCREEN);
   };
   const onGetIcon = () => {
     if (type === "private") return "user";

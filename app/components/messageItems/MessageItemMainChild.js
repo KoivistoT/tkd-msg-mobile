@@ -25,7 +25,7 @@ import {
   replyMessageIdResived,
 } from "../../../store/msgStore";
 import MessageItemReply from "./MessageItemReply";
-import { navigationRef } from "../../navigation/rootNavigation";
+import { navigate } from "../../navigation/rootNavigation";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
 import messageFuncs from "../../../utility/messageFuncs";
 import createTask from "../../../utility/createTask";
@@ -78,7 +78,7 @@ function MessageItemMainChild({
     setIsCurrentMessagePressed(false);
   };
   const onWhoHasSeen = () => {
-    navigationRef.current.navigate(routes.READ_BY_LIST, message);
+    navigate(routes.READ_BY_LIST, message);
   };
   const selectedMessage = useSelector(selectSelectedMessage);
   const currentUserId = selectCurrentUserId(store);
@@ -124,7 +124,7 @@ function MessageItemMainChild({
   };
 
   const onSwipeRight = (gestureState) => {
-    navigationRef.current.goBack();
+    navigate.goBack();
   };
 
   // const onSwipe = (gestureName, gestureState) => {

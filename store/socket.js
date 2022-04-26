@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import io from "socket.io-client";
-import { navigationRef } from "../app/navigation/rootNavigation";
+import { navigate } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
 
@@ -150,7 +150,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             dispatch(saveLastSeenMessageSum(userId, roomId, messageSum));
 
             if (roomCreator === userId && updatedAt === createdAt) {
-              navigationRef.current.navigate(routes.MESSAGE_SCREEN, room.data);
+              navigate(routes.MESSAGE_SCREEN, room.data);
             }
           });
         }
@@ -194,7 +194,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             const currentRoomId = room.data;
 
             if (getState().entities.rooms.activeRoomId === currentRoomId) {
-              navigationRef.current.navigate(routes.ROOM_SCREEN);
+              navigate(routes.ROOM_SCREEN);
             }
             setTimeout(() => {
               dispatch(roomRemoved(currentRoomId));

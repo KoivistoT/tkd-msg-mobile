@@ -16,7 +16,7 @@ import colors from "../config/colors";
 import CreateChannelForm from "../app/components/forms/CreateChannelForm";
 import AppButton from "../app/components/AppButton";
 import Screen from "../app/components/Screen";
-import { navigationRef } from "../app/navigation/rootNavigation";
+import { navigate } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import AppText from "../app/components/AppText";
 import ContactsScreen from "./ContactsScreen";
@@ -34,17 +34,13 @@ function CreateNewChatScreen({}) {
       >
         <AppButton
           style={{ alignSelf: "center", padding: 10 }}
-          onPress={() =>
-            navigationRef.current.navigate(routes.CREATE_CHANNEL_SCREEN)
-          }
+          onPress={() => navigate(routes.CREATE_CHANNEL_SCREEN)}
           buttonWidth={150}
           title={"New channel"}
         ></AppButton>
         <AppButton
           style={{ alignSelf: "center", padding: 10 }}
-          onPress={() =>
-            navigationRef.current.navigate(routes.CREATE_DIRECT_GROUP_SCREEN)
-          }
+          onPress={() => navigate(routes.CREATE_DIRECT_GROUP_SCREEN)}
           buttonWidth={150}
           title={"New group"}
         ></AppButton>

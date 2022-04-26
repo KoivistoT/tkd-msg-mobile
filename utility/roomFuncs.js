@@ -1,4 +1,4 @@
-import { navigationRef } from "../app/navigation/rootNavigation";
+import { navigate } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import sortArray from "./sortArray";
 
@@ -76,7 +76,7 @@ const startPrivateConversation = async (
 
   if (index !== -1) {
     const roomData = userRooms[index];
-    navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+    navigate(routes.MESSAGE_SCREEN, roomData);
     // setTimeout(() => {
     //    dispatch(setRoomLoadingToFalse());
     // }, 300); // tämä ei tarpeen, mutta menee sujuvammin

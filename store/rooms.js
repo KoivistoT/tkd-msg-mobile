@@ -2,7 +2,6 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
-import { navigationRef } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import memoize from "proxy-memoize";
 import sortArray from "../utility/sortArray";

@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actions from "../actions";
-import { navigationRef } from "../../app/navigation/rootNavigation";
+import { navigate } from "../../app/navigation/rootNavigation";
 import settings from "../../config/settings";
 import { useSelector } from "react-redux";
 import { clearTasks, selectCurrentUserToken } from "../currentUser";
@@ -89,7 +89,7 @@ const api =
           try {
             const roomData = getState().entities.rooms.allRooms[responseRoomId];
             if (!roomData) return;
-            navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+            navigate(routes.MESSAGE_SCREEN, roomData);
             dispatch(notificationResponseCleared());
           } catch (error) {
             console.log(error, "app.js responselistener");

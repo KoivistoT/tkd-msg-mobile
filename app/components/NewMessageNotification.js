@@ -13,7 +13,7 @@ import Constants from "expo-constants";
 import colors from "../../config/colors";
 import { errorMessageCleared, newMessageCleared } from "../../store/general";
 import AppText from "./AppText";
-import { navigationRef } from "../navigation/rootNavigation";
+import { navigate } from "../navigation/rootNavigation";
 import routes from "../navigation/routes";
 import userFuncs from "../../utility/userFuncs";
 import roomFuncs from "../../utility/roomFuncs";
@@ -53,7 +53,7 @@ class GeneralLoadIndicator extends React.Component {
     };
     const goToRoom = () => {
       this.state.showMessage = false;
-      navigationRef.current.navigate(
+      navigate(
         routes.MESSAGE_SCREEN,
         this.props.allRoomData[this.props.newMessage.roomId]
       );

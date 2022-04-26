@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { navigationRef } from "../navigation/rootNavigation";
+import { navigate } from "../navigation/rootNavigation";
 import routes from "../navigation/routes";
 
 function RoomListRightAction({
@@ -15,7 +15,7 @@ function RoomListRightAction({
   roomType,
 }) {
   const onGoSetupScreen = () => {
-    navigationRef.current.navigate(routes.ROOM_SETUP_SCREEN, item);
+    navigate(routes.ROOM_SETUP_SCREEN, item);
     onClose();
   };
 

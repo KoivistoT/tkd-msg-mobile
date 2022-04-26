@@ -25,7 +25,6 @@ import {
 } from "../../store/msgStore";
 import userFuncs from "../../utility/userFuncs";
 import sortObjectsByfield from "../../utility/sortObjectsByfield";
-import { navigationRef } from "../navigation/rootNavigation";
 import { selectAllUsersMinimal } from "../../store/users";
 import AppTextInput from "./AppTextInput";
 import { TouchableOpacity } from "react-native-gesture-handler";

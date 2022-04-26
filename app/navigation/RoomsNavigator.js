@@ -5,7 +5,7 @@ import RoomsListScreen from "../../screens/RoomsListScreen.js";
 import MessageScreen from "../../screens/MessageScreen.js";
 import RoomSetupScreen from "../../screens/RoomSetupScreen.js";
 import { Entypo } from "@expo/vector-icons";
-import { navigationRef } from "./rootNavigation.js";
+import { navigate } from "./rootNavigation.js";
 import routes from "./routes.js";
 import { MemoReadByList } from "../components/messageItems/ReadByList.js";
 
@@ -24,9 +24,7 @@ const RoomsNavigator = () => (
           headerRight: () => (
             <TouchableOpacity
               style={{ paddingRight: 20, paddingTop: 0 }}
-              onPress={() =>
-                navigationRef.current.navigate(routes.CREATE_CHAT_NAVIGATOR)
-              }
+              onPress={() => navigate(routes.CREATE_CHAT_NAVIGATOR)}
             >
               <Entypo name="new-message" size={22} />
             </TouchableOpacity>

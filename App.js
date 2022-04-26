@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
-import { navigationRef } from "./app/navigation/rootNavigation";
+import { navigationRef, navigate } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
 import * as Notifications from "expo-notifications";
 import { LogBox } from "react-native";
@@ -135,7 +135,7 @@ function App() {
         // const currentRoomId = notification.request.content.data.roomId;
         // const roomData =
         //   store.getState().entities.rooms.allRooms[currentRoomId];
-        // navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+        // navigate(routes.MESSAGE_SCREEN, roomData);
       });
 
     // tämä jos ei sovelluksessa
@@ -149,7 +149,7 @@ function App() {
           store.getState().entities.rooms.allRooms[currentRoomId];
 
         if (!roomData) return;
-        navigationRef.current.navigate(routes.MESSAGE_SCREEN, roomData);
+        navigate(routes.MESSAGE_SCREEN, roomData);
       });
 
     return () => {
