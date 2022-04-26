@@ -33,7 +33,7 @@ const validationSchema = Yup.object().shape({
   accountType: Yup.string().required().min(1).label("AccountType"),
 });
 
-const FIELD_WIDTH = "70%";
+const FIELD_WIDTH = "80%";
 
 function EditUserForm({ userData, closeModal, hideFields = [] }) {
   const dispatch = useDispatch();
@@ -94,7 +94,6 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
             <AppFormPicker
               options={accountTypeOptions}
               autoCapitalize="none"
-              icon="account-outline"
               name="accountType"
               placeholder="Account type"
             ></AppFormPicker>
@@ -104,7 +103,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
             width={FIELD_WIDTH}
             autoCapitalize="none"
             autoCorrect={false}
-            icon="account-outline"
+            icon="smart-card-outline"
             keyboardType="email-address"
             name="firstName"
             placeholder="Fistname"
@@ -124,7 +123,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
             width={FIELD_WIDTH}
             autoCapitalize="none"
             autoCorrect={false}
-            icon="account-outline"
+            icon="comment-account-outline"
             name="displayName"
             placeholder="DisplayName"
             showLabel
@@ -133,7 +132,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
             width={FIELD_WIDTH}
             autoCapitalize="none"
             autoCorrect={false}
-            icon="account-outline"
+            icon="email-outline"
             keyboardType="email-address"
             name="email"
             placeholder="email"

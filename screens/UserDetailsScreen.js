@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import UserInfoCard from "../app/components/UserInfoCard";
@@ -85,7 +85,7 @@ function UserDetailsScreen(item) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {userData && (
         <View style={{ padding: 20 }}>
           <UserInfoCard userId={userId} />
@@ -122,7 +122,7 @@ function UserDetailsScreen(item) {
           </View>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
 

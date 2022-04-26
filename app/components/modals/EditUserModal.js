@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../../config/colors";
@@ -34,12 +35,16 @@ function EditUserModal({ userId, hideFields = [], title = "Edit user" }) {
         >
           <MaterialCommunityIcons name="close" size={25} color={colors.dark} />
         </TouchableOpacity>
-
-        <EditUserForm
-          hideFields={hideFields}
-          userData={userData}
-          closeModal={() => setModalVisible(false)}
-        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : ""}
+          style={styles.container}
+        >
+          <EditUserForm
+            hideFields={hideFields}
+            userData={userData}
+            closeModal={() => setModalVisible(false)}
+          />
+        </KeyboardAvoidingView>
       </Modal>
       <View style={{ width: "50%", alignSelf: "center" }}>
         <AppButton onPress={() => setModalVisible(true)} title={title} />
@@ -54,5 +59,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   button: {},
+  container: {
+    flex: 1,
+
+    justifyContent: "center",
+  },
 });
 export default EditUserModal;
