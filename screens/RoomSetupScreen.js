@@ -90,7 +90,7 @@ function RoomSetupScreen(item) {
       roomMembers,
       allUsers
     );
-    if (activeMembers) {
+    if (activeMembers.length === 1) {
       result = await confirmAlert(
         "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",
         "Poistuttuasi, huone ja huoneen viestit poistetaan pysyvästi."
