@@ -10,12 +10,12 @@ import { roomsErrorMessageCleared } from "../../store/rooms";
 
 class AppErrorToast extends React.Component {
   componentDidUpdate(prevProps, nextProps) {
-    if (prevProps !== nextProps && this.props.errorMessage) {
+    if (prevProps !== nextProps && this.props.generalErrorMessage) {
       this.toast.show(
-        this.props.errorMessage,
+        this.props.generalErrorMessage,
         this.props.errorMessageVisibleTime
       );
-      this.props.clearErrorMessage();
+      this.props.clearGeneralErrorMessage();
     }
     if (prevProps !== nextProps && this.props.usersErrorMessage) {
       this.toast.show(
@@ -60,14 +60,14 @@ class AppErrorToast extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  errorMessage: state.entities.general.errorMessage,
+  generalErrorMessage: state.entities.general.errorMessage,
   usersErrorMessage: state.entities.users.errorMessage,
   roomsErrorMessage: state.entities.rooms.errorMessage,
   errorMessageVisibleTime: state.entities.general.errorMessageVisibleTime,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  clearErrorMessage: () => dispatch(errorMessageCleared()),
+  clearGeneralErrorMessage: () => dispatch(errorMessageCleared()),
   clearUsersErrorMessage: () => dispatch(usersErrorMessageCleared()),
   clearRoomsErrorMessage: () => dispatch(roomsErrorMessageCleared()),
 });
