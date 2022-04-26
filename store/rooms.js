@@ -85,6 +85,10 @@ const slice = createSlice({
         if (taskType === "roomNameChanged") {
           newState.allRooms[data.roomId].roomName = data.newRoomName;
         }
+        if (taskType === "roomDescriptionChanged") {
+          console.log(data, "tämä data");
+          newState.allRooms[data.roomId].description = data.description;
+        }
         if (taskType === "membersChanged") {
           try {
             newState.allRooms[data._id].members = data.members;
@@ -277,6 +281,16 @@ export const changeRoomName = (roomId, newRoomName, requestId) =>
     method: "post",
     data: { roomId, newRoomName },
     followRequestState: requestId,
+    onStart: requestStarted.type,
+    onSuccess: requestSucceed.type,
+    onError: roomsError.type,
+  });
+
+export const changeRoomDescription = (roomId, description, currentUserId) =>
+  apiCallBegan({
+    url: url + "/rooms/change_room_description",
+    method: "post",
+    data: { roomId, description, currentUserId },
     onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,

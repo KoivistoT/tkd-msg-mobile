@@ -20,6 +20,8 @@ function AppTextInput({
   marginTop,
   padding,
   autoFocus = false,
+  defaultValue = "",
+  onChangeText = null,
   ...ohterProps
 }) {
   const textInput = useRef(null);
@@ -44,6 +46,8 @@ function AppTextInput({
           <TextInput
             autoFocus={autoFocus}
             ref={textInput}
+            onChangeText={onChangeText}
+            defaultValue={defaultValue}
             placeholderTextColor={defaultStyles.colors.medium}
             style={[defaultStyles.text, { padding }]}
             {...ohterProps}

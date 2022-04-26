@@ -8,8 +8,9 @@ import Screen from "../Screen";
 import ChangeRoomNameForm from "../forms/ChangeRoomNameForm";
 import { useSelector } from "react-redux";
 import { selectRoomLoading } from "../../../store/rooms";
+import AppText from "../AppText";
 
-function ChangeRoomNameModal({ roomId, roomNameNow }) {
+function ChangeRoomNameModal({ roomId, title, roomNameNow }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -48,11 +49,24 @@ function ChangeRoomNameModal({ roomId, roomNameNow }) {
         </View>
       </Modal>
 
-      <AppButton
-        onPress={() => setModalVisible(true)}
-        backgroundColor="success"
-        title={"Change name"}
-      />
+      <TouchableOpacity activeOpacity={1} onPress={() => setModalVisible(true)}>
+        <View style={{ borderRadius: 6, backgroundColor: colors.primary }}>
+          <AppText
+            style={{
+              fontSize: 20,
+              color: colors.white,
+              padding: 10,
+            }}
+          >
+            {title}
+          </AppText>
+        </View>
+        <AppText
+          style={{ fontSize: 16, color: colors.dark, alignSelf: "center" }}
+        >
+          edit name
+        </AppText>
+      </TouchableOpacity>
     </View>
   );
 }

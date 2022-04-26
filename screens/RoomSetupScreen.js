@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
@@ -24,6 +24,7 @@ import {
   selectRoomMembersById,
   roomRemoved,
   roomTasksResived,
+  changeRoomDescription,
 } from "../store/rooms";
 import AppButton from "../app/components/AppButton";
 import confirmAlert from "../utility/confirmAlert";
@@ -43,6 +44,7 @@ import sortArray from "../utility/sortArray";
 import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
 import { messagesRemoved } from "../store/msgStore";
 import createTask from "../utility/createTask";
+import AppTextInput from "../app/components/AppTextInput";
 
 function RoomSetupScreen(item) {
   const dispatch = useDispatch();
@@ -63,6 +65,7 @@ function RoomSetupScreen(item) {
   const requestId = Date.now();
   const currentUserData = useSelector(selectCurrentUserData);
   const roomData = useSelector(selectRoomDataById(roomId));
+
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const selectedUsersRef = React.useRef(selectedUsers);
   let roomMembersOnStart = useRef(members);
@@ -184,6 +187,25 @@ function RoomSetupScreen(item) {
       >{`${allUsers[item].firstName} ${allUsers[item].lastName}`}</AppText>
     );
   };
+  const [editDescription, setEditDescription] = useState(false);
+  const [descriptionText, setDescriptionText] = useState(roomData.description);
+  const onEditDescription = () => {
+    setEditDescription(true);
+  };
+  const onSaveDescription = () => {
+    setEditDescription(false);
+    const payload = {
+      roomId,
+      description: descriptionText,
+    };
+    const newTask = createTask("roomDescriptionChanged", payload);
+
+    dispatch(roomTasksResived(newTask));
+
+    dispatch(
+      changeRoomDescription(roomId, descriptionText, currentUserData._id)
+    );
+  };
 
   return (
     <ScrollView style={{ padding: 20 }}>
@@ -197,11 +219,22 @@ function RoomSetupScreen(item) {
         {roomData?.type !== "private" && (
           <View style={{ alignItems: "center" }}>
             <AppText>Chat name</AppText>
-            <AppText style={{ fontSize: 20 }}>
-              {roomFuncs.getRoomTitle(roomData, allUsers, currentUserData._id)}
-            </AppText>
+            {roomType !== "channel" && (
+              <AppText style={{ fontSize: 20 }}>
+                {roomFuncs.getRoomTitle(
+                  roomData,
+                  allUsers,
+                  currentUserData._id
+                )}
+              </AppText>
+            )}
             {roomType === "channel" && (
               <ChangeRoomNameModal
+                title={roomFuncs.getRoomTitle(
+                  roomData,
+                  allUsers,
+                  currentUserData._id
+                )}
                 roomId={roomId}
                 roomNameNow={roomData?.roomName}
               />
@@ -235,22 +268,47 @@ function RoomSetupScreen(item) {
           )}
         />
       )}
-      {description !== undefined && (
+      {roomData.description !== undefined && (
         <View>
           <AppText style={{ marginBottom: 5, alignSelf: "center" }}>
             Description
           </AppText>
-          <View
-            style={{
-              backgroundColor: colors.background1,
-              borderRadius: 7,
-              padding: 10,
-            }}
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => onEditDescription()}
           >
-            <AppText style={{ alignSelf: "center" }}>
-              {description ? description : "Add description"}
-            </AppText>
-          </View>
+            <View
+              style={{
+                backgroundColor: colors.background1,
+                borderRadius: 7,
+                padding: 10,
+              }}
+            >
+              {!editDescription && (
+                <AppText style={{ padding: 12, paddingLeft: 10 }}>
+                  {roomData.description
+                    ? roomData.description
+                    : "Add description"}
+                </AppText>
+              )}
+              {editDescription && (
+                <View>
+                  <AppTextInput
+                    style={{ fontSize: 16, marginBottom: 20 }}
+                    onChangeText={(text) => setDescriptionText(text)}
+                    multiline
+                    defaultValue={roomData.description}
+                  />
+
+                  <AppButton
+                    onPress={() => onSaveDescription()}
+                    title="SAVE"
+                    fontSize={16}
+                  />
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
         </View>
       )}
 

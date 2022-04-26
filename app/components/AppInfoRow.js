@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     width: 30,
     height: 30,
+    bottom: 4,
   },
   callButton: { paddingLeft: 5 },
   icon: { alignSelf: "center" },
@@ -202,12 +203,14 @@ const styles = StyleSheet.create({
   textInput: {
     width: "58%",
     backgroundColor: colors.white,
-    height: 19,
-    paddingHorizontal: 3,
-    paddingTop: 1,
+    height: 28,
 
-    marginLeft: 7,
+    paddingBottom: 0,
+    paddingLeft: 6,
+
+    marginLeft: 4,
     fontSize: 16,
+    bottom: 4,
   },
   editRow: {
     flexDirection: "row",
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
   info: {},
   value: { marginLeft: 10 },
   columnLeft: { width: "40%" },
-  columnRight: { width: "60%", flexDirection: "row" },
+  columnRight: { width: "60%", flexDirection: "row", height: 28 },
 });
 
 export default AppInfoRow;
