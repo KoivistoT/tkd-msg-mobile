@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Constants from "expo-constants";
 import colors from "../../config/colors";
 import { errorMessageCleared } from "../../store/general";
-import { usersErrorCleared } from "../../store/users";
+import { usersErrorMessageCleared } from "../../store/users";
 import { roomsErrorMessageCleared } from "../../store/rooms";
 
 class AppErrorToast extends React.Component {
@@ -68,7 +68,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   clearErrorMessage: () => dispatch(errorMessageCleared()),
-  clearUsersErrorMessage: () => dispatch(usersErrorCleared()),
+  clearUsersErrorMessage: () => dispatch(usersErrorMessageCleared()),
   clearRoomsErrorMessage: () => dispatch(roomsErrorMessageCleared()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AppErrorToast);

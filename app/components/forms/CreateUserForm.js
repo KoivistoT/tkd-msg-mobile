@@ -16,7 +16,7 @@ import AppFormPicker from "./AppFormPicker";
 import {
   createUser,
   getAllUsers,
-  usersErrorCleared,
+  usersErrorMessageCleared,
 } from "../../../store/users";
 
 const accountTypeOptions = [

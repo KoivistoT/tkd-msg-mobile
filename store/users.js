@@ -106,7 +106,7 @@ const slice = createSlice({
 
       console.log(action.payload, "epännoistu appcode 1233322");
     },
-    usersErrorCleared: (users, action) => {
+    usersErrorMessageCleared: (users, action) => {
       users.errorMessage = null;
     },
     channelsResived: (users, action) => {
@@ -138,7 +138,7 @@ export const {
   userLastPresentResived,
   channelsResived,
   requestStarted,
-  usersErrorCleared,
+  usersErrorMessageCleared,
   requestSucceed,
   userTasksResived,
   itemAdded,
