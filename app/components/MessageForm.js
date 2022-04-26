@@ -4,14 +4,12 @@ import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
 import {
   activeRoomIdResived,
-  activeRoomIdCleared,
   selectRoomDataById,
   selectRoomMembersById,
   activateDraftRoom,
 } from "../../store/rooms";
 
 import {
-  msgStoreActiveRoomIdCleared,
   replyMessageIdCleared,
   selectReplyItemIds,
 } from "../../store/msgStore";
@@ -29,70 +27,54 @@ import routes from "../navigation/routes";
 import { selectAllUsersMedium } from "../../store/users";
 import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
-import {
-  saveLastSeenMessageSum,
-  selectCurrentUserId,
-} from "../../store/currentUser";
+import { selectCurrentUserId } from "../../store/currentUser";
 import { selectSocket } from "../../store/socket";
-import {
-  endLoad,
-  messageFormFocusCleared,
-  startLoad,
-} from "../../store/general";
+import { messageFormFocusCleared, startLoad } from "../../store/general";
 import colors from "../../config/colors";
-import ShowSearchBarButton from "./ShowSearchBarButton";
 import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
-import messageFuncs from "../../utility/messageFuncs";
 import MessageFormField from "./forms/MessageFormField";
 
 const PLACEHOLDER_TEXT_MAX_LENGTH = 22;
+const ARCHIVED_TEXT =
+  "Huone on arkistoitu. Aktivoi huone lähettääksesi viestejä.";
 
 function MessageForm({ item }) {
-  const nav = useNavigation();
   const dispatch = useDispatch();
+  const nav = useNavigation();
   const store = useStore();
-  const currentUserId = selectCurrentUserId(store);
+
   const [photos, setPhotos] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
-  let documentURL = useRef(null);
   const [documentName, setDocumentName] = useState(null);
 
   const roomData = useSelector(selectRoomDataById(item.route.params._id));
+
   const {
     _id: currentRoomId,
     type: currentRoomType,
     status: currentRoomStatus,
     members: currentRoomMembers,
-    messageSum: currentRoomMessageSum,
   } = roomData || "null";
 
+  const currentUserId = selectCurrentUserId(store);
   const allUsers = useSelector(selectAllUsersMedium);
   const replyMessageIds = useSelector(selectReplyItemIds);
   const roomMembers = useSelector(selectRoomMembersById(currentRoomId));
-
   const socket = useSelector(selectSocket);
 
   let otherUserId = useRef(null);
   let roomIdRef = useRef(null);
-
-  const setOtherUser = () => {
-    otherUserId.current =
-      currentRoomType === "private"
-        ? roomFuncs.getPrivateRoomOtherUserId(currentRoomMembers, currentUserId)
-        : null;
-  };
+  let documentURL = useRef(null);
+  let roomTitle = useRef("");
+  let placeholder = useRef("");
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
 
     if (!otherUserId.current || currentRoomId !== roomIdRef.current) {
-      roomIdRef.current = currentRoomId;
-      setOtherUser();
+      setRoomDetails();
     }
-
-    //onko tähän parempi ratkaisu, tämän pitää olla muualla
-    //ainakin header set ref jos ei muuta, ettei aina laita uusiksi
 
     setHeader();
   }, [roomMembers, allUsers, currentRoomId]);
@@ -107,11 +89,35 @@ function MessageForm({ item }) {
     };
   }, []);
 
+  const setOtherUser = () => {
+    otherUserId.current =
+      currentRoomType === "private"
+        ? roomFuncs.getPrivateRoomOtherUserId(currentRoomMembers, currentUserId)
+        : null;
+  };
+
+  const setRoomDetails = () => {
+    roomIdRef.current = currentRoomId;
+    placeholder.current =
+      `Message #${roomTitle.current}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
+        ? `Message #${roomTitle.current.slice(
+            0,
+            PLACEHOLDER_TEXT_MAX_LENGTH - 3
+          )}...`
+        : `Message #${roomTitle.current}`;
+    roomTitle.current = roomFuncs.getRoomTitle(
+      roomData,
+      allUsers,
+      currentUserId
+    );
+    setOtherUser();
+  };
+
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
         <ScreenHeaderTitle
-          title={roomFuncs.getRoomTitle(roomData, allUsers, currentUserId)}
+          title={roomTitle.current}
           roomMembers={roomMembers}
           currentRoomType={currentRoomType}
           currentRoomMembers={currentRoomMembers}
@@ -125,20 +131,6 @@ function MessageForm({ item }) {
   };
 
   const handleSubmit = async ({ message }, { resetForm }) => {
-    // !! katso tämä vielä kuntoon
-    // !! katso tämä vielä kuntoon
-    // !! katso tämä vielä kuntoon
-    // try {
-    //   store.getState().entities.msgStore.allMessages[currentRoomId].messages;
-    // } catch (error) {
-    //   console.log(error, "code 99292292");
-    //   navigate.goBack();
-    //   alert("tämä paremmin, huonetta ei ole enää");
-    // }
-    // !! katso tämä vielä kuntoon
-    // !! katso tämä vielä kuntoon
-    // !! katso tämä vielä kuntoon
-
     if (message.length === 0 && photos.length === 0 && !documentURL.current) {
       return;
     }
@@ -173,34 +165,6 @@ function MessageForm({ item }) {
       documentDisplayName = documentName;
     }
 
-    // var counter = 0;
-    // var i = setInterval(async function () {
-    //   dispatch(
-    //     sendMessage(
-    //       counter,
-    //       currentRoomId,
-    //       messageType,
-    //       imageURLs,
-    //       replyMessageId
-    //     )
-    //   );
-
-    //   counter++;
-    //   if (counter === 1000) {
-    //     clearInterval(i);
-    //   }
-    // }, 10);
-
-    // dispatch(
-    //   sendMessage(
-    // message,
-    // currentRoomId,
-    // messageType,
-    // imageURLs,
-    // replyMessageId
-    //   )
-    // );
-
     socket.emit("newChatMessage", {
       message,
       currentRoomId,
@@ -214,7 +178,6 @@ function MessageForm({ item }) {
 
     resetForm();
     clearStates();
-    // dispatch(endLoad());
 
     if (currentRoomStatus === "draft") {
       dispatch(activateDraftRoom(currentRoomId, currentUserId));
@@ -222,7 +185,7 @@ function MessageForm({ item }) {
   };
 
   const getReplyItem = () => {
-    return roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
+    roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
   };
 
   const clearStates = () => {
@@ -233,114 +196,105 @@ function MessageForm({ item }) {
     setShowOptions(false);
   };
 
+  const showMessageForm = () =>
+    currentRoomStatus !== "archived" &&
+    allUsers[otherUserId.current]?.status !== "deleted" &&
+    allUsers[otherUserId.current]?.status !== "archived";
+
+  const showAttachmentInfo = () =>
+    !showOptions && (documentName || photos.length !== 0);
+
+  const getDocumentName = () =>
+    documentName
+      ? documentName
+      : photos.length === 1
+      ? `1 photo selected`
+      : `${photos.length} photos selected`;
+
+  const isOtherUserActive = () =>
+    otherUserId.current &&
+    (allUsers[otherUserId.current].status === "deleted" ||
+      allUsers[otherUserId.current].status === "archived");
+
+  const getNotActiveText = () =>
+    `Käyttäjä ${allUsers[otherUserId.current].firstName} ${
+      allUsers[otherUserId.current].lastName
+    } on poistettu. Et voi lähettää hänelle viestejä.`;
+
   return (
     <>
       {getReplyItem() && <ReplyItem item={getReplyItem()} />}
-      {currentRoomStatus !== "archived" &&
-        allUsers[otherUserId.current]?.status !== "deleted" &&
-        allUsers[otherUserId.current]?.status !== "archived" && (
-          <View
-            style={{
-              marginBottom: Platform.OS == "ios" ? 10 : 0,
-            }}
-          >
-            {showOptions && (
-              <AttachmentOptions
-                documentURL={documentURL}
-                setDocumentName={setDocumentName}
-                photos={photos}
-                showOptions={showOptions}
-                setPhotos={setPhotos}
-                onPress={() => setShowOptions(false)}
-                documentName={documentName}
-              />
-            )}
-            {!showOptions && (documentName || photos.length !== 0) && (
-              <TouchableOpacity
-                onPress={() => setShowOptions(true)}
-                style={{ padding: 5, paddingLeft: 15, paddingTop: 10 }}
-              >
-                <AppText style={{ color: colors.primary }}>
-                  {documentName
-                    ? documentName
-                    : photos.length === 1
-                    ? `1 photo selected`
-                    : `${photos.length} photos selected`}
-                </AppText>
-              </TouchableOpacity>
-            )}
-
-            <AppForm
-              initialValues={{ message: "" }}
-              onSubmit={handleSubmit}
-              validationSchema={validationSchema}
+      {showMessageForm() && (
+        <View style={styles.container}>
+          {showOptions && (
+            <AttachmentOptions
+              documentURL={documentURL}
+              setDocumentName={setDocumentName}
+              photos={photos}
+              showOptions={showOptions}
+              setPhotos={setPhotos}
+              onPress={() => setShowOptions(false)}
+              documentName={documentName}
+            />
+          )}
+          {showAttachmentInfo() && (
+            <TouchableOpacity
+              onPress={() => setShowOptions(true)}
+              style={styles.attachmentInfoContainer}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "76%",
-                  maxHeight: 180,
-                  paddingTop: 6,
-                }}
-              >
-                <MessageFormToolBar
-                  onPress={() => setShowOptions((prevState) => !prevState)}
-                  showOptions={showOptions}
-                />
+              <AppText style={styles.attachmentInfoText}>
+                {getDocumentName()}
+              </AppText>
+            </TouchableOpacity>
+          )}
 
-                <MessageFormField
-                  showErrorMessage={false}
-                  currentRoomId={currentRoomId}
-                  currentUserId={currentUserId}
-                  // style={{ maxHeight: 85, height: 25 }}
-                  multiline
-                  name="message"
-                  numberOfLines={1}
-                  //tämä järkevämmin
-                  placeholder={
-                    `Message #${roomFuncs.getRoomTitle(
-                      roomData,
-                      allUsers,
-                      currentUserId
-                    )}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
-                      ? `Message #${roomFuncs
-                          .getRoomTitle(roomData, allUsers, currentUserId)
-                          .slice(0, PLACEHOLDER_TEXT_MAX_LENGTH - 3)}...`
-                      : `Message #${roomFuncs.getRoomTitle(
-                          roomData,
-                          allUsers,
-                          currentUserId
-                        )}`
-                  }
-                ></MessageFormField>
+          <AppForm
+            initialValues={{ message: "" }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <View style={styles.messageFormFieldContainer}>
+              <MessageFormToolBar
+                onPress={() => setShowOptions((prevState) => !prevState)}
+                showOptions={showOptions}
+              />
 
-                <SendButton />
-              </View>
-            </AppForm>
-          </View>
-        )}
-      {currentRoomStatus === "archived" && (
-        <AppText>
-          Huone on arkistoitu. Aktivoi huone lähettääksesi viestejä.
-        </AppText>
+              <MessageFormField
+                showErrorMessage={false}
+                currentRoomId={currentRoomId}
+                currentUserId={currentUserId}
+                multiline
+                name="message"
+                numberOfLines={1}
+                placeholder={placeholder.current}
+              ></MessageFormField>
+
+              <SendButton />
+            </View>
+          </AppForm>
+        </View>
       )}
 
-      {otherUserId.current &&
-        (allUsers[otherUserId.current].status === "deleted" ||
-          allUsers[otherUserId.current].status === "archived") && (
-          <AppText>
-            {`Käyttäjä ${allUsers[otherUserId.current].firstName} ${
-              allUsers[otherUserId.current].lastName
-            } on poistettu. Et voi lähettää hänelle viestejä.`}
-          </AppText>
-        )}
+      {currentRoomStatus === "archived" && <AppText>{ARCHIVED_TEXT}</AppText>}
+      {isOtherUserActive() && <AppText>{getNotActiveText()}</AppText>}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  attachmentInfoContainer: { padding: 5, paddingLeft: 15, paddingTop: 10 },
+  attachmentInfoText: { color: colors.primary },
+  container: { marginBottom: Platform.OS == "ios" ? 10 : 0 },
+  messageFormFieldContainer: {
+    flexDirection: "row",
+    width: "76%",
+    maxHeight: 180,
+    paddingTop: 6,
+  },
+});
 
 const validationSchema = Yup.object().shape({
   message: Yup.string().label("Message"),
 });
 
-const styles = StyleSheet.create({});
 export default MessageForm;
