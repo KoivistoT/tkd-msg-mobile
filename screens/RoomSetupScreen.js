@@ -198,7 +198,7 @@ function RoomSetupScreen(item) {
           <View style={{ alignItems: "center" }}>
             <AppText>Chat name</AppText>
             <AppText style={{ fontSize: 20 }}>
-              {roomFuncs.getRoomTitle(roomData, roomMembers, allUsers)}
+              {roomFuncs.getRoomTitle(roomData, allUsers, currentUserData._id)}
             </AppText>
             {roomType === "channel" && (
               <ChangeRoomNameModal
