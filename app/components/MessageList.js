@@ -1,47 +1,26 @@
-import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Button,
-  ActivityIndicator,
-  Text,
-  AppState,
-  Keyboard,
-} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, StyleSheet, FlatList, AppState, Keyboard } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import MessageItemMain, {
   MemoMessageItemMain,
 } from "./messageItems/MessageItemMain";
 import { useNavigation } from "@react-navigation/native";
 import {
-  messageSelected,
   selectIsLastMessageSentByCurrentUser,
   selectLastSeenMessageIdByRoomId,
   selectRoomMessageIdsByRoomId,
   selectRoomMessagesById,
-  selectRoomMessagesByRoomId,
   selectRoomMessagesIdsById,
 } from "../../store/msgStore";
-import userFuncs from "../../utility/userFuncs";
-import sortObjectsByfield from "../../utility/sortObjectsByfield";
-import { selectAllUsersMinimal } from "../../store/users";
-import AppTextInput from "./AppTextInput";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import AppButton from "./AppButton";
+
 import {
   selectMessageSumByRoomId,
-  lastStorageAdded,
-  selectLastStorage,
   selectRoomMessageSumByRoomId,
   selectTypersByRoomId,
-  selectUnreadSum,
 } from "../../store/rooms";
 import AppSearchTextInput from "./AppSearchTextInput";
 import {
   pushNotificationPressedDeactivated,
-  pushNotificationPressed,
-  messageFormFocusCleared,
   isPushNotificationPressed,
 } from "../../store/general";
 import colors from "../../config/colors";
@@ -49,19 +28,13 @@ import ScrollDownButton from "./ScrollDownButton";
 import UnreadMessagesButton from "./UnreadMessagesButton";
 import {
   saveLastSeenMessageSum,
-  selectLastSeenMessagesById,
-  getUnseenMessageSum,
-  selectCurrentRoomNewMessagesSum,
   selectLastSeenMessagSumByRoomId,
   selectCurrentUserId,
 } from "../../store/currentUser";
 import LoadingMessagesIndicator from "./LoadingMessagesIndicator";
-import AppText from "./AppText";
 import NewMessagesIndicator from "./NewMessagesIndicator";
 import IsTypingElement from "./IsTypingElement";
 import ShowSearchBarButton from "./ShowSearchBarButton";
-import { useIsFocused } from "@react-navigation/native";
-import { selectSocket } from "../../store/socket";
 import messageFuncs from "../../utility/messageFuncs";
 const MAX_TO_RENDER_PER_BATCH = 20;
 

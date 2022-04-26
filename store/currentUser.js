@@ -226,16 +226,6 @@ export const removeOlderTasksItemsById = (currentUserId, taskId) =>
     onError: currentUserError.type,
   });
 
-export const getTasks = (currentUserId) => (dispatch, getState) => {
-  //pitääkö olla et katsoo onko jo käuyttäjä
-  return dispatch(
-    apiCallBegan({
-      url: url + "/tasks/get_tasks/" + currentUserId,
-      onSuccess: tasksResived.type,
-      // onError: loginFailed.type,
-    })
-  );
-};
 export const clearTasks = (currentUserId) => (dispatch, getState) => {
   //pitääkö olla et katsoo onko jo käuyttäjä
   return dispatch(
@@ -287,24 +277,6 @@ export const saveLastSeenMessageSum =
           lastSeenMessageSum,
         },
         onSuccess: currentUserRequestStarted.type,
-        onError: lastSaveError.type,
-      })
-    );
-  };
-
-export const getUnseenMessageSum =
-  (roomId, currentUserId) => (dispatch, getState) => {
-    return dispatch(
-      apiCallBegan({
-        url: url + "/users/get_unseen_message_sum",
-        method: "post",
-        data: {
-          currentUserId,
-          roomId,
-        },
-
-        onSuccess: unseenMessageSumResived.type,
-        //tämä väärä
         onError: lastSaveError.type,
       })
     );

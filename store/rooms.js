@@ -224,11 +224,11 @@ export const {
 } = slice.actions;
 export default slice.reducer;
 
-const url = settings.apiUrl;
+const url = settings.apiUrl + "/rooms/";
 
 export const createDirectRoom = (userId, otherUsers, roomName = "direct") =>
   apiCallBegan({
-    url: url + "/rooms/create_direct_room",
+    url: url + "create_direct_room",
     method: "post",
     data: { userId, otherUsers, roomName },
     onStart: requestStarted.type,
@@ -238,7 +238,7 @@ export const createDirectRoom = (userId, otherUsers, roomName = "direct") =>
 
 export const createChannel = (userId, roomName, description) =>
   apiCallBegan({
-    url: url + "/rooms/create_channel",
+    url: url + "create_channel",
     method: "post",
     data: { userId, roomName, description },
     onStart: requestStarted.type,
@@ -248,7 +248,7 @@ export const createChannel = (userId, roomName, description) =>
 
 export const deleteRoom = (roomId, currentUserId, requestId) =>
   apiCallBegan({
-    url: url + "/rooms/delete_room/",
+    url: url + "delete_room/",
     method: "post",
     data: { roomId, currentUserId },
     followRequestState: requestId,
@@ -257,17 +257,9 @@ export const deleteRoom = (roomId, currentUserId, requestId) =>
     onError: roomsError.type,
   });
 
-export const getUserRoomsByUserId = (currentUserId) =>
-  apiCallBegan({
-    url: url + "/rooms/all_user_rooms/" + currentUserId,
-    onStart: requestStarted.type,
-    onSuccess: roomsResived.type,
-    onError: roomsError.type,
-  });
-
 export const createPrivateRoom = (userId = null, otherUserId = null) =>
   apiCallBegan({
-    url: url + "/rooms/create_private_room",
+    url: url + "create_private_room",
     method: "post",
     data: { userId, otherUserId },
     onStart: requestStarted.type,
@@ -277,7 +269,7 @@ export const createPrivateRoom = (userId = null, otherUserId = null) =>
 
 export const changeRoomName = (roomId, newRoomName, requestId) =>
   apiCallBegan({
-    url: url + "/rooms/change_room_name",
+    url: url + "change_room_name",
     method: "post",
     data: { roomId, newRoomName },
     followRequestState: requestId,
@@ -288,7 +280,7 @@ export const changeRoomName = (roomId, newRoomName, requestId) =>
 
 export const changeRoomDescription = (roomId, description, currentUserId) =>
   apiCallBegan({
-    url: url + "/rooms/change_room_description",
+    url: url + "change_room_description",
     method: "post",
     data: { roomId, description, currentUserId },
     onStart: requestStarted.type,
@@ -296,17 +288,9 @@ export const changeRoomDescription = (roomId, description, currentUserId) =>
     onError: roomsError.type,
   });
 
-export const archiveRoomById = (roomId) =>
-  apiCallBegan({
-    url: url + "/rooms/archive_room/" + roomId,
-    onStart: requestStarted.type,
-    onSuccess: requestSucceed.type,
-    onError: roomsError.type,
-  });
-
 export const change_members = (roomId, members, currentUserId) =>
   apiCallBegan({
-    url: url + "/rooms/change_members",
+    url: url + "change_members",
     method: "post",
     data: { roomId, members, currentUserId },
     // onSuccess: membersChanged.type,
@@ -319,7 +303,7 @@ export const leave_room =
 
     return dispatch(
       apiCallBegan({
-        url: url + "/rooms/leave_room",
+        url: url + "leave_room",
         method: "post",
         data: { roomId, userId },
         followRequestState: requestId,
@@ -332,7 +316,7 @@ export const leave_room =
 
 export const activateRoom = (roomId, userId, requestId) =>
   apiCallBegan({
-    url: url + "/rooms/activate_room/",
+    url: url + "activate_room/",
     method: "post",
     data: { roomId, userId },
     onStart: requestStarted.type,
@@ -341,7 +325,7 @@ export const activateRoom = (roomId, userId, requestId) =>
   });
 export const activateDraftRoom = (roomId, userId) =>
   apiCallBegan({
-    url: url + "/rooms/activate_draft_room/",
+    url: url + "activate_draft_room/",
     method: "post",
     data: { roomId, userId },
     // onStart: requestStarted.type,

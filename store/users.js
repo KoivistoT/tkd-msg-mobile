@@ -178,13 +178,6 @@ export const getAllUsers = () =>
     onError: usersError.type,
   });
 
-export const getAllChannels = () =>
-  apiCallBegan({
-    url: settings.apiUrl + "/rooms/all_channels",
-    onSuccess: channelsResived.type,
-    onError: usersError.type,
-  });
-
 export const archiveOrDeleteUserById = (userId, status, currentUserId) =>
   apiCallBegan({
     url: url + "/archive_or_delete_user",

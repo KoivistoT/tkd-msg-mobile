@@ -6,53 +6,28 @@ import routes from "../app/navigation/routes";
 import settings from "../config/settings";
 
 import {
-  getTasks,
   removeOlderTasksItemsById,
-  removeTaskItemById,
   saveLastPresent,
   saveLastSeenMessageSum,
-  unseenMessagesRemoved,
 } from "./currentUser";
 
 import {
   getMessagesbyId,
   getRoomImages,
-  messageDeleted,
   messagesRemoved,
   messageUpdatedTaskResived,
-  msgNewTasksResived,
   msgTasksResived,
   newCurrentUserMessageResived,
-  newMessageResived,
-  readByRecepientsAdded,
-  selectMsgNewTasks,
 } from "./msgStore";
 import { startLoad, endLoad } from "./general";
 import {
   roomAdded,
   roomRemoved,
-  roomArchived,
-  roomActivated,
-  roomNameChanged,
-  membersChanged,
-  roomMembersChanged,
-  roomLatestMessageChanged,
-  roomNewTasksResived,
   roomTasksResived,
   typersResived,
 } from "./rooms";
 
-import {
-  newUserResived,
-  userArchived,
-  userDeleted,
-  userActivated,
-  userTemporaryDeleted,
-  userDataEdited,
-  usersOnlineResived,
-  userTasksResived,
-} from "./users";
-import asyncStorageFuncs from "../utility/asyncStorageFuncs";
+import { usersOnlineResived, userTasksResived } from "./users";
 
 const slice = createSlice({
   name: "socket",
@@ -91,8 +66,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
       if (socket.connected) {
         dispatch(socketConnected(socket));
         socket.emit("identity", getState().auth.currentUser._id, accountType);
-
-        // dispatch(getTasks(getState().auth.currentUser._id, accountType));
       } else {
         console.log("socket connection error");
         dispatch(connectionError("Socket connection faild"));

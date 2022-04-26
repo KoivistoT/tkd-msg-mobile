@@ -11,13 +11,7 @@ import {
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
 import * as DocumentPicker from "expo-document-picker";
-import {
-  tasksCleared,
-  getTasks,
-  selectTasks,
-  userLoggedOut,
-  selectCurrentUserId,
-} from "../store/currentUser";
+import { selectCurrentUserId } from "../store/currentUser";
 import { WebView } from "react-native-webview";
 import { useIsFocused } from "@react-navigation/native";
 import {
@@ -28,25 +22,11 @@ import {
 import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
 import {
   activeRoomIdCleared,
-  notificationResponseCleared,
-  roomLatestMessageChanged,
-  roomStateCleared,
   selectAllActiveRoomsIds,
-  selectAllActiveRoomsIdsOld,
-  selectNotificationResponse,
   selectRoomsFetched,
 } from "../store/rooms";
-import { MemoNewDirectRoomModal } from "../app/components/modals/NewDirectRoomModal";
-import { MemoCreateChannelModal } from "../app/components/modals/CreateChannelModal";
 import { usersOnlineResived } from "../store/users";
-import {
-  messagesFromStorageFetched,
-  newMessageResived,
-  roomMessagesMoveToStorage,
-  selectMessageById,
-} from "../store/msgStore";
-import { LogBox } from "react-native";
-import messagesApi from "../api/messages";
+
 import AppText from "../app/components/AppText";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import ShowDocumentModal from "../app/components/modals/SelectDocumentModal";
@@ -95,21 +75,10 @@ function RoomsListScreen({ navigation }) {
     socket.off("userOnline");
   };
 
-  // var counter = 0;
-  // var i = setInterval(async function () {
-  //   dispatch(getTasks(currentUserId));
-  //   counter++;
-  //   if (counter === 100) {
-  //     clearInterval(i);
-  //   }
-  // }, 5000);
-  // console.log("tämä päivittyy kanssa");
-
   const socketConnection = useRef(true);
   const handleChange = (newState) => {
     if (newState === "active") {
       // console.log("taas actiivinen");
-      // dispatch(getTasks(currentUserId));
 
       if (!socket) {
         dispatch(createSocketConnection());

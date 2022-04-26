@@ -20,9 +20,7 @@ import {
   getInitialData,
   selectAccountType,
   clearTasks,
-  currentUserLastSeenMessagesResived,
   saveCurrentUserPushToken,
-  getCurrentUserById,
   selectCurrentUserId,
 } from "./store/currentUser";
 
@@ -35,14 +33,7 @@ import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
 
 import asyncStorageFuncs from "./utility/asyncStorageFuncs";
-import {
-  activeRoomIdResived,
-  getUserRoomsByUserId,
-  notificationResponseResived,
-  roomsResived,
-  selectActiveRoomId,
-} from "./store/rooms";
-import { getAllUsers, usersResived } from "./store/users";
+import { notificationResponseResived, selectActiveRoomId } from "./store/rooms";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
 import { getRestMessages, messagesResived } from "./store/msgStore";
 
@@ -101,8 +92,6 @@ function App() {
     }
 
     // dispatch(getCurrentUserById(currentUserId));
-    // dispatch(getAllUsers());
-    // dispatch(getUserRoomsByUserId(currentUserId));
 
     dispatch(getInitialData);
     // dispatch(getRestMessages(currentUserId));

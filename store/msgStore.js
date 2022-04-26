@@ -674,35 +674,35 @@ export const deleteMessageById = (roomId, messageId, currentUserId) =>
     onError: messagesError.type,
   });
 
-export const sendMessage =
-  (
-    message = "",
-    roomId = "",
-    messageType = "text",
-    imageURLs = null,
-    replyMessageId = null
-  ) =>
-  (dispatch, getState) => {
-    const userId = getState().auth.currentUser._id;
+// export const sendMessage =
+//   (
+//     message = "",
+//     roomId = "",
+//     messageType = "text",
+//     imageURLs = null,
+//     replyMessageId = null
+//   ) =>
+//   (dispatch, getState) => {
+//     const userId = getState().auth.currentUser._id;
 
-    return dispatch(
-      apiCallBegan({
-        data: {
-          messageBody: message,
-          roomId,
-          userId,
-          messageType,
-          imageURLs,
-          replyMessageId,
-        },
-        onStart: messageSendErrorCleared.type,
-        method: "post",
-        url: url + "/messages/send_message",
-        onSuccess: messageSent.type,
-        onError: messageSendError.type,
-      })
-    );
-  };
+//     return dispatch(
+//       apiCallBegan({
+//         data: {
+//           messageBody: message,
+//           roomId,
+//           userId,
+//           messageType,
+//           imageURLs,
+//           replyMessageId,
+//         },
+//         onStart: messageSendErrorCleared.type,
+//         method: "post",
+//         url: url + "/messages/send_message",
+//         onSuccess: messageSent.type,
+//         onError: messageSendError.type,
+//       })
+//     );
+//   };
 
 export const test = () =>
   apiCallBegan({

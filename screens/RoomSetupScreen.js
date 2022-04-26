@@ -13,14 +13,10 @@ import {
 } from "../store/users";
 import {
   activateRoom,
-  archiveRoomById,
-  changeRoomName,
   change_members,
   deleteRoom,
   selectRoomDataById,
   leave_room,
-  setRoomLoadingToFalse,
-  setRoomLoadingToTrue,
   selectRoomMembersById,
   roomRemoved,
   roomTasksResived,
@@ -129,18 +125,6 @@ function RoomSetupScreen(item) {
 
     dispatch(deleteRoom(roomId, currentUserData._id, "deleteRoomSetup"));
     removeRoomAndNavigate(roomId);
-  };
-  const onArchiveRoom = async () => {
-    const result = await confirmAlert(
-      "Haluatko arkistoida huoneen?",
-      "Tämä poistaa huoneen muilta käyttäjiltä. Toiminnon voi perua aktivoimalla huoneen uudelleen"
-    );
-    if (!result) return;
-
-    navigate(routes.ROOM_SCREEN);
-    console.log("ilmoita, että arhived");
-
-    dispatch(archiveRoomById(roomId));
   };
 
   const onSaveChanges = () => {
@@ -402,55 +386,19 @@ function RoomSetupScreen(item) {
           marginBottom: 30,
         }}
       >
-        {/* {(currentUserData._id === roomCreator ||
-          currentUserData.accountType === "admin") && ( */}
         <View>
           {roomType !== "private" && (
-            // <AppButtonWithLoader
-            //   succeedFunctions={[
-            //     () => navigate(routes.ROOM_SCREEN),
-            //   ]}
-            //   title={`Leave ${roomType}`}
-            //   onPress={onLeaveRoom}
-            //   backgroundColor={"primary"}
-            //   requestId={"leaveRoom"}
-            // />
             <AppButton
-              // title={`Leave ${roomType}`}
               title={`Leave chat`}
               onPress={onLeaveRoom}
               backgroundColor={"primary"}
             />
           )}
-          {/* {roomStatus === "archived" ? (
-            <AppButton
-              title={`Activate ${roomType}`}
-              onPress={onActivateRoom}
-              backgroundColor={"green"}
-            />
-          ) : (
-            <AppButton
-              title={`Archive ${roomType}`}
-              onPress={onArchiveRoom}
-              color={"black"}
-              backgroundColor={"yellow"}
-            />
-          )} */}
         </View>
-        {/* )} */}
 
         {(currentUserData.accountType === "admin" ||
           currentUserData._id === roomCreator ||
           roomType === "private") && (
-          // <AppButtonWithLoader
-          //   title="Delete chat"
-          //   requestId={"deleteRoomSetup"}
-          //   backgroundColor="danger"
-          //   onPress={onDeleteRoom}
-          //   succeedFunctions={[
-          //     () => navigate(routes.ROOM_SCREEN),
-          //   ]}
-          // />
           <AppButton
             title={`Delete chat`}
             onPress={onDeleteRoom}
