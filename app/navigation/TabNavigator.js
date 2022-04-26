@@ -16,6 +16,7 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route, navigation }) => ({
         headerShown: false,
+        tabBarShowLabel: false,
       })}
     >
       <Tab.Screen

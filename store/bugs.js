@@ -78,7 +78,7 @@ export const addBug = (bug) =>
     onSuccess: bugAdded.type,
   });
 
-export const assingBugToUser = (bugId, userId) =>
+export const assignBugToUser = (bugId, userId) =>
   apiCallBegan({
     url: url + "/" + bugId,
     method: "patch",
