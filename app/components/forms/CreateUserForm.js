@@ -25,6 +25,9 @@ const accountTypeOptions = [
 ];
 const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label("Password"),
+  confirmPassword: Yup.string()
+    .required()
+    .oneOf([Yup.ref("password"), null], "Passwords must match"),
   firstName: Yup.string().required().min(1).label("Firstname"),
   lastName: Yup.string().required().min(2).label("lastname"),
   displayName: Yup.string().required().min(2).label("Displayname"),
@@ -156,6 +159,18 @@ function CreateUserForm({ navigation, closeModal }) {
               icon="lock"
               name="password"
               placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+
+            <AppFormField
+              marginBottom={MARGIN_BOTTOM}
+              width={FIELD_WIDTH}
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="confirmPassword"
+              placeholder="Confirm password"
               secureTextEntry
               textContentType="password"
             />
