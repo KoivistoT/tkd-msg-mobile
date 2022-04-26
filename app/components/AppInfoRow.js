@@ -134,7 +134,7 @@ function AppInfoRow({
         <View style={styles.columnRight}>
           <AppText style={styles.value}>{value}</AppText>
 
-          {fieldName === "phone" && value !== "" && !isEditable && (
+          {fieldName === "phone" && value !== "" && value && !isEditable && (
             <TouchableOpacity
               style={styles.callButton}
               onPress={() => phoneCall(value)}
