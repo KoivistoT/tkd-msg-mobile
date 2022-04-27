@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
-import { loadBugs, getUnresolvedBugs, resolveBug } from "../../store/bugs";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, selectToken } from "../../store/currentUser";
 
