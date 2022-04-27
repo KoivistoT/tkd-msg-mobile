@@ -249,20 +249,6 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
   );
 };
 
-export const saveCurrentUserPushToken =
-  (currentUserPushToken) => (dispatch, getState) => {
-    const currentUserId = getState().auth.currentUser._id;
-    return dispatch(
-      apiCallBegan({
-        url: url + "/users/save_push_token/",
-        method: "post",
-        data: { currentUserId, currentUserPushToken },
-        onSuccess: currentUserResived.type,
-        onError: userFetchFaild.type,
-      })
-    );
-  };
-
 export const saveLastSeenMessageSum =
   (currentUserId, roomId, lastSeenMessageSum) => (dispatch, getState) => {
     dispatch(lastSeenMessageSumResived({ roomId, lastSeenMessageSum }));

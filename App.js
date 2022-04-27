@@ -20,7 +20,6 @@ import {
   getInitialData,
   selectAccountType,
   clearTasks,
-  saveCurrentUserPushToken,
   selectCurrentUserId,
 } from "./store/currentUser";
 
@@ -40,6 +39,7 @@ import { getRestMessages, messagesResived } from "./store/msgStore";
 import { createSocketConnection } from "./store/socket";
 import { newMessageResived, pushNotificationPressed } from "./store/general";
 import NewMessageNotification from "./app/components/NewMessageNotification";
+import { saveEditedUserdata } from "./store/users";
 
 if (!__DEV__) {
   console.log = () => null;
@@ -103,7 +103,13 @@ function App() {
 
     pushNotificationFuncs.registerForPushNotificationsAsync(
       (currentUserPushToken) =>
-        dispatch(saveCurrentUserPushToken(currentUserPushToken)),
+        dispatch(
+          saveEditedUserdata({
+            currentUserId,
+            fieldName: "pushNotificationToken",
+            value: currentUserPushToken,
+          })
+        ),
       currentUserPushTokenNow
     );
   };
