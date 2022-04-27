@@ -31,6 +31,13 @@ import timeFuncs from "../../utility/timeFuncs";
 import { messagesRemoved } from "../../store/msgStore";
 import { navigate } from "../navigation/rootNavigation";
 
+const ICON_SET = {
+  private: { name: "account-lock", color: "primary", size: 32 },
+  channel: { name: "playlist-edit", color: "secondary", size: 32 },
+  direct: { name: "account-group-outline", color: "dark", size: 32 },
+  default: { name: "user-circle-o", color: "black", size: 32 },
+};
+
 function RoomListItemChild({
   item,
   allUsers,
@@ -53,11 +60,7 @@ function RoomListItemChild({
     dispatch(messagesRemoved(roomId));
     navigate(routes.ROOM_SCREEN);
   };
-  const onGetIcon = () => {
-    if (type === "private") return "user";
-    if (type === "group" || "direct") return "users";
-    return "user-circle-o";
-  };
+  const onGetIcon = () => (type ? ICON_SET[type] : ICON_SET.default);
 
   return (
     <View>
@@ -91,6 +94,7 @@ function RoomListItemChild({
                 alignItems: "center",
                 alignSelf: "center",
                 padding: 5,
+                top: 5,
               }}
             >
               <AppIcon icon={onGetIcon()} />
