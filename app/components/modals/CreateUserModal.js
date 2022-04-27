@@ -4,7 +4,7 @@ import {
   Modal,
   TouchableOpacity,
   View,
-  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../../config/colors";
@@ -20,7 +20,12 @@ function CreateUserModal() {
         <Screen>
           <TouchableOpacity
             onPress={() => setModalVisible(false)}
-            style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
+            style={{
+              position: "absolute",
+              right: 0,
+              padding: 20,
+              zIndex: 2,
+            }}
           >
             <MaterialCommunityIcons
               name="close"
@@ -28,14 +33,18 @@ function CreateUserModal() {
               color={colors.dark}
             />
           </TouchableOpacity>
-
-          <CreateUserForm closeModal={() => setModalVisible(false)} />
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : ""}
+            style={styles.container}
+          >
+            <CreateUserForm closeModal={() => setModalVisible(false)} />
+          </KeyboardAvoidingView>
         </Screen>
       </Modal>
-      <View style={{ margin: 20, width: "50%", alignSelf: "center" }}>
+      <View style={{ alignSelf: "center", margin: 20 }}>
         <AppButton
           onPress={() => setModalVisible(true)}
-          title={"Create user"}
+          title={"Create new user"}
         />
       </View>
     </View>
@@ -47,6 +56,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 5,
   },
-  button: {},
+  container: {
+    flex: 1,
+  },
 });
 export default CreateUserModal;

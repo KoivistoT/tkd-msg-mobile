@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   button: {},
   container: {
     flex: 1,
-
     justifyContent: "center",
   },
 });

@@ -76,121 +76,115 @@ function CreateUserForm({ navigation, closeModal }) {
   };
 
   return (
-    <Screen>
-      <ScrollView style={styles.container}>
-        <AppForm
-          initialValues={{
-            accountType: "basic",
+    <ScrollView style={styles.container}>
+      <AppForm
+        initialValues={{
+          accountType: "basic",
+          password: "1111112",
+          firstName: "joo3",
+          lastName: "jaa3",
+          email: "joo@joo3.fi",
+          displayName: "joojaa3",
+          phone: "0456657435",
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+      >
+        <>
+          <AppFormPicker
+            options={accountTypeOptions}
+            autoCapitalize="none"
+            icon="account-outline"
+            name="accountType"
+            placeholder="Account type"
+          ></AppFormPicker>
 
-            password: "1111112",
-            firstName: "joo3",
-            lastName: "jaa3",
-            email: "joo@joo3.fi",
-            displayName: "joojaa3",
-            phone: "0456657435",
-          }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <>
-            <AppFormPicker
-              options={accountTypeOptions}
-              autoCapitalize="none"
-              icon="account-outline"
-              name="accountType"
-              placeholder="Account type"
-            ></AppFormPicker>
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            keyboardType="email-address"
+            name="firstName"
+            placeholder="Fistname"
+          />
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            keyboardType="email-address"
+            name="lastName"
+            placeholder="Lastname"
+          />
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            name="displayName"
+            placeholder="DisplayName"
+          />
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="account-outline"
+            keyboardType="email-address"
+            name="email"
+            placeholder="email"
+          />
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            placeholder="Phone"
+            autoCorrect={false}
+            icon="phone"
+            keyboardType="phone-pad"
+            autoCapitalize="none"
+            textContentType="telephoneNumber"
+            name="phone"
+          />
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            name="password"
+            placeholder="Password"
+            secureTextEntry
+            textContentType="password"
+          />
 
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="account-outline"
-              keyboardType="email-address"
-              name="firstName"
-              placeholder="Fistname"
-            />
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="account-outline"
-              keyboardType="email-address"
-              name="lastName"
-              placeholder="Lastname"
-            />
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="account-outline"
-              name="displayName"
-              placeholder="DisplayName"
-            />
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="account-outline"
-              keyboardType="email-address"
-              name="email"
-              placeholder="email"
-            />
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              placeholder="Phone"
-              autoCorrect={false}
-              icon="phone"
-              keyboardType="phone-pad"
-              autoCapitalize="none"
-              textContentType="telephoneNumber"
-              name="phone"
-            />
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
+          <AppFormField
+            marginBottom={MARGIN_BOTTOM}
+            width={FIELD_WIDTH}
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            secureTextEntry
+            textContentType="password"
+          />
 
-            <AppFormField
-              marginBottom={MARGIN_BOTTOM}
-              width={FIELD_WIDTH}
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="confirmPassword"
-              placeholder="Confirm password"
-              secureTextEntry
-              textContentType="password"
-            />
-
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <SubmitButton title="Create user" />
-            </View>
-          </>
-        </AppForm>
-      </ScrollView>
-    </Screen>
+          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+            <SubmitButton title="Submit" />
+          </View>
+        </>
+      </AppForm>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-
-    marginHorizontal: 10,
-    flex: 1,
+    marginBottom: 25,
   },
 });
 export default CreateUserForm;
