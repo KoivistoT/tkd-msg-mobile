@@ -86,7 +86,6 @@ const slice = createSlice({
           newState.allRooms[data.roomId].roomName = data.newRoomName;
         }
         if (taskType === "roomDescriptionChanged") {
-          console.log(data, "tämä data");
           newState.allRooms[data.roomId].description = data.description;
         }
         if (taskType === "membersChanged") {

@@ -172,7 +172,7 @@ function RoomSetupScreen(item) {
     );
   };
   const [editDescription, setEditDescription] = useState(false);
-  const [descriptionText, setDescriptionText] = useState(roomData.description);
+  const [descriptionText, setDescriptionText] = useState(roomData?.description);
   const onEditDescription = () => {
     setEditDescription(true);
   };
@@ -252,7 +252,7 @@ function RoomSetupScreen(item) {
           )}
         />
       )}
-      {roomData.description !== undefined && (
+      {roomData?.description !== undefined && (
         <View>
           <AppText style={{ marginBottom: 5, alignSelf: "center" }}>
             Description
@@ -270,8 +270,8 @@ function RoomSetupScreen(item) {
             >
               {!editDescription && (
                 <AppText style={{ padding: 12, paddingLeft: 10 }}>
-                  {roomData.description
-                    ? roomData.description
+                  {roomData?.description
+                    ? roomData?.description
                     : "Add description"}
                 </AppText>
               )}
@@ -281,7 +281,7 @@ function RoomSetupScreen(item) {
                     style={{ fontSize: 16, marginBottom: 20 }}
                     onChangeText={(text) => setDescriptionText(text)}
                     multiline
-                    defaultValue={roomData.description}
+                    defaultValue={roomData?.description}
                   />
 
                   <AppButton
