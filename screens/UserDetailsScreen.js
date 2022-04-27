@@ -4,7 +4,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import UserInfoCard from "../app/components/UserInfoCard";
 import EditUserModal from "../app/components/modals/EditUserModal";
-import { navigate } from "../app/navigation/rootNavigation";
+import { navigate, navigationRef } from "../app/navigation/rootNavigation";
 import {
   selectUserById,
   activateUserById,
@@ -78,7 +78,7 @@ function UserDetailsScreen(item) {
     }
     if (action === "deleted") {
       dispatch(archiveOrDeleteUserById(userId, action, currentUserId));
-      navigate.goBack();
+      navigationRef.current.goBack();
     }
 
     dispatch(successMessageAdded(USER_ACTIONS[action].successMessage));
