@@ -279,6 +279,7 @@ function RoomSetupScreen(item) {
               {editDescription && (
                 <View>
                   <AppTextInput
+                    autoFocus
                     style={{ fontSize: 16, marginBottom: 20 }}
                     onChangeText={(text) => setDescriptionText(text)}
                     multiline
