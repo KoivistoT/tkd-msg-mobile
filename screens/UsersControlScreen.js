@@ -32,6 +32,7 @@ function UsersControlScreen({ navigation }) {
           bounces={false}
           keyExtractor={listKeyExtractor}
           renderItem={listItem}
+          initialNumToRender={20}
         />
       )}
     </Screen>
