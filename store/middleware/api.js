@@ -110,19 +110,23 @@ const api =
       console.log(error, "täältä tulee error1");
 
       if (onError) {
-        // dispatch({
-        //   type: onError,
-        //   payload:
-        //     // error.response.status === 400 ? error.response.data : error.message,
-        //     //tässä ehkä pitää miettiä toista raktaisua voi olla esim 403 ja silti viesti
-        //     //  error.response.status >= 400 &&
-        //     // error.response.status < 500
-        //     //nuo yllä vidly reactista
-        //     error.response && error.response.data && error.response.data.error
-        //       ? error.response.data.error
-        //       : "Something faild",
-        // });
-        // // dispatch(errorMessageAdded(error.response.data));
+        //tätä pitää vähän tutkailla
+        //tätä pitää vähän tutkailla
+        //tätä pitää vähän tutkailla
+        //tätä pitää vähän tutkailla
+        dispatch({
+          type: onError,
+          payload:
+            // error.response.status === 400 ? error.response.data : error.message,
+            //tässä ehkä pitää miettiä toista raktaisua voi olla esim 403 ja silti viesti
+            //  error.response.status >= 400 &&
+            // error.response.status < 500
+            //nuo yllä vidly reactista
+            error.response && error.response.data && error.response.data.error
+              ? error.response.data.error
+              : "Something faild",
+        });
+        // dispatch(errorMessageAdded(error.response.data));
         if (error.response && error.response.data) {
           dispatch(errorMessageAdded(error.response.data));
         }

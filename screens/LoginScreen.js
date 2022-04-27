@@ -71,7 +71,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <Screen style={styles.container}>
-      {!isAutoLoginChecked && (
+      {!isAutoLoginChecked && !isLoginFailed && (
         // tämä componentti voi olla yleinen, teksti vain muuttujana siinä
         <View
           style={{

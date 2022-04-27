@@ -99,6 +99,7 @@ const slice = createSlice({
     },
     loginFailed: (currentUser, action) => {
       // console.log(action.payload, "ei onnistu");
+
       currentUser.token = null;
       currentUser.error = action.payload;
     },
