@@ -258,7 +258,7 @@ function MessageItemMainChild({
               {
                 flexDirection: "row",
                 backgroundColor: isCurrentMessageSelected
-                  ? colors.khaki
+                  ? colors.selected
                   : sentBy === "me"
                   ? colors.messageMe
                   : colors.messageOther,

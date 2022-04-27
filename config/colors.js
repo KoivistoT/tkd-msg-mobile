@@ -14,6 +14,7 @@ export default {
   green: "green",
   background1: "lightblue",
   success: "#42ba96",
-  messageMe: "#edfff3",
-  messageOther: "#edfff3",
+  selected: "#edfff3",
+  messageMe: "white", //"#edfff3",
+  messageOther: "white", //"#edfff3",
 };
