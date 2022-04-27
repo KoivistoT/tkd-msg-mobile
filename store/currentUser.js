@@ -194,18 +194,6 @@ export const editPassword = (email, password) =>
     // onError: loginFailed.type,
   });
 
-export const saveLastPresent = () => (dispatch, getState) => {
-  const currentUserId = getState().auth.currentUser._id;
-  return dispatch(
-    apiCallBegan({
-      url: url + "/users/last_present/",
-      method: "post",
-      data: { currentUserId },
-      onSuccess: currentUserRequestStarted.type,
-      onError: currentUserError.type,
-    })
-  );
-};
 export const removeTasksItemById = (currentUserId, taskId) =>
   //pitääkö olla et katsoo onko jo käuyttäjä
   apiCallBegan({

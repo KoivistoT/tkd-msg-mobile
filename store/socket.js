@@ -4,10 +4,9 @@ import io from "socket.io-client";
 import { navigate } from "../app/navigation/rootNavigation";
 import routes from "../app/navigation/routes";
 import settings from "../config/settings";
-
+import moment from "moment";
 import {
   removeOlderTasksItemsById,
-  saveLastPresent,
   saveLastSeenMessageSum,
 } from "./currentUser";
 
@@ -27,7 +26,11 @@ import {
   typersResived,
 } from "./rooms";
 
-import { usersOnlineResived, userTasksResived } from "./users";
+import {
+  saveEditedUserdata,
+  usersOnlineResived,
+  userTasksResived,
+} from "./users";
 
 const slice = createSlice({
   name: "socket",
@@ -238,7 +241,13 @@ export const disconnectSocket = (currentUserId) => {
       dispatch(socketDisconnected("Socket disconnected"));
     }, 100);
     // dispatch(unseenMessagesRemoved());
-    dispatch(saveLastPresent());
+
+    const payload = {
+      currentUserId,
+      fieldName: "last_present",
+      value: moment().format(),
+    };
+    dispatch(saveEditedUserdata(payload));
   };
 };
 
