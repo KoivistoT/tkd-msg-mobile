@@ -90,7 +90,8 @@ function RoomSetupScreen(item) {
       roomMembers,
       allUsers
     );
-    if (activeMembers.length === 1) {
+
+    if (activeMembers === 1) {
       result = await confirmAlert(
         "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",
         "Poistuttuasi, huone ja huoneen viestit poistetaan pysyvästi."
@@ -204,7 +205,7 @@ function RoomSetupScreen(item) {
           <View style={{ alignItems: "center" }}>
             <AppText>Chat name</AppText>
             {roomType !== "channel" && (
-              <AppText style={{ fontSize: 20 }}>
+              <AppText numberOfLines={1} style={{ fontSize: 20 }}>
                 {roomFuncs.getRoomTitle(
                   roomData,
                   allUsers,

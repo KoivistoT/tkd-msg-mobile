@@ -52,6 +52,7 @@ function ChangeRoomNameModal({ roomId, title, roomNameNow }) {
       <TouchableOpacity activeOpacity={1} onPress={() => setModalVisible(true)}>
         <View style={{ borderRadius: 6, backgroundColor: colors.primary }}>
           <AppText
+            numberOfLines={1}
             style={{
               fontSize: 20,
               color: colors.white,
