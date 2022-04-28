@@ -51,6 +51,7 @@ function MessageForm({ item }) {
   const [photos, setPhotos] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   const [documentName, setDocumentName] = useState(null);
+  const [isOtherUserActive, setIsOtherUserActive] = useState(true);
 
   const roomData = useSelector(selectRoomDataById(item.route.params._id));
 
@@ -76,7 +77,9 @@ function MessageForm({ item }) {
   let placeholder = useRef("");
 
   useEffect(() => {
-    dispatch(endLoad());
+    if (isFocused) {
+      dispatch(endLoad());
+    }
   }, [isFocused]);
 
   useEffect(() => {
@@ -104,6 +107,10 @@ function MessageForm({ item }) {
       currentRoomType === "private"
         ? roomFuncs.getPrivateRoomOtherUserId(currentRoomMembers, currentUserId)
         : null;
+
+    setIsOtherUserActive(
+      otherUserId.current && allUsers[otherUserId.current].status === "active"
+    );
   };
 
   const setRoomDetails = () => {
@@ -210,11 +217,6 @@ function MessageForm({ item }) {
     setShowOptions(false);
   };
 
-  const showMessageForm = () =>
-    currentRoomStatus !== "archived" &&
-    allUsers[otherUserId.current]?.status !== "deleted" &&
-    allUsers[otherUserId.current]?.status !== "archived";
-
   const showAttachmentInfo = () =>
     !showOptions && (documentName || photos.length !== 0);
 
@@ -225,20 +227,26 @@ function MessageForm({ item }) {
       ? `1 photo selected`
       : `${photos.length} photos selected`;
 
-  const isOtherUserActive = () =>
-    otherUserId.current &&
-    (allUsers[otherUserId.current].status === "deleted" ||
-      allUsers[otherUserId.current].status === "archived");
+  // const isOtherUserActive = () =>
+  // otherUserId.current &&
+  // (allUsers[otherUserId.current].status === "deleted" ||
+  //   allUsers[otherUserId.current].status === "archived");
 
+  const showMessageFrom = () => {
+    if (currentRoomType === "private" && !isOtherUserActive) return false;
+    if (currentRoomStatus !== "active") return false;
+    return true;
+  };
   const getNotActiveText = () =>
-    `Käyttäjä ${allUsers[otherUserId.current].firstName} ${
-      allUsers[otherUserId.current].lastName
-    } on poistettu. Et voi lähettää hänelle viestejä.`;
+    `Käyttäjä on poistettu. Et voi lähettää hänelle viestejä.`;
+  // `Käyttäjä ${allUsers[otherUserId.current]?.firstName} ${
+  //   allUsers[otherUserId.current]?.lastName
+  // } on poistettu. Et voi lähettää hänelle viestejä.`;
 
   return (
     <>
       {getReplyItem() && <ReplyItem item={getReplyItem()} />}
-      {showMessageForm() && (
+      {showMessageFrom() && (
         <View style={styles.container}>
           {showOptions && (
             <AttachmentOptions
@@ -290,7 +298,13 @@ function MessageForm({ item }) {
       )}
 
       {currentRoomStatus === "archived" && <AppText>{ARCHIVED_TEXT}</AppText>}
-      {isOtherUserActive() && <AppText>{getNotActiveText()}</AppText>}
+      {currentRoomType === "private" && !isOtherUserActive && (
+        <AppText
+          style={{ padding: 10, alignSelf: "center", color: colors.secondary }}
+        >
+          {getNotActiveText()}
+        </AppText>
+      )}
     </>
   );
 }
