@@ -253,7 +253,7 @@ function RoomSetupScreen(item) {
           )}
         />
       )}
-      {roomData?.description !== undefined && (
+      {roomType === "channel" && (
         <View>
           <AppText style={{ marginBottom: 5, alignSelf: "center" }}>
             Description
