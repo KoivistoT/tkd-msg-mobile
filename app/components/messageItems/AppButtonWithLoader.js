@@ -3,7 +3,6 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import colors from "../../../config/colors";
 import {
-  errorMessageAdded,
   requestStateRemoved,
   requestStatesRemoved,
   selectRequestStateById,

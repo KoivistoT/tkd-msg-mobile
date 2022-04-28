@@ -8,7 +8,6 @@ const slice = createSlice({
     successMessage: null,
     errorMessageVisibleTime: 3000,
     successMessageVisibleTime: 3000,
-    doneTasksIds: [],
     loading: false,
     messageFormFocus: false,
     selectedMessage: null,
@@ -18,17 +17,11 @@ const slice = createSlice({
     loadingMessage: "",
   },
   reducers: {
-    doneTaskIdResived: (general, action) => {
-      general.doneTasksIds.push(action.payload);
-    },
     errorMessageAdded: (general, action) => {
-      // console.log(action.payload, "Tämä viesti menee toastiin!");
       general.errorMessageVisibleTime = 3000;
       general.errorMessage = action.payload;
     },
     successMessageAdded: (general, action) => {
-      // console.log(action.payload, "Tämä viesti menee toastiin!");
-
       general.successMessageVisibleTime = 2000;
       general.successMessage = action.payload;
     },
@@ -54,15 +47,12 @@ const slice = createSlice({
     },
     messageSelected: (general, action) => {
       general.selectedMessage = action.payload;
-      // console.log(general.selectedMessage, "valittu");
     },
     pushNotificationPressed: (general, action) => {
       general.pushNotificationPressed = true;
-      // console.log(general.selectedMessage, "valittu");
     },
     pushNotificationPressedDeactivated: (general, action) => {
       general.pushNotificationPressed = false;
-      // console.log(general.selectedMessage, "valittu");
     },
     messageSelectionRemoved: (general, action) => {
       general.selectedMessage = null;
@@ -75,7 +65,6 @@ const slice = createSlice({
     },
     requestStateResived: (general, action) => {
       general.requestStates.push(action.payload);
-      // console.log(general.requestStates, "tämä on joo1");
     },
     requestStateUpdated: (general, action) => {
       const { state, id } = action.payload;
@@ -112,7 +101,6 @@ export const {
   errorMessageCleared,
   successMessageAdded,
   successMessageCleared,
-  doneTaskIdResived,
 } = slice.actions;
 
 export const selectMessageFormFocus = createSelector(
@@ -131,7 +119,6 @@ export const selectRequestStateById = (id) =>
   createSelector(
     (state) => state.entities.general,
     (general) => {
-      // console.log("computtaa");
       return general.requestStates.filter((request) => request.id === id);
     }
   );
