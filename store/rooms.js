@@ -245,12 +245,11 @@ export const createChannel = (userId, roomName, description) =>
     onError: roomsError.type,
   });
 
-export const deleteRoom = (roomId, currentUserId, requestId) =>
+export const deleteRoom = (roomId, currentUserId) =>
   apiCallBegan({
     url: url + "delete_room/",
     method: "post",
     data: { roomId, currentUserId },
-    followRequestState: requestId,
     onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,

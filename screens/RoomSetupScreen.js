@@ -124,7 +124,7 @@ function RoomSetupScreen(item) {
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) return;
 
-    dispatch(deleteRoom(roomId, currentUserData._id, "deleteRoomSetup"));
+    dispatch(deleteRoom(roomId, currentUserData._id));
     removeRoomAndNavigate(roomId);
   };
 

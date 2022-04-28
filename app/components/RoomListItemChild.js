@@ -55,7 +55,7 @@ function RoomListItemChild({
     const result = await confirmAlert("Haluatko poistaa huoneen?", "");
     if (!result) return;
 
-    dispatch(deleteRoom(roomId, currentUserId, "deleteRoomSetup"));
+    dispatch(deleteRoom(roomId, currentUserId));
     dispatch(roomRemoved(roomId));
     dispatch(messagesRemoved(roomId));
     navigate(routes.ROOM_SCREEN);
