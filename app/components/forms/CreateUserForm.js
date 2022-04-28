@@ -7,17 +7,11 @@ import Screen from "../Screen";
 import AppForm from "../forms/AppForm";
 import AppFormField from "../forms/AppFormField";
 import SubmitButton from "../forms/SubmitButton";
-import AppKeyboardDismiss from "../AppKeyboardDismiss";
-import AppLoadIndicator from "../AppLoadIndicator";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import AppFormPicker from "./AppFormPicker";
 
-import {
-  createUser,
-  getAllUsers,
-  usersErrorMessageCleared,
-} from "../../../store/users";
+import { createUser } from "../../../store/users";
 
 const accountTypeOptions = [
   { label: "Admin", value: "admin" },
@@ -69,7 +63,6 @@ function CreateUserForm({ navigation, closeModal }) {
     //   console.log("Ei onnistunut päonnistui");
     //   setLoading(false);
     // } else {
-    dispatch(getAllUsers);
 
     closeModal();
     // }

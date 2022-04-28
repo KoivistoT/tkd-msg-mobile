@@ -10,14 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import createTask from "../../../utility/createTask";
 import AppFormPicker from "./AppFormPicker";
 
-import {
-  editUserData,
-  createUser,
-  getAllUsers,
-  usersErrorMessageCleared,
-  userTasksResived,
-  userDataFieldEdited,
-} from "../../../store/users";
+import { editUserData, userDataFieldEdited } from "../../../store/users";
 import AppText from "../AppText";
 import colors from "../../../config/colors";
 
@@ -71,7 +64,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
     dispatch(userDataFieldEdited(fields));
 
     dispatch(editUserData(payload));
-    dispatch(getAllUsers);
+
     closeModal();
   };
 
