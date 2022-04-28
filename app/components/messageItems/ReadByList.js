@@ -13,7 +13,6 @@ import {
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
-
 import MessageItemImage from "./MessageItemImage";
 
 import { selectAllUsersMinimal } from "../../../store/users";
@@ -27,6 +26,7 @@ import MessageItemReply from "./MessageItemReply";
 import timeFuncs from "../../../utility/timeFuncs";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
+import sortObjectArray from "../../../utility/sortObjectArray";
 function ReadByList(item) {
   const {
     _id: messageId,
@@ -45,6 +45,7 @@ function ReadByList(item) {
   const dispatch = useDispatch();
   const currentUserId = selectCurrentUserId(store);
   const roomMemebers = useSelector(selectRoomMembersById(roomId));
+
   const allUsers = useSelector(selectAllUsersMinimal);
   const currentMessage = useSelector(selectMessageById(roomId, messageId));
   const socket = useSelector(selectSocket);
@@ -57,7 +58,7 @@ function ReadByList(item) {
     socket.emit("subscribe_read_at", roomId);
 
     socket.on("subscribe_read_at", () => {
-      getMessageData();
+      dispatch(getOneMessageById(roomId, messageId));
     });
 
     return () => {
@@ -66,31 +67,47 @@ function ReadByList(item) {
     };
   }, [socket]);
 
-  const getMessageData = () => {
-    dispatch(getOneMessageById(roomId, messageId));
-  };
+  useEffect(() => {
+    const membersFullData = [];
+    roomMemebers.forEach((userId) => {
+      membersFullData.push({
+        ...allUsers[userId],
+        timestamp: getIsSeenData(userId),
+      });
+    });
+
+    const sortedMembersFullData = sortObjectArray(membersFullData, "timestamp");
+
+    setFullData(sortedMembersFullData);
+  }, [roomMemebers, currentMessage]);
+
+  const [fullData, setFullData] = useState([]);
 
   const getIsSeenData = (userId) => {
     const index = currentMessage.readByRecipients.findIndex(
       (item) => item.readByUserId === userId
     );
-    if (index === -1) return "-";
-    else
+    if (index === -1) {
+      return "-";
+    } else {
       return `${timeFuncs.getDate(
         currentMessage.readByRecipients[index].readAt
       )} ${timeFuncs.getTime(currentMessage.readByRecipients[index].readAt)}`;
+    }
   };
 
-  const listItem = ({ item, index }) => {
-    if (item === currentUserId) return;
+  const listItem = (member) => {
+    if (member._id === currentUserId) return;
 
     return (
       <View
         style={{
           flexDirection: "row",
           borderBottomWidth: 1,
+          borderBottomColor: colors.lightgrey,
+          marginBottom: 5,
         }}
-        key={item}
+        key={member._id}
       >
         {allUsers && (
           <AppText
@@ -98,9 +115,7 @@ function ReadByList(item) {
               color: "black",
             }}
           >
-            {allUsers
-              ? `${allUsers[item].firstName} ${allUsers[item].lastName}`
-              : ""}
+            {allUsers ? `${member.firstName} ${member.lastName}` : ""}
           </AppText>
         )}
         {currentMessage ? (
@@ -110,9 +125,9 @@ function ReadByList(item) {
               right: 0,
               alignSelf: "center",
             }}
-            key={item.id}
+            key={member._id}
           >
-            {getIsSeenData(item)}
+            {member.timestamp}
           </AppText>
         ) : (
           <ActivityIndicator
@@ -139,6 +154,7 @@ function ReadByList(item) {
             backgroundColor: colors.background1,
             margin: 7,
             borderRadius: 6,
+            alignItems: "center",
           }}
         >
           <MessageHeader
@@ -190,15 +206,14 @@ function ReadByList(item) {
         {roomMemebers.length > 1 ? (
           <View style={{ margin: 20 }}>
             <AppText style={{ marginBottom: 10 }}>Read by</AppText>
-            <FlatList
-              data={roomMemebers}
-              keyExtractor={(member) => member}
-              renderItem={listItem}
-            />
+
+            {fullData.map((member) => listItem(member))}
           </View>
         ) : (
           <View style={styles.container}>
-            <AppText>You are only member in this chat.</AppText>
+            <AppText style={{ color: colors.black }}>
+              You are only member in this chat.
+            </AppText>
           </View>
         )}
       </ScrollView>
@@ -207,7 +222,11 @@ function ReadByList(item) {
 }
 
 const styles = StyleSheet.create({
-  container: { paddingHorizontal: 25, paddingTop: 10 },
+  container: {
+    paddingHorizontal: 25,
+    paddingTop: 10,
+    alignSelf: "center",
+  },
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
 });

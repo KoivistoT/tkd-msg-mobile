@@ -135,7 +135,6 @@ function RoomsListScreen({ navigation }) {
       {allActiveRoomsIds && (
         <FlatList
           style={{ paddingTop: 10 }}
-          // data={sortObjectsByfield(userRooms, "roomName")}
           ItemSeparatorComponent={ListItemSeparator}
           data={allActiveRoomsIds}
           keyExtractor={keyExtractor}

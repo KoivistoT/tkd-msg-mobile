@@ -1,6 +1,6 @@
 import { Linking } from "react-native";
 
-export default sortObjectsByfield = (value) =>
+export default phoneCall = (value) =>
   Linking.canOpenURL(`tel:${value}`).then((supported) => {
     if (!supported) {
     } else {

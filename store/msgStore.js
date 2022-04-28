@@ -8,7 +8,7 @@ import jwtDecode from "jwt-decode";
 import { createSelector } from "reselect";
 
 import sortArray from "../utility/sortArray";
-import sortObjectsByfield from "../utility/sortObjectsByfield";
+
 const slice = createSlice({
   name: "msgStore",
   initialState: {
@@ -777,22 +777,7 @@ export const selectReactionsMessageById = (roomId, messageId) =>
 export const selectRoomMessageIdsByRoomId = (roomId) =>
   createSelector(
     (state) => state.entities.msgStore,
-    (msgStore) =>
-      //  {
-      //   //tämä tsekkaus on turha sitten jos alussa sinne luodaan heti viesti
-      //   console.log("computing");
-      //   const messages = sortObjectsByfield(
-      //     msgStore.allMessages[roomId].messages,
-      //     "createdAt"
-      //   );
-      //   return messages.map((message) => message._id);
-      // }
-      // msgStore.allMessageIds[roomId] !== undefined &&
-      // msgStore.allMessageIds[roomId].length !== 0
-      //   ? [...msgStore.allMessageIds[roomId]]
-      //   : []
-
-      msgStore.allMessageIds[roomId]
+    (msgStore) => msgStore.allMessageIds[roomId]
   );
 
 export const selectMessageReadByRecepients = (roomId, messageId) =>
