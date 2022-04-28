@@ -20,6 +20,7 @@ function AppTextInput({
   marginTop,
   padding,
   autoFocus = false,
+
   defaultValue = "",
   onChangeText = null,
   ...ohterProps

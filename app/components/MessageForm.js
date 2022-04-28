@@ -74,7 +74,6 @@ function MessageForm({ item }) {
   let roomIdRef = useRef(null);
   let documentURL = useRef(null);
   let roomTitle = useRef("");
-  let placeholder = useRef("");
 
   useEffect(() => {
     if (isFocused) {
@@ -115,19 +114,21 @@ function MessageForm({ item }) {
 
   const setRoomDetails = () => {
     roomIdRef.current = currentRoomId;
-    placeholder.current =
-      `Message #${roomTitle.current}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
-        ? `Message #${roomTitle.current.slice(
-            0,
-            PLACEHOLDER_TEXT_MAX_LENGTH - 3
-          )}...`
-        : `Message #${roomTitle.current}`;
+
     roomTitle.current = roomFuncs.getRoomTitle(
       roomData,
       allUsers,
       currentUserId
     );
+
     setOtherUser();
+  };
+
+  const getPlaceholder = () => {
+    const roomTitle = roomFuncs.getRoomTitle(roomData, allUsers, currentUserId);
+    return `Message #${roomTitle}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
+      ? `Message #${roomTitle.slice(0, PLACEHOLDER_TEXT_MAX_LENGTH - 3)}...`
+      : `Message #${roomTitle}`;
   };
 
   const setHeader = () => {
@@ -288,7 +289,7 @@ function MessageForm({ item }) {
                 multiline
                 name="message"
                 numberOfLines={1}
-                placeholder={placeholder.current}
+                placeholder={getPlaceholder()}
               ></MessageFormField>
 
               <SendButton />

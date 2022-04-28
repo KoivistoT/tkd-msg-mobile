@@ -23,6 +23,7 @@ function MessageFormField({
   showErrorMessage = true,
   currentRoomId,
   currentUserId,
+
   ...otherProps
 }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
