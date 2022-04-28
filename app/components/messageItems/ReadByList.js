@@ -162,7 +162,7 @@ function ReadByList(item) {
             roomType={roomType}
             allUsers={allUsers}
             postedByUser={postedByUser}
-            createdAt={createdAt.slice(11, 16)}
+            createdAt={timeFuncs.getDateAndTime(createdAt)}
           />
 
           {messageType === "image" && (
