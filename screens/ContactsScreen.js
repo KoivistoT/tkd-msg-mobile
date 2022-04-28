@@ -26,6 +26,7 @@ import roomFuncs from "../utility/roomFuncs";
 import OnlineIndicator from "../app/components/OnlineIndicator";
 import userFuncs from "../utility/userFuncs";
 import { selectCurrentUserId } from "../store/currentUser";
+import { startLoad } from "../store/general";
 
 function ContactsScreen({ navigation, showInfoButton = true }) {
   const dispatch = useDispatch();
@@ -36,7 +37,8 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
   const allRooms = useSelector(selectUserRooms);
   const listKeyExtractor = (data) => data._id;
 
-  const onStartConversation = (item) => {
+  const onStartPrivateChat = (item) => {
+    dispatch(startLoad("Opening chat"));
     roomFuncs.startPrivateConversation(item, currentUserId, allRooms, () =>
       dispatch(createPrivateRoom(currentUserId, item._id))
     );
@@ -48,7 +50,7 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => onStartConversation(item)}
+        onPress={() => onStartPrivateChat(item)}
         style={{ height: 50, justifyContent: "center" }}
         // onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
       >

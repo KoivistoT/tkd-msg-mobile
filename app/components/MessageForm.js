@@ -18,7 +18,7 @@ import AppForm from "./forms/AppForm";
 import SendButton from "./SendButton";
 import fileFuncs from "../../utility/fileFuncs";
 import { navigate } from "../../app/navigation/rootNavigation";
-
+import { useIsFocused } from "@react-navigation/native";
 import AppText from "./AppText";
 
 import ScreenHeaderTitle from "./ScreenHeaderTitle";
@@ -29,7 +29,11 @@ import roomFuncs from "../../utility/roomFuncs";
 import ReplyItem from "./messageItems/ReplyItem";
 import { selectCurrentUserId } from "../../store/currentUser";
 import { selectSocket } from "../../store/socket";
-import { messageFormFocusCleared, startLoad } from "../../store/general";
+import {
+  endLoad,
+  messageFormFocusCleared,
+  startLoad,
+} from "../../store/general";
 import colors from "../../config/colors";
 import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
@@ -63,11 +67,17 @@ function MessageForm({ item }) {
   const roomMembers = useSelector(selectRoomMembersById(currentRoomId));
   const socket = useSelector(selectSocket);
 
+  const isFocused = useIsFocused();
+
   let otherUserId = useRef(null);
   let roomIdRef = useRef(null);
   let documentURL = useRef(null);
   let roomTitle = useRef("");
   let placeholder = useRef("");
+
+  useEffect(() => {
+    dispatch(endLoad());
+  }, [isFocused]);
 
   useEffect(() => {
     dispatch(activeRoomIdResived(currentRoomId));
@@ -145,7 +155,11 @@ function MessageForm({ item }) {
 
     if (photos.length !== 0) {
       Keyboard.dismiss();
-      dispatch(startLoad());
+      const loadingText =
+        photos.length === 1
+          ? "Uploading image"
+          : `Uploading ${photos.length} images`;
+      dispatch(startLoad(loadingText));
       messageType = "image";
       const downloadUris = await fileFuncs.saveImagesToFirebase(
         photos.map((photo) => photo.uri)
@@ -156,7 +170,7 @@ function MessageForm({ item }) {
 
     if (documentURL.current) {
       Keyboard.dismiss();
-      dispatch(startLoad());
+      dispatch(startLoad("Uploading document"));
       messageType = "document";
       documentDownloadURL = await fileFuncs.uploadDocumentToFireBase(
         documentURL.current,

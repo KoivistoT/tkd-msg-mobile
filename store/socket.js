@@ -187,7 +187,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
         const { taskGroupType, data } = group;
 
         if (data.length > 50) {
-          dispatch(startLoad());
+          dispatch(startLoad("Loading data..."));
           setTimeout(() => {
             taskActions(taskGroupType, data);
           }, 100);

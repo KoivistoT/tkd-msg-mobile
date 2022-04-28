@@ -15,6 +15,7 @@ const slice = createSlice({
     pushNotificationPressed: false,
     newMessage: null,
     requestStates: [],
+    loadingMessage: "",
   },
   reducers: {
     doneTaskIdResived: (general, action) => {
@@ -38,9 +39,11 @@ const slice = createSlice({
       general.successMessage = null;
     },
     startLoad: (general, action) => {
+      general.loadingMessage = action.payload;
       general.loading = true;
     },
     endLoad: (general, action) => {
+      general.loadingMessage = "";
       general.loading = false;
     },
     messageFormFocusAdded: (general, action) => {

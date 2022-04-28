@@ -77,9 +77,6 @@ const startPrivateConversation = async (
   if (index !== -1) {
     const roomData = userRooms[index];
     navigate(routes.MESSAGE_SCREEN, roomData);
-    // setTimeout(() => {
-    //    dispatch(setRoomLoadingToFalse());
-    // }, 300); // tämä ei tarpeen, mutta menee sujuvammin
   } else {
     dispatchFunction();
   }

@@ -21,10 +21,7 @@ class GeneralLoadIndicator extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.loading !== prevProps.loading ||
-      this.props.room_loading !== prevProps.room_loading
-    ) {
+    if (this.props.loading !== prevProps.loading) {
       if (this.props.loading === false) {
         setTimeout(() => {
           this.setState({ showIndicator: this.props.loading });
@@ -55,7 +52,7 @@ class GeneralLoadIndicator extends React.Component {
           >
             <View style={{ alignItems: "center" }}>
               <AppText style={{ margin: 20, color: colors.primary }}>
-                Uploading image(s)/document
+                {this.props.loadingMessage}
               </AppText>
               <ActivityIndicator
                 animating={true}
@@ -82,7 +79,7 @@ class GeneralLoadIndicator extends React.Component {
 
 const mapStateToProps = (state) => ({
   loading: state.entities.general.loading, //onko oikein
-  room_loading: state.entities.rooms.loading, //onko oikein
+  loadingMessage: state.entities.general.loadingMessage, //onko oikein
 });
 
 const mapDispatchToProps = (dispatch) => ({
