@@ -1,11 +1,8 @@
 import React from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../app/components/Screen";
 import routes from "../app/navigation/routes";
-import AppText from "../app/components/AppText";
-import colors from "../config/colors";
-import ListItemSeparator from "../app/components/ListItemSeparator";
+import AppListItem from "../app/components/AppListItem";
 
 function ControlScreen({ navigation }) {
   const data = [
@@ -13,37 +10,15 @@ function ControlScreen({ navigation }) {
   ];
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      style={{
-        paddingHorizontal: 20,
-        padding: 10,
-        backgroundColor: colors.primary,
-        width: "90%",
-        alignSelf: "center",
-        borderRadius: 5,
-      }}
+    <AppListItem
+      item={item}
       onPress={() => navigation.navigate(item.onPress, item)}
-    >
-      <View style={{ flexDirection: "row" }}>
-        <View>
-          <AppText style={styles.name}>{item.name}</AppText>
-        </View>
-
-        <MaterialCommunityIcons
-          style={{ position: "absolute", right: 0, alignSelf: "center" }}
-          name="chevron-right"
-          size={25}
-          color={colors.white}
-        />
-      </View>
-    </TouchableOpacity>
+    />
   );
-  // console.log("control screen päivittyy");
+
   return (
     <Screen>
       <FlatList
-        ItemSeparatorComponent={() => <ListItemSeparator />}
         data={data}
         bounces={false}
         keyExtractor={(data) => data.id}
@@ -53,5 +28,6 @@ function ControlScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({ name: { color: colors.white } });
+const styles = StyleSheet.create({});
+
 export default ControlScreen;
