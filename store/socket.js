@@ -43,8 +43,6 @@ const slice = createSlice({
     },
     socketDisconnected: (socket, action) => {
       socket.connection = null;
-      // console.log("täällä kävi laittaa nulliksi");
-      // console.log(action.payload, "appCode 12312593");
     },
     connectionError: (socket, action) => {
       console.log(action.payload, "tästä tuli2");
@@ -60,9 +58,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
   try {
     const socket = io(settings.baseUrl, {
-      //nämä arvot on erittäin tärkeitä,
       transports: ["websocket"],
-      // jsonp: false,
     });
 
     socket.on("connect", () => {
@@ -88,24 +84,6 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
     });
 
     socket.on("updates", (taskGroups) => {
-      // console.log("Nyt sai vastaan taskit", tasks.length);
-      // if (getState().entities.general.doneTasksIds.includes(taskId)) {
-      //   console.log("on siellä jo tehty socket");
-      //   dispatch(
-      //     removeTaskItemById(getState().auth.currentUser._id, taskId)
-      //   );
-      //   return;
-      // }
-
-      // tässä jaottelee
-      let i = 0;
-      // if (tasks.length > 40) {
-      //   dispatch(startLoad());
-      //   // console.log("oli yli");
-      //   // return;
-      // }
-      // console.log(taskGroups);
-
       const taskActions = (taskGroupType, data) => {
         if (taskGroupType === "roomAdded") {
           data.forEach((room) => {
@@ -119,10 +97,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
             dispatch(roomAdded(room.data));
             dispatch(getMessagesbyId(roomId));
             dispatch(getRoomImages(roomId));
-            // socket.emit("subscribe", roomId);
             const userId = getState().auth.currentUser._id;
-            //jos tämä tuo erroria, kokeile tehdä sisälle toinen if, jossa tarkistaa, että huone löytyy
-            //tämä voi olla ongelma, jos jostain syystä tekijä saa monta omaa
             dispatch(saveLastSeenMessageSum(userId, roomId, messageSum));
 
             if (roomCreator === userId && updatedAt === createdAt) {
@@ -133,36 +108,17 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
         if (taskGroupType === "msg") {
           dispatch(msgTasksResived(data));
-          // if (data.some((task) => task.taskType === "new message")) {
-
-          // }
-          // setTimeout(() => {
-          //   asyncStorageFuncs.setData(
-          //     "messageState",
-          //     getState().entities.msgStore.messageStorage
-          //   );
-          // }, 1500);
         }
+
         if (taskGroupType === "messageUpdated") {
           dispatch(messageUpdatedTaskResived(data));
         }
+
         if (taskGroupType === "room") {
           dispatch(roomTasksResived(data));
-          // setTimeout(() => {
-          //   asyncStorageFuncs.setData(
-          //     "roomState",
-          //     getState().entities.rooms.allRooms
-          //   );
-          // }, 1500);
         }
         if (taskGroupType === "user") {
           dispatch(userTasksResived(data));
-          // setTimeout(() => {
-          //   asyncStorageFuncs.setData(
-          //     "userState",
-          //     getState().entities.users.allUsers
-          //   );
-          // }, 1500);
         }
 
         if (taskGroupType === "roomRemoved") {
@@ -176,14 +132,11 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
               dispatch(roomRemoved(currentRoomId));
               dispatch(messagesRemoved(currentRoomId));
             }, 500);
-
-            // socket.emit("unsubscribe", currentRoomId);
           });
         }
       };
 
       taskGroups.data.forEach((group) => {
-        // console.log(group, "tässä gorup");
         const { taskGroupType, data } = group;
 
         if (data.length > 50) {
@@ -195,11 +148,9 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           taskActions(taskGroupType, data);
         }
       });
-      // console.log("tähän vielä viimeisin id");
       dispatch(endLoad());
 
       if (taskGroups.latestTaskId) {
-        // console.log("käy täällä", taskGroups);
         dispatch(
           removeOlderTasksItemsById(
             getState().auth.currentUser._id,
@@ -207,16 +158,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           )
         );
       }
-      // var end = +new Date();
-      // var diff = end - start;
-      // console.log(diff, "kului aikaa alussa");
     });
-
-    // console.log("täällä mennee jo", getState().auth.currentUser.userRooms);
-    // getState().auth.currentUser.userRooms.forEach((roomId) => {
-    //   // console.log("tänne subscripe", roomId);
-    //   socket.emit("subscribe", roomId);
-    // });
   } catch (error) {
     dispatch(connectionError(error));
   }
@@ -227,20 +169,11 @@ export const disconnectSocket = (currentUserId) => {
     const socket = getState().entities.socket.connection;
     socket.emit("userOffline", currentUserId);
     socket.emit("notTyping", currentUserId);
-    // socket.off("userOnline"); // tätä ei kaiketi tarvi, kun socket on off kuitenkin
 
-    // await getState().auth.currentUser.userRooms.forEach((roomId) => {
-    //   console.log(roomId, "Täältä poistuu");
-    //   socket.emit("unsubscribe", roomId);
-    //   socket.off("subscribe", roomId);
-    // });
-
-    //timeout, koska muuten nuo edellä ei tahdo onnistua, esim userOffline ja notTyping ei mennyt ilman timeoutia, vain toinen meni
     setTimeout(() => {
       socket.disconnect();
       dispatch(socketDisconnected("Socket disconnected"));
     }, 100);
-    // dispatch(unseenMessagesRemoved());
 
     const payload = {
       currentUserId,
