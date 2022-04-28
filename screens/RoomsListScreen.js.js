@@ -43,25 +43,6 @@ function RoomsListScreen({ navigation }) {
   // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
   const roomsFetched = useSelector(selectRoomsFetched);
-  // const tasks = useSelector(selecttasks);
-
-  // if (tasks && tasks.length !== 0) {
-  //   console.log(tasks);
-  //   if (tasks && tasks.length !== 0) {
-  //     console.log("täällä nyt toimii");
-  //     tasks.forEach((element) => {
-  //       const { type, data } = element;
-  //       console.log(type, "tämä on type");
-  //       if (type === "new message") {
-  //         dispatch(newMessageResived(data));
-  //       }
-  //       if (type === "roomLatestMessageChanged") {
-  //         dispatch(roomLatestMessageChanged(data));
-  //       }
-  //     });
-  //     dispatch(tasksCleared());
-  //   }
-  // }
 
   const userOnline = () => {
     socket.emit("userOnline", currentUserId);

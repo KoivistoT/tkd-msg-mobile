@@ -68,35 +68,11 @@ function App() {
   const onLogin = async () => {
     dispatch(createSocketConnection());
     isLoggedIn.current = true;
-    // await dispatch(getCurrentUserById()); //tätä ei tarvitse myöskään kun init
     const currentUserId = selectCurrentUserId(store);
 
     dispatch(clearTasks(currentUserId));
 
-    try {
-      // const roomState = await asyncStorageFuncs.getData("roomState");
-      // const userState = await asyncStorageFuncs.getData("userState");
-      // const userLastSeenMessages = await asyncStorageFuncs.getData(
-      //   "userLastSeenMessages"
-      // );
-      // const messageState = await asyncStorageFuncs.getData("messageState");
-      // console.log(messageState);
-      // console.log(value, "tämä on joo json aik");
-      // dispatch(roomsResived(roomState));
-      // dispatch(usersResived(userState));
-      // dispatch(currentUserLastSeenMessagesResived(userLastSeenMessages));
-      // // ei voi käyttää tätä
-      // dispatch(messagesResived(messageState));
-    } catch (error) {
-      console.log(error, "code 9929918");
-    }
-
-    // dispatch(getCurrentUserById(currentUserId));
-
     dispatch(getInitialData);
-    // dispatch(getRestMessages(currentUserId));
-
-    //tämä pitää siirtää roomslistalle, selectorilla,
 
     const currentUserPushTokenNow =
       store.getState().auth.currentUser.userPushNotificationToken;

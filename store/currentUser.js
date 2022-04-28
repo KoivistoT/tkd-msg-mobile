@@ -1,30 +1,10 @@
-// tänne ne mitä on auth storagessa
-// tänne ne mitä on auth storagessa
-// tänne ne mitä on auth storagessa
-// tänne ne mitä on auth storagessa
-// mieti miten useAuth. katso react kussista
-// mieti miten useAuth. katso react kussista
-// mieti miten useAuth. katso react kussista
-// mieti miten useAuth. katso react kussista
-// katso myös mitä clientissa
-// katso myös mitä clientissa
-// katso myös mitä clientissa
-// katso myös mitä clientissa
-// ekana tee auth logini tähän
-
-import { createSlice, createSelector, current } from "@reduxjs/toolkit";
-import { apiCallBegan, apiCallFailed, currentUserInit } from "./actions";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { apiCallBegan } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
-import { requestStarted, roomsResived } from "./rooms";
-import {
-  allImagesResived,
-  messagesResived,
-  newMessageResived,
-} from "./msgStore";
+import { roomsResived } from "./rooms";
+import { allImagesResived, messagesResived } from "./msgStore";
 import { usersResived } from "./users";
-import asyncStorageFuncs from "../utility/asyncStorageFuncs";
-// import { createSelector } from "reselect";
 
 const slice = createSlice({
   name: "currentUser",
@@ -40,19 +20,8 @@ const slice = createSlice({
     userRooms: [],
     userPushNotificationToken: null,
     last_seen_messages: [],
-    tasks: [],
-    doneTasksIds: [],
-    currentRoomUnseenMessagesSum: null,
   },
   reducers: {
-    // action => action handler
-
-    unseenMessageSumResived: (currentUser, action) => {
-      currentUser.currentRoomUnseenMessagesSum = action.payload.newMessagesSum;
-    },
-    unseenMessagesRemoved: (currentUser, action) => {
-      currentUser.currentRoomUnseenMessagesSum = null;
-    },
     userLoggedIn: (currentUser, action) => {
       const user = action.payload ? jwtDecode(action.payload) : null;
 
@@ -63,16 +32,9 @@ const slice = createSlice({
       currentUser.userPushNotificationToken = user.pushNotificationToken;
       currentUser._id = user._id;
       currentUser.token = action.payload;
+    },
 
-      // console.log("ei tule backendistä nuo huoneet userRooms");
-    },
-    currentUserLastSeenMessagesResived: (currentUser, action) => {
-      if (action.payload) {
-        currentUser.last_seen_messages = action.payload;
-      }
-    },
     currentUserResived: (currentUser, action) => {
-      // console.log(action.payload, "tässä käyttäjän tiedot");
       const { email, last_seen_messages, userRooms } = action.payload;
       currentUser.email = email;
       currentUser.last_seen_messages = last_seen_messages;
@@ -90,13 +52,7 @@ const slice = createSlice({
         ? lastSeeObjectsNow.push(action.payload)
         : (lastSeeObjectsNow[index].lastSeenMessageSum = lastSeenMessageSum);
     },
-    userFetchFaild: (currentUser, action) => {
-      console.log(action.payload, "error cod 99991");
-    },
-    tasksResived: (currentUser, action) => {
-      // console.log("täällä mennään");
-      currentUser.tasks = action.payload.tasks;
-    },
+
     loginFailed: (currentUser, action) => {
       // console.log(action.payload, "ei onnistu");
 
@@ -106,9 +62,7 @@ const slice = createSlice({
     tasksCleared: (currentUser, action) => {
       currentUser.tasks = [];
     },
-    doneTaskResived: (currentUser, action) => {
-      currentUser.doneTasksIds.push(action.payload);
-    },
+
     userLoggedOut: (currentUser, action) => {
       //tämä ei ehkä oikea tapa tehdä tätä
       currentUser.accountType = null;
@@ -127,11 +81,9 @@ const slice = createSlice({
       currentUser.loading = false;
     },
     currentUserError: (currentUser, action) => {
-      console.log("error täällä code 92992881", action.payload);
+      console.log(action.payload, "code 92992881");
     },
-    lastSaveError: (currentUser, action) => {
-      console.log("error täällä code 22");
-    },
+
     currentUserRequestStarted: (currentUser, action) => {},
   },
 });
@@ -140,19 +92,12 @@ export const {
   userLoggedIn,
   currentUserResived,
   currentUserError,
-  lastSaveError,
   loginFailed,
   userLoggedOut,
   errorMessageCleared,
   currentUserRequestStarted,
-  userFetchFaild,
-  tasksResived,
-  unseenMessagesRemoved,
   tasksCleared,
-  unseenMessageSumResived,
-  doneTaskResived,
   lastSeenMessageSumResived,
-  currentUserLastSeenMessagesResived,
 } = slice.actions;
 export default slice.reducer;
 
@@ -216,12 +161,10 @@ export const removeOlderTasksItemsById = (currentUserId, taskId) =>
   });
 
 export const clearTasks = (currentUserId) => (dispatch, getState) => {
-  //pitääkö olla et katsoo onko jo käuyttäjä
   return dispatch(
     apiCallBegan({
       url: url + "/tasks/clear_tasks/" + currentUserId,
       onSuccess: tasksCleared.type,
-      // onError: loginFailed.type,
     })
   );
 };
@@ -233,7 +176,7 @@ export const getCurrentUserById = (userId) => (dispatch, getState) => {
     apiCallBegan({
       url: url + "/users/" + getState().auth.currentUser._id,
       onSuccess: currentUserResived.type,
-      onError: userFetchFaild.type,
+      onError: currentUserError.type,
     })
   );
 };
@@ -252,7 +195,7 @@ export const saveLastSeenMessageSum =
           lastSeenMessageSum,
         },
         onSuccess: currentUserRequestStarted.type,
-        onError: lastSaveError.type,
+        onError: currentUserError.type,
       })
     );
   };
@@ -290,10 +233,6 @@ export const selectCurrentUserToken = createSelector(
 export const selectCurrentUserData = createSelector(
   (state) => state.auth,
   (auth) => auth.currentUser
-);
-export const selectCurrentRoomNewMessagesSum = createSelector(
-  (state) => state.auth,
-  (auth) => auth.currentUser.currentRoomUnseenMessagesSum
 );
 
 export const selectLastSeenMessagesById = (roomId) =>

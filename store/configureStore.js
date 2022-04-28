@@ -11,7 +11,6 @@ export default function () {
       ...getDefaultMiddleware({ serializableCheck: false }),
       toast,
       api,
-      // init,
     ],
   });
 }
