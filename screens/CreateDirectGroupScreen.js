@@ -1,23 +1,13 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  FlatList,
-  View,
-} from "react-native";
-
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-colors;
+import { StyleSheet, FlatList, View } from "react-native";
 
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { createDirectRoom } from "../store/rooms";
-import { selectAllUsersMedium, selectAllUsersMinimal } from "../store/users";
+import { selectAllUsersMedium } from "../store/users";
 import AppCheckBox from "../app/components/AppCheckBox";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import AppText from "../app/components/AppText";
 import AppButton from "../app/components/AppButton";
 import colors from "../config/colors";
 import { selectCurrentUserId } from "../store/currentUser";
