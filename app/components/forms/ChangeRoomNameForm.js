@@ -12,7 +12,6 @@ import {
   requestStateCleared,
   selectRoomDataById,
   selectRoomLoading,
-  selectRoomRequestState,
   setLoading,
 } from "../../../store/rooms";
 import colors from "../../../config/colors";

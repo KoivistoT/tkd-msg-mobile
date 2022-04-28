@@ -10,19 +10,10 @@ import {
 } from "../../../store/general";
 import {
   requestStateCleared,
-  selectRoomRequestState,
   selectRoomsErrorMessage,
 } from "../../../store/rooms";
 import AppButton from "../AppButton";
 import AppLoadingIndicator from "../AppLoadingIndicator";
-
-// const STATE_LISTENERS = {
-//   rooms: {
-//     selector: selectRoomRequestState,
-//     clear: requestStateCleared,
-//     errorMessage: (store) => selectRoomsErrorMessage(store),
-//   },
-// };
 
 function AppButtonWithLoader({
   children = null,

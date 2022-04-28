@@ -13,10 +13,10 @@ import {
 } from "../store/users";
 import {
   activateRoom,
-  change_members,
+  changeMembers,
   deleteRoom,
   selectRoomDataById,
-  leave_room,
+  leaveRoom,
   selectRoomMembersById,
   roomRemoved,
   roomTasksResived,
@@ -102,7 +102,7 @@ function RoomSetupScreen(item) {
 
     if (!result) return;
 
-    dispatch(leave_room(roomId, currentUserData._id, "leaveRoom"));
+    dispatch(leaveRoom(roomId, currentUserData._id, "leaveRoom"));
     removeRoomAndNavigate(roomId);
   };
 
@@ -137,7 +137,7 @@ function RoomSetupScreen(item) {
     });
     dispatch(roomTasksResived(newTask));
 
-    dispatch(change_members(roomId, newMemebers, currentUserData._id));
+    dispatch(changeMembers(roomId, newMemebers, currentUserData._id));
   };
 
   const selectUser = (userId) => {

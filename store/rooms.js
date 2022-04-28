@@ -1,11 +1,9 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./actions";
+import { apiCallBegan, apiCallSuccess } from "./actions";
 import settings from "../config/settings";
-import jwtDecode from "jwt-decode";
-import routes from "../app/navigation/routes";
 import memoize from "proxy-memoize";
 import sortArray from "../utility/sortArray";
-// import { messagesRemoved } from "./msgStore";
+
 const slice = createSlice({
   name: "rooms",
   initialState: {
@@ -15,35 +13,20 @@ const slice = createSlice({
     activeRoomId: null,
     errorMessage: null,
     successMessage: null,
-    newTasks: {},
     roomsFetched: false,
     lastNotificationResponseRoomId: null,
     typers: [],
     requestState: null,
   },
   reducers: {
-    roomNewTasksResived: (rooms, action) => {
-      // if (Object.keys(rooms.newTasks).includes(action.payload.taskId)) return;
-
-      rooms.newTasks = Object.assign(rooms.newTasks, {
-        [action.payload.taskId]: action.payload,
-      });
-    },
     notificationResponseResived: (rooms, action) => {
       rooms.lastNotificationResponseRoomId = action.payload;
     },
     notificationResponseCleared: (rooms, action) => {
       rooms.lastNotificationResponseRoomId = null;
     },
-    // action => action handler
     activeRoomIdResived: (rooms, action) => {
       rooms.activeRoomId = action.payload;
-    },
-    setRoomLoadingToTrue: (rooms, action) => {
-      rooms.loading = true;
-    },
-    setRoomLoadingToFalse: (rooms, action) => {
-      rooms.loading = false;
     },
     activeRoomIdCleared: (rooms, action) => {
       rooms.activeRoomId = null;
@@ -58,15 +41,11 @@ const slice = createSlice({
     },
     roomsErrorMessageCleared: (rooms, action) => {
       rooms.loading = false;
-
       rooms.errorMessage = null;
     },
     requestStarted: (rooms, action) => {
       rooms.requestState = "started";
       rooms.loading = true;
-    },
-    testijoo: (rooms, action) => {
-      alert("testijoo", action.payload);
     },
     requestSucceed: (rooms, action) => {
       rooms.requestState = "succeed";
@@ -95,13 +74,7 @@ const slice = createSlice({
             console.log(error, "code 39922");
           }
         }
-        // if (taskType === "roomRemoved") {
-        //   const currentRoomId = data;
-        //   delete newState.allRooms[currentRoomId];
-        //   newState.allActiveRoomsIds = newState.allActiveRoomsIds.filter(
-        //     (roomId) => roomId !== currentRoomId
-        //   );
-        // }
+
         if (taskType === "roomArchived") {
           const currentRoomId = data;
           newState.allRooms[currentRoomId].status = "archived";
@@ -115,7 +88,6 @@ const slice = createSlice({
           newState.allActiveRoomsIds.push(currentRoomId);
         }
         if (taskType === "roomLatestMessageChanged") {
-          // console.log(data.messageSum, "tämä päivittymä määrä viestejä");
           const { roomId } = data;
           newState.allRooms[roomId].latestMessage = data;
           newState.allRooms[roomId].messageSum = data.messageSum;
@@ -124,37 +96,19 @@ const slice = createSlice({
 
       rooms = newState;
     },
-    roomLatestMessageChanged: (rooms, action) => {
-      const { roomId } = action.payload.data;
-      rooms.allRooms[roomId].latestMessage = action.payload.data;
-      rooms.allRooms[roomId].messageSum = rooms.allRooms[roomId].messageSum + 1;
-      // console.log(rooms.newTasks);
-
-      delete rooms.newTasks[action.payload.taskId];
-    },
 
     roomsResived: (rooms, action) => {
-      // action.payload.forEach((item) => {
-      //   rooms.allRooms = { [item._id]: item, ...rooms.allRooms };
-      // });
-
       rooms.allRooms = action.payload;
 
       Object.keys(action.payload).forEach((id) => {
         if (action.payload[id].status === "active") {
           if (!rooms.allActiveRoomsIds.includes(id)) {
-            // console.log("ei ole");
             rooms.allActiveRoomsIds.push(id);
           }
         }
       });
 
       rooms.roomsFetched = true;
-      // console.log(rooms.allActiveRoomsIds, "actiivit");
-      // console.log(
-      //   rooms.allRooms["61e6a80eb30d002e91d67b5a"],
-      //   "huoneet vastaanotettu, tässä yksi id:llä"
-      // );
     },
 
     roomsError: (rooms, action) => {
@@ -169,7 +123,6 @@ const slice = createSlice({
         (roomId) => roomId !== currentRoomId
       );
     },
-
     roomCreated: (rooms, action) => {
       rooms.loading = false;
     },
@@ -177,17 +130,13 @@ const slice = createSlice({
     roomAdded: (rooms, action) => {
       const { _id: roomId, status } = action.payload;
       if (rooms.allRooms[roomId] !== undefined) {
-        console.log("löytyy jo");
         return;
       } else {
         Object.assign(rooms.allRooms, { [roomId]: action.payload });
-
         if (status !== "draft" && !rooms.allActiveRoomsIds.includes(roomId)) {
           rooms.allActiveRoomsIds.push(roomId);
         }
       }
-
-      // console.log(rooms.allRooms, "now");
     },
     typersResived: (rooms, action) => {
       rooms.typers = action.payload;
@@ -203,22 +152,15 @@ export const {
   activeRoomIdCleared,
   activeRoomIdResived,
   roomCreated,
-  setRoomLoadingToFalse,
-  roomLatestMessageChanged,
-  setRoomLoadingToTrue,
   roomStateCleared,
   typersResived,
   roomsErrorMessageCleared,
   roomRemoved,
-  roomNewTasksResived,
   roomAdded,
   notificationResponseResived,
   notificationResponseCleared,
   requestSucceed,
-
-  roomNameChanged,
   roomTasksResived,
-  testijoo,
   requestStarted,
 } = slice.actions;
 export default slice.reducer;
@@ -286,19 +228,17 @@ export const changeRoomDescription = (roomId, description, currentUserId) =>
     onError: roomsError.type,
   });
 
-export const change_members = (roomId, members, currentUserId) =>
+export const changeMembers = (roomId, members, currentUserId) =>
   apiCallBegan({
     url: url + "change_members",
     method: "post",
     data: { roomId, members, currentUserId },
-    // onSuccess: membersChanged.type,
+    onSuccess: apiCallSuccess.type,
     onError: roomsError.type,
   });
 
-export const leave_room =
+export const leaveRoom =
   (roomId, userId, requestId) => (dispatch, getState) => {
-    // dispatch(fefawf)
-
     return dispatch(
       apiCallBegan({
         url: url + "leave_room",
@@ -321,12 +261,12 @@ export const activateRoom = (roomId, userId, requestId) =>
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
+
 export const activateDraftRoom = (roomId, userId) =>
   apiCallBegan({
     url: url + "activate_draft_room/",
     method: "post",
     data: { roomId, userId },
-    // onStart: requestStarted.type,
     onSuccess: requestSucceed.type,
     onError: roomsError.type,
   });
@@ -352,6 +292,7 @@ export const selectUserRooms = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.allRooms
 );
+
 export const selectNotificationResponse = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.lastNotificationResponseRoomId
@@ -367,16 +308,6 @@ export const selectRoomsErrorMessage = (store) =>
 export const selectRoomLoading = createSelector(
   (state) => state.entities.rooms,
   (rooms) => rooms.loading
-);
-
-export const selectRoomRequestState = createSelector(
-  (state) => state.entities.rooms,
-  (rooms) => rooms.requestState
-);
-
-export const selectAllActiveRoomsIdsOld = createSelector(
-  (state) => state.entities.rooms,
-  (rooms) => rooms.allActiveRoomsIds
 );
 
 export const selectActiveRoomId = (store) =>
@@ -417,16 +348,10 @@ export const selectUnreadSum = (roomId) =>
     }
   );
 
-// (state) => state.entities.bugs, // tämä eka menee tuohon toiseen, eli tässä otetaan bugs
-// (state) => state.entities.projects,
-// (bugs, projects) => bugs.list.filter((bug) => !bug.resolved) // jos bugs tai projects ei mu
-
 export const selectAllActiveRoomsIds = memoize((state) => {
   const rooms = [];
 
   state.entities.rooms.allActiveRoomsIds.forEach((roomId) => {
-    //latest message kysymysmerkki voi olla pois, jos aina on alussa viesti?
-
     rooms.push({
       roomId,
       lastMessageTimestamp:

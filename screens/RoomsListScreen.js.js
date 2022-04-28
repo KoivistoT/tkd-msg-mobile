@@ -40,7 +40,7 @@ function RoomsListScreen({ navigation }) {
   const isFocused = useIsFocused();
   const currentUserId = selectCurrentUserId(store);
   const currentUserRooms = store.getState().auth.currentUser.userRooms;
-  // const allActiveRoomsIds = useSelector(selectAllActiveRoomsIdsOld);
+
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
   const roomsFetched = useSelector(selectRoomsFetched);
 
