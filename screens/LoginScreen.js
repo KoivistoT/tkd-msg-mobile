@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image, Dimensions } from "react-native";
 import * as Yup from "yup";
 import Screen from "../app/components/Screen";
 import ErrorMessage from "../app/components/ErrorMessage";
@@ -18,6 +18,7 @@ import {
 import { createSocketConnection } from "../store/socket";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import AppText from "../app/components/AppText";
+import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required().email().label("Username"),
@@ -72,14 +73,20 @@ function LoginScreen({ navigation }) {
   return (
     <Screen style={styles.container}>
       {!isAutoLoginChecked && !isLoginFailed && (
-        // tämä componentti voi olla yleinen, teksti vain muuttujana siinä
         <View
           style={{
-            flex: 1,
+            position: "absolute",
+            backgroundColor: colors.white,
+            zIndex: 2,
+            width: "100%",
+            height: "100%",
             justifyContent: "center",
           }}
         >
-          <AppText>TÄSSÄ SPLASH SCREEN</AppText>
+          <Image
+            source={require("../assets/splash.png")}
+            defaultSource={require("../assets/splash.png")}
+          />
         </View>
       )}
       {isAutoLoginChecked && (
@@ -135,9 +142,9 @@ function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    // padding: 20,
     // paddingTop: 200,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     flex: 1,
   },
 });
