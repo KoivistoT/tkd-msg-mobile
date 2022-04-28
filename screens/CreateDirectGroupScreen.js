@@ -14,14 +14,10 @@ import { selectCurrentUserId } from "../store/currentUser";
 import AppTitle from "../app/components/AppTitle";
 
 function CreateDirectGroupScreen() {
-  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const store = useStore();
   const currentUserId = selectCurrentUserId(store);
   const allUsers = useSelector(selectAllUsersMedium);
-
-  const listKeyExtractor = (data) => data._id;
-
   const [selectedUsers, _setSelectedUsers] = useState([currentUserId]);
 
   const selectedUsersRef = React.useRef(selectedUsers);
@@ -29,6 +25,8 @@ function CreateDirectGroupScreen() {
     selectedUsersRef.current = data;
     _setSelectedUsers(data);
   };
+
+  const listKeyExtractor = (data) => data._id;
 
   const selectUser = (userId) => {
     if (selectedUsers.includes(userId)) {
@@ -40,12 +38,12 @@ function CreateDirectGroupScreen() {
 
   const onCreateRoom = () => {
     dispatch(createDirectRoom(currentUserId, selectedUsersRef.current));
-    setModalVisible(false);
   };
 
   const listItem = ({ item }) => {
     if (item.status !== "active") return;
     const isCurrentUser = item._id === currentUserId ? true : false;
+
     return (
       <>
         <AppCheckBox
@@ -63,22 +61,11 @@ function CreateDirectGroupScreen() {
 
   return (
     <Screen style={styles.modal}>
-      {/* <View style={styles.selectedUsers}>
-        {Object.keys(allUsers).length !== 0 &&
-          selectedUsers.map((item) => (
-            <AppText key={item} style={styles.userName}>
-              {allUsers
-                ? `${allUsers[item].firstName} ${allUsers[item].lastName}`
-                : ""}
-            </AppText>
-          ))}
-      </View> */}
       <AppTitle>Select users</AppTitle>
 
       <View style={styles.usersList}>
         {allUsers && (
           <FlatList
-            // ItemSeparatorComponent={() => <ListItemSeparator />}
             data={Object.values(allUsers)}
             bounces={false}
             keyExtractor={listKeyExtractor}

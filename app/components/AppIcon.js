@@ -8,6 +8,7 @@ import colors from "../../config/colors";
 function AppIcon({
   icon = { icon: "user-circle-o", color: "black", size: 40 },
 }) {
+  console.log(icon);
   return (
     <MaterialCommunityIcons
       name={icon.name}

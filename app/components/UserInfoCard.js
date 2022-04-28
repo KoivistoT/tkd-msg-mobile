@@ -36,10 +36,10 @@ function UserInfoCard({ userId, hideFields = [], isEditable = false }) {
       {userData && (
         <View style={styles.container}>
           <View style={{ alignItems: "center" }}>
-            <AppIcon size={90} />
-            <AppText style={{ marginTop: 10 }}>
-              {userFuncs.fullName(userData)}
-            </AppText>
+            <AppIcon
+              icon={{ color: "background1", name: "account", size: 90 }}
+            />
+            <AppText>{userFuncs.fullName(userData)}</AppText>
           </View>
 
           <View style={styles.fields}>
