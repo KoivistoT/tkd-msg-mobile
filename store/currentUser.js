@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./actions";
+import { apiCallBegan, apiCallFailed, apiCallSuccess } from "./actions";
 import settings from "../config/settings";
 import jwtDecode from "jwt-decode";
 import { roomsResived } from "./rooms";
@@ -110,16 +110,14 @@ export const getInitialData = apiCallBegan({
     init: true,
     user: currentUserResived.type,
     rooms: roomsResived.type,
-    messages: messagesResived.type, // tällä hakee vain vähän alkuun kaikkiin
+    messages: messagesResived.type,
     images: allImagesResived.type,
     users: usersResived.type,
   },
-
   onError: currentUserError.type,
 });
 
 export const login = (email, password) =>
-  //pitääkö olla et katsoo onko jo käuyttäjä
   apiCallBegan({
     url: url + "/auth",
     method: "post",
@@ -130,33 +128,21 @@ export const login = (email, password) =>
   });
 
 export const editPassword = (email, password) =>
-  //pitääkö olla et katsoo onko jo käuyttäjä
   apiCallBegan({
     url: url + "/users/edit_password",
     method: "post",
     data: { email, password },
     onStart: currentUserRequestStarted.type,
-    // onSuccess: userLoggedIn.type,
-    // onError: loginFailed.type,
-  });
-
-export const removeTasksItemById = (currentUserId, taskId) =>
-  //pitääkö olla et katsoo onko jo käuyttäjä
-  apiCallBegan({
-    url: url + "/tasks/remove_tasks_item",
-    method: "post",
-    data: { currentUserId, taskId },
-    // onSuccess: userLoggedIn.type,
-    onError: currentUserError.type,
+    onSuccess: apiCallSuccess.type,
+    onError: apiCallFailed.type,
   });
 
 export const removeOlderTasksItemsById = (currentUserId, taskId) =>
-  //pitääkö olla et katsoo onko jo käuyttäjä
   apiCallBegan({
     url: url + "/tasks/remove_older_tasks_items",
     method: "post",
     data: { currentUserId, taskId },
-    // onSuccess: userLoggedIn.type,
+    onSuccess: apiCallSuccess.type,
     onError: currentUserError.type,
   });
 
@@ -165,17 +151,6 @@ export const clearTasks = (currentUserId) => (dispatch, getState) => {
     apiCallBegan({
       url: url + "/tasks/clear_tasks/" + currentUserId,
       onSuccess: tasksCleared.type,
-    })
-  );
-};
-
-export const getCurrentUserById = (userId) => (dispatch, getState) => {
-  //pitääkö olla et katsoo onko jo käuyttäjä
-
-  return dispatch(
-    apiCallBegan({
-      url: url + "/users/" + getState().auth.currentUser._id,
-      onSuccess: currentUserResived.type,
       onError: currentUserError.type,
     })
   );
@@ -194,16 +169,11 @@ export const saveLastSeenMessageSum =
           roomId,
           lastSeenMessageSum,
         },
-        onSuccess: currentUserRequestStarted.type,
+        onSuccess: apiCallSuccess.type,
         onError: currentUserError.type,
       })
     );
   };
-
-export const logout = () => {
-  console.log("tämä suoraan logout siellä missä onkaan");
-  userLoggedOut();
-};
 
 export const selectLastSeenMessagSumByRoomId = (store, roomId) => {
   const index = store
@@ -248,13 +218,3 @@ export const selectLastSeenMessagesById = (roomId) =>
       return condition !== undefined ? condition.lastSeenMessageSum : 0;
     }
   );
-
-export const selectTasks = createSelector(
-  (state) => state.auth,
-  (auth) => auth.currentUser.tasks
-);
-
-export const selectDoneTasksIds = createSelector(
-  (state) => state.auth,
-  (auth) => auth.currentUser.doneTasksIds
-);
