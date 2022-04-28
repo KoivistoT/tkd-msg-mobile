@@ -154,7 +154,6 @@ function ReadByList(item) {
             backgroundColor: colors.background1,
             margin: 7,
             borderRadius: 6,
-            alignItems: "center",
           }}
         >
           <MessageHeader
