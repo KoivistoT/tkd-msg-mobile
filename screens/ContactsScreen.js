@@ -5,28 +5,15 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import Screen from "../app/components/Screen";
-import {
-  allUsers,
-  selectAllUsers,
-  selectAllUsersMedium,
-  selectAllUsersMinimal,
-  selectUsersOnline,
-} from "../store/users";
+import { selectAllUsersMedium, selectUsersOnline } from "../store/users";
 import colors from "../config/colors";
 import routes from "../app/navigation/routes";
-import AppButton from "../app/components/AppButton";
-import {
-  createPrivateRoom,
-  selectUserRooms,
-  setRoomLoadingToFalse,
-  setRoomLoadingToTrue,
-} from "../store/rooms";
-import sortArray from "../utility/sortArray";
+import { createPrivateRoom, selectUserRooms } from "../store/rooms";
 import roomFuncs from "../utility/roomFuncs";
-import OnlineIndicator from "../app/components/OnlineIndicator";
 import userFuncs from "../utility/userFuncs";
 import { selectCurrentUserId } from "../store/currentUser";
 import { startLoad } from "../store/general";
+import IconButton from "../app/components/IconButton";
 
 function ContactsScreen({ navigation, showInfoButton = true }) {
   const dispatch = useDispatch();
@@ -51,17 +38,9 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={() => onStartPrivateChat(item)}
-        style={{ height: 50, justifyContent: "center" }}
-        // onPress={() => navigation.navigate(routes.USER_DETAILS_SCREEN, item)}
+        style={styles.buttonRow}
       >
-        <View
-          style={{
-            backgroundColor: item.status === "archived" ? "yellow" : "white",
-            flexDirection: "row",
-            marginLeft: 10,
-            marginBottom: 15,
-          }}
-        >
+        <View style={styles.container}>
           <View
             style={[
               styles.onlineIndicator,
@@ -74,29 +53,15 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
             ]}
           />
 
-          <View>
-            <AppText style={styles.name}>{userFuncs.fullName(item)}</AppText>
-          </View>
+          <AppText style={styles.name}>{userFuncs.fullName(item)}</AppText>
           {showInfoButton && (
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                padding: 20,
-                paddingRight: 10,
-                right: 0,
-                alignSelf: "center",
-              }}
-              activeOpacity={1}
+            <IconButton
+              name="badge-account-horizontal-outline"
+              paddingRight={10}
               onPress={() =>
                 navigation.navigate(routes.USER_INFO_CARD_SCREEN, item._id)
               }
-            >
-              <MaterialCommunityIcons
-                name="badge-account-horizontal-outline"
-                size={25}
-                color={colors.dark}
-              />
-            </TouchableOpacity>
+            />
           )}
         </View>
         <ListItemSeparator />
@@ -122,6 +87,12 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    marginLeft: 10,
+    marginBottom: 15,
+  },
+  buttonRow: { height: 50, justifyContent: "center" },
   onlineIndicator: {
     width: 14,
     alignSelf: "center",
