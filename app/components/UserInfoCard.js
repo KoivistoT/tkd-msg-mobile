@@ -77,12 +77,13 @@ const allFields = [
   {
     fieldName: "email",
     label: "Email",
-    editable: false,
+    editable: true,
   },
   {
     fieldName: "accountType",
     label: "Account type",
     toUpperCase: true,
+    editable: false,
   },
   {
     fieldName: "firstName",

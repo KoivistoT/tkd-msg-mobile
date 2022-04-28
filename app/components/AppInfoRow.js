@@ -91,7 +91,9 @@ function AppInfoRow({
       }
     >
       <View style={styles.columnLeft}>
-        <AppText styles={styles.info}>{info}</AppText>
+        <AppText styles={styles.info}>
+          {fieldName === "email" && isEditable ? info + "/username" : info}
+        </AppText>
       </View>
       {edit && !loading && (
         <View style={styles.editRow}>
