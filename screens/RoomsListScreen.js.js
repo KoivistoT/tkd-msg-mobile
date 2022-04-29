@@ -21,7 +21,6 @@ import {
   selectAllActiveRoomsIds,
   selectRoomsFetched,
 } from "../store/rooms";
-import { usersOnlineResived } from "../store/users";
 
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
