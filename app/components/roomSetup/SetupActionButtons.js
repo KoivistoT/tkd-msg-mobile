@@ -1,19 +1,19 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
-import appMessages from "../../config/appMessages";
-import { messagesRemoved } from "../../store/msgStore";
+import appMessages from "../../../config/appMessages";
+import { messagesRemoved } from "../../../store/msgStore";
 import {
   activateRoom,
   deleteRoom,
   leaveRoom,
   roomRemoved,
-} from "../../store/rooms";
-import confirmAlert from "../../utility/confirmAlert";
-import roomFuncs from "../../utility/roomFuncs";
-import { navigate } from "../navigation/rootNavigation";
-import routes from "../navigation/routes";
-import AppButton from "./AppButton";
+} from "../../../store/rooms";
+import confirmAlert from "../../../utility/confirmAlert";
+import roomFuncs from "../../../utility/roomFuncs";
+import { navigate } from "../../navigation/rootNavigation";
+import routes from "../../navigation/routes";
+import AppButton from "../AppButton";
 
 function SetupActionButtons({
   currentUserData,

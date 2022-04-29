@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import roomFuncs from "../../utility/roomFuncs";
-import AppText from "./AppText";
-import ChangeRoomNameModal from "./modals/ChangeRoomNameModal";
+import roomFuncs from "../../../utility/roomFuncs";
+import AppText from "../AppText";
+import ChangeRoomNameModal from "../modals/ChangeRoomNameModal";
 
 function SetupRoomName({
   roomType,

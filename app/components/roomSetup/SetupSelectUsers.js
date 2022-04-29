@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
-import colors from "../../config/colors";
-import { changeMembers, roomTasksResived } from "../../store/rooms";
-import AppButton from "./AppButton";
-import AppCheckBox from "./AppCheckBox";
-import ListItemSeparator from "./ListItemSeparator";
+import colors from "../../../config/colors";
+import { changeMembers, roomTasksResived } from "../../../store/rooms";
+import AppButton from "../AppButton";
+import AppCheckBox from "../AppCheckBox";
+import AppText from "../AppText";
+import ListItemSeparator from "../ListItemSeparator";
+import SectionSeparator from "../SectionSeparator";
 
 function SetupSelectUsers({
   allUsers,
@@ -15,6 +17,7 @@ function SetupSelectUsers({
   roomId,
 }) {
   const dispatch = useDispatch();
+
   let roomMembersOnStart = useRef(members);
   const [selectedUsers, _setSelectedUsers] = useState(roomMembers);
   const selectedUsersRef = React.useRef(selectedUsers);
@@ -54,6 +57,9 @@ function SetupSelectUsers({
 
   return (
     <View style={styles.container}>
+      <SectionSeparator />
+      <AppText style={{ alignSelf: "center" }}>Chat members</AppText>
+
       {Object.values(allUsers).map((item) => {
         if (item.status !== "active") return;
 

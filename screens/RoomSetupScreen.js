@@ -1,39 +1,23 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import AppText from "../app/components/AppText";
-import { navigate } from "../app/navigation/rootNavigation";
+import { StyleSheet, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 import { selectAllUsersMedium } from "../store/users";
-import {
-  activateRoom,
-  changeMembers,
-  deleteRoom,
-  selectRoomDataById,
-  leaveRoom,
-  selectRoomMembersById,
-  roomRemoved,
-  roomTasksResived,
-} from "../store/rooms";
-import AppButton from "../app/components/AppButton";
-import confirmAlert from "../utility/confirmAlert";
+import { selectRoomDataById, selectRoomMembersById } from "../store/rooms";
 import { selectCurrentUserData } from "../store/currentUser";
-import routes from "../app/navigation/routes";
 import roomFuncs from "../utility/roomFuncs";
 import SectionSeparator from "../app/components/SectionSeparator";
 import UserInfoCard from "../app/components/UserInfoCard";
-import { messagesRemoved } from "../store/msgStore";
-import appMessages from "../config/appMessages";
-import SetupRoomName from "../app/components/SetupRoomName";
-import SetupChatType from "../app/components/SetupChatType";
-import SetupDescription from "../app/components/SetupDescription";
-import SetupSelectUsers from "../app/components/SetupSelectUsers";
-import SetupActionButtons from "../app/components/SetupActionButtons";
+
+import SetupDescription from "../app/components/roomSetup/SetupDescription";
+import SetupSelectUsers from "../app/components/roomSetup/SetupSelectUsers";
+import SetupActionButtons from "../app/components/roomSetup/SetupActionButtons";
+import SetupRoomName from "../app/components/roomSetup/SetupRoomName";
+import SetupChatType from "../app/components/roomSetup/SetupChatType";
 
 function RoomSetupScreen(item) {
   const {
     _id: roomId,
     status: roomStatus,
-    roomCreator,
     type: roomType,
     members,
   } = item.route.params;
@@ -47,7 +31,7 @@ function RoomSetupScreen(item) {
 
   return (
     <ScrollView style={styles.container}>
-      {roomData?.type !== "private" && (
+      {roomType !== "private" && (
         <SetupRoomName
           roomId={roomId}
           roomType={roomType}
@@ -56,9 +40,7 @@ function RoomSetupScreen(item) {
           currentUserData={currentUserData}
         />
       )}
-
       <SetupChatType roomStatus={roomStatus} roomType={roomType} />
-
       {roomType === "private" && (
         <UserInfoCard
           hideFields={["accountType"]}
@@ -74,14 +56,6 @@ function RoomSetupScreen(item) {
           currentUserData={currentUserData}
         />
       )}
-
-      {roomType !== "private" && (
-        <>
-          <SectionSeparator />
-          <AppText style={{ alignSelf: "center" }}>Chat members</AppText>
-        </>
-      )}
-
       {roomType !== "private" && roomStatus !== "archived" && allUsers && (
         <SetupSelectUsers
           allUsers={allUsers}
@@ -91,7 +65,6 @@ function RoomSetupScreen(item) {
           roomId={roomId}
         />
       )}
-
       <SectionSeparator />
       <SetupActionButtons
         currentUserData={currentUserData}

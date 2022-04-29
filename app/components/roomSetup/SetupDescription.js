@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
-import colors from "../../config/colors";
-import { changeRoomDescription, roomTasksResived } from "../../store/rooms";
-import AppButton from "./AppButton";
-import AppText from "./AppText";
-import AppTextInput from "./AppTextInput";
+import colors from "../../../config/colors";
+import { changeRoomDescription, roomTasksResived } from "../../../store/rooms";
+import AppButton from "../AppButton";
+import AppText from "../AppText";
+import AppTextInput from "../AppTextInput";
 
 function SetupDescription({ roomData, currentUserData }) {
   const dispatch = useDispatch();
