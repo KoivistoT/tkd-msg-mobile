@@ -235,7 +235,8 @@ function MessageForm({ item }) {
 
   const showMessageFrom = () => {
     if (currentRoomType === "private" && !isOtherUserActive) return false;
-    if (currentRoomStatus !== "active") return false;
+    if (currentRoomStatus !== "active" && currentRoomStatus !== "draft")
+      return false;
     return true;
   };
   const getNotActiveText = () =>
