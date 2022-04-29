@@ -1,18 +1,14 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
   FlatList,
-  Text,
-  TouchableOpacity,
   ActivityIndicator,
   AppState,
 } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import Screen from "../app/components/Screen";
-import * as DocumentPicker from "expo-document-picker";
 import { selectCurrentUserId } from "../store/currentUser";
-import { WebView } from "react-native-webview";
 import { useIsFocused } from "@react-navigation/native";
 import {
   createSocketConnection,
@@ -28,53 +24,30 @@ import {
 import { usersOnlineResived } from "../store/users";
 
 import AppText from "../app/components/AppText";
-import asyncStorageFuncs from "../utility/asyncStorageFuncs";
-import ShowDocumentModal from "../app/components/modals/SelectDocumentModal";
 import ListItemSeparator from "../app/components/ListItemSeparator";
 import { messageSelectionRemoved } from "../store/general";
-import AppButtonWithLoader from "../app/components/messageItems/AppButtonWithLoader";
+
 function RoomsListScreen({ navigation }) {
   const dispatch = useDispatch();
   const store = useStore();
   const socket = useSelector(selectSocket);
   const isFocused = useIsFocused();
   const currentUserId = selectCurrentUserId(store);
-  const currentUserRooms = store.getState().auth.currentUser.userRooms;
-
   const allActiveRoomsIds = useSelector(selectAllActiveRoomsIds);
   const roomsFetched = useSelector(selectRoomsFetched);
-
-  const userOnline = () => {
-    socket.emit("userOnline", currentUserId);
-    socket.on("userOnline", (data) => {
-      dispatch(usersOnlineResived(data));
-    });
-  };
-
-  const userOffline = () => {
-    socket.emit("userOffline", currentUserId);
-    socket.off("userOnline");
-  };
-
   const socketConnection = useRef(true);
+
   const handleChange = (newState) => {
     if (newState === "active") {
-      // console.log("taas actiivinen");
-
       if (!socket) {
         dispatch(createSocketConnection());
         socketConnection.current = true;
       }
-
-      // userOnline();
     } else if (newState === "background" || newState === "inactive") {
-      // userOffline();
-      // if (socket) {
       if (socketConnection.current) {
         dispatch(disconnectSocket(currentUserId));
         socketConnection.current = false;
       }
-      // }
     }
   };
 
@@ -103,31 +76,21 @@ function RoomsListScreen({ navigation }) {
 
   return (
     <Screen>
-      {/* {!socket && ( */}
-      {/* <ShowDocumentModal /> */}
       {!roomsFetched && (
         <View style={styles.loadingChats}>
           <ActivityIndicator />
           <AppText style={styles.loadingChatsText}>Loading chats</AppText>
         </View>
       )}
-      {/* ehkä ei tarpeen olla kaikki varmistukset, ei päivitä alussa roomListItemiä niin montaa kertaa, mutta ehkä ei haittaa... */}
-      {/* {socket && allActiveRoomsIds && ( */}
       {allActiveRoomsIds && (
         <FlatList
-          style={{ paddingTop: 10 }}
+          style={styles.roomsList}
           ItemSeparatorComponent={ListItemSeparator}
           data={allActiveRoomsIds}
           keyExtractor={keyExtractor}
           renderItem={listItem}
         />
       )}
-
-      {/* <View>
-        <TouchableOpacity onPress={() => logout()}>
-          <Text>kirjaudu ulos</Text>
-        </TouchableOpacity>
-      </View> */}
     </Screen>
   );
 }
@@ -140,5 +103,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   loadingChatsText: { marginLeft: 10 },
+  roomsList: { paddingTop: 10 },
 });
 export default RoomsListScreen;
