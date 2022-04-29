@@ -12,6 +12,12 @@ const slice = createSlice({
     replyMessageIds: [],
   },
   reducers: {
+    msgStoreCleared: (msgStore, action) => {
+      msgStore.allMessages = {};
+      msgStore.allMessageIds = {};
+      msgStore.images = {};
+      msgStore.replyMessageIds = [];
+    },
     allImagesResived: (msgStore, action) => {
       msgStore.images = action.payload;
     },
@@ -295,6 +301,7 @@ export const {
   oneMessageResived,
   messageUpdatedTaskResived,
   newCurrentUserMessageResived,
+  msgStoreCleared,
 } = slice.actions;
 
 export default slice.reducer;

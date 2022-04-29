@@ -31,13 +31,17 @@ const slice = createSlice({
     activeRoomIdCleared: (rooms, action) => {
       rooms.activeRoomId = null;
     },
-    roomStateCleared: (rooms, action) => {
+    roomStoreCleared: (rooms, action) => {
       rooms.allRooms = [];
       rooms.allActiveRoomsIds = [];
       rooms.loading = false;
       rooms.activeRoomId = null;
       rooms.errorMessage = null;
       rooms.successMessage = null;
+      rooms.roomsFetched = false;
+      rooms.lastNotificationResponseRoomId = null;
+      rooms.typers = [];
+      rooms.requestState = null;
     },
     roomsErrorMessageCleared: (rooms, action) => {
       rooms.loading = false;
@@ -152,7 +156,7 @@ export const {
   activeRoomIdCleared,
   activeRoomIdResived,
   roomCreated,
-  roomStateCleared,
+  roomStoreCleared,
   typersResived,
   roomsErrorMessageCleared,
   roomRemoved,

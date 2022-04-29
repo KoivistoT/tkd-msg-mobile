@@ -16,6 +16,11 @@ const slice = createSlice({
       users.allUsers = action.payload;
       users.allUsersId = Object.keys(action.payload);
     },
+    usersStoreCleared: (users, action) => {
+      users.allUsers = {};
+      users.usersOnline = {};
+      users.allUsersId = [];
+    },
     usersOnlineResived: (users, action) => {
       users.usersOnline = action.payload;
     },
@@ -76,6 +81,7 @@ export const {
   usersErrorMessageCleared,
   requestSucceed,
   userTasksResived,
+  usersStoreCleared,
 } = slice.actions;
 export default slice.reducer;
 

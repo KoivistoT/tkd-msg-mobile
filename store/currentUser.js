@@ -64,7 +64,7 @@ const slice = createSlice({
     },
 
     userLoggedOut: (currentUser, action) => {
-      //tämä ei ehkä oikea tapa tehdä tätä
+      currentUser.user = null;
       currentUser.accountType = null;
       currentUser.error = null;
       currentUser.loading = false;
@@ -74,7 +74,8 @@ const slice = createSlice({
       currentUser._id = null;
       currentUser.loggedIn = false;
       currentUser.userRooms = [];
-      currentUser.lastSeenMessageSum = [];
+      currentUser.userPushNotificationToken = null;
+      currentUser.last_seen_messages = [];
     },
     errorMessageCleared: (currentUser, action) => {
       currentUser.error = null;

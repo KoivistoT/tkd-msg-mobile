@@ -38,6 +38,9 @@ const slice = createSlice({
     connection: null,
   },
   reducers: {
+    socketStoreCleared: (socket, action) => {
+      socket.connection = null;
+    },
     socketConnected: (socket, action) => {
       socket.connection = action.payload;
     },
@@ -50,8 +53,12 @@ const slice = createSlice({
   },
 });
 
-export const { socketConnected, connectionError, socketDisconnected } =
-  slice.actions;
+export const {
+  socketConnected,
+  connectionError,
+  socketDisconnected,
+  socketStoreCleared,
+} = slice.actions;
 
 export const createSocketConnection = (userId) => (dispatch, getState) => {
   const accountType = getState().auth.currentUser.accountType;

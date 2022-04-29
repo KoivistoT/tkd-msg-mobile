@@ -17,6 +17,19 @@ const slice = createSlice({
     loadingMessage: "",
   },
   reducers: {
+    generalStoreCleared: (general, action) => {
+      general.errorMessage = null;
+      general.successMessage = null;
+      general.errorMessageVisibleTime = 3000;
+      general.successMessageVisibleTime = 3000;
+      general.loading = false;
+      general.messageFormFocus = false;
+      general.selectedMessage = null;
+      general.pushNotificationPressed = false;
+      general.newMessage = null;
+      general.requestStates = [];
+      general.loadingMessage = "";
+    },
     errorMessageAdded: (general, action) => {
       general.errorMessageVisibleTime = 3000;
       general.errorMessage = action.payload;
@@ -101,6 +114,7 @@ export const {
   errorMessageCleared,
   successMessageAdded,
   successMessageCleared,
+  generalStoreCleared,
 } = slice.actions;
 
 export const selectMessageFormFocus = createSelector(

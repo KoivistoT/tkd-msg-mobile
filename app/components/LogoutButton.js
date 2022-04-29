@@ -2,8 +2,11 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch, useStore } from "react-redux";
 import { selectCurrentUserId, userLoggedOut } from "../../store/currentUser";
-import { roomStateCleared } from "../../store/rooms";
-import { disconnectSocket } from "../../store/socket";
+import { generalStoreCleared } from "../../store/general";
+import { msgStoreCleared } from "../../store/msgStore";
+import { roomStoreCleared } from "../../store/rooms";
+import { disconnectSocket, socketStoreCleared } from "../../store/socket";
+import { usersStoreCleared } from "../../store/users";
 import asyncStorageFuncs from "../../utility/asyncStorageFuncs";
 import confirmAlert from "../../utility/confirmAlert";
 import AppButton from "./AppButton";
@@ -19,7 +22,11 @@ function LogoutButton(props) {
 
     asyncStorageFuncs.setData("autoLogin", false);
     dispatch(disconnectSocket(currentUserId));
-    dispatch(roomStateCleared());
+    dispatch(roomStoreCleared());
+    dispatch(usersStoreCleared());
+    dispatch(msgStoreCleared());
+    dispatch(generalStoreCleared());
+    dispatch(socketStoreCleared());
     dispatch(userLoggedOut());
   };
 
