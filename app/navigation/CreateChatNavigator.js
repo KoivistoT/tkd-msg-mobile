@@ -1,5 +1,4 @@
 import React from "react";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import { MemoCreateNewChatScreen } from "../../screens/CreateNewChatScreen.js";
 import { MemoCreateChannelScreen } from "../../screens/CreateChannelScreen.js";

@@ -2,9 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RoomsNavigator from "./RoomsNavigator";
-import RoomsListScreen from "../../screens/RoomsListScreen.js.js";
-import ControlScreen from "../../screens/ControlScreen";
-import ControlNavigator from "./ControlNavigator";
 import ContactsNavigator from "./ContactsNavigator";
 import UserSetupScreen from "../../screens/UserSetupScreen";
 import { Octicons } from "@expo/vector-icons";
@@ -50,15 +47,6 @@ const TabNavigator = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="ControlNavigator"
-        component={ControlNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };

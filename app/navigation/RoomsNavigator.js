@@ -8,6 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 import { navigate } from "./rootNavigation.js";
 import routes from "./routes.js";
 import { MemoReadByList } from "../components/messageItems/ReadByList.js";
+import HeaderRightNewRoom from "../components/HeaderRightNewRoom.js";
 
 const Stack = createStackNavigator();
 
@@ -21,14 +22,7 @@ const RoomsNavigator = () => (
       <Stack.Screen
         options={{
           headerTitle: "Chats",
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ paddingRight: 20, paddingTop: 0 }}
-              onPress={() => navigate(routes.CREATE_CHAT_NAVIGATOR)}
-            >
-              <Entypo name="new-message" size={22} />
-            </TouchableOpacity>
-          ),
+          headerRight: () => <HeaderRightNewRoom />,
         }}
         name="Rooms_screen"
         component={RoomsListScreen}

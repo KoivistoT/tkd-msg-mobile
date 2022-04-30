@@ -1,8 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import ControlScreen from "../../screens/ControlScreen.js";
-
 import UsersControlScreen from "../../screens/UsersControlScreen.js";
 import UserDetailsScreen from "../../screens/UserDetailsScreen.js";
 
