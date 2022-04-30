@@ -107,7 +107,7 @@ function UserDetailsActionButtons({ userId }) {
               </>
             )}
           </View>
-          <View style={styles.buttonRow}>
+          <View style={[styles.buttonRow, { marginBottom: 30 }]}>
             {currentUserId !== userId && (
               <AppButton
                 title={"Delete user"}
