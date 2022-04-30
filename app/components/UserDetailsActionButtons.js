@@ -86,21 +86,25 @@ function UserDetailsActionButtons({ userId }) {
         <>
           <View style={styles.buttonRow}>
             <EditUserModal userId={userData._id} />
-            {currentUserId !== userId && userData.status === "archived" && (
-              <AppButton
-                title={"activate user"}
-                color="white"
-                backgroundColor="green"
-                onPress={activateUser}
-              />
-            )}
-            {currentUserId !== userId && userData.status === "active" && (
-              <AppButton
-                title={"archive user"}
-                color="black"
-                backgroundColor="khaki"
-                onPress={archiveUser}
-              />
+            {currentUserId !== userId && userData.status && (
+              <>
+                {userData.status === "archived" && (
+                  <AppButton
+                    title={"Activate user"}
+                    color="white"
+                    backgroundColor="green"
+                    onPress={activateUser}
+                  />
+                )}
+                {userData.status === "active" && (
+                  <AppButton
+                    title={"Archive user"}
+                    color="black"
+                    backgroundColor="khaki"
+                    onPress={archiveUser}
+                  />
+                )}
+              </>
             )}
           </View>
           <View style={styles.buttonRow}>
