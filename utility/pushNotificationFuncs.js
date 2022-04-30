@@ -19,13 +19,11 @@ const registerForPushNotificationsAsync = async (
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    // alert(token, "tässä token");
 
     try {
       if (token === currentUserPushTokenNow) return;
 
       try {
-        // alert("tallentaa tokenia");
         dispatchFunction(token);
       } catch (error) {
         console.log(error, "code 777421");
@@ -33,8 +31,6 @@ const registerForPushNotificationsAsync = async (
     } catch (error) {
       console.log(error, "code 277719");
     }
-  } else {
-    // alert("Must use physical device for Push Notifications");
   }
 
   if (Platform.OS === "android") {

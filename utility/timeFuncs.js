@@ -13,8 +13,6 @@ const formatDate = (date) => {
 };
 
 function getDateDiffInDays(a, b) {
-  // a = convertToLocalTime(a);
-  // b = convertToLocalTime(b);
   const utc1 = Date.UTC(getFullYear(a), getMonth(a), getDay(a));
   const utc2 = Date.UTC(getFullYear(b), getMonth(b), getDay(b));
 

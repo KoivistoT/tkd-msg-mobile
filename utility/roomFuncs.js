@@ -3,12 +3,14 @@ import routes from "../app/navigation/routes";
 import sortArray from "./sortArray";
 
 const getRoomTitle = (item, allUsers, currentUserId) => {
-  // console.log("täällä menee"); // tämä päivittyy turhaa useasti
   if (allUsers === {} || !allUsers || !item) return;
-  if (item.type === "private")
-    return getPrivateRoomTitle(item.members, currentUserId, allUsers); //tämäkin voisi olla utility functiosta
+  if (item.type === "private") {
+    return getPrivateRoomTitle(item.members, currentUserId, allUsers);
+  }
   if (item.type === "direct") return getDirectRoomTitle(item.members, allUsers);
-  return item.roomName;
+  {
+    return item.roomName;
+  }
 };
 
 const getRoomActiveMembersSum = (roomMembers, allUsers) => {
