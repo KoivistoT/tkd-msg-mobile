@@ -16,5 +16,20 @@ export default {
       title: "Haluatko poistaa huoneen?",
       body: "",
     },
+    deleteUser: {
+      title: "Haluatko poistaa käyttäjän?",
+      body: "",
+      success: "User deleted",
+    },
+    archiveUser: {
+      title: "Haluatko arkistoida käyttäjän?",
+      body: "",
+      success: "User archived",
+    },
+    activateUser: {
+      title: "Haluatko aktivoida käyttäjän?",
+      body: "",
+      success: "User activated",
+    },
   },
 };

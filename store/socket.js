@@ -31,6 +31,7 @@ import {
   usersOnlineResived,
   userTasksResived,
 } from "./users";
+import taskGroupTypes from "../config/taskGroupTypes";
 
 const slice = createSlice({
   name: "socket",
@@ -92,7 +93,7 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
 
     socket.on("updates", (taskGroups) => {
       const taskActions = (taskGroupType, data) => {
-        if (taskGroupType === "roomAdded") {
+        if (taskGroupType === taskGroupTypes.roomAdded) {
           data.forEach((room) => {
             const {
               _id: roomId,
@@ -113,22 +114,22 @@ export const createSocketConnection = (userId) => (dispatch, getState) => {
           });
         }
 
-        if (taskGroupType === "msg") {
+        if (taskGroupType === taskGroupTypes.msg) {
           dispatch(msgTasksResived(data));
         }
 
-        if (taskGroupType === "messageUpdated") {
+        if (taskGroupType === taskGroupTypes.messageUpdated) {
           dispatch(messageUpdatedTaskResived(data));
         }
 
-        if (taskGroupType === "room") {
+        if (taskGroupType === taskGroupTypes.room) {
           dispatch(roomTasksResived(data));
         }
-        if (taskGroupType === "user") {
+        if (taskGroupType === taskGroupTypes.user) {
           dispatch(userTasksResived(data));
         }
 
-        if (taskGroupType === "roomRemoved") {
+        if (taskGroupType === taskGroupTypes.roomRemoved) {
           data.forEach((room) => {
             const currentRoomId = room.data;
 

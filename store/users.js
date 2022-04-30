@@ -2,6 +2,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { apiCallBegan, apiCallSuccess } from "./actions";
 import settings from "../config/settings";
 import memoize from "proxy-memoize";
+import taskTypes from "../config/taskTypes";
 
 const slice = createSlice({
   name: "users",
@@ -30,23 +31,23 @@ const slice = createSlice({
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
-        if (taskType === "userArchived") {
+        if (taskType === taskTypes.userArchived) {
           const userId = data;
           newState.allUsers[userId].status = "archived";
         }
-        if (taskType === "userActivated") {
+        if (taskType === taskTypes.userActivated) {
           const userId = data;
           newState.allUsers[userId].status = "active";
         }
-        if (taskType === "newUser") {
+        if (taskType === taskTypes.newUser) {
           const { _id: userId } = data;
           Object.assign(newState.allUsers, { [userId]: data });
         }
-        if (taskType === "userTemporaryDeleted") {
+        if (taskType === taskTypes.userTemporaryDeleted) {
           const userId = data;
           newState.allUsers[userId].status = "deleted";
         }
-        if (taskType === "userDataEdited") {
+        if (taskType === taskTypes.userDataEdited) {
           const { _id: userId } = data;
           newState.allUsers[userId] = data;
         }

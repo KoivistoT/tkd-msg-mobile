@@ -4,7 +4,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppButton from "../app/components/AppButton";
 import UserInfoCard from "../app/components/UserInfoCard";
 import EditUserModal from "../app/components/modals/EditUserModal";
-import { navigate, navigationRef } from "../app/navigation/rootNavigation";
+import { navigationRef } from "../app/navigation/rootNavigation";
 import {
   selectUserById,
   activateUserById,
@@ -16,25 +16,27 @@ import ChangePasswordModal from "../app/components/modals/ChangePasswordModal";
 import { selectCurrentUserId } from "../store/currentUser";
 import createTask from "../utility/createTask";
 import { successMessageAdded } from "../store/general";
+import appMessages from "../config/appMessages";
+import taskTypes from "../config/taskTypes";
 
 const USER_ACTIONS = {
   deleted: {
-    taskName: "userDeleted",
-    questionTitle: "Haluatko poistaa käyttäjän",
-    questionBody: "",
-    successMessage: "User deleted",
+    taskType: taskTypes.userDeleted,
+    questionTitle: appMessages.questions.deleteUser.title,
+    questionBody: appMessages.questions.deleteUser.body,
+    successMessage: appMessages.questions.deleteUser.success,
   },
   archived: {
-    taskName: "userArchived",
-    questionTitle: "Haluatko arkistoida käyttäjän?",
-    questionBody: "",
-    successMessage: "User archived",
+    taskType: taskTypes.userArchived,
+    questionTitle: appMessages.questions.archiveUser.title,
+    questionBody: appMessages.questions.archiveUser.body,
+    successMessage: appMessages.questions.archiveUser.success,
   },
   activateUser: {
-    taskName: "userActivated",
-    questionTitle: "Haluatko aktivoida käyttäjän?",
-    questionBody: "",
-    successMessage: "User activated",
+    taskType: taskTypes.userActivated,
+    questionTitle: appMessages.questions.activateUser.title,
+    questionBody: appMessages.questions.archiveUser.body,
+    successMessage: appMessages.questions.activateUser.success,
   },
 };
 
@@ -67,7 +69,7 @@ function UserDetailsScreen(item) {
 
     if (!result) return;
 
-    const newTask = createTask(USER_ACTIONS[action].taskName, userId);
+    const newTask = createTask(USER_ACTIONS[action].taskType, userId);
     dispatch(userTasksResived(newTask));
 
     if (action === "activateUser") {

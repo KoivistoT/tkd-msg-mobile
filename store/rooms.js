@@ -3,6 +3,7 @@ import { apiCallBegan, apiCallSuccess } from "./actions";
 import settings from "../config/settings";
 import memoize from "proxy-memoize";
 import sortArray from "../utility/sortArray";
+import taskTypes from "../config/taskTypes";
 
 const slice = createSlice({
   name: "rooms",
@@ -65,13 +66,13 @@ const slice = createSlice({
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
-        if (taskType === "roomNameChanged") {
+        if (taskType === taskTypes.roomNameChanged) {
           newState.allRooms[data.roomId].roomName = data.newRoomName;
         }
-        if (taskType === "roomDescriptionChanged") {
+        if (taskType === taskTypes.roomDescriptionChanged) {
           newState.allRooms[data.roomId].description = data.description;
         }
-        if (taskType === "membersChanged") {
+        if (taskType === taskTypes.membersChanged) {
           try {
             newState.allRooms[data._id].members = data.members;
           } catch (error) {
@@ -79,19 +80,19 @@ const slice = createSlice({
           }
         }
 
-        if (taskType === "roomArchived") {
+        if (taskType === taskTypes.roomArchived) {
           const currentRoomId = data;
           newState.allRooms[currentRoomId].status = "archived";
           newState.allActiveRoomsIds = newState.allActiveRoomsIds.filter(
             (roomId) => roomId !== currentRoomId
           );
         }
-        if (taskType === "roomActivated") {
+        if (taskType === taskTypes.roomActivated) {
           const currentRoomId = data;
           newState.allRooms[currentRoomId].status = "active";
           newState.allActiveRoomsIds.push(currentRoomId);
         }
-        if (taskType === "roomLatestMessageChanged") {
+        if (taskType === taskTypes.roomLatestMessageChanged) {
           const { roomId } = data;
           newState.allRooms[roomId].latestMessage = data;
           newState.allRooms[roomId].messageSum = data.messageSum;

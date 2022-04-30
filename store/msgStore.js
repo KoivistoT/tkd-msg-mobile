@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan, apiCallSuccess } from "./actions";
 import settings from "../config/settings";
 import { createSelector } from "reselect";
+import taskTypes from "../config/taskTypes";
 
 const slice = createSlice({
   name: "msgStore",
@@ -100,7 +101,7 @@ const slice = createSlice({
       }
     },
     messagesError: (msgStore, action) => {
-      console.log("epännoistu2");
+      console.log("code 927726611");
     },
 
     msgTasksResived: (msgStore, action) => {
@@ -112,7 +113,7 @@ const slice = createSlice({
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
-        if (taskType === "new message") {
+        if (taskType === taskTypes.newMessage) {
           const { roomId, _id: messageId, type, imageURLs } = data;
 
           if (
@@ -183,7 +184,7 @@ const slice = createSlice({
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
-        if (taskType === "messageDeleted") {
+        if (taskType === taskTypes.messageDeleted) {
           const { roomId, messageId } = data;
 
           newState2.allMessages[roomId].messages[messageId].is_deleted = true;
@@ -201,7 +202,7 @@ const slice = createSlice({
       action.payload.forEach((task) => {
         const { taskType, data } = task;
 
-        if (taskType === "messageUpdated") {
+        if (taskType === taskTypes.messageUpdated) {
           const { roomId, _id: messageId } = data;
 
           newState.allMessages[roomId].messages[messageId] = data;
