@@ -86,14 +86,15 @@ function UserDetailsActionButtons({ userId }) {
         <>
           <View style={styles.buttonRow}>
             <EditUserModal userId={userData._id} />
-            {userData.status === "archived" ? (
+            {currentUserId !== userId && userData.status === "archived" && (
               <AppButton
                 title={"activate user"}
                 color="white"
                 backgroundColor="green"
                 onPress={activateUser}
               />
-            ) : (
+            )}
+            {currentUserId !== userId && userData.status === "active" && (
               <AppButton
                 title={"archive user"}
                 color="black"
@@ -103,12 +104,14 @@ function UserDetailsActionButtons({ userId }) {
             )}
           </View>
           <View style={styles.buttonRow}>
-            <AppButton
-              title={"delete user"}
-              color="white"
-              backgroundColor="danger"
-              onPress={onDeleteUser}
-            />
+            {currentUserId !== userId && (
+              <AppButton
+                title={"Delete user"}
+                color="white"
+                backgroundColor="danger"
+                onPress={onDeleteUser}
+              />
+            )}
             <ChangePasswordModal
               userName={userData.email}
               requireCurrentPassword={false}
