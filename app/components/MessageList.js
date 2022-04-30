@@ -252,7 +252,8 @@ function MessageList({ item }) {
         if (
           roomAllMessages[messageId].messageBody
             .toLowerCase()
-            .includes(searchWord.toLowerCase())
+            .includes(searchWord.toLowerCase()) &&
+          !roomAllMessages[messageId].is_deleted
         )
           filteredMessageIds.push(messageId);
       });

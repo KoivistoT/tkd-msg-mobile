@@ -355,12 +355,14 @@ function MessageItemMainChild({
           >
             {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
 
-            <Reactions
-              onRemoveSelections={() => onRemoveSelections()}
-              showAllEmojis={showAllEmojis}
-              message={message}
-              sentBy={sentBy}
-            ></Reactions>
+            {!is_deleted && (
+              <Reactions
+                onRemoveSelections={() => onRemoveSelections()}
+                showAllEmojis={showAllEmojis}
+                message={message}
+                sentBy={sentBy}
+              ></Reactions>
+            )}
           </View>
 
           {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
