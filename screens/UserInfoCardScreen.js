@@ -1,6 +1,5 @@
 import React from "react";
-
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import Screen from "../app/components/Screen";
 
 import UserInfoCard from "../app/components/UserInfoCard";
@@ -19,4 +18,5 @@ function UserInfoCardScreen(item) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
 });
+
 export default UserInfoCardScreen;

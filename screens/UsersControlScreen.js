@@ -1,17 +1,14 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import ListItemSeparator from "../app/components/ListItemSeparator";
+import React from "react";
+import { FlatList } from "react-native";
+import { useSelector } from "react-redux";
 import Screen from "../app/components/Screen";
-
-import { allUsers, selectAllUsersAllData } from "../store/users";
+import { selectAllUsersAllData } from "../store/users";
 import routes from "../app/navigation/routes";
 import CreateUserModal from "../app/components/modals/CreateUserModal";
 import UserControlListItem from "../app/components/UserControlListItem";
 
 function UsersControlScreen({ navigation }) {
   const allUsers = useSelector(selectAllUsersAllData);
-  // console.log("User control screen päivittyy");
   const listKeyExtractor = (data) => data._id;
 
   const listItem = ({ item }) =>
@@ -27,7 +24,6 @@ function UsersControlScreen({ navigation }) {
       <CreateUserModal />
       {allUsers && (
         <FlatList
-          // ItemSeparatorComponent={() =>}
           data={Object.values(allUsers)}
           bounces={false}
           keyExtractor={listKeyExtractor}
@@ -39,5 +35,4 @@ function UsersControlScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
 export default UsersControlScreen;
