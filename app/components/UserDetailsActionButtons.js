@@ -18,21 +18,21 @@ import EditUserModal from "./modals/EditUserModal";
 const USER_ACTIONS = {
   deleted: {
     taskType: taskTypes.userDeleted,
-    questionTitle: appMessages.questions.deleteUser.title,
-    questionBody: appMessages.questions.deleteUser.body,
-    successMessage: appMessages.questions.deleteUser.success,
+    questionTitle: appMessages.questions.DELETE_USER.title,
+    questionBody: appMessages.questions.DELETE_USER.body,
+    successMessage: appMessages.questions.DELETE_USER.success,
   },
   archived: {
     taskType: taskTypes.userArchived,
-    questionTitle: appMessages.questions.archiveUser.title,
-    questionBody: appMessages.questions.archiveUser.body,
-    successMessage: appMessages.questions.archiveUser.success,
+    questionTitle: appMessages.questions.ARCHIVE_USER.title,
+    questionBody: appMessages.questions.ARCHIVE_USER.body,
+    successMessage: appMessages.questions.ARCHIVE_USER.success,
   },
   activateUser: {
     taskType: taskTypes.userActivated,
-    questionTitle: appMessages.questions.activateUser.title,
-    questionBody: appMessages.questions.archiveUser.body,
-    successMessage: appMessages.questions.activateUser.success,
+    questionTitle: appMessages.questions.ACTIVATE_USER.title,
+    questionBody: appMessages.questions.ACTIVATE_USER.body,
+    successMessage: appMessages.questions.ACTIVATE_USER.success,
   },
 };
 

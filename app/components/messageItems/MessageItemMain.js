@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Animated, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useSelector, useStore } from "react-redux";
 import colors from "../../../config/colors";
 import { selectMessageById } from "../../../store/msgStore";
@@ -11,38 +11,13 @@ function MessageItemMain({
   currentUserId,
   onScrollToIndex = null,
   searchWord,
-  index,
 }) {
   const store = useStore();
-
   const message = useSelector(selectMessageById(roomId, messageId));
-
-  // useEffect(() => {
-  //   Animated.timing(_animated, {
-  //     toValue: 1,
-  //     duration: 200,
-  //     useNativeDriver: false,
-  //   }).start();
-  // }, [index]); // kuuluuko aina indexillä edes päivittyä
-
   const sentBy = message.postedByUser === currentUserId ? "me" : "otherUser";
   const allUsers = store.getState().entities.users.allUsers;
 
-  // let _animated = new Animated.Value(0);
-
-  // const rowStyles = [
-  //   styles.row,
-  //   {
-  //     height: _animated.interpolate({
-  //       inputRange: [0, 1],
-  //       outputRange: [0, 55], //height 55
-  //       extrapolate: "clamp",
-  //     }),
-  //   },
-  //   { opacity: _animated },
-  // ];
   return (
-    // <Animated.View style={rowStyles}>
     <MemoMessageItemMainChild
       message={message}
       searchWord={searchWord}
@@ -50,18 +25,14 @@ function MessageItemMain({
       allUsers={allUsers}
       onScrollToIndex={onScrollToIndex}
     />
-    // </Animated.View>
   );
 }
 
 function areEqual(prevProps, nextProps) {
-  // console.log("täällä päivittää joo");
   try {
     if (
       prevProps.messageId === nextProps.messageId &&
       prevProps.searchWord === nextProps.searchWord
-      //  &&
-      // prevProps.index === nextProps.index
     ) {
       return true;
     } else {

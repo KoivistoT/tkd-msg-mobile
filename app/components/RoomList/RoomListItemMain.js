@@ -1,8 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectRoomDataById } from "../../store/rooms";
-import { selectAllUsersMinimal } from "../../store/users";
+import { selectRoomDataById } from "../../../store/rooms";
+import { selectAllUsersMinimal } from "../../../store/users";
 import { MemoRoomListItemChild } from "./RoomListItemChild";
+
 function RoomListItemMain({ roomId, navigation, currentUserId }) {
   const item = useSelector(selectRoomDataById(roomId));
   const allUsers = useSelector(selectAllUsersMinimal);

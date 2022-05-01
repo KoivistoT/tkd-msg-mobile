@@ -58,5 +58,3 @@ function areEqual(prevProps, nextProps) {
 }
 
 export const MemoCreateChannelModal = React.memo(CreateChannelModal, areEqual);
-
-// export default CreateChannelModal;

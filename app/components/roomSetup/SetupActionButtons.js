@@ -38,13 +38,13 @@ function SetupActionButtons({
 
     if (activeMembers === 1) {
       result = await confirmAlert(
-        appMessages.questions.leaveRoomLastUser.title,
-        appMessages.questions.leaveRoomLastUser.body
+        appMessages.questions.LEAVE_ROOM_LAST_USER.title,
+        appMessages.questions.LEAVE_ROOM_LAST_USER.body
       );
     } else {
       result = await confirmAlert(
-        appMessages.questions.leaveRoom.title,
-        appMessages.questions.leaveRoom.body
+        appMessages.questions.LEAVE_ROOM.title,
+        appMessages.questions.LEAVE_ROOM.body
       );
     }
 
@@ -56,8 +56,8 @@ function SetupActionButtons({
 
   const onActivateRoom = async () => {
     const result = await confirmAlert(
-      appMessages.questions.activateRoom.title,
-      appMessages.questions.activateRoom.body
+      appMessages.questions.ACTIVATE_ROOM.title,
+      appMessages.questions.ACTIVATE_ROOM.body
     );
     if (!result) return;
     dispatch(activateRoom(roomId, currentUserData._id));
@@ -66,8 +66,8 @@ function SetupActionButtons({
 
   const onDeleteRoom = async () => {
     const result = await confirmAlert(
-      appMessages.questions.deleteRoom.title,
-      appMessages.questions.deleteRoom.body
+      appMessages.questions.DELETE_USER.title,
+      appMessages.questions.DELETE_USERS.body
     );
     if (!result) return;
 

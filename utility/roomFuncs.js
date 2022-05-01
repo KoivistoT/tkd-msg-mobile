@@ -91,6 +91,18 @@ const isReplyItem = (replyMessageIds, roomId) => {
   return replyMessageData[0];
 };
 
+const getPlaceholder = (
+  roomData,
+  allUsers,
+  currentUserId,
+  PLACEHOLDER_TEXT_MAX_LENGTH
+) => {
+  const roomTitle = getRoomTitle(roomData, allUsers, currentUserId);
+  return `Message #${roomTitle}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
+    ? `Message #${roomTitle.slice(0, PLACEHOLDER_TEXT_MAX_LENGTH - 3)}...`
+    : `Message #${roomTitle}`;
+};
+
 export default {
   getRoomTitle,
   getRoomActiveMembersSum,
@@ -98,4 +110,5 @@ export default {
   getPrivateRoomOtherUserId,
   startPrivateConversation,
   isReplyItem,
+  getPlaceholder,
 };

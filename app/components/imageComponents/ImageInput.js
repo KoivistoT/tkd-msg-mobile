@@ -1,17 +1,9 @@
 import React, { useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  Alert,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import colors from "../../../config/colors";
 import ToolBarButton from "../ToolbarButton";
-import AppCloseButton from "../AppCloseButton";
 
 function ImageInput({ imageUri, onChangeImage }) {
   useEffect(() => {

@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import colors from "../../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { navigate } from "../navigation/rootNavigation";
-import routes from "../navigation/routes";
+import { navigate } from "../../navigation/rootNavigation";
+import routes from "../../navigation/routes";
+import colors from "../../../config/colors";
 
 function RoomListRightAction({
   onPress,

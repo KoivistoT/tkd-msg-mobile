@@ -1,26 +1,24 @@
 import React, { useRef } from "react";
-import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
-import routes from "../navigation/routes";
-import roomFuncs from "../../utility/roomFuncs";
-import userFuncs from "../../utility/userFuncs";
-import AppText from "./AppText";
-import OnlineIndicator from "./OnlineIndicator";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+
+import OnlineIndicator from "../OnlineIndicator";
+import RoomListLatestMessage from "./RoomListLatestMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUserData } from "../../store/currentUser";
-import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
+import { selectCurrentUserData } from "../../../store/currentUser";
 import { Swipeable } from "react-native-gesture-handler";
 import RoomListRightAction from "./RoomListRightAction";
 import {
   deleteRoom,
   roomRemoved,
   selectTypersByRoomId,
-} from "../../store/rooms";
-import AppIcon from "./AppIcon";
-import colors from "../../config/colors";
-import AppLoadingIndicator from "./AppLoadingIndicator";
-import timeFuncs from "../../utility/timeFuncs";
-import { messagesRemoved } from "../../store/msgStore";
-import { navigate } from "../navigation/rootNavigation";
+} from "../../../store/rooms";
+import AppIcon from "../AppIcon";
+import { messagesRemoved } from "../../../store/msgStore";
+import { navigate } from "../../navigation/rootNavigation";
+import RoomListItemDate from "./RoomListItemDate";
+import RoomListItemName from "./RoomListItemName";
+import routes from "../../navigation/routes";
+import colors from "../../../config/colors";
 
 const ICON_SET = {
   private: { name: "account-lock", color: "primary", size: 32 },
@@ -75,69 +73,28 @@ function RoomListItemChild({
             style={styles.button}
             onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
           >
-            <View
-              style={{
-                width: 80,
-                alignItems: "center",
-                alignSelf: "center",
-                padding: 5,
-                top: 5,
-              }}
-            >
+            <View style={styles.iconContainer}>
               <AppIcon icon={onGetIcon()} />
             </View>
 
             <View>
-              <View style={styles.nameRow}>
-                <AppText
-                  style={{
-                    color: colors.primary,
-                    fontWeight: "600",
-                    maxWidth: Dimensions.get("window").width - 160,
-                  }}
-                  numberOfLines={1}
-                >
-                  {roomFuncs.getRoomTitle(item, allUsers, currentUserId)}
-                </AppText>
-              </View>
+              <RoomListItemName
+                item={item}
+                allUsers={allUsers}
+                currentUserId={currentUserId}
+              />
+
               {latestMessage && (
-                <View style={styles.lastMessage}>
-                  {typer ? (
-                    <AppLoadingIndicator
-                      text={`${userFuncs.displayName(
-                        allUsers,
-                        typer
-                      )} is typing`}
-                    />
-                  ) : (
-                    <AppText
-                      style={{
-                        color: "black",
-                        maxWidth: Dimensions.get("window").width - 160,
-                      }}
-                      numberOfLines={2}
-                    >
-                      {`${
-                        latestMessage.postedByUser === currentUserId
-                          ? "You"
-                          : allUsers[latestMessage.postedByUser].displayName
-                      }: ${latestMessage.messageBody}`}
-                    </AppText>
-                  )}
-                </View>
+                <RoomListLatestMessage
+                  latestMessage={latestMessage}
+                  allUsers={allUsers}
+                  typer={typer}
+                  currentUserId={currentUserId}
+                />
               )}
             </View>
-            <View
-              style={{ position: "absolute", right: 15, alignSelf: "center" }}
-            >
-              <AppText style={{ fontSize: 14 }}>
-                {latestMessage &&
-                  timeFuncs.getWeekDayNames(latestMessage.createdAt)}
-              </AppText>
-              <View style={{ height: 30 }}>
-                <MemoUnreadMessagesItem item={item} />
-              </View>
-            </View>
+            <RoomListItemDate latestMessage={latestMessage} item={item} />
+
             {type === "private" && <OnlineIndicator members={members} />}
           </TouchableOpacity>
         )}
@@ -153,18 +110,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: colors.white,
   },
+  iconContainer: {
+    width: 80,
+    alignItems: "center",
+    alignSelf: "center",
+    padding: 5,
+    top: 5,
+  },
   otherUser: { alignItems: "flex-start" },
-  nameRow: {
-    flexDirection: "row",
-
-    alignItems: "center",
-    marginTop: 5,
-  },
-  lastMessage: {
-    flexDirection: "row",
-
-    alignItems: "center",
-  },
 });
 
 function areEqual(prevProps, nextProps) {
@@ -172,8 +125,8 @@ function areEqual(prevProps, nextProps) {
     prevProps.item.members === nextProps.item.members &&
     prevProps.item.roomName === nextProps.item.roomName &&
     prevProps.item.latestMessage === nextProps.item.latestMessage &&
-    prevProps.item.status === nextProps.item.status;
-  prevProps.item.roomId === nextProps.item.roomId;
+    prevProps.item.status === nextProps.item.status &&
+    prevProps.item.roomId === nextProps.item.roomId;
 
   try {
     var result = [];
@@ -200,14 +153,8 @@ function areEqual(prevProps, nextProps) {
     if (result.includes("notSameProps") || roomProps === false) return false;
     return true;
   } catch (error) {
-    console.log(prevProps.allUsers, "tämä on tässä virheessa");
-    console.log(
-      error,
-      "code 9kf92",
-      "jos luo uuden käyttäjän saattaa tulla tämä, koska ei löydä edellisessä sitä käyttäjää"
-    );
+    console.log(error, "code 9kf92");
   }
 }
 
 export const MemoRoomListItemChild = React.memo(RoomListItemChild, areEqual);
-// export default RoomListMainItem;

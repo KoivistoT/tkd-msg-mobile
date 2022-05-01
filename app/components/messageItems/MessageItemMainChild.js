@@ -13,10 +13,6 @@ import AppText from "../AppText";
 import routes from "../../navigation/routes";
 import MessageItemImage from "./MessageItemImage";
 import { Swipeable } from "react-native-gesture-handler";
-import GestureRecognizer, {
-  swipeDirections,
-} from "react-native-swipe-gestures";
-import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import {
   deleteMessageById,
@@ -27,7 +23,6 @@ import {
 import MessageItemReply from "./MessageItemReply";
 import { navigate } from "../../navigation/rootNavigation";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
-import messageFuncs from "../../../utility/messageFuncs";
 import createTask from "../../../utility/createTask";
 import {
   messageFormFocusAdded,
@@ -38,12 +33,9 @@ import {
 
 import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
 import MessageHeader from "./MessageHeader";
-import LeftAction from "./LeftAction";
 import timeFuncs from "../../../utility/timeFuncs";
-import SeenButton from "./SeenButton";
 import Reactions from "./Reactions";
 import MessageText from "./MessageText";
-import { useIsFocused } from "@react-navigation/native";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import confirmAlert from "../../../utility/confirmAlert";
 
@@ -57,8 +49,6 @@ function MessageItemMainChild({
   searchWord,
 }) {
   const dispatch = useDispatch();
-  // console.log("child päivittyy ---");
-  // const isFocused = useIsFocused();
   const {
     roomId,
     _id: messageId,
@@ -70,7 +60,13 @@ function MessageItemMainChild({
     messageBody,
     documentData,
   } = message;
+
   const store = useStore();
+
+  const [showAllEmojis, setShowAllEmojis] = useState(false);
+  const [showMore, setShowMore] = useState(true);
+  const [showImages, setShowImages] = useState(SHOW_IMAGES);
+  const elementHeight = useRef(0);
 
   const onRemoveSelections = () => {
     dispatch(messageSelectionRemoved());
@@ -83,7 +79,6 @@ function MessageItemMainChild({
   const selectedMessage = useSelector(selectSelectedMessage);
   const currentUserId = selectCurrentUserId(store);
 
-  // const [roomType, setRoomType] = useState(null);
   const [isCurrentMessageSelected, setIsCurrentMessageSelected] =
     useState(false);
   const [isCurrentMessagePressed, setIsCurrentMessagePressed] = useState(false);
@@ -115,27 +110,14 @@ function MessageItemMainChild({
             Dimensions.get("window").height - elementHeight.current * 2 < 0
               ? -0.3
               : 0.5
-          ); // tämä ei tarve välttämättä, maku asia
-        }, 100); //jos tarvii pienentää, pienentää ensin ja sittten vasta scroll
+          );
+        }, 100);
       }
     }, 10);
 
     Keyboard.dismiss();
   };
 
-  const onSwipeRight = (gestureState) => {
-    navigate.goBack();
-  };
-
-  // const onSwipe = (gestureName, gestureState) => {
-  //   const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-
-  //   switch (gestureName) {
-  //     case SWIPE_LEFT:
-  //       alert("yellow");
-  //       break;
-  //   }
-  // };
   const onReply = () => {
     scrollToMessage();
     dispatch(messageSelectionRemoved());
@@ -176,36 +158,10 @@ function MessageItemMainChild({
       );
     }
   };
-  const config = {
-    velocityThreshold: 0.1,
-    directionalOffsetThreshold: 80,
-  };
-  const [showAllEmojis, setShowAllEmojis] = useState(false);
-  const [showMore, setShowMore] = useState(true);
-  const [showImages, setShowImages] = useState(SHOW_IMAGES);
-  // console.log(showAllEmojis);
-  const elementHeight = useRef(0);
+
   return (
-    // <GestureRecognizer
-    //   onSwipeRight={(state) => onSwipeRight(state)}
-    //   config={config}
-    //   // style={{
-    //   //   flex: 1,
-    //   //   backgroundColor: this.state.backgroundColor,
-    //   // }}
-    // >
     <Swipeable
       ref={messageRef}
-      // leftThreshold={60}
-
-      // onSwipeableLeftOpen={() => {
-      //   setTimeout(() => {
-      //     onReply();
-      //     messageRef.current?.close();
-      //   }, 10);
-      // }}
-      // renderLeftActions={() => <LeftAction />}
-
       rightThreshold={1}
       friction={3}
       onSwipeableRightWillOpen={
@@ -236,27 +192,21 @@ function MessageItemMainChild({
     >
       <TouchableOpacity
         activeOpacity={1}
-        style={{ width: "100%", paddingHorizontal: 12 }}
+        style={styles.container}
         onPress={() => {
           onRemoveSelections();
         }}
       >
         <View
-          style={{
-            flexDirection: "row",
-            alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
-          }}
-          onLayout={(event) => {
-            var { height } = event.nativeEvent.layout;
-
-            elementHeight.current = height;
-          }}
+          style={[
+            styles.message,
+            { alignSelf: sentBy === "me" ? "flex-end" : "flex-start" },
+          ]}
         >
           <View
             style={[
               styles[sentBy],
               {
-                flexDirection: "row",
                 backgroundColor: isCurrentMessageSelected
                   ? colors.selected
                   : sentBy === "me"
@@ -277,13 +227,12 @@ function MessageItemMainChild({
               >
                 <MessageHeader
                   sentBy={sentBy}
-                  // roomType={roomType}
                   allUsers={allUsers}
                   postedByUser={postedByUser}
                   createdAt={timeFuncs.getWeekDayNamesWithTimes(createdAt)}
                 />
                 {is_deleted ? (
-                  <AppText style={{ fontStyle: "italic", fontSize: 12 }}>
+                  <AppText style={styles.deletedMessage}>
                     Message deleted
                   </AppText>
                 ) : (
@@ -305,8 +254,6 @@ function MessageItemMainChild({
                     )}
                     {replyMessageId && (
                       <MessageItemReply
-                        // roomType={roomType}
-
                         messageBody={messageBody}
                         searchWord={searchWord}
                         showMore={showMore}
@@ -353,8 +300,6 @@ function MessageItemMainChild({
               alignSelf: sentBy === "me" ? "flex-end" : "flex-start",
             }}
           >
-            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
-
             {!is_deleted && (
               <Reactions
                 onRemoveSelections={() => onRemoveSelections()}
@@ -365,25 +310,28 @@ function MessageItemMainChild({
             )}
           </View>
 
-          {isCurrentMessagePressed && isCurrentMessageSelected && !is_deleted && (
-            <MessageOptionsButtonGroup
-              sentBy={sentBy}
-              // message={message}
-              onDelete={() => onDeleteMessage()}
-              onSeen={() => onWhoHasSeen()}
-              isDeleted={is_deleted}
-              onReply={() => onReply()}
-            />
-          )}
+          {isCurrentMessagePressed &&
+            isCurrentMessageSelected &&
+            !is_deleted && (
+              <MessageOptionsButtonGroup
+                sentBy={sentBy}
+                onDelete={() => onDeleteMessage()}
+                onSeen={() => onWhoHasSeen()}
+                isDeleted={is_deleted}
+                onReply={() => onReply()}
+              />
+            )}
         </View>
       </TouchableOpacity>
     </Swipeable>
-    // </GestureRecognizer>
   );
 }
 
 const styles = StyleSheet.create({
+  container: { width: "100%", paddingHorizontal: 12 },
+  deletedMessage: { fontStyle: "italic", fontSize: 12 },
   me: {
+    flexDirection: "row",
     marginTop: 4,
     marginBottom: 4,
     alignSelf: "flex-end",
@@ -404,6 +352,7 @@ const styles = StyleSheet.create({
 
     elevation: 2,
   },
+  message: { flexDirection: "row" },
   optionIcon: {
     paddingTop: 10,
     paddingRight: 20,
@@ -413,6 +362,7 @@ const styles = StyleSheet.create({
   },
 
   otherUser: {
+    flexDirection: "row",
     marginTop: 4,
     marginBottom: 4,
     alignSelf: "flex-start",
@@ -436,17 +386,6 @@ const styles = StyleSheet.create({
 });
 
 function areEqual(prevProps, nextProps) {
-  // console.log(
-  //   prevProps.message.is_deleted,
-  //   nextProps.message.is_deleted,
-  //   prevProps.message.is_deleted === nextProps.message.is_deleted
-  // );
-  // console.log(
-  //   prevProps.message.reactions.length === nextProps.message.reactions.length,
-  //   prevProps.message.reactions.length,
-  //   nextProps.message.reactions.length,
-  //   "täällä memossa"
-  // );
   try {
     if (
       prevProps.message.is_deleted === nextProps.message.is_deleted &&

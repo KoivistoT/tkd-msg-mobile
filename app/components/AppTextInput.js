@@ -39,7 +39,8 @@ function AppTextInput({
             style={[styles.icon, { padding }]}
           />
         )}
-        <View style={styles.textInputContainer[{ width }]}>
+
+        <View style={[styles.textInputContainer, { width }]}>
           <TextInput
             autoFocus={autoFocus}
             ref={textInput}

@@ -1,35 +1,38 @@
 export default {
   questions: {
-    leaveRoomLastUser: {
+    LEAVE_ROOM_LAST_USER: {
       title: "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",
       body: "Poistuttuasi, huone ja huoneen viestit poistetaan pysyvästi.",
     },
-    leaveRoom: {
+    LEAVE_ROOM: {
       title: "Haluatko poistua huoneesta?",
       body: "",
     },
-    activateRoom: {
+    ACTIVATE_ROOM: {
       title: "Haluatko aktivoida huoneen?",
       body: "",
     },
-    deleteRoom: {
+    DELETE_ROOM: {
       title: "Haluatko poistaa huoneen?",
       body: "",
     },
-    deleteUser: {
+    DELETE_USER: {
       title: "Haluatko poistaa käyttäjän?",
       body: "",
       success: "User deleted",
     },
-    archiveUser: {
+    ARCHIVE_USER: {
       title: "Haluatko arkistoida käyttäjän?",
       body: "",
       success: "User archived",
     },
-    activateUser: {
+    ACTIVATE_USER: {
       title: "Haluatko aktivoida käyttäjän?",
       body: "",
       success: "User activated",
     },
+  },
+  notifications: {
+    USER_REMOVED: "Käyttäjä on poistettu. Et voi lähettää hänelle viestejä.",
   },
 };

@@ -15,7 +15,7 @@ import {
   disconnectSocket,
   selectSocket,
 } from "../store/socket";
-import { MemoRoomListItemMain } from "../app/components/RoomListItemMain";
+import { MemoRoomListItemMain } from "../app/components/RoomList/RoomListItemMain";
 import {
   activeRoomIdCleared,
   selectAllActiveRoomsIds,

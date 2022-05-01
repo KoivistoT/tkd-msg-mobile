@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, StyleSheet, Keyboard, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 import * as Yup from "yup";
 import { useDispatch, useStore, useSelector } from "react-redux";
 import {
@@ -8,7 +8,6 @@ import {
   selectRoomMembersById,
   activateDraftRoom,
 } from "../../store/rooms";
-
 import {
   replyMessageIdCleared,
   selectReplyItemIds,
@@ -38,6 +37,8 @@ import colors from "../../config/colors";
 import AttachmentOptions from "./AttachmentOptions";
 import MessageFormToolBar from "./MessageFormToolBar";
 import MessageFormField from "./forms/MessageFormField";
+import appMessages from "../../config/appMessages";
+import AttachmentName from "./messageItems/AttachmentName";
 
 const PLACEHOLDER_TEXT_MAX_LENGTH = 22;
 const ARCHIVED_TEXT =
@@ -124,13 +125,6 @@ function MessageForm({ item }) {
     setOtherUser();
   };
 
-  const getPlaceholder = () => {
-    const roomTitle = roomFuncs.getRoomTitle(roomData, allUsers, currentUserId);
-    return `Message #${roomTitle}`.length > PLACEHOLDER_TEXT_MAX_LENGTH
-      ? `Message #${roomTitle.slice(0, PLACEHOLDER_TEXT_MAX_LENGTH - 3)}...`
-      : `Message #${roomTitle}`;
-  };
-
   const setHeader = () => {
     nav.setOptions({
       headerTitle: () => (
@@ -206,9 +200,8 @@ function MessageForm({ item }) {
     }
   };
 
-  const getReplyItem = () => {
-    return roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
-  };
+  const getReplyItem = () =>
+    roomFuncs.isReplyItem(replyMessageIds, currentRoomId);
 
   const clearStates = () => {
     dispatch(replyMessageIdCleared(currentRoomId));
@@ -221,24 +214,14 @@ function MessageForm({ item }) {
   const showAttachmentInfo = () =>
     !showOptions && (documentName || photos.length !== 0);
 
-  const getDocumentName = () =>
-    documentName
-      ? documentName
-      : photos.length === 1
-      ? `1 photo selected`
-      : `${photos.length} photos selected`;
-
   const showMessageFrom = () => {
     if (currentRoomType === "private" && !isOtherUserActive) return false;
     if (currentRoomStatus !== "active" && currentRoomStatus !== "draft")
       return false;
     return true;
   };
-  const getNotActiveText = () =>
-    `Käyttäjä on poistettu. Et voi lähettää hänelle viestejä.`;
-  // `Käyttäjä ${allUsers[otherUserId.current]?.firstName} ${
-  //   allUsers[otherUserId.current]?.lastName
-  // } on poistettu. Et voi lähettää hänelle viestejä.`;
+
+  const getNotActiveText = () => appMessages.notifications.USER_REMOVED;
 
   return (
     <>
@@ -257,14 +240,11 @@ function MessageForm({ item }) {
             />
           )}
           {showAttachmentInfo() && (
-            <TouchableOpacity
-              onPress={() => setShowOptions(true)}
-              style={styles.attachmentInfoContainer}
-            >
-              <AppText style={styles.attachmentInfoText}>
-                {getDocumentName()}
-              </AppText>
-            </TouchableOpacity>
+            <AttachmentName
+              documentName={documentName}
+              photosLength={photos.length}
+              setShowOptions={setShowOptions}
+            />
           )}
 
           <AppForm
@@ -285,7 +265,12 @@ function MessageForm({ item }) {
                 multiline
                 name="message"
                 numberOfLines={1}
-                placeholder={getPlaceholder()}
+                placeholder={roomFuncs.getPlaceholder(
+                  roomData,
+                  allUsers,
+                  currentUserId,
+                  PLACEHOLDER_TEXT_MAX_LENGTH
+                )}
               ></MessageFormField>
 
               <SendButton />
@@ -296,19 +281,13 @@ function MessageForm({ item }) {
 
       {currentRoomStatus === "archived" && <AppText>{ARCHIVED_TEXT}</AppText>}
       {currentRoomType === "private" && !isOtherUserActive && (
-        <AppText
-          style={{ padding: 10, alignSelf: "center", color: colors.secondary }}
-        >
-          {getNotActiveText()}
-        </AppText>
+        <AppText style={styles.notActiveText}>{getNotActiveText()}</AppText>
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  attachmentInfoContainer: { padding: 5, paddingLeft: 15, paddingTop: 10 },
-  attachmentInfoText: { color: colors.primary },
   container: { marginBottom: Platform.OS == "ios" ? 10 : 0 },
   messageFormFieldContainer: {
     flexDirection: "row",
@@ -316,6 +295,7 @@ const styles = StyleSheet.create({
     maxHeight: 180,
     paddingTop: 6,
   },
+  notActiveText: { padding: 10, alignSelf: "center", color: colors.secondary },
 });
 
 const validationSchema = Yup.object().shape({

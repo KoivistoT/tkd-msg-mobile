@@ -65,6 +65,7 @@ function LoginScreen({}) {
             >
               <>
                 <AppFormField
+                  width={300}
                   marginBottom={20}
                   padding={5}
                   autoCapitalize="none"
@@ -76,6 +77,7 @@ function LoginScreen({}) {
                 />
 
                 <AppFormField
+                  width={300}
                   padding={5}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -105,6 +107,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   formContainer: { marginTop: 100, alignSelf: "center", padding: "10%" },
-  buttonContainer: { flexDirection: "row", alignSelf: "flex-end" },
+  buttonContainer: { padding: 20 },
 });
 export default LoginScreen;
