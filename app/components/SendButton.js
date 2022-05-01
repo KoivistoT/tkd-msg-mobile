@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
 import { useFormikContext } from "formik";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -22,20 +15,19 @@ function SendButton() {
       onPress={handleSubmit}
       color="primary"
       activeOpacity={0.5}
-      // disabled={socket}
     >
       <MaterialCommunityIcons
         name="send"
         size={30}
         color={socket ? colors.primary : colors.lightgrey}
-        style={{ paddingHorizontal: 10, paddingVertical: 7 }}
+        style={styles.icon}
       />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {},
+  icon: { paddingHorizontal: 10, paddingVertical: 7 },
   text: { color: colors.white },
 });
 export default SendButton;

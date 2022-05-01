@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
-import Toast, { DURATION } from "react-native-easy-toast";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Constants from "expo-constants";
 import colors from "../../config/colors";
-import { errorMessageCleared, newMessageCleared } from "../../store/general";
+import { newMessageCleared } from "../../store/general";
 import AppText from "./AppText";
 import { navigate } from "../navigation/rootNavigation";
 import routes from "../navigation/routes";
@@ -47,10 +39,6 @@ class GeneralLoadIndicator extends React.Component {
   }
 
   render() {
-    // const { roomId, postedByUser, type, messageBody } = this.props.newMessage;
-    const getRoomData = () => {
-      const roomData = store.getState().entities.rooms.allRooms[currentRoomId];
-    };
     const goToRoom = () => {
       this.state.showMessage = false;
       navigate(
@@ -64,44 +52,14 @@ class GeneralLoadIndicator extends React.Component {
       <>
         {this.state.showMessage && (
           <TouchableOpacity
-            style={{
-              // position: "absolute",
-              // alignSelf: "center",
-              // justifyContent: "center",
-              // flex: 1,
-              // zIndex: 100,
-              // width: "100%",
-              // height: "100%",
-              // //   opacity: 0.9,
-              // backgroundColor: colors.white,
-              // marginTop: Constants.statusBarHeight,
-              position: "absolute",
-              alignSelf: "center",
-
-              backgroundColor: colors.primary,
-              zIndex: 100,
-              top: 0,
-              paddingHorizontal: 20,
-              paddingTop: Constants.statusBarHeight,
-              paddingBottom: 10,
-              width: "100%",
-              // height: Constants.statusBarHeight * 3,
-            }}
+            style={styles.container}
             activeOpacity={1}
             onPress={() => goToRoom()}
           >
-            {/* <View style={{ alignItems: "center" }}> */}
             {this.props.allRoomData[this.props.newMessage.roomId] &&
               this.props.allRoomData[this.props.newMessage.roomId].type !==
                 "private" && (
-                <AppText
-                  numberOfLines={1}
-                  style={{
-                    alignSelf: "center",
-                    overflow: "hidden",
-                    color: colors.white,
-                  }}
-                >
+                <AppText numberOfLines={1} style={styles.text}>
                   {roomFuncs.getRoomTitle(
                     this.props.allRoomData[this.props.newMessage.roomId],
                     this.props.allUserData,
@@ -109,25 +67,17 @@ class GeneralLoadIndicator extends React.Component {
                   )}
                 </AppText>
               )}
-            <AppText style={{ alignSelf: "center", color: colors.white }}>
+            <AppText style={styles.name}>
               {userFuncs.getFullName(
                 this.props.allUserData,
                 this.props.newMessage.postedByUser
               )}
             </AppText>
-            <AppText
-              numberOfLines={1}
-              style={{
-                alignSelf: "center",
-                overflow: "hidden",
-                color: colors.white,
-              }}
-            >
+            <AppText numberOfLines={1} style={styles.body}>
               {this.props.newMessage.messageBody !== ""
                 ? `New message: ${this.props.newMessage.messageBody}`
                 : `New ${this.props.newMessage.type}`}
             </AppText>
-            {/* </View> */}
           </TouchableOpacity>
         )}
       </>
@@ -144,6 +94,31 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   clear: () => dispatch(newMessageCleared()),
+});
+
+const styles = StyleSheet.create({
+  body: {
+    alignSelf: "center",
+    overflow: "hidden",
+    color: colors.white,
+  },
+  container: {
+    position: "absolute",
+    alignSelf: "center",
+    backgroundColor: colors.primary,
+    zIndex: 100,
+    top: 0,
+    paddingHorizontal: 20,
+    paddingTop: Constants.statusBarHeight,
+    paddingBottom: 10,
+    width: "100%",
+  },
+  name: { alignSelf: "center", color: colors.white },
+  text: {
+    alignSelf: "center",
+    overflow: "hidden",
+    color: colors.white,
+  },
 });
 export default connect(
   mapStateToProps,

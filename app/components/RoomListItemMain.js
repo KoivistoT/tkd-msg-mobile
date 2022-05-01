@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { selectRoomDataById } from "../../store/rooms";
 import { selectAllUsersMinimal } from "../../store/users";
@@ -35,4 +34,3 @@ function areEqual(prevProps, nextProps) {
 }
 
 export const MemoRoomListItemMain = React.memo(RoomListItemMain, areEqual);
-// export default RoomListItem;

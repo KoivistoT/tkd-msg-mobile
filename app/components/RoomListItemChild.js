@@ -1,21 +1,12 @@
 import React, { useRef } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import routes from "../navigation/routes";
 import roomFuncs from "../../utility/roomFuncs";
 import userFuncs from "../../utility/userFuncs";
 import AppText from "./AppText";
 import OnlineIndicator from "./OnlineIndicator";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import {
-  selectCurrentUserData,
-  selectLastSeenMessagesById,
-} from "../../store/currentUser";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUserData } from "../../store/currentUser";
 import { MemoUnreadMessagesItem } from "./UnreadMessagesItem";
 import { Swipeable } from "react-native-gesture-handler";
 import RoomListRightAction from "./RoomListRightAction";
@@ -45,7 +36,7 @@ function RoomListItemChild({
   navigation,
   roomId,
 }) {
-  const { status, type, members, latestMessage, roomCreator } = item;
+  const { type, members, latestMessage, roomCreator } = item;
   const roomRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -81,11 +72,7 @@ function RoomListItemChild({
         {Object.keys(allUsers).length > 0 && (
           <TouchableOpacity
             activeOpacity={1}
-            style={{
-              paddingBottom: 10,
-              flexDirection: "row",
-              backgroundColor: colors.white,
-            }}
+            style={styles.button}
             onPress={() => navigation.navigate(routes.MESSAGE_SCREEN, item)}
           >
             <View
@@ -161,6 +148,11 @@ function RoomListItemChild({
 
 const styles = StyleSheet.create({
   me: { alignItems: "flex-end" },
+  button: {
+    paddingBottom: 10,
+    flexDirection: "row",
+    backgroundColor: colors.white,
+  },
   otherUser: { alignItems: "flex-start" },
   nameRow: {
     flexDirection: "row",

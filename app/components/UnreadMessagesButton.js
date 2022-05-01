@@ -1,8 +1,6 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
-import { selectLastSeenMessagesById } from "../../store/currentUser";
 import AppText from "./AppText";
 
 function UnreadMessagesButton({
@@ -10,15 +8,6 @@ function UnreadMessagesButton({
   unreadMessagesOnStart,
   onPress,
 }) {
-  //   unreadMessages;
-  //   store.getState().auth.currentUser.last_seen_messages[
-  //     store
-  //       .getState()
-  //       .auth.currentUser.last_seen_messages.findIndex(
-  //         (object) => object.roomId === roomId
-  //       )
-  //   ].lastSeenMessageSum;
-
   return (
     <TouchableOpacity
       activeOpacity={1}

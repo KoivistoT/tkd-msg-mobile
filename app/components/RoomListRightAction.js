@@ -24,15 +24,7 @@ function RoomListRightAction({
       {(currentUserData.accountType === "admin" ||
         currentUserData._id === roomCreator ||
         roomType === "private") && (
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            width: 80,
-            backgroundColor: colors.danger,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <TouchableOpacity onPress={onPress} style={styles.button}>
           <MaterialCommunityIcons
             name="delete-outline"
             size={24}
@@ -43,12 +35,7 @@ function RoomListRightAction({
 
       <TouchableOpacity
         onPress={() => onGoSetupScreen()}
-        style={{
-          width: 80,
-          backgroundColor: colors.primary,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        style={[styles.button, { color: colors.primary }]}
       >
         <Feather name="settings" color={colors.white} size={24} />
       </TouchableOpacity>
@@ -57,6 +44,12 @@ function RoomListRightAction({
 }
 
 const styles = StyleSheet.create({
+  button: {
+    width: 80,
+    backgroundColor: colors.danger,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   leftActionIcon: { padding: 5, alignSelf: "center" },
 });
 

@@ -9,17 +9,13 @@ function UserControlListItem({ item, onPress }) {
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={onPress}
-      style={{
-        backgroundColor:
-          colors[item.status === "archived" ? "khaki" : "primary"],
-        flexDirection: "row",
-        paddingHorizontal: 20,
-        padding: 10,
-        marginBottom: 2,
-        width: "90%",
-        alignSelf: "center",
-        borderRadius: 5,
-      }}
+      style={[
+        styles.container,
+        {
+          backgroundColor:
+            colors[item.status === "archived" ? "khaki" : "primary"],
+        },
+      ]}
     >
       <AppText
         style={{
@@ -27,7 +23,7 @@ function UserControlListItem({ item, onPress }) {
         }}
       >{`${item.firstName} ${item.lastName}`}</AppText>
       <MaterialCommunityIcons
-        style={{ position: "absolute", right: 5, alignSelf: "center" }}
+        style={styles.icon}
         name="chevron-right"
         size={25}
         color={colors[item.status === "archived" ? "black" : "white"]}
@@ -36,5 +32,16 @@ function UserControlListItem({ item, onPress }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    padding: 10,
+    marginBottom: 2,
+    width: "90%",
+    alignSelf: "center",
+    borderRadius: 5,
+  },
+  icon: { position: "absolute", right: 5, alignSelf: "center" },
+});
 export default UserControlListItem;

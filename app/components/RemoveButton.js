@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function RemoveButton({ onPress, text }) {
   return (
