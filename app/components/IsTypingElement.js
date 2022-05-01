@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 5,
     maxWidth: "82%",
     borderBottomRightRadius: 5,
-    // shadowColor: "#000",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

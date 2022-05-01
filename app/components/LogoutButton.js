@@ -1,5 +1,4 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
 import { useDispatch, useStore } from "react-redux";
 import { selectCurrentUserId, userLoggedOut } from "../../store/currentUser";
 import { generalStoreCleared } from "../../store/general";
@@ -32,9 +31,5 @@ function LogoutButton(props) {
 
   return <AppButton onPress={() => logout()} title="Logout" />;
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default LogoutButton;

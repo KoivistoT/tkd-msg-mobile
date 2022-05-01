@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
-import Toast, { DURATION } from "react-native-easy-toast";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import Constants from "expo-constants";
 import colors from "../../config/colors";
-import { errorMessageCleared } from "../../store/general";
 import AppText from "./AppText";
 
 class GeneralLoadIndicator extends React.Component {
@@ -36,40 +27,16 @@ class GeneralLoadIndicator extends React.Component {
     return (
       <>
         {this.state.showIndicator && (
-          <View
-            style={{
-              position: "absolute",
-              alignSelf: "center",
-              justifyContent: "center",
-              flex: 1,
-              zIndex: 100,
-              width: "100%",
-              height: "100%",
-              //   opacity: 0.9,
-              backgroundColor: colors.white,
-              marginTop: Constants.statusBarHeight,
-            }}
-          >
-            <View style={{ alignItems: "center" }}>
-              <AppText style={{ margin: 20, color: colors.primary }}>
-                {this.props.loadingMessage}
-              </AppText>
-              <ActivityIndicator
-                animating={true}
-                size="large"
-                style={{
-                  opacity: 1,
-                  //   backgroundColor: colors.primary,
-                  width: "100%",
-                  //   height: 80,
-                  //   borderRadius: 20,
-
-                  padding: 5,
-                  alignSelf: "center",
-                }}
-                color={colors.primary}
-              />
-            </View>
+          <View style={styles.container}>
+            <AppText style={{ margin: 20, color: colors.primary }}>
+              {this.props.loadingMessage}
+            </AppText>
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              style={styles.activityIndicator}
+              color={colors.primary}
+            />
           </View>
         )}
       </>
@@ -78,12 +45,31 @@ class GeneralLoadIndicator extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.entities.general.loading, //onko oikein
-  loadingMessage: state.entities.general.loadingMessage, //onko oikein
+  loading: state.entities.general.loading,
+  loadingMessage: state.entities.general.loadingMessage,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  //   loading: () => dispatch(errorMessageCleared()),
+const mapDispatchToProps = (dispatch) => ({});
+
+const styles = StyleSheet.create({
+  activityIndicator: {
+    opacity: 1,
+    width: "100%",
+    padding: 5,
+    alignSelf: "center",
+  },
+  container: {
+    alignItems: "center",
+    position: "absolute",
+    alignSelf: "center",
+    justifyContent: "center",
+    flex: 1,
+    zIndex: 100,
+    width: "100%",
+    height: "100%",
+    backgroundColor: colors.white,
+    marginTop: Constants.statusBarHeight,
+  },
 });
 export default connect(
   mapStateToProps,

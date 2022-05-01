@@ -228,11 +228,6 @@ function MessageForm({ item }) {
       ? `1 photo selected`
       : `${photos.length} photos selected`;
 
-  // const isOtherUserActive = () =>
-  // otherUserId.current &&
-  // (allUsers[otherUserId.current].status === "deleted" ||
-  //   allUsers[otherUserId.current].status === "archived");
-
   const showMessageFrom = () => {
     if (currentRoomType === "private" && !isOtherUserActive) return false;
     if (currentRoomStatus !== "active" && currentRoomStatus !== "draft")

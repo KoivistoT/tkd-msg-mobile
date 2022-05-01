@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Toast from "react-native-easy-toast";
 import { connect } from "react-redux";
 import Constants from "expo-constants";
@@ -21,26 +21,14 @@ class AppSuccessToast extends React.Component {
 
   render() {
     return (
-      <View
-        style={{
-          position: "absolute",
-          alignSelf: "center",
-          zIndex: 100,
-          width: "100%",
-          marginTop: Constants.statusBarHeight * 3,
-        }}
-      >
+      <View style={styles.container}>
         <Toast
           ref={(toast) => (this.toast = toast)}
-          style={{
-            backgroundColor: colors.success,
-            height: 40,
-          }}
+          style={styles.toast}
           position="top"
           positionValue={0}
           fadeInDuration={200}
           fadeOutDuration={200}
-          // opacity={0.8}
           textStyle={{ color: colors.white }}
         />
       </View>
@@ -55,5 +43,19 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   clearSuccessMessage: () => dispatch(successMessageCleared()),
+});
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    alignSelf: "center",
+    zIndex: 100,
+    width: "100%",
+    marginTop: Constants.statusBarHeight * 3,
+  },
+  toast: {
+    backgroundColor: colors.success,
+    height: 40,
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AppSuccessToast);

@@ -1,7 +1,4 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 
@@ -17,5 +14,4 @@ function AppIcon({
   );
 }
 
-const styles = StyleSheet.create({});
 export default AppIcon;

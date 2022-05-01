@@ -1,14 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import {
   View,
-  Text,
-  Platform,
   StyleSheet,
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native";
 
-import colors from "../../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import defaultStyles from "../../config/styles";
 import { useSelector } from "react-redux";
@@ -20,7 +17,6 @@ function AppTextInput({
   marginTop,
   padding,
   autoFocus = false,
-
   defaultValue = "",
   onChangeText = null,
   ...ohterProps
@@ -43,7 +39,7 @@ function AppTextInput({
             style={[styles.icon, { padding }]}
           />
         )}
-        <View style={{ width, marginLeft: 5, marginTop: 2 }}>
+        <View style={styles.textInputContainer[{ width }]}>
           <TextInput
             autoFocus={autoFocus}
             ref={textInput}
@@ -66,8 +62,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 5,
   },
+
   icon: {
     marginRight: 10,
   },
+  textInputContainer: { marginLeft: 5, marginTop: 2 },
 });
 export default AppTextInput;

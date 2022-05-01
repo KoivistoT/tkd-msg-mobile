@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
-import defaultStyles from "../../config/styles";
 
 function AppTitle({ children, fontWeight = "700", style, ...otherProps }) {
   return (

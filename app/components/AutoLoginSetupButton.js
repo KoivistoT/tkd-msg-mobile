@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
 import asyncStorageFuncs from "../../utility/asyncStorageFuncs";
 import AppButton from "./AppButton";
 
@@ -28,9 +27,5 @@ function AutoLoginSetupButton(props) {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default AutoLoginSetupButton;
