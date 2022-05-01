@@ -152,8 +152,7 @@ function AppInfoRow({
       )}
       {loading && (
         <View style={styles.loadingIndicator}>
-          {/* <AppLoadingIndicator /> */}
-          <ActivityIndicator></ActivityIndicator>
+          <ActivityIndicator/>
         </View>
       )}
       {showCanNotEdit && (
@@ -206,10 +205,8 @@ const styles = StyleSheet.create({
     width: "58%",
     backgroundColor: colors.white,
     height: 28,
-
     paddingBottom: 0,
     paddingLeft: 6,
-
     marginLeft: 4,
     fontSize: 16,
     bottom: 4,
@@ -217,7 +214,6 @@ const styles = StyleSheet.create({
   editRow: {
     flexDirection: "row",
   },
-  info: {},
   value: { marginLeft: 10 },
   columnLeft: { width: "40%" },
   columnRight: { width: "60%", flexDirection: "row", height: 28 },

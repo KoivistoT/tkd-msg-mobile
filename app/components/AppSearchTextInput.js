@@ -75,17 +75,7 @@ function AppSearchTextInput({
               )}
             />
 
-            {/* <TextInput
-            // maxFontSizeMultiplier={0}
-
-            // allowFontScaling={false}
-            multiline={false}
-            ref={textInput}
-            placeholderTextColor={defaultStyles.colors.medium}
-            // style={[defaultStyles.text]}
-            style={{ fontSize: 80 }}
-            {...ohterProps}
-          /> */}
+          
           </View>
         </TouchableWithoutFeedback>
 

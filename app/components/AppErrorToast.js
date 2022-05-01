@@ -51,7 +51,6 @@ class AppErrorToast extends React.Component {
           positionValue={0}
           fadeInDuration={200}
           fadeOutDuration={200}
-          // opacity={0.8}
           textStyle={{ color: colors.white }}
         />
       </View>
