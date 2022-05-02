@@ -32,7 +32,6 @@ function RoomListLatestMessage({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-
     alignItems: "center",
   },
   text: {

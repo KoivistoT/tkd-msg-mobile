@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  TouchableNativeFeedback,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
@@ -45,8 +39,8 @@ function ReactionDetailsButtons({
   };
 
   return (
-    <View style={{ paddingLeft: 10, paddingTop: 10 }}>
-      <View style={{ flexDirection: "row" }}>
+    <View style={styles.container}>
+      <View style={styles.row}>
         {sortedReactions.map((reaction) => {
           const { name, count, users } = reaction;
           if (!users) return;
@@ -57,21 +51,17 @@ function ReactionDetailsButtons({
               key={name}
             >
               <View
-                style={{
-                  flexDirection: "row",
-
-                  borderWidth: 1,
-                  borderColor:
-                    colors[users?.includes(currentUserId) ? "light" : "white"],
-                  borderRadius: 6,
-                  paddingHorizontal: 8,
-                  minWidth: 45,
-                  paddingVertical: 4,
-
-                  margin: 6,
-                  backgroundColor:
-                    colors[selectedReaction === name ? "success" : "light"],
-                }}
+                style={[
+                  styles.icon,
+                  {
+                    borderColor:
+                      colors[
+                        users?.includes(currentUserId) ? "light" : "white"
+                      ],
+                    backgroundColor:
+                      colors[selectedReaction === name ? "success" : "light"],
+                  },
+                ]}
               >
                 <AntDesign
                   name={name}
@@ -86,9 +76,9 @@ function ReactionDetailsButtons({
           );
         })}
       </View>
-      <View style={{ paddingHorizontal: 10 }}>
+      <View style={styles.reactions}>
         <FlatList
-          style={{ paddingTop: 10, paddingBottom: 80 }}
+          style={styles.list}
           data={getReactions()}
           maxToRenderPerBatch={15}
           initialNumToRender={15}
@@ -102,7 +92,20 @@ function ReactionDetailsButtons({
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: { paddingLeft: 10, paddingTop: 10 },
+  icon: {
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    minWidth: 45,
+    paddingVertical: 4,
+    flexDirection: "row",
+
+    borderWidth: 1,
+    margin: 6,
+  },
+  list: { paddingTop: 10, paddingBottom: 80 },
+  reactions: { paddingHorizontal: 10 },
+  row: { flexDirection: "row" },
 });
 
 export default ReactionDetailsButtons;

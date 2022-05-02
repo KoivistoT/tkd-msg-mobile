@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  AppState,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import MessageItemImage from "./MessageItemImage";
-
 import { selectAllUsersMinimal } from "../../../store/users";
 import Screen from "../Screen";
 import { selectRoomMembersById } from "../../../store/rooms";
@@ -22,7 +11,6 @@ import { getOneMessageById, selectMessageById } from "../../../store/msgStore";
 import { selectSocket } from "../../../store/socket";
 import MessageHeader from "./MessageHeader";
 import messageFuncs from "../../../utility/messageFuncs";
-import MessageItemReply from "./MessageItemReply";
 import timeFuncs from "../../../utility/timeFuncs";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
@@ -35,21 +23,19 @@ function ReadByList(item) {
     sentBy,
     postedByUser,
     createdAt,
-    is_deleted,
     documentData,
     type: messageType,
-    replyMessageId,
   } = item.route.params;
 
   const store = useStore();
   const dispatch = useDispatch();
+
+  const [roomType, setRoomType] = useState(null);
   const currentUserId = selectCurrentUserId(store);
   const roomMemebers = useSelector(selectRoomMembersById(roomId));
-
   const allUsers = useSelector(selectAllUsersMinimal);
   const currentMessage = useSelector(selectMessageById(roomId, messageId));
   const socket = useSelector(selectSocket);
-  const [roomType, setRoomType] = useState(null);
 
   useEffect(() => {
     setRoomType(store.getState().entities.rooms.allRooms[roomId].type);
@@ -178,21 +164,6 @@ function ReadByList(item) {
               name={documentData.documentDisplayName}
               url={documentData.documentDownloadURL}
             />
-          )}
-          {replyMessageId && (
-            // <MessageItemReply
-            //   roomType={roomType}
-            //   allUsers={allUsers}
-            //   isReplyMessage={true}
-            //   postedByUser={postedByUser}
-            //   sentBy={sentBy}
-            //   item={{
-            //     roomId,
-            //     replyMessageId,
-            //   }}
-            //   onScrollToIndex={() => console.log("not")}
-            // />
-            <></>
           )}
 
           <AppText

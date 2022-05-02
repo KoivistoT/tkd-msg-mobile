@@ -15,7 +15,6 @@ function AppCheckBox({
   style,
   ...otherProps
 }) {
-
   const [isChecked, setChecked] = useState(initialValue);
 
   return (
@@ -28,7 +27,6 @@ function AppCheckBox({
       }}
       disabled={disabled}
     >
-     
       {isChecked ? (
         <MaterialCommunityIcons
           name="checkbox-marked-outline"
@@ -53,7 +51,7 @@ function AppCheckBox({
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row",paddingVertical: 3, },
+  container: { flexDirection: "row", paddingVertical: 3 },
   name: { alignSelf: "center", paddingLeft: 10 },
 });
 

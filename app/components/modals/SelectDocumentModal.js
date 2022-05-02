@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
   View,
   Modal,
-  Image,
 } from "react-native";
-import ImageViewer from "react-native-image-zoom-viewer";
 import Constants from "expo-constants";
 import * as DocumentPicker from "expo-document-picker";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
-import { ActivityIndicator } from "react-native";
-import { StorageAccessFramework } from "expo-file-system";
-import * as FileSystem from "expo-file-system";
-import * as MediaLibrary from "expo-media-library";
-import * as ImagePicker from "expo-image-picker";
-import { useSelector, useStore } from "react-redux";
-import { selectRoomImagesByRoomId } from "../../../store/msgStore";
 import { WebView } from "react-native-webview";
 import ToolBarButton from "../ToolbarButton";
 import RemoveButton from "../RemoveButton";
@@ -33,7 +23,6 @@ function SelectDocumentModal({
 }) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  //nämä file funcsiin!!!
   const pickDocument = async () => {
     if (documentURL.current) {
       setModalVisible(true);
@@ -41,16 +30,11 @@ function SelectDocumentModal({
     }
 
     try {
-      let result = await DocumentPicker.getDocumentAsync({
-        // type: "application/pdf",
-        // copyToCacheDirectory: false,
-      });
+      let result = await DocumentPicker.getDocumentAsync({});
 
       if (result.type !== "cancel") {
         documentURL.current = result.uri;
         setDocumentName(result.name);
-        // const nameWithTime = name + " " + dayjs().format("DD.MM HH:mm:ss");
-        // setDocumentName(nameWithTime);
         setModalVisible(true);
       }
     } catch (error) {
@@ -74,7 +58,6 @@ function SelectDocumentModal({
   const onAddDocument = () => {
     setModalVisible(false);
   };
-  console.log(buttonName);
 
   return (
     <View>
@@ -82,25 +65,13 @@ function SelectDocumentModal({
         <View style={styles.header}>
           <AppText>{documentName}</AppText>
         </View>
-        {/* 
+
         <WebView
           originWhitelist={["*"]}
-          style={styles.container}
-          // renderLoading={Spinner}
-          // startInLoadingState={true}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/test2-6663b.appspot.com/o/msg-files%2Fexercise.txt30.03%2011%3A59%3A280.8865077095855219?alt=media&token=42ac90dc-3d4a-4934-87c3-3a50f3b3fe36",
-          }}
-        /> */}
-        <WebView
-          originWhitelist={["*"]}
-          style={{ flex: 1 }}
-          // renderLoading={Spinner}
+          style={styles.webView}
           javaScriptEnabled={true}
-          // startInLoadingState={true}
           source={{
             url: documentURL.current,
-            // url: "file://content://com.android.providers.downloads.documents/document/5625",
           }}
         />
 
@@ -178,12 +149,12 @@ const styles = StyleSheet.create({
     marginRight: 20,
     fontWeight: "800",
   },
+  webView: { flex: 1 },
   image: {
     height: (250 / 16) * 9,
     alignSelf: "center",
     marginTop: 10,
     marginBottom: 5,
-
     width: 200,
   },
   icon: { marginRight: 10 },

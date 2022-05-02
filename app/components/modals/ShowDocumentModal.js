@@ -1,48 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
   View,
   Modal,
-  Image,
-  ActivityIndicator,
 } from "react-native";
-import ImageViewer from "react-native-image-zoom-viewer";
 import Constants from "expo-constants";
-import * as DocumentPicker from "expo-document-picker";
 import colors from "../../../config/colors";
 import AppText from "../AppText";
 import AutoHeightWebView from "react-native-autoheight-webview";
-
-import * as FileSystem from "expo-file-system";
-import * as MediaLibrary from "expo-media-library";
-import * as ImagePicker from "expo-image-picker";
-import { useSelector, useStore } from "react-redux";
-import { selectRoomImagesByRoomId } from "../../../store/msgStore";
-import { WebView } from "react-native-webview";
 import AppButton from "../AppButton";
 import fileFuncs from "../../../utility/fileFuncs";
+
 function ShowDocumentModal({ name, url, disapleOnPress = false }) {
   const [modalVisible, setModalVisible] = useState(false);
   const onClose = () => {
     setModalVisible(false);
   };
-
-  const Spinner = () => (
-    <View style={{ flex: 1, alignItems: "center" }}>
-      <ActivityIndicator
-        animating={true}
-        size="small"
-        style={{
-          opacity: 1,
-          marginTop: 20,
-        }}
-        color="#999999"
-      />
-    </View>
-  );
 
   return (
     <View>
@@ -55,22 +30,8 @@ function ShowDocumentModal({ name, url, disapleOnPress = false }) {
           />
         </View>
 
-        {/* <WebView
-          
-          originWhitelist={["*"]}
-          style={styles.container}
-          renderLoading={Spinner}
-          startInLoadingState={true}
-          source={{
-            uri: url,
-          }}
-        /> */}
         <AutoHeightWebView
-          style={{
-            width: Dimensions.get("window").width - 15,
-            marginTop: 20,
-            marginHorizontal: 10,
-          }}
+          style={styles.webView}
           files={[
             {
               href: "cssfileaddress",
@@ -96,32 +57,27 @@ function ShowDocumentModal({ name, url, disapleOnPress = false }) {
           </TouchableOpacity>
         </View>
       </Modal>
-      {disapleOnPress && (
-        <View
-          style={{
-            position: "absolute",
-            opacity: 0,
-            flex: 1,
-            backgroundColor: "red",
-            zIndex: 2,
-            height: "100%",
-            width: "100%",
-          }}
-        ></View>
-      )}
+      {disapleOnPress && <View style={styles.cover} />}
       <TouchableOpacity
         activeOpacity="0.8"
         onPress={() => setModalVisible(true)}
       >
-        <View>
-          <AppText style={{ padding: 20 }}>{name}</AppText>
-        </View>
+        <AppText style={styles.text}>{name}</AppText>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  cover: {
+    position: "absolute",
+    opacity: 0,
+    flex: 1,
+    backgroundColor: "red",
+    zIndex: 2,
+    height: "100%",
+    width: "100%",
+  },
   header: {
     backgroundColor: colors.white,
     marginTop: Constants.statusBarHeight,
@@ -180,5 +136,11 @@ const styles = StyleSheet.create({
 
     backgroundColor: colors.white,
   },
+  webView: {
+    width: Dimensions.get("window").width - 15,
+    marginTop: 20,
+    marginHorizontal: 10,
+  },
+  text: { padding: 20 },
 });
 export default ShowDocumentModal;

@@ -1,17 +1,21 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import AppTouchableIcon from "../AppTouchableIcon";
 
 function SeenButton({ onPress }) {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Feather name="eye" size={24} color="black" style={styles.optionIcon} />
-    </TouchableOpacity>
+    <AppTouchableIcon
+      onPress={onPress}
+      name="eye"
+      source="f"
+      style={styles.icon}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  optionIcon: {
+  icon: {
     padding: 10,
     paddingHorizontal: 20,
   },

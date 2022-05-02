@@ -12,6 +12,7 @@ import {
   selectUserName,
 } from "../../../store/currentUser";
 import { useStore } from "react-redux";
+import AppCloseButton from "./AppCloseButton";
 selectCurrentUserId;
 function ChangePasswordModal({
   roomId,
@@ -33,16 +34,12 @@ function ChangePasswordModal({
         backdropColor="black"
       >
         <View style={styles.container}>
-          <TouchableOpacity
+          <AppCloseButton
+            color={colors.white}
+            size={25}
             onPress={() => setModalVisible(false)}
-            style={{ position: "relative", alignSelf: "flex-end", padding: 20 }}
-          >
-            <MaterialCommunityIcons
-              name="close"
-              size={25}
-              color={colors.white}
-            />
-          </TouchableOpacity>
+            position="relative"
+          />
 
           <ChangePasswordForm
             requireCurrentPassword={requireCurrentPassword}

@@ -1,24 +1,16 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import MessageText from "./MessageText";
-
 import MessageItemImage from "./MessageItemImage";
-import {
-  replyMessageIdCleared,
-  replyMessageIdResived,
-  selectMessageById,
-} from "../../../store/msgStore";
-import { selectAllUsersMinimal } from "../../../store/users";
+import { selectMessageById } from "../../../store/msgStore";
 import { messageSelected } from "../../../store/general";
-import SenderName from "./SenderName";
 import MessageHeader from "./MessageHeader";
 import timeFuncs from "../../../utility/timeFuncs";
 
 function MessageItemReply({
-  messageBody,
   searchWord,
   showMore,
   setShowMore,
@@ -26,19 +18,17 @@ function MessageItemReply({
   showImages,
   setShowImages,
   SHOW_IMAGES,
-  // roomType,
   allUsers,
   sentBy,
   postedByUser,
   onScrollToIndex,
   isReplyMessage,
 }) {
-  const { roomId, replyMessageId } = item;
-  const messageData = useSelector(selectMessageById(roomId, replyMessageId));
-  //   console.log(messageData, "täällä messageItemReply");
+  const store = useStore();
   const dispatch = useDispatch();
 
-  const store = useStore();
+  const { roomId, replyMessageId } = item;
+  const messageData = useSelector(selectMessageById(roomId, replyMessageId));
 
   const getIndexNow = () => {
     const replyMessageIndex = store
@@ -52,28 +42,19 @@ function MessageItemReply({
       onScrollToIndex(replyMessageIndex, 0.5);
     }, 200);
   };
+
   return (
-    <View
-      style={{
-        backgroundColor: colors.primary,
-        paddingLeft: 4,
-        borderTopLeftRadius: 4,
-        borderBottomLeftRadius: 4,
-      }}
-    >
+    <View style={styles.container}>
       {!messageData && (
-        //tämä muualle tämä elementti
         <View style={{ margin: 5 }}>
-          <AppText style={{ padding: 2, color: colors.white, fontSize: 12 }}>
-            Loading reply message....
-          </AppText>
+          <AppText style={styles.text}>Loading reply message....</AppText>
         </View>
       )}
       {messageData && (
         <TouchableOpacity
           activeOpacity={1}
           key={messageData._id}
-          style={{ backgroundColor: colors.light, padding: 4 }}
+          style={styles.button}
           onPress={getIndexNow}
         >
           <MessageHeader
@@ -110,8 +91,16 @@ function MessageItemReply({
 }
 
 const styles = StyleSheet.create({
+  button: { backgroundColor: colors.light, padding: 4 },
+  container: {
+    backgroundColor: colors.primary,
+    paddingLeft: 4,
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
+  },
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
+  text: { padding: 2, color: colors.white, fontSize: 12 },
 });
 
 export default MessageItemReply;

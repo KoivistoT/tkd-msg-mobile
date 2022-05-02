@@ -126,7 +126,7 @@ function ChangePasswordForm({
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-
+    marginTop: 40,
     marginHorizontal: 10,
   },
 });

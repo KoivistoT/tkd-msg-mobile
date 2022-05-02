@@ -1,58 +1,38 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Modal,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SeenButton from "./SeenButton";
-import DeleteButton from "./DeleteButton";
-import ReplyButton from "./ReplyButton";
-import {
-  addReaction,
-  reactionAdded,
-  selectReactionsMessageById,
-} from "../../../store/msgStore";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { View, Modal, StyleSheet, TouchableOpacity } from "react-native";
+import { addReaction, reactionAdded } from "../../../store/msgStore";
+import { useDispatch, useStore } from "react-redux";
 import ReactionEmoji from "./ReactionEmoji";
-import AddReactionButton from "./AddReactionButton";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import colors from "../../../config/colors";
-import Screen from "../Screen";
-import AppText from "../AppText";
 import ReactionDetailsButtons from "./ReactionDetailsButtons";
+import AppCloseButton from "../modals/AppCloseButton";
+
+const ALL_EMOJIS = {
+  heart: { color: "danger", order: 0 },
+  like1: { color: "khaki", order: 1 },
+  dislike1: { color: "khaki", order: 2 },
+  star: { color: "yellow", order: 3 },
+  smileo: { color: "white", order: 4 },
+};
 
 const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
   const { roomId, _id: messageId, reactions } = message;
-  const [modalVisible, setModalVisible] = useState(false);
-  const dispatch = useDispatch();
 
   const store = useStore();
+  const dispatch = useDispatch();
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [messageReactions, setMessageReactions] = useState([]);
+  const [selectedReaction, setSelectedReaction] = useState(null);
+  const allReactions = [];
   const currentUserId = selectCurrentUserId(store);
+
   const onReaction = (reaction) => {
     onRemoveSelections();
     dispatch(reactionAdded({ roomId, messageId, reaction, currentUserId }));
     dispatch(addReaction(roomId, messageId, reaction, currentUserId));
   };
-  //pitää ensi tehdä niin, että on group, missä jokaisen erilaisessa reactionissa on kaikki saman reagtionit
-  //sitten kun sitä painaa pitkään, niin avaa tiedot, ketkä on ja miten ragoinut, katso slackistä
-  //reactionit toki jää koko ajan näkyviin, eli on edellisellä childissa ne näkyvät
-  const [messageReactions, setMessageReactions] = useState([]);
-  const [selectedReaction, setSelectedReaction] = useState(null);
-  const allReactions = [];
-
-  const allEmojis = {
-    heart: { color: "danger", order: 0 },
-    like1: { color: "khaki", order: 1 },
-    dislike1: { color: "khaki", order: 2 },
-    star: { color: "yellow", order: 3 },
-    smileo: { color: "white", order: 4 },
-  };
-  //tämä toki voisi olla jo be:ssä tehtyä? ehkä, ehkä ei
 
   const checkIsReactions = () => {
     let isReactions = false;
@@ -61,10 +41,10 @@ const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
         isReactions = true;
       }
     }
-
     return isReactions;
   };
-  useEffect(() => {
+
+  const handleReactions = () => {
     reactions.map((item) => {
       const index = allReactions.findIndex((reaction) => {
         return reaction.name === item.reaction;
@@ -73,9 +53,9 @@ const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
       if (index === -1) {
         allReactions.push({
           name: item.reaction,
-          order: allEmojis[item.reaction]?.order,
+          order: ALL_EMOJIS[item.reaction]?.order,
           count: 1,
-          color: allEmojis[item.reaction]?.color,
+          color: ALL_EMOJIS[item.reaction]?.color,
           users: [item.reactionByUser],
         });
       } else {
@@ -86,27 +66,34 @@ const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
         ];
       }
     });
+  };
+
+  const showEmojis = () => {
     if (showAllEmojis) {
-      Object.keys(allEmojis).map((name) => {
+      Object.keys(ALL_EMOJIS).map((name) => {
         const index = allReactions.findIndex(
           (reaction) => reaction.name === name
         );
         if (index === -1) {
           allReactions.push({
             name,
-            color: allEmojis[name].color,
-            order: allEmojis[name].order,
+            color: ALL_EMOJIS[name].color,
+            order: ALL_EMOJIS[name].order,
           });
         }
       });
     }
+  };
+
+  useEffect(() => {
+    handleReactions();
+    showEmojis();
     setMessageReactions(allReactions);
   }, [reactions, showAllEmojis]);
 
   const onLongPress = () => {
     const isReactions = checkIsReactions();
     if (isReactions) setModalVisible(true);
-    else alert("ei ole");
   };
 
   return (
@@ -117,48 +104,14 @@ const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
         animationType="slide"
         style={styles.modal}
       >
-        <View
-          style={{
-            backgroundColor: "rgba(0,0,0,0.0)",
-            flex: 1,
-            width: "100%",
-          }}
-        >
+        <View style={styles.container}>
           <TouchableOpacity
             activeOpacity={1}
-            style={{
-              backgroundColor: "rgba(0,0,0,0.0)",
-              height: "60%",
-              width: "100%",
-            }}
+            style={styles.backdrop}
             onPress={() => setModalVisible(false)}
-          ></TouchableOpacity>
-          <View
-            style={{
-              bottom: 0,
-              backgroundColor: colors.white,
-              width: "100%",
-              height: "40%",
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => setModalVisible(false)}
-              style={{
-                position: "absolute",
-                top: -12,
-                alignSelf: "flex-end",
-                padding: 25,
-
-                zIndex: 2,
-              }}
-            >
-              <MaterialCommunityIcons
-                name="close"
-                size={25}
-                color={colors.dark}
-              />
-            </TouchableOpacity>
+          />
+          <View style={styles.detailsContainer}>
+            <AppCloseButton onPress={() => setModalVisible(false)} />
 
             <ReactionDetailsButtons
               style={{ padding: 20 }}
@@ -172,7 +125,7 @@ const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
         </View>
       </Modal>
 
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.emojis}>
         <ReactionEmoji
           onLongPress={() => onLongPress()}
           currentUserId={currentUserId}
@@ -185,7 +138,23 @@ const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row" },
+  backdrop: {
+    backgroundColor: "rgba(0,0,0,0.0)",
+    height: "60%",
+    width: "100%",
+  },
+  container: {
+    backgroundColor: "rgba(0,0,0,0.0)",
+    flex: 1,
+    width: "100%",
+  },
+  detailsContainer: {
+    bottom: 0,
+    backgroundColor: colors.white,
+    width: "100%",
+    height: "40%",
+  },
+  emojis: { flexDirection: "row" },
   modalEmojiContainer: { flexDirection: "row" },
   modal: {},
   button: {},

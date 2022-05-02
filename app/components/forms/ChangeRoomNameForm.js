@@ -15,7 +15,7 @@ import {
   setLoading,
 } from "../../../store/rooms";
 import colors from "../../../config/colors";
-import AppButtonWithLoader from "../messageItems/AppButtonWithLoader";
+import AppButtonWithLoader from "../AppButtonWithLoader";
 
 const validationSchema = Yup.object().shape({
   newRoomName: Yup.string().required().min(1).label("New channel name"),
@@ -79,6 +79,7 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
+    marginTop: 55,
     borderRadius: 10,
   },
 });

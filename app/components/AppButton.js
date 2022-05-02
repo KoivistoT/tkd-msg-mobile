@@ -8,7 +8,6 @@ function AppButton({
   title,
   onPress,
   color = "white",
-  width,
   backgroundColor = "primary",
   buttonWidth = 150,
   fontSize,

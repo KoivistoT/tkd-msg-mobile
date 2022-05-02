@@ -1,17 +1,15 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import colors from "../../../config/colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import AppTouchableIcon from "../AppTouchableIcon";
+
 function ReplyButton({ onPress }) {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <MaterialCommunityIcons
-        style={styles.icon}
-        name="reply-outline"
-        size={26}
-        color="black"
-      />
-    </TouchableOpacity>
+    <AppTouchableIcon
+      onPress={onPress}
+      name="reply-outline"
+      size={26}
+      style={styles.icon}
+    />
   );
 }
 

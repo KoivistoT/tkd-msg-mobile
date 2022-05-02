@@ -1,25 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import colors from "../../../config/colors";
+import { useDispatch, useSelector } from "react-redux";
+import colors from "../../config/colors";
 import {
   requestStateRemoved,
-  requestStatesRemoved,
   selectRequestStateById,
   successMessageAdded,
-} from "../../../store/general";
-import {
-  requestStateCleared,
-  selectRoomsErrorMessage,
-} from "../../../store/rooms";
-import AppButton from "../AppButton";
-import AppLoadingIndicator from "../AppLoadingIndicator";
+} from "../../store/general";
+import AppButton from "./AppButton";
+import AppLoadingIndicator from "./AppLoadingIndicator";
 
 function AppButtonWithLoader({
   children = null,
   requestId,
   initFunctions = [],
-  startedFunctions = [],
   succeedFunctions = [],
   errorFunctions = [],
   loaderType = "circle",
@@ -31,15 +25,13 @@ function AppButtonWithLoader({
 }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const store = useStore();
 
-  const requestState = useSelector(selectRequestStateById(requestId)); // täne saa id:n selector id:llä, loader id, mut miten sen lisää ja poistaa
+  const requestState = useSelector(selectRequestStateById(requestId));
   const clearFunction = () => dispatch(requestStateRemoved({ id: requestId }));
 
   useEffect(() => {
     if (requestState.length > 0) stateFunctions(requestState[0].state);
   }, [requestState]);
-  // console.log("päivittää täällä");
   let prevState = useRef(null);
   let initDone = useRef(false);
   const stateFunctions = (requestState) => {
@@ -48,18 +40,14 @@ function AppButtonWithLoader({
     }
 
     if (requestState === prevState.current) return;
-    // console.log("täsäs joo");
     switch (requestState) {
       case "started":
         prevState.current = requestState;
         setLoading(true);
-        // console.log("käy täällä started");
-        // doFunctions(startedFunctions);
-
         break;
       case "succeed":
         prevState.current = requestState;
-        doFunctions(succeedFunctions);
+        executeFunctions(succeedFunctions);
         if (successMessage) {
           dispatch(successMessageAdded(successMessage));
         }
@@ -69,19 +57,18 @@ function AppButtonWithLoader({
       case "error":
         prevState.current = requestState;
         setLoading(false);
-        doFunctions(errorFunctions);
+        executeFunctions(errorFunctions);
         clearFunction();
         break;
       default:
         prevState.current = requestState;
-        doFunctions(initFunctions);
+        executeFunctions(initFunctions);
         setLoading(false);
-        // clearFunction(); ????
         break;
     }
   };
 
-  const doFunctions = (functionArray) => {
+  const executeFunctions = (functionArray) => {
     functionArray.forEach((func) => {
       func();
     });
@@ -90,14 +77,7 @@ function AppButtonWithLoader({
   return (
     <View style={styles.container}>
       {loading && (
-        <View
-          style={{
-            top: 14,
-            position: "absolute",
-            zIndex: 2,
-            flex: 1,
-          }}
-        >
+        <View style={styles.loading}>
           {loaderType === "dots" ? (
             <AppLoadingIndicator />
           ) : (
@@ -121,6 +101,12 @@ function AppButtonWithLoader({
 
 const styles = StyleSheet.create({
   container: { alignSelf: "center", marginTop: 20 },
+  loading: {
+    top: 14,
+    position: "absolute",
+    zIndex: 2,
+    flex: 1,
+  },
 });
 
 export default AppButtonWithLoader;

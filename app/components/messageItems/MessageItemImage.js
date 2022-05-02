@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import colors from "../../../config/colors";
-
 import AppText from "../AppText";
 import ShowImageModal from "../imageComponents/ShowImageModal";
 
@@ -27,20 +26,8 @@ function MessageItemImage({
 
   return (
     <View>
-      {disapleOnPress && (
-        <View
-          style={{
-            position: "absolute",
-            opacity: 0,
-            flex: 1,
-            backgroundColor: "red",
-            zIndex: 2,
-            height: "100%",
-            width: "100%",
-          }}
-        ></View>
-      )}
-      <View style={styles.ImageModalContainer}>
+      {disapleOnPress && <View style={styles.cover} />}
+      <View style={styles.imageModalContainer}>
         {item.imageURLs.slice(0, showImages).map((url) => (
           <ShowImageModal
             onLongPress={onLongPress}
@@ -57,10 +44,12 @@ function MessageItemImage({
           onPress={() => onMoreLess()}
         >
           <AppText
-            style={{
-              color: disapleOnPress ? colors.black : colors.primary,
-              marginRight: 10,
-            }}
+            style={[
+              styles.text,
+              {
+                color: disapleOnPress ? colors.black : colors.primary,
+              },
+            ]}
           >
             {showImages === SHOW_IMAGES
               ? `${disapleOnPress ? "(" : ""}${
@@ -77,15 +66,25 @@ function MessageItemImage({
 }
 
 const styles = StyleSheet.create({
+  cover: {
+    position: "absolute",
+    opacity: 0,
+    flex: 1,
+    backgroundColor: "red",
+    zIndex: 2,
+    height: "100%",
+    width: "100%",
+  },
   moreHideButton: {
     alignSelf: "flex-end",
   },
 
-  ImageModalContainer: {
+  imageModalContainer: {
     justifyContent: "center",
     flexDirection: "row",
     flexWrap: "wrap",
     flex: 1,
   },
+  text: { marginRight: 10 },
 });
 export default MessageItemImage;

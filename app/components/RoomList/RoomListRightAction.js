@@ -5,6 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { navigate } from "../../navigation/rootNavigation";
 import routes from "../../navigation/routes";
 import colors from "../../../config/colors";
+import AppTouchableIcon from "../AppTouchableIcon";
 
 function RoomListRightAction({
   onPress,
@@ -24,21 +25,27 @@ function RoomListRightAction({
       {(currentUserData.accountType === "admin" ||
         currentUserData._id === roomCreator ||
         roomType === "private") && (
-        <TouchableOpacity onPress={onPress} style={styles.button}>
-          <MaterialCommunityIcons
-            name="delete-outline"
-            size={24}
-            color={colors.white}
-          />
-        </TouchableOpacity>
+        <AppTouchableIcon
+          onPress={onPress}
+          style={{
+            backgroundColor: colors.danger,
+            paddingHorizontal: 30,
+          }}
+          name="delete-outline"
+          color={colors.white}
+        />
       )}
 
-      <TouchableOpacity
+      <AppTouchableIcon
         onPress={() => onGoSetupScreen()}
-        style={[styles.button, { color: colors.primary }]}
-      >
-        <Feather name="settings" color={colors.white} size={24} />
-      </TouchableOpacity>
+        style={{
+          backgroundColor: colors.primary,
+          paddingHorizontal: 30,
+        }}
+        name="settings"
+        source="f"
+        color={colors.white}
+      />
     </View>
   );
 }
@@ -50,7 +57,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  leftActionIcon: { padding: 5, alignSelf: "center" },
 });
 
 export default RoomListRightAction;
