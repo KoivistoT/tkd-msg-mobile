@@ -1,8 +1,8 @@
-# msg-mobile
+# tkd-msg-mobile
 
 ## General
 
-This mobile app is using msg-mobile backend.
+This mobile app is using tkd-msg-backend backend.
 
 Features:
 
