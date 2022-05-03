@@ -13,7 +13,7 @@ const ALL_EMOJIS = {
   like1: { color: "khaki", order: 1 },
   dislike1: { color: "khaki", order: 2 },
   star: { color: "yellow", order: 3 },
-  smileo: { color: "white", order: 4 },
+  smileo: { color: "black", order: 4 },
 };
 
 const Reactions = ({ message, showAllEmojis, onRemoveSelections }) => {

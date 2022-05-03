@@ -22,12 +22,13 @@ function ReactionEmoji({ onPress, reactions, currentUserId, onLongPress }) {
           style={[
             styles.container,
             {
+              paddingLeft: count ? 7 : 13,
               borderColor:
                 colors[users?.includes(currentUserId) ? "light" : "white"],
               backgroundColor:
                 colors[
                   users?.includes(currentUserId)
-                    ? "success"
+                    ? "primary"
                     : "backgroundColor1"
                 ],
             },
@@ -45,14 +46,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     borderRadius: 6,
-    paddingHorizontal: 8,
+    padding: 5,
     minWidth: 45,
     paddingVertical: 4,
     margin: 2,
     alignItems: "center",
     borderWidth: 1,
   },
-  text: { marginLeft: 2 },
+  text: { marginLeft: 2, color: colors.white },
 });
 
 export default ReactionEmoji;
