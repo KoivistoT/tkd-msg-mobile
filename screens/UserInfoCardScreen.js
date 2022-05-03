@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import Screen from "../app/components/Screen";
-
 import UserInfoCard from "../app/components/UserInfoCard";
 
 function UserInfoCardScreen(item) {

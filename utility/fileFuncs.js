@@ -1,11 +1,6 @@
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import dayjs from "dayjs";
-import {
-  ref,
-  uploadBytesResumable,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firebaseStorage } from "../api/firebaseClient";
 import * as FileSystem from "expo-file-system";
 const storage = firebaseStorage();
@@ -56,18 +51,14 @@ const uriToBlob = (uri) => {
     const xhr = new XMLHttpRequest();
 
     xhr.onload = function () {
-      // return the blob
       resolve(xhr.response);
     };
 
     xhr.onerror = function () {
-      // something went wrong
       reject(new Error("uriToBlob failed"));
     };
 
-    // this helps us get a blob
     xhr.responseType = "blob";
-
     xhr.open("GET", uri, true);
     xhr.send(null);
   });
@@ -83,35 +74,6 @@ const uploadToFirebase = async (blob, folder, id) => {
       }
     );
     return downloadUri;
-    // const uploadTask = uploadBytesResumable(storageRef, blob);
-
-    //  uploadTask.on(
-    //   "state_changed",
-    //   (snapshot) => {
-    //     const progress =
-    //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //     console.log("Upload is " + progress + "% done");
-    //     switch (snapshot.state) {
-    //       case "paused":
-    //         console.log("Upload is paused");
-    //         break;
-    //       case "running":
-    //         console.log("Upload is running");
-    //         break;
-    //     }
-    //   },
-    //   (error) => {
-    //     console.log(error, "code 19939");
-    //     // Handle unsuccessful uploads
-    //   },
-    //   () => {
-    //     // Handle successful uploads on complete
-    //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-    //       console.log("File available at", downloadURL);
-    //       return downloadURL;
-    //     });
-    //   }
-    // );
   } catch (error) {
     console.log(error, "code 299941");
   }
@@ -166,13 +128,7 @@ const saveFileAsync = async (url, name) => {
     .then(({ uri }) => {
       MediaLibrary.createAssetAsync(uri).then((asset) => {
         MediaLibrary.createAlbumAsync("msgAppFiles", asset)
-          .then(() => {
-            // console.log({
-            //   message: "general.success",
-            //   description: "download.success",
-            //   type: "success",
-            // });
-          })
+          .then(() => {})
           .catch((error) => {
             console.log({
               error,
