@@ -61,7 +61,7 @@ function getWeekDayNamesWithTimes(date) {
   } else if (diffInDays > 1 && diffInDays < 2) {
     return `Yesterday`;
   } else if (diffInDays < 7) {
-    return `${days[d.getDay()]} ${getTime(date)}`;
+    return `${days[d.getDay()]}`;
   } else {
     return getDateAndTime(date);
   }
