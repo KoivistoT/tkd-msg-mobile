@@ -1,48 +1,48 @@
 export default {
   questions: {
     LEAVE_ROOM_LAST_USER: {
-      title: "Olet huoneen viimeinen käyttjä. Haluatko poistua huoneesta?",
-      body: "Poistuttuasi, huone ja huoneen viestit poistetaan pysyvästi.",
+      title: "You are last user in the chat. Do you want to leave chat?",
+      body: "If you leave chat, chat and all messages would be removed.",
     },
     LEAVE_ROOM: {
-      title: "Haluatko poistua huoneesta?",
+      title: "Do you want to leave chat?",
       body: "",
     },
     ACTIVATE_ROOM: {
-      title: "Haluatko aktivoida huoneen?",
+      title: "Do you want to activate chat?",
       body: "",
     },
     DELETE_ROOM: {
-      title: "Haluatko poistaa huoneen?",
+      title: "Do you want to remove chat?",
       body: "",
     },
     DELETE_USER: {
-      title: "Haluatko poistaa käyttäjän?",
+      title: "Do you want to remove user?",
       body: "",
-      success: "User deleted",
+      success: "User removed",
     },
     ARCHIVE_USER: {
-      title: "Haluatko arkistoida käyttäjän?",
+      title: "Do you want to archive user?",
       body: "",
       success: "User archived",
     },
     ACTIVATE_USER: {
-      title: "Haluatko aktivoida käyttäjän?",
+      title: "Do you want to activate user?",
       body: "",
       success: "User activated",
     },
     REMOVE_IMAGE: {
       title: "Remove",
-      body: "Are you sure you want to remove this image?",
+      body: "Do you want to remove this image?",
     },
 
     REMOVE_MESSAGE: {
-      title: "Haluatko poistaa viestin?",
+      title: "Do you want to remove this message?",
       body: "",
     },
   },
   notifications: {
-    USER_REMOVED: "Käyttäjä on poistettu. Et voi lähettää hänelle viestejä.",
+    USER_REMOVED: "User has been removed. You can not send messages.",
     CAMERA_PERMISSION: "You need to enable permission to access the camera.",
     LIBRARY_PERMISSION: "You need to enable permission to access the library.",
     ONLY_MEMBER: "You are only member in this chat.",
