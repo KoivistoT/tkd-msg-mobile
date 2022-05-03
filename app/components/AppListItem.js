@@ -13,7 +13,6 @@ function AppListItem({ item, onPress }) {
     >
       <View style={{ flexDirection: "row" }}>
         <AppText style={styles.name}>{item.name}</AppText>
-
         <MaterialCommunityIcons
           style={styles.icon}
           name="chevron-right"

@@ -16,7 +16,7 @@ function AppCloseButton({ onPress, top = 0, size, color }) {
 }
 
 const styles = StyleSheet.create({
-  container: { position: "absolute", right: 0, zIndex: 2 },
+  container: { position: "absolute", right: 0, zIndex: 2, padding: 20 },
 });
 
 export default AppCloseButton;

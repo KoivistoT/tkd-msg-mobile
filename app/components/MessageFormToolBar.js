@@ -1,19 +1,17 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import AppTouchableIcon from "./AppTouchableIcon";
 
 function MessageFormToolBar({ onPress, showOptions }) {
   return (
-    <TouchableOpacity
+    <AppTouchableIcon
+      name={!showOptions ? "plus" : "close"}
       activeOpacity="0.5"
       onPress={onPress}
       style={styles.container}
-    >
-      <MaterialCommunityIcons
-        name={!showOptions ? "plus" : "close"}
-        size={24}
-      ></MaterialCommunityIcons>
-    </TouchableOpacity>
+      source="mci"
+      size={24}
+    />
   );
 }
 

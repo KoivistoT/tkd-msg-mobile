@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, FlatList, AppState, Keyboard } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import MessageItemMain, {
-  MemoMessageItemMain,
-} from "./messageItems/MessageItemMain";
+import { MemoMessageItemMain } from "./messageItems/MessageItemMain";
 import { useNavigation } from "@react-navigation/native";
 import {
   selectIsLastMessageSentByCurrentUser,
@@ -36,6 +34,7 @@ import NewMessagesIndicator from "./NewMessagesIndicator";
 import IsTypingElement from "./IsTypingElement";
 import ShowSearchBarButton from "./ShowSearchBarButton";
 import messageFuncs from "../../utility/messageFuncs";
+import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 const MAX_TO_RENDER_PER_BATCH = 20;
 
 function MessageList({ item }) {
@@ -96,6 +95,7 @@ function MessageList({ item }) {
   }, []);
 
   const keyExtractor = (item) => item;
+
   const messageItem = ({ item, index }) => {
     return (
       <View>
@@ -111,7 +111,6 @@ function MessageList({ item }) {
           currentUserId={currentUserId}
           onScrollToIndex={onScrollToIndex}
         />
-        {/* tämä ei näytä jos ei ole viestejä,,, ei ehkä tarvikaan */}
 
         {typer && index === 0 && typer !== currentUserId && (
           <IsTypingElement typer={typer} roomId={roomId} />
@@ -158,25 +157,19 @@ function MessageList({ item }) {
     if (newState === "active") {
       isNewMessagesChecked.current = true;
     } else if (newState === "background" || newState === "inactive") {
-      newMessagesOnStart.current = null; // tämä lienee maku asia. Tulee esiin silloin, kun on huoneessa ja siellä on lukemattomia, kun menee pois ja tulee takaisin, miten näyttää
+      newMessagesOnStart.current = null;
       isNewMessagesChecked.current = false;
     }
   };
 
   const checkNewMessages = async () => {
-    //tämä maku asia
-    //tämä maku asia
-    //tämä maku asia
     if (isNewMessagesChecked.current && !isPushNotificationPressed(store)) {
       setShowUnreadMessageButton(false);
     }
-    //tämä maku asia
-    //tämä maku asia
-    //tämä maku asia
 
     if (!isNewMessagesChecked.current || isPushNotificationPressed(store)) {
       newMessagesOnStart.current += getNewMessagesSum();
-      setShowUnreadMessageButton(true); //tämä maku asiaa
+      setShowUnreadMessageButton(true);
 
       if (isNewMessagesChecked.current) {
         dispatch(pushNotificationPressedDeactivated());
@@ -230,7 +223,7 @@ function MessageList({ item }) {
   const onScrollToIndex = (replyMessageIndex, position, animation = true) => {
     try {
       msgListRef.current.scrollToIndex({
-        animated: animation, // tämä voisi olla false
+        animated: animation,
         index: replyMessageIndex,
         viewPosition: position,
       });
@@ -289,29 +282,11 @@ function MessageList({ item }) {
       )}
 
       {roomMessageIds && (
-        <View style={{ flexDirection: "row", flex: 1 }}>
-          <View style={[styles.touchMargin, { left: 0 }]}></View>
-          {showLoader && (
-            <View
-              style={{
-                width: "100%",
-                position: "absolute",
-                backgroundColor: "red",
-                height: "100%",
-                zIndex: 200,
-                // backgroundColor: "red",
-
-                zIndex: 2,
-                opacity: 0.5,
-              }}
-            ></View>
-          )}
+        <View style={styles.listContainer}>
+          <View style={styles.touchMargin}></View>
+          {showLoader && <View style={styles.cover} />}
           <FlatList
-            style={{
-              backgroundColor: colors.background1,
-
-              // paddingHorizontal: 10,
-            }}
+            style={styles.list}
             ref={msgListRef}
             data={
               searchResultMessageIds ? searchResultMessageIds : roomMessageIds
@@ -324,7 +299,7 @@ function MessageList({ item }) {
             onEndReachedThreshold={0.7}
             maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
             initialNumToRender={12}
-            windowSize={4} // voisi olla isompi, mut ei ehkä tarvi
+            windowSize={4}
             inverted={true}
           />
         </View>
@@ -340,16 +315,25 @@ function MessageList({ item }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    // backgroundColor: colors.background1,
   },
-  touchMargin: {
-    width: 10,
+  cover: {
+    width: "100%",
     position: "absolute",
-
+    backgroundColor: colors.background1,
     height: "100%",
     zIndex: 200,
-    // backgroundColor: "red",
+    zIndex: 2,
+  },
+  list: {
+    backgroundColor: colors.background1,
+  },
+  listContainer: { flexDirection: "row", flex: 1 },
+  touchMargin: {
+    left: 0,
+    width: 10,
+    position: "absolute",
+    height: "100%",
+    zIndex: 200,
     zIndex: 1,
     opacity: 10,
   },

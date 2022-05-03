@@ -29,7 +29,7 @@ class AppSuccessToast extends React.Component {
           positionValue={0}
           fadeInDuration={200}
           fadeOutDuration={200}
-          textStyle={{ color: colors.white }}
+          textStyle={styles.text}
         />
       </View>
     );
@@ -57,5 +57,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.success,
     height: 40,
   },
+  text: { color: colors.white },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AppSuccessToast);

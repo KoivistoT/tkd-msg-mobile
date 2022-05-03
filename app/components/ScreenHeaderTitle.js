@@ -37,7 +37,6 @@ function ScreenHeaderTitle({
       !showOnlineIndicator(usersOnline, currentRoomMembers, currentUserId)
     ) {
       setLoading(true);
-      //tämä siksi että ensin sen lähteneen käyttäjän tulee olla tallentanut lähtö aika, sitten voi vasta hakea. haku olisi nopeampi kuin tallennus
       setTimeout(() => {
         dispatch(getUserLastPresentByUserId(otherUserId));
       }, 100);
@@ -95,17 +94,9 @@ function ScreenHeaderTitle({
             ]}
           ></View>
         )}
-        <AppText
-          style={{
-            color: "black",
-            fontWeight: "800",
-            maxWidth: Dimensions.get("window").width - 160,
-          }}
-          numberOfLines={1}
-        >
+        <AppText style={styles.text} numberOfLines={1}>
           {title}
         </AppText>
-        {/* <AppText style={styles.title}></AppText> */}
       </View>
 
       {loading ? (
@@ -119,6 +110,11 @@ function ScreenHeaderTitle({
 
 const styles = StyleSheet.create({
   titleRow: { flexDirection: "row", marginRight: 14, alignItems: "center" },
+  text: {
+    color: "black",
+    fontWeight: "800",
+    maxWidth: Dimensions.get("window").width - 160,
+  },
   header: { alignItems: "center" },
   title: { fontSize: 18 },
   subTitle: { fontSize: 12 },

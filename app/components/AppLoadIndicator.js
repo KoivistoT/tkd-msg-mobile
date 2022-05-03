@@ -4,13 +4,11 @@ import { ActivityIndicator } from "react-native";
 
 function AppLoadIndicator() {
   return (
-    <View style={styles.indicator}>
+    <View style={styles.container}>
       <ActivityIndicator
         animating={true}
         size="small"
-        style={{
-          opacity: 1,
-        }}
+        style={styles.indicator}
         color="#999999"
       />
     </View>
@@ -18,9 +16,11 @@ function AppLoadIndicator() {
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  indicator: {
+  container: {
     alignSelf: "center",
+  },
+  indicator: {
+    opacity: 1,
   },
 });
 

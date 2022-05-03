@@ -1,17 +1,20 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
 import { navigate } from "../navigation/rootNavigation";
 import routes from "../navigation/routes";
+import AppTouchableIcon from "./AppTouchableIcon";
+import colors from "../../config/colors";
 
 function HeaderRightNewRoom() {
   return (
-    <TouchableOpacity
-      style={styles.container}
+    <AppTouchableIcon
+      color={colors.black}
+      source="e"
+      name="new-message"
+      containerStyle={styles.container}
+      size={22}
       onPress={() => navigate(routes.CREATE_CHAT_NAVIGATOR)}
-    >
-      <Entypo name="new-message" size={22} />
-    </TouchableOpacity>
+    />
   );
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Button, Text, TouchableOpacity } from "react-native";
-import Toast, { DURATION } from "react-native-easy-toast";
+import { View, StyleSheet } from "react-native";
+import Toast from "react-native-easy-toast";
 import { connect } from "react-redux";
 import Constants from "expo-constants";
 import colors from "../../config/colors";
@@ -35,15 +35,7 @@ class AppErrorToast extends React.Component {
 
   render() {
     return (
-      <View
-        style={{
-          position: "absolute",
-          alignSelf: "center",
-          zIndex: 100,
-          width: "100%",
-          marginTop: Constants.statusBarHeight,
-        }}
-      >
+      <View style={styles.container}>
         <Toast
           ref={(toast) => (this.toast = toast)}
           style={{ backgroundColor: colors.danger }}
@@ -69,5 +61,15 @@ const mapDispatchToProps = (dispatch) => ({
   clearGeneralErrorMessage: () => dispatch(errorMessageCleared()),
   clearUsersErrorMessage: () => dispatch(usersErrorMessageCleared()),
   clearRoomsErrorMessage: () => dispatch(roomsErrorMessageCleared()),
+});
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    alignSelf: "center",
+    zIndex: 100,
+    width: "100%",
+    marginTop: Constants.statusBarHeight,
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AppErrorToast);

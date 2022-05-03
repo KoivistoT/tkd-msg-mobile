@@ -28,9 +28,7 @@ class GeneralLoadIndicator extends React.Component {
       <>
         {this.state.showIndicator && (
           <View style={styles.container}>
-            <AppText style={{ margin: 20, color: colors.primary }}>
-              {this.props.loadingMessage}
-            </AppText>
+            <AppText style={styles.text}>{this.props.loadingMessage}</AppText>
             <ActivityIndicator
               animating={true}
               size="large"
@@ -70,6 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginTop: Constants.statusBarHeight,
   },
+  text: { margin: 20, color: colors.primary },
 });
 export default connect(
   mapStateToProps,

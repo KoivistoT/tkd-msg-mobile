@@ -1,7 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
 import { navigate } from "../../navigation/rootNavigation";
 import routes from "../../navigation/routes";
 import colors from "../../../config/colors";
@@ -27,10 +25,12 @@ function RoomListRightAction({
         roomType === "private") && (
         <AppTouchableIcon
           onPress={onPress}
-          style={{
+          containerStyle={{
             backgroundColor: colors.danger,
             paddingHorizontal: 30,
           }}
+          style={styles.deleteIcon}
+          size={24}
           name="delete-outline"
           color={colors.white}
         />
@@ -38,10 +38,9 @@ function RoomListRightAction({
 
       <AppTouchableIcon
         onPress={() => onGoSetupScreen()}
-        style={{
-          backgroundColor: colors.primary,
-          paddingHorizontal: 30,
-        }}
+        containerStyle={styles.iconContainer}
+        style={styles.setupIcon}
+        size={22}
         name="settings"
         source="f"
         color={colors.white}
@@ -57,6 +56,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  deleteIcon: { paddingTop: 12 },
+  iconContainer: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 30,
+  },
+  setupIcon: { paddingTop: 14 },
 });
 
 export default RoomListRightAction;

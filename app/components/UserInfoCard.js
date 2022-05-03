@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import AppText from "./AppText";
-import Screen from "./Screen";
 import { selectUserById } from "../../store/users";
 import AppIcon from "./AppIcon";
 import userFuncs from "../../utility/userFuncs";

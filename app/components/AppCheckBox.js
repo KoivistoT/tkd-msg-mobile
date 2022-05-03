@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import defaultStyles from "../../config/styles";
-import Checkbox from "expo-checkbox";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import AppText from "./AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
@@ -12,8 +10,6 @@ function AppCheckBox({
   label,
   onPress,
   disabled,
-  style,
-  ...otherProps
 }) {
   const [isChecked, setChecked] = useState(initialValue);
 

@@ -1,20 +1,19 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import colors from "../../config/colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AppTouchableIcon from "./AppTouchableIcon";
 
 function ScrollDownButton({ onPress }) {
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onPress}>
-        <MaterialCommunityIcons
-          styles={styles.icon}
-          name="arrow-down-drop-circle-outline"
-          color={colors.white}
-          size={35}
-        />
-      </TouchableOpacity>
-    </View>
+    <AppTouchableIcon
+      containerStyle={styles.container}
+      source="mci"
+      onPress={onPress}
+      color={colors.white}
+      size={35}
+      name="arrow-down-drop-circle-outline"
+      styles={styles.icon}
+    />
   );
 }
 

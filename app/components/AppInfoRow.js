@@ -1,27 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-  TextInput,
-  Linking,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { useDispatch, useStore } from "react-redux";
 import colors from "../../config/colors";
 import { selectCurrentUserId } from "../../store/currentUser";
-import {
-  editUserData,
-  saveEditedUserdata,
-  userDataFieldEdited,
-} from "../../store/users";
+import { saveEditedUserdata, userDataFieldEdited } from "../../store/users";
 import AppText from "./AppText";
-import createTask from "../../utility/createTask";
-import AppTextInput from "./AppTextInput";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AppLoadingIndicator from "./AppLoadingIndicator";
+import AppTouchableIcon from "./AppTouchableIcon";
 import phoneCall from "../../utility/phoneCall";
+import InfoRowButtons from "./InfoRowButtons";
 
 function AppInfoRow({
   info,
@@ -32,12 +18,11 @@ function AppInfoRow({
   setSelectedField,
   isEditable,
 }) {
-  const [fieldValue, setFieldValue] = useState(value);
-  const [loading, setLoading] = useState(false);
-  const [marginLeft, setMarginLeft] = useState(5);
   const store = useStore();
-  const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
+  const [fieldValue, setFieldValue] = useState(value);
+  const [edit, setEdit] = useState(false);
+  const [showCanNotEdit, setShowCanNotEdit] = useState(false);
   const currentUserId = selectCurrentUserId(store);
   const textInput = useRef(null);
 
@@ -68,7 +53,6 @@ function AppInfoRow({
     }
   };
 
-  const [showCanNotEdit, setShowCanNotEdit] = useState(false);
   const onCanNotEdit = () => {
     setShowCanNotEdit(true);
     setTimeout(() => {
@@ -79,7 +63,7 @@ function AppInfoRow({
   return (
     <TouchableOpacity
       activeOpacity={1}
-      style={[styles.container, { marginLeft }]}
+      style={[styles.container]}
       onPress={() =>
         editable
           ? handlePress()
@@ -95,7 +79,7 @@ function AppInfoRow({
           {fieldName === "email" && isEditable ? info + "/username" : info}
         </AppText>
       </View>
-      {edit && !loading && (
+      {edit && (
         <View style={styles.editRow}>
           <TextInput
             ref={textInput}
@@ -104,57 +88,28 @@ function AppInfoRow({
             defaultValue={fieldValue}
             onChangeText={(text) => setFieldValue(text)}
           />
-          <View style={styles.buttonsGroup}>
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => onSaveChanges(true)}
-              style={[styles.button, { backgroundColor: colors.success }]}
-            >
-              <MaterialCommunityIcons
-                name="content-save"
-                size={16}
-                color={colors.white}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => onSaveChanges(false)}
-              style={[styles.button, { backgroundColor: colors.danger }]}
-            >
-              <AntDesign
-                style={styles.icon}
-                name="closecircleo"
-                size={16}
-                color={colors.white}
-              />
-            </TouchableOpacity>
-          </View>
+          <InfoRowButtons
+            onSaveChanges={() => onSaveChanges(true)}
+            onNotSaveChanges={() => onSaveChanges(false)}
+          />
         </View>
       )}
-      {!edit && !loading && (
+      {!edit && (
         <View style={styles.columnRight}>
           <AppText style={styles.value}>{value}</AppText>
 
           {fieldName === "phone" && value !== "" && value && !isEditable && (
-            <TouchableOpacity
+            <AppTouchableIcon
+              source="mci"
               style={styles.callButton}
+              color={colors.success}
+              name="phone-outline"
               onPress={() => phoneCall(value)}
-            >
-              <MaterialCommunityIcons
-                name="phone-outline"
-                size={20}
-                color={colors.success}
-              />
-            </TouchableOpacity>
+            />
           )}
         </View>
       )}
-      {loading && (
-        <View style={styles.loadingIndicator}>
-          <ActivityIndicator/>
-        </View>
-      )}
+
       {showCanNotEdit && (
         <View style={styles.canNotEditTextContainer}>
           <AppText style={styles.canNotEditText}>Can not edit</AppText>
@@ -179,28 +134,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 5,
     marginTop: 10,
-  },
-  buttonsGroup: {
-    flexDirection: "row",
-    position: "absolute",
-    right: 0,
-    alignSelf: "center",
-  },
-  button: {
-    backgroundColor: colors.success,
-    borderRadius: 6,
-    alignSelf: "center",
-    padding: 7,
     marginLeft: 5,
-    width: 30,
-    height: 30,
-    bottom: 4,
   },
   callButton: { paddingLeft: 5 },
-  icon: { alignSelf: "center" },
-  loadingIndicator: {
-    marginLeft: 10,
-  },
   textInput: {
     width: "58%",
     backgroundColor: colors.white,

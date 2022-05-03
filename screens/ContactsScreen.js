@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../app/components/AppText";
 import ListItemSeparator from "../app/components/ListItemSeparator";
@@ -13,7 +12,7 @@ import roomFuncs from "../utility/roomFuncs";
 import userFuncs from "../utility/userFuncs";
 import { selectCurrentUserId } from "../store/currentUser";
 import { startLoad } from "../store/general";
-import IconButton from "../app/components/IconButton";
+import AppTouchableIcon from "../app/components/AppTouchableIcon";
 
 function ContactsScreen({ navigation, showInfoButton = true }) {
   const dispatch = useDispatch();
@@ -55,12 +54,14 @@ function ContactsScreen({ navigation, showInfoButton = true }) {
 
           <AppText style={styles.name}>{userFuncs.fullName(item)}</AppText>
           {showInfoButton && (
-            <IconButton
-              name="badge-account-horizontal-outline"
-              paddingRight={10}
+            <AppTouchableIcon
+              source="mci"
               onPress={() =>
                 navigation.navigate(routes.USER_INFO_CARD_SCREEN, item._id)
               }
+              style={styles.icon}
+              containerStyle={styles.iconContainer}
+              name="badge-account-horizontal-outline"
             />
           )}
         </View>
@@ -100,6 +101,14 @@ const styles = StyleSheet.create({
     height: 14,
 
     borderRadius: 7,
+  },
+  icon: { padding: 15 },
+  iconContainer: {
+    position: "absolute",
+    padding: 20,
+    paddingRight: 10,
+    right: 0,
+    alignSelf: "center",
   },
 });
 export default ContactsScreen;

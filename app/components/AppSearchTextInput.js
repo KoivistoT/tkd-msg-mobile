@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput } from "react-native";
 import { TextInput as NativeTextInput } from "react-native";
 import colors from "../../config/colors";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import AppTouchableIcon from "./AppTouchableIcon";
 
 function AppSearchTextInput({
   icon,
@@ -56,44 +55,43 @@ function AppSearchTextInput({
         />
       </TouchableWithoutFeedback>
 
-      <TouchableOpacity
-        style={styles.buttonContainer}
+      <AppTouchableIcon
+        containerStyle={styles.buttonContainer}
+        color={colors.white}
+        source="ad"
+        name="search1"
+        size={24}
         onPress={() => onSearch(searchWord)}
-      >
-        <AntDesign name="search1" size={24} color={colors.white} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
+      />
+      <AppTouchableIcon
+        containerStyle={[
+          styles.buttonContainer,
+          { backgroundColor: colors.medium },
+        ]}
+        source="fa"
+        color={colors.white}
+        name="eraser"
+        size={24}
         onPress={() => {
           textInput.current.clear(), setSearchWord(null), onSearch();
         }}
-        style={{
-          margin: 5,
-          alignSelf: "center",
-          borderRadius: 5,
-          padding: 5,
-          backgroundColor: colors.medium,
-        }}
-      >
-        <FontAwesome5 name="eraser" size={24} color={colors.white} />
-      </TouchableOpacity>
-      <TouchableOpacity
+      />
+      <AppTouchableIcon
+        containerStyle={[
+          styles.buttonContainer,
+          { backgroundColor: colors.danger },
+        ]}
+        source="ad"
+        color={colors.white}
+        name="closecircleo"
+        size={24}
         onPress={() => {
           textInput.current.clear();
           setSearchWord(null);
           setShowSearchBar(false);
           onSearch();
         }}
-        style={{
-          alignSelf: "center",
-          borderRadius: 5,
-          padding: 5,
-
-          backgroundColor: colors.danger,
-        }}
-      >
-        <AntDesign name="closecircleo" size={24} color={colors.white} />
-      </TouchableOpacity>
+      />
     </View>
   );
 }

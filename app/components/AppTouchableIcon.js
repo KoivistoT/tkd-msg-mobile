@@ -3,7 +3,9 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import colors from "../../config/colors";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 function AppTouchableIcon({
   onPress,
@@ -11,11 +13,12 @@ function AppTouchableIcon({
   color = "black",
   size = 20,
   source = "mci",
-  containerWidth,
+  activeOpacity = 1,
+  containerStyle,
   style,
 }) {
   const getIcon = () => {
-    const iconStyle = [styles.icon, style];
+    const iconStyle = [style];
 
     switch (source) {
       case "mci":
@@ -38,12 +41,24 @@ function AppTouchableIcon({
         );
       case "f":
         return (
-          <Feather
+          <Feather style={iconStyle} name={name} size={size} color={color} />
+        );
+      case "ad":
+        return (
+          <AntDesign style={iconStyle} name={name} size={size} color={color} />
+        );
+      case "fa":
+        return (
+          <FontAwesome5
             style={iconStyle}
             name={name}
             size={size}
-            color={colors.white}
+            color={color}
           />
+        );
+      case "e":
+        return (
+          <Entypo style={iconStyle} name={name} size={size} color={color} />
         );
 
       default:
@@ -52,14 +67,16 @@ function AppTouchableIcon({
   };
 
   return (
-    <TouchableOpacity activeOpacity={1} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={activeOpacity}
+      onPress={onPress}
+      style={[containerStyle]}
+    >
       {getIcon()}
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
-  icon: { padding: 20 },
-});
+const styles = StyleSheet.create({});
 
 export default AppTouchableIcon;
