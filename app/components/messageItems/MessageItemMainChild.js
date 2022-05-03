@@ -37,6 +37,7 @@ import MessageText from "./MessageText";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import confirmAlert from "../../../utility/confirmAlert";
 import appMessages from "../../../config/appMessages";
+import taskTypes from "../../../config/taskTypes";
 
 const SHOW_IMAGES = 2;
 
@@ -137,7 +138,7 @@ function MessageItemMainChild({
     if (!result) return;
 
     dispatch(messageSelectionRemoved());
-    const newTask = createTask("messageDeleted", { roomId, messageId });
+    const newTask = createTask(taskTypes.messageDeleted, { roomId, messageId });
     dispatch(msgTasksResived(newTask));
     dispatch(deleteMessageById(roomId, messageId, currentUserId));
   };
