@@ -1,7 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet } from "react-native";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,33 +8,25 @@ import { navigationRef, navigate } from "./app/navigation/rootNavigation";
 import navigationTheme from "./app/navigation/navigationTheme";
 import * as Notifications from "expo-notifications";
 import { LogBox } from "react-native";
-
 import configureStore from "./store/configureStore";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Provider } from "react-redux";
 import AppErrorToast from "./app/components/AppErrorToast";
 import GeneralLoadIndicator from "./app/components/GeneralLoadIndicator";
-
 import {
   getInitialData,
   selectAccountType,
   clearTasks,
   selectCurrentUserId,
 } from "./store/currentUser";
-
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppNavigator from "./app/navigation/AppNavigator";
-
 import { firebaseLogin } from "./api/firebaseClient";
 import routes from "./app/navigation/routes";
 import AdminNavigator from "./app/navigation/AdminNavigator";
 import AppSuccessToast from "./app/components/AppSuccessToast";
-
-import asyncStorageFuncs from "./utility/asyncStorageFuncs";
 import { notificationResponseResived, selectActiveRoomId } from "./store/rooms";
 import pushNotificationFuncs from "./utility/pushNotificationFuncs";
-import { getRestMessages, messagesResived } from "./store/msgStore";
-
 import { createSocketConnection } from "./store/socket";
 import { newMessageResived, pushNotificationPressed } from "./store/general";
 import NewMessageNotification from "./app/components/NewMessageNotification";
@@ -102,14 +93,8 @@ function App() {
             })
           );
         }
-        // console.log(notification.request.content.data);
-        // const currentRoomId = notification.request.content.data.roomId;
-        // const roomData =
-        //   store.getState().entities.rooms.allRooms[currentRoomId];
-        // navigate(routes.MESSAGE_SCREEN, roomData);
       });
 
-    // tämä jos ei sovelluksessa
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const currentRoomId = response.notification.request.content.data.roomId;
@@ -136,7 +121,6 @@ function App() {
       if (
         lastNotificationResponse &&
         lastNotificationResponse.notification.request.content.data.roomId
-        // && lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
       ) {
         dispatch(
           notificationResponseResived(
@@ -145,7 +129,6 @@ function App() {
         );
       }
     } catch (error) {
-      // alert(error, "code 2777218");
       alert("Something went wrong!");
     }
   }, [lastNotificationResponse]);
@@ -154,10 +137,6 @@ function App() {
     await Font.loadAsync({
       Avenir: require("./assets/fonts/Avenir.ttf"),
     });
-    // setIsReady(true); // ei kuuluisi olla tässä, mut testaan
-    // const userData = await authStorage.getUser();
-
-    // if (userData) setUserData(userData);
   };
 
   const accountType = useSelector(selectAccountType);
@@ -178,7 +157,6 @@ function App() {
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme}>
       <StatusBar style="dark" />
-
       <AppErrorToast />
       <AppSuccessToast />
       <NewMessageNotification />
@@ -186,16 +164,6 @@ function App() {
       {!accountType && <AuthNavigator />}
       {accountType === "admin" && <AdminNavigator />}
       {accountType && accountType !== "admin" && <AppNavigator />}
-      {/* <AuthNavigator /> */}
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -59,12 +59,12 @@ function CreateUserForm({ closeModal }) {
       <AppForm
         initialValues={{
           accountType: "basic",
-          password: "1111112",
-          firstName: "joo3",
-          lastName: "jaa3",
-          email: "joo@joo3.fi",
-          displayName: "joojaa3",
-          phone: "0456657435",
+          password: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          displayName: "",
+          phone: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}

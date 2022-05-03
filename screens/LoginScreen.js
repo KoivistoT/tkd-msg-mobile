@@ -59,7 +59,7 @@ function LoginScreen({}) {
         <AppKeyboardDismiss>
           <View style={styles.formContainer}>
             <AppForm
-              initialValues={{ userName: "timon@posti.fi", password: "12345" }}
+              initialValues={{ userName: "", password: "" }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
