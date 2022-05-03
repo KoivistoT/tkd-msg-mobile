@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     zIndex: 100,
     width: "100%",
-    marginTop: Constants.statusBarHeight * 3,
+
+    marginTop: Constants.statusBarHeight * 2,
   },
   toast: {
     backgroundColor: colors.success,
-    height: 40,
   },
   text: { color: colors.white },
 });

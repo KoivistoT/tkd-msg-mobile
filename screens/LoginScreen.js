@@ -8,7 +8,7 @@ import AppFormField from "../app/components/forms/AppFormField";
 import SubmitButton from "../app/components/forms/SubmitButton";
 import AppKeyboardDismiss from "../app/components/AppKeyboardDismiss";
 import AppLoadIndicator from "../app/components/AppLoadIndicator";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/currentUser";
 import asyncStorageFuncs from "../utility/asyncStorageFuncs";
 import AppSplashScreen from "./AppSplashScreen";

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, FlatList, View } from "react-native";
-
 import { useDispatch, useSelector, useStore } from "react-redux";
-
 import { createDirectRoom } from "../store/rooms";
 import { selectAllUsersMedium } from "../store/users";
 import AppCheckBox from "../app/components/AppCheckBox";

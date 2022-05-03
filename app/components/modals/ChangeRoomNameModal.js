@@ -57,9 +57,10 @@ const styles = StyleSheet.create({
   modal: { backgroundColor: "red", flex: 1 },
   title: {
     fontSize: 20,
-    color: colors.white,
+    alignSelf: "center",
+    color: colors.dark,
     padding: 10,
   },
-  titleContainer: { borderRadius: 6, backgroundColor: colors.primary },
+  titleContainer: { borderRadius: 6, backgroundColor: colors.background1 },
 });
 export default ChangeRoomNameModal;
