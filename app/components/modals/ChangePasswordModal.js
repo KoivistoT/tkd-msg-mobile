@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 
-import { StyleSheet, Modal, TouchableOpacity, View } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, Modal, View } from "react-native";
 import colors from "../../../config/colors";
 import AppButton from "../AppButton";
-import Screen from "../Screen";
-import ChangeRoomNameForm from "../forms/ChangeRoomNameForm";
 import ChangePasswordForm from "../forms/ChangePasswordForm";
-import {
-  selectCurrentUserId,
-  selectUserName,
-} from "../../../store/currentUser";
-import { useStore } from "react-redux";
+import { selectCurrentUserId } from "../../../store/currentUser";
 import AppCloseButton from "./AppCloseButton";
 selectCurrentUserId;
 function ChangePasswordModal({
@@ -61,12 +54,6 @@ function ChangePasswordModal({
 }
 
 const styles = StyleSheet.create({
-  modal: {
-    // marginHorizontal: 30,
-    // marginVertical: 100,
-    // marginTop: Constants.statusBarHeight,
-    // paddingTop: Constants.statusBarHeight,
-  },
   container: {
     backgroundColor: colors.primary,
     paddingBottom: 20,
@@ -76,6 +63,5 @@ const styles = StyleSheet.create({
     marginVertical: "5%",
     marginHorizontal: "5%",
   },
-  button: {},
 });
 export default ChangePasswordModal;

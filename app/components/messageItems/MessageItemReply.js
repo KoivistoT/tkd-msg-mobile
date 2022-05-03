@@ -46,7 +46,7 @@ function MessageItemReply({
   return (
     <View style={styles.container}>
       {!messageData && (
-        <View style={{ margin: 5 }}>
+        <View style={styles.loadingMessage}>
           <AppText style={styles.text}>Loading reply message....</AppText>
         </View>
       )}
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4,
     borderBottomLeftRadius: 4,
   },
+  loadingMessage: { margin: 5 },
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
   text: { padding: 2, color: colors.white, fontSize: 12 },

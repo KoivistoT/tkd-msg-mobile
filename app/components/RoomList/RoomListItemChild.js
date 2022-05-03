@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-
 import OnlineIndicator from "../OnlineIndicator";
 import RoomListLatestMessage from "./RoomListLatestMessage";
 import { useDispatch, useSelector } from "react-redux";

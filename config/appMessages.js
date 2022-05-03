@@ -35,12 +35,7 @@ export default {
       title: "Remove",
       body: "Are you sure you want to remove this image?",
     },
-    CAMERA_PERMISSION: {
-      body: "You need to enable permission to access the camera.",
-    },
-    LIBRARY_PERMISSION: {
-      body: "You need to enable permission to access the library.",
-    },
+
     REMOVE_MESSAGE: {
       title: "Haluatko poistaa viestin?",
       body: "",
@@ -48,5 +43,8 @@ export default {
   },
   notifications: {
     USER_REMOVED: "Käyttäjä on poistettu. Et voi lähettää hänelle viestejä.",
+    CAMERA_PERMISSION: "You need to enable permission to access the camera.",
+    LIBRARY_PERMISSION: "You need to enable permission to access the library.",
+    ONLY_MEMBER: "You are only member in this chat.",
   },
 };

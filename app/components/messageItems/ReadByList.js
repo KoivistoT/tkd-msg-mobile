@@ -5,7 +5,6 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
 import MessageItemImage from "./MessageItemImage";
 import { selectAllUsersMinimal } from "../../../store/users";
-import Screen from "../Screen";
 import { selectRoomMembersById } from "../../../store/rooms";
 import { getOneMessageById, selectMessageById } from "../../../store/msgStore";
 import { selectSocket } from "../../../store/socket";
@@ -15,6 +14,8 @@ import timeFuncs from "../../../utility/timeFuncs";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import ShowDocumentModal from "../modals/ShowDocumentModal";
 import sortObjectArray from "../../../utility/sortObjectArray";
+import AppTitle from "../AppTitle";
+import appMessages from "../../../config/appMessages";
 function ReadByList(item) {
   const {
     _id: messageId,
@@ -86,43 +87,21 @@ function ReadByList(item) {
     if (member._id === currentUserId) return;
 
     return (
-      <View
-        style={{
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          borderBottomColor: colors.lightgrey,
-          marginBottom: 5,
-        }}
-        key={member._id}
-      >
+      <View style={styles.listItemContainer} key={member._id}>
         {allUsers && (
-          <AppText
-            style={{
-              color: "black",
-            }}
-          >
+          <AppText>
             {allUsers ? `${member.firstName} ${member.lastName}` : ""}
           </AppText>
         )}
         {currentMessage ? (
-          <AppText
-            style={{
-              position: "absolute",
-              right: 0,
-              alignSelf: "center",
-            }}
-            key={member._id}
-          >
+          <AppText style={styles.timestamp} key={member._id}>
             {member.timestamp}
           </AppText>
         ) : (
           <ActivityIndicator
             animating={true}
             size="small"
-            style={{
-              opacity: 1,
-              marginTop: 20,
-            }}
+            style={styles.indicator}
             color="#999999"
           />
         )}
@@ -131,72 +110,78 @@ function ReadByList(item) {
   };
 
   return (
-    <Screen>
-      <ScrollView>
-        <View
-          style={{
-            padding: 10,
-            paddingBottom: 0,
-            backgroundColor: colors.background1,
-            margin: 7,
-            borderRadius: 6,
-          }}
-        >
-          <MessageHeader
-            sentBy={sentBy}
-            roomType={roomType}
-            allUsers={allUsers}
-            postedByUser={postedByUser}
-            createdAt={timeFuncs.getDateAndTime(createdAt)}
+    <ScrollView>
+      <View style={styles.container}>
+        <MessageHeader
+          sentBy={sentBy}
+          roomType={roomType}
+          allUsers={allUsers}
+          postedByUser={postedByUser}
+          createdAt={timeFuncs.getDateAndTime(createdAt)}
+        />
+
+        {messageType === "image" && (
+          <MessageItemImage
+            SHOW_IMAGES={2}
+            item={item.route.params}
+            showImages={2}
+            disapleOnPress
           />
+        )}
+        {messageType === "document" && (
+          <ShowDocumentModal
+            disapleOnPress
+            name={documentData.documentDisplayName}
+            url={documentData.documentDownloadURL}
+          />
+        )}
 
-          {messageType === "image" && (
-            <MessageItemImage
-              SHOW_IMAGES={2}
-              item={item.route.params}
-              showImages={2}
-              disapleOnPress
-            />
-          )}
-          {messageType === "document" && (
-            <ShowDocumentModal
-              disapleOnPress
-              name={documentData.documentDisplayName}
-              url={documentData.documentDownloadURL}
-            />
-          )}
+        <AppText numberOfLines={3} style={styles.messageBody}>
+          {messageFuncs.autolinkText(messageBody, null)}
+        </AppText>
+      </View>
+      {roomMemebers.length > 1 ? (
+        <View style={styles.listContainer}>
+          <AppTitle>Read by</AppTitle>
 
-          <AppText
-            numberOfLines={3}
-            style={{ overflow: "hidden", paddingBottom: 10 }}
-          >
-            {messageFuncs.autolinkText(messageBody, null)}
+          {fullData.map((member) => listItem(member))}
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <AppText style={{ color: colors.black }}>
+            {appMessages.notifications.ONLY_MEMBER}
           </AppText>
         </View>
-        {roomMemebers.length > 1 ? (
-          <View style={{ margin: 20 }}>
-            <AppText style={{ marginBottom: 10 }}>Read by</AppText>
-
-            {fullData.map((member) => listItem(member))}
-          </View>
-        ) : (
-          <View style={styles.container}>
-            <AppText style={{ color: colors.black }}>
-              You are only member in this chat.
-            </AppText>
-          </View>
-        )}
-      </ScrollView>
-    </Screen>
+      )}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 25,
-    paddingTop: 10,
+    padding: 10,
+    paddingBottom: 0,
+    backgroundColor: colors.background1,
+    margin: 7,
+    borderRadius: 6,
+  },
+  listItemContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightgrey,
+    marginBottom: 5,
+  },
+  listContainer: { padding: 20 },
+  indicator: {
+    opacity: 1,
+    marginTop: 20,
+  },
+  timestamp: {
+    position: "absolute",
+    right: 0,
     alignSelf: "center",
   },
+  messageBody: { overflow: "hidden", paddingBottom: 10 },
   me: { alignItems: "flex-end" },
   otherUser: { alignItems: "flex-start" },
 });

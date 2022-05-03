@@ -1,8 +1,6 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
 import AppTouchableIcon from "../AppTouchableIcon";
-import colors from "../../../config/colors";
 
 function SeenButton({ onPress }) {
   return (

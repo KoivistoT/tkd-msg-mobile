@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   },
   edit: { fontSize: 16, color: colors.dark, alignSelf: "center" },
   modal: { backgroundColor: "red", flex: 1 },
-
   title: {
     fontSize: 20,
     color: colors.white,

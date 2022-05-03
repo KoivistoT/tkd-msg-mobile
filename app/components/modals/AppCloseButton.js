@@ -1,17 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import AppTouchableIcon from "../AppTouchableIcon";
 
 function AppCloseButton({ onPress, top = 0, size, color }) {
   return (
-    <View style={[styles.container, { top }]}>
-      <AppTouchableIcon
-        size={size}
-        color={color}
-        name="close"
-        onPress={onPress}
-      />
-    </View>
+    <AppTouchableIcon
+      size={size}
+      color={color}
+      name="close"
+      onPress={onPress}
+      containerStyle={[styles.container, { top }]}
+    />
   );
 }
 

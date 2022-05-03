@@ -53,7 +53,7 @@ function ShowImageModal({ image, item, onLongPress }) {
         setSaveButtonText("Save image");
       }, 800);
     } else {
-      alert(appMessages.questions.LIBRARY_PERMISSION.body);
+      alert(appMessages.notifications.LIBRARY_PERMISSION);
     }
   };
 

@@ -13,7 +13,7 @@ function ImageInput({ imageUri, onChangeImage }) {
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!granted) alert(appMessages.questions.LIBRARY_PERMISSION.body);
+    if (!granted) alert(appMessages.notifications.LIBRARY_PERMISSION);
   };
 
   const handlePress = (select) => {
@@ -51,7 +51,7 @@ function ImageInput({ imageUri, onChangeImage }) {
   const useCamera = async () => {
     try {
       const granted = await ImagePicker.requestCameraPermissionsAsync();
-      if (!granted) alert(appMessages.questions.CAMERA_PERMISSION.body);
+      if (!granted) alert(appMessages.notifications.CAMERA_PERMISSION);
 
       const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
