@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import colors from "../../config/colors";
 import AppText from "./AppText";
 
@@ -9,17 +8,14 @@ function AppButton({
   onPress,
   color = "white",
   backgroundColor = "primary",
-  buttonWidth = 150,
   fontSize,
   fontWeight,
-  iconSize,
-  margin = 0,
-  icon,
+  style,
 }) {
   return (
     <TouchableOpacity
       activeOpacity="0.7"
-      style={{ padding: 5 }}
+      style={[styles.container, style]}
       onPress={onPress}
       color={"primary"}
     >
@@ -27,11 +23,7 @@ function AppButton({
         style={[
           styles.button,
           {
-            flexDirection: "row",
-            justifyContent: "center",
             backgroundColor: colors[backgroundColor],
-            minWidth: buttonWidth,
-            margin: margin,
           },
         ]}
       >
@@ -47,23 +39,18 @@ function AppButton({
         >
           {title}
         </AppText>
-        {icon && (
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name={icon}
-            size={iconSize}
-            color={colors.white}
-          />
-        )}
       </View>
     </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
+  container: { padding: 5 },
   button: {
     borderRadius: 10,
     backgroundColor: colors.primary,
     alignSelf: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   text: {
     margin: 5,

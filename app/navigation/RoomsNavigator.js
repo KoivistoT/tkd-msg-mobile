@@ -1,12 +1,8 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import RoomsListScreen from "../../screens/RoomsListScreen.js";
 import MessageScreen from "../../screens/MessageScreen.js";
 import RoomSetupScreen from "../../screens/RoomSetupScreen.js";
-import { Entypo } from "@expo/vector-icons";
-import { navigate } from "./rootNavigation.js";
-import routes from "./routes.js";
 import { MemoReadByList } from "../components/messageItems/ReadByList.js";
 import HeaderRightNewRoom from "../components/HeaderRightNewRoom.js";
 

@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { View, StyleSheet, ScrollView } from "react-native";
 import * as Yup from "yup";
-import Screen from "../Screen";
 import AppForm from "../forms/AppForm";
 import AppFormField from "../forms/AppFormField";
 import SubmitButton from "../forms/SubmitButton";
-import { useDispatch, useSelector } from "react-redux";
-import createTask from "../../../utility/createTask";
+import { useDispatch } from "react-redux";
 import AppFormPicker from "./AppFormPicker";
-
 import { editUserData, userDataFieldEdited } from "../../../store/users";
-import AppText from "../AppText";
-import colors from "../../../config/colors";
 
 const accountTypeOptions = [
   { label: "Admin", value: "admin" },
@@ -51,7 +46,6 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
       userId,
     };
 
-    //  { currentUserId, fieldName, value: fieldValue };
     const fields = [];
     Object.keys(payload).forEach((key) => {
       fields.push({
@@ -62,9 +56,7 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
     });
 
     dispatch(userDataFieldEdited(fields));
-
     dispatch(editUserData(payload));
-
     closeModal();
   };
 
@@ -143,15 +135,8 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
             showLabel
           />
         </>
-        <View
-          style={{
-            flexDirection: "row",
-            alignSelf: "center",
-            marginVertical: 20,
-          }}
-        >
-          <SubmitButton title="Save changes" />
-        </View>
+
+        <SubmitButton style={styles.button} title="Save changes" />
       </AppForm>
     </ScrollView>
   );
@@ -159,5 +144,6 @@ function EditUserForm({ userData, closeModal, hideFields = [] }) {
 
 const styles = StyleSheet.create({
   container: { paddingTop: 10 },
+  button: { marginTop: 15 },
 });
 export default EditUserForm;

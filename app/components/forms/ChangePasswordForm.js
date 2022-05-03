@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
-import Screen from "../Screen";
 import AppForm from "./AppForm";
 import AppFormField from "./AppFormField";
 import SubmitButton from "./SubmitButton";
-import { useDispatch, useStore } from "react-redux";
-import { changeRoomName, createChannel } from "../../../store/rooms";
+import { useDispatch } from "react-redux";
 import AppKeyboardDismiss from "../AppKeyboardDismiss";
 import asyncStorageFuncs from "../../../utility/asyncStorageFuncs";
 import { editPassword } from "../../../store/currentUser";
@@ -77,7 +75,6 @@ function ChangePasswordForm({
                 secureTextEntry
                 autoCapitalize="none"
                 autoCorrect={false}
-                // icon="account-outline"
                 name="currentPassword"
                 placeholder={"Current password"}
               />
@@ -88,7 +85,6 @@ function ChangePasswordForm({
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
-              // icon="account-outline"
               name="newPassword"
               placeholder={"New password"}
             />
@@ -98,24 +94,15 @@ function ChangePasswordForm({
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
-              // icon="account-outline"
               name="confirmPassword"
               placeholder="Confirm password"
             />
 
-            <View
-              style={{
-                flexDirection: "row",
-                alignSelf: "center",
-                marginTop: 20,
-              }}
-            >
-              <SubmitButton
-                backgroundColor="white"
-                color="black"
-                title="Save new password"
-              />
-            </View>
+            <SubmitButton
+              backgroundColor="white"
+              color="black"
+              title="Save new password"
+            />
           </>
         </AppForm>
       </View>

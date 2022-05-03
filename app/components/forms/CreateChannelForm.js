@@ -6,12 +6,7 @@ import AppForm from "./AppForm";
 import AppFormField from "./AppFormField";
 import SubmitButton from "./SubmitButton";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import {
-  createChannel,
-  getRoomByName,
-  selectRoomLoading,
-} from "../../../store/rooms";
-import AppText from "../AppText";
+import { createChannel, selectRoomLoading } from "../../../store/rooms";
 import { selectCurrentUserId } from "../../../store/currentUser";
 
 const validationSchema = Yup.object().shape({
@@ -41,16 +36,17 @@ function CreateChannelForm() {
       >
         <>
           <AppFormField
-            style={{ padding: 10 }}
+            style={styles.email}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="email-address"
             name="roomName"
             placeholder="Channel name"
           />
-          <View style={{ marginTop: 20 }}>
+
+          <View style={styles.descriptionContainer}>
             <AppFormField
-              style={{ height: 100, padding: 10 }}
+              style={styles.description}
               autoCapitalize="none"
               autoCorrect={false}
               multiline
@@ -63,16 +59,11 @@ function CreateChannelForm() {
               <ActivityIndicator
                 animating={true}
                 size="small"
-                style={{
-                  opacity: 1,
-                  marginTop: 20,
-                }}
+                style={styles.indicator}
                 color="#999999"
               />
             ) : (
-              <View style={{ marginTop: 10 }}>
-                <SubmitButton title="Create channel" />
-              </View>
+              <SubmitButton title="Create channel" />
             )}
           </View>
         </>
@@ -87,6 +78,13 @@ const styles = StyleSheet.create({
 
     marginHorizontal: 10,
     flex: 1,
+  },
+  description: { height: 100, padding: 10 },
+  descriptionContainer: { marginVertical: 15 },
+  email: { padding: 10 },
+  indicator: {
+    opacity: 1,
+    marginTop: 20,
   },
 });
 export default CreateChannelForm;

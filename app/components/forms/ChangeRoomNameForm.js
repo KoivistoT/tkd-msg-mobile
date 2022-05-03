@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
-import Screen from "../Screen";
 import AppForm from "./AppForm";
 import AppFormField from "./AppFormField";
 import SubmitButton from "./SubmitButton";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import {
-  changeRoomName,
-  createChannel,
-  requestStateCleared,
-  selectRoomDataById,
-  selectRoomLoading,
-  setLoading,
-} from "../../../store/rooms";
-import colors from "../../../config/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { changeRoomName, selectRoomDataById } from "../../../store/rooms";
 import AppButtonWithLoader from "../AppButtonWithLoader";
 
 const validationSchema = Yup.object().shape({
@@ -23,18 +14,7 @@ const validationSchema = Yup.object().shape({
 
 function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
   const dispatch = useDispatch();
-  const requestId = Date.now();
   const roomData = useSelector(selectRoomDataById(roomId));
-
-  // const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   if (requestState === "started") {
-  //   }
-  //   if (!requestState) {
-  //   }
-  //   if (requestState === "succeed") {
-  //   }
-  // }, [requestState]);
 
   const handleSubmit = async ({ newRoomName }) => {
     if (roomData.roomName === newRoomName) {
@@ -57,13 +37,11 @@ function ChangeRoomNameForm({ closeModal, roomId, roomNameNow }) {
           <AppFormField
             autoCapitalize="none"
             autoCorrect={false}
-            // icon="account-outline"
             autoFocus
             name="newRoomName"
             placeholder={"Room name"}
           />
           <AppButtonWithLoader
-            // id="a1a1" // id voisi tulla tuolta konmpnetista date now
             requestId={"changeRoomName"}
             succeedFunctions={[() => closeModal()]}
             successMessage="New name saved!"
@@ -83,4 +61,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
 export default ChangeRoomNameForm;

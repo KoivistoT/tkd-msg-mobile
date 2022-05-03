@@ -1,13 +1,12 @@
 import React from "react";
-import { View, Text, Platform, StyleSheet, TextInput } from "react-native";
-
 import { useFormikContext } from "formik";
 import AppButton from "../AppButton";
 
-function SubmitButton({ title, buttonWidth, backgroundColor, color }) {
+function SubmitButton({ title, buttonWidth, backgroundColor, color, style }) {
   const { handleSubmit } = useFormikContext();
   return (
     <AppButton
+      style={style}
       color={color}
       backgroundColor={backgroundColor}
       buttonWidth={buttonWidth}
@@ -17,5 +16,4 @@ function SubmitButton({ title, buttonWidth, backgroundColor, color }) {
   );
 }
 
-const styles = StyleSheet.create({});
 export default SubmitButton;

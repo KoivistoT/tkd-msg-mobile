@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-
-import { View, StyleSheet, Keyboard, ScrollView } from "react-native";
+import React from "react";
+import { ScrollView } from "react-native";
 import * as Yup from "yup";
-import Screen from "../Screen";
-
 import AppForm from "../forms/AppForm";
 import AppFormField from "../forms/AppFormField";
 import SubmitButton from "../forms/SubmitButton";
-import { useDispatch, useSelector, useStore } from "react-redux";
-
+import { useDispatch } from "react-redux";
 import AppFormPicker from "./AppFormPicker";
-
 import { createUser } from "../../../store/users";
 
 const accountTypeOptions = [
@@ -32,9 +27,7 @@ const validationSchema = Yup.object().shape({
 const MARGIN_BOTTOM = 10;
 const FIELD_WIDTH = "80%";
 
-function CreateUserForm({ navigation, closeModal }) {
-  const [loading, setLoading] = useState(false);
-
+function CreateUserForm({ closeModal }) {
   const dispatch = useDispatch();
 
   const handleSubmit = async ({
@@ -46,8 +39,7 @@ function CreateUserForm({ navigation, closeModal }) {
     email,
     phone,
   }) => {
-    setLoading(true);
-    await dispatch(
+    dispatch(
       createUser(
         password,
         accountType,
@@ -59,17 +51,11 @@ function CreateUserForm({ navigation, closeModal }) {
       )
     );
 
-    // if (errorMessage) {
-    //   console.log("Ei onnistunut päonnistui");
-    //   setLoading(false);
-    // } else {
-
     closeModal();
-    // }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView>
       <AppForm
         initialValues={{
           accountType: "basic",
@@ -166,18 +152,11 @@ function CreateUserForm({ navigation, closeModal }) {
             textContentType="password"
           />
 
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <SubmitButton title="Submit" />
-          </View>
+          <SubmitButton title="Submit" />
         </>
       </AppForm>
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 25,
-  },
-});
 export default CreateUserForm;

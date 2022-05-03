@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-
 import colors from "../../../config/colors";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import AppText from "../AppText";
@@ -30,7 +29,6 @@ import {
   messageSelectionRemoved,
   selectSelectedMessage,
 } from "../../../store/general";
-
 import MessageOptionsButtonGroup from "./MessageOptionsButtonGroup";
 import MessageHeader from "./MessageHeader";
 import timeFuncs from "../../../utility/timeFuncs";
@@ -38,6 +36,7 @@ import Reactions from "./Reactions";
 import MessageText from "./MessageText";
 import { selectCurrentUserId } from "../../../store/currentUser";
 import confirmAlert from "../../../utility/confirmAlert";
+import appMessages from "../../../config/appMessages";
 
 const SHOW_IMAGES = 2;
 
@@ -131,7 +130,10 @@ function MessageItemMainChild({
     );
   };
   const onDeleteMessage = async () => {
-    const result = await confirmAlert("Haluatko poistaa viestin?", "");
+    const result = await confirmAlert(
+      appMessages.questions.REMOVE_MESSAGE.title,
+      appMessages.questions.REMOVE_MESSAGE.body
+    );
     if (!result) return;
 
     dispatch(messageSelectionRemoved());

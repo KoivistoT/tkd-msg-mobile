@@ -1,42 +1,21 @@
-import React, { useState } from "react";
-import { View, Text, Platform, StyleSheet, TextInput } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import AppTextInput from "../AppTextInput";
 import { useFormikContext } from "formik";
 import ErrorMessage from "../ErrorMessage";
 import AppText from "../AppText";
 import colors from "../../../config/colors";
 
 function AppFormPicker({ name, width, options, ...otherProps }) {
-  //   const [selectedAccountType, setSelectedAccountType] = useState("worker");
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
 
   return (
     <>
-      <View
-        style={{
-          backgroundColor: colors.primary,
-          marginTop: 10,
-          borderTopEndRadius: 5,
-          borderTopStartRadius: 5,
-          top: 70,
-          width: "70%",
-          alignSelf: "center",
-        }}
-      >
-        <AppText
-          style={{
-            padding: 5,
-            marginLeft: 5,
-            color: colors.white,
-            alignSelf: "center",
-          }}
-        >
-          {otherProps.placeholder}
-        </AppText>
+      <View style={styles.container}>
+        <AppText style={styles.text}>{otherProps.placeholder}</AppText>
       </View>
-      <View style={{ width: "70%", alignSelf: "center", top: 30 }}>
+      <View style={styles.picker}>
         <Picker
           onBlur={() => setFieldTouched(name)}
           selectedValue={values[name]}
@@ -56,5 +35,22 @@ function AppFormPicker({ name, width, options, ...otherProps }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.primary,
+    marginTop: 10,
+    borderTopEndRadius: 5,
+    borderTopStartRadius: 5,
+    top: 70,
+    width: "70%",
+    alignSelf: "center",
+  },
+  text: {
+    padding: 5,
+    marginLeft: 5,
+    color: colors.white,
+    alignSelf: "center",
+  },
+  picker: { width: "70%", alignSelf: "center", top: 30 },
+});
 export default AppFormPicker;

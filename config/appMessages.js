@@ -31,6 +31,20 @@ export default {
       body: "",
       success: "User activated",
     },
+    REMOVE_IMAGE: {
+      title: "Remove",
+      body: "Are you sure you want to remove this image?",
+    },
+    CAMERA_PERMISSION: {
+      body: "You need to enable permission to access the camera.",
+    },
+    LIBRARY_PERMISSION: {
+      body: "You need to enable permission to access the library.",
+    },
+    REMOVE_MESSAGE: {
+      title: "Haluatko poistaa viestin?",
+      body: "",
+    },
   },
   notifications: {
     USER_REMOVED: "Käyttäjä on poistettu. Et voi lähettää hänelle viestejä.",

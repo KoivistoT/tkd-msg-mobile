@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import colors from "../../../config/colors";
+import taskTypes from "../../../config/taskTypes";
 import { changeMembers, roomTasksResived } from "../../../store/rooms";
 import AppButton from "../AppButton";
 import AppCheckBox from "../AppCheckBox";
@@ -25,7 +26,7 @@ function SetupSelectUsers({
   const onSaveChanges = () => {
     roomMembersOnStart.current = selectedUsers;
     const newMemebers = selectedUsersRef.current;
-    const newTask = createTask("membersChanged", {
+    const newTask = createTask(taskTypes.membersChanged, {
       _id: roomId,
       members: newMemebers,
     });

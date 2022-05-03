@@ -16,34 +16,22 @@ import { ActivityIndicator } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-import { useSelector, useStore } from "react-redux";
-import { selectRoomImagesByRoomId } from "../../../store/msgStore";
-import { selectAllUsersMinimal } from "../../../store/users";
-import userFuncs from "../../../utility/userFuncs";
-import timeFuncs from "../../../utility/timeFuncs";
+import { useStore } from "react-redux";
+import appMessages from "../../../config/appMessages";
 
 function ShowImageModal({ image, item, onLongPress }) {
-  const { roomId, createdAt, postedByUser } = item;
-
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  // const roomImages = useSelector(selectRoomImagesByRoomId(roomId)) || [];
-  // console.log(roomImages.length);
   const store = useStore();
+  const { roomId } = item;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [saveButtonText, setSaveButtonText] = useState("Save image");
+  const [imageIndex, setImageIndex] = useState();
   const roomImages = store.getState().entities.msgStore.images[roomId] || [];
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  // tämä voisi olla myös vain store haku. Testaa, kun tulee uusi kuva tämän ollessa auki, paitsi sitten ei indexit tule oikein, jos ei heti ole
-  const allUsers = useSelector(selectAllUsersMinimal);
 
   useEffect(() => {
     if (roomImages.findIndex((imageURL) => imageURL === image) !== undefined) {
       setImageIndex(roomImages.findIndex((imageURL) => imageURL === image));
     }
   }, [roomImages]);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [saveButtonText, setSaveButtonText] = useState("Save image");
-  const [imageIndex, setImageIndex] = useState();
 
   const saveImage = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -65,7 +53,7 @@ function ShowImageModal({ image, item, onLongPress }) {
         setSaveButtonText("Save image");
       }, 800);
     } else {
-      alert("You need to enable permission to access the library.");
+      alert(appMessages.questions.LIBRARY_PERMISSION.body);
     }
   };
 
@@ -83,12 +71,6 @@ function ShowImageModal({ image, item, onLongPress }) {
     <View>
       <Modal animationType="slide" visible={modalVisible}>
         <View style={styles.header}>
-          {/* <AppText
-            style={{ alignSelf: "center", marginTop: 6 }}
-          >{`${userFuncs.getFullName(
-            allUsers,
-            postedByUser
-          )}  ${timeFuncs.getDateAndTime(createdAt)}`}</AppText> */}
           <TouchableOpacity
             activeOpacity={1}
             style={styles.headerButtons}
@@ -143,17 +125,7 @@ function ShowImageModal({ image, item, onLongPress }) {
       >
         <Image
           transitionDuration={0}
-          style={[
-            styles.image,
-
-            // {
-            //   transform: [
-            //     {
-            //       rotate: Math.floor(createdAt.slice(17, 19) - 30) + "deg",
-            //     },
-            //   ],
-            // },
-          ]}
+          style={[styles.image]}
           source={{ uri: image }}
         />
       </TouchableOpacity>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import colors from "../../../config/colors";
+import taskTypes from "../../../config/taskTypes";
 import { changeRoomDescription, roomTasksResived } from "../../../store/rooms";
 import AppButton from "../AppButton";
 import AppText from "../AppText";
@@ -26,7 +27,7 @@ function SetupDescription({ roomData, currentUserData }) {
       description: descriptionText,
     };
 
-    const newTask = createTask("roomDescriptionChanged", payload);
+    const newTask = createTask(taskTypes.roomDescriptionChanged, payload);
 
     dispatch(roomTasksResived(newTask));
     dispatch(

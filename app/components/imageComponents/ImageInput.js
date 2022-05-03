@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, StyleSheet, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import colors from "../../../config/colors";
 import ToolBarButton from "../ToolbarButton";
+import AppTouchableIcon from "../AppTouchableIcon";
+import appMessages from "../../../config/appMessages";
 
 function ImageInput({ imageUri, onChangeImage }) {
   useEffect(() => {
@@ -12,7 +13,7 @@ function ImageInput({ imageUri, onChangeImage }) {
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!granted) alert("You need to enable permission to access the library.");
+    if (!granted) alert(appMessages.questions.LIBRARY_PERMISSION.body);
   };
 
   const handlePress = (select) => {
@@ -24,10 +25,11 @@ function ImageInput({ imageUri, onChangeImage }) {
         useCamera();
         break;
       case "remove":
-        Alert.alert("Remove", "Are you sure you want to remove this image?", [
-          { text: "Yes", onPress: () => onChangeImage(null) },
-          { text: "No" },
-        ]);
+        Alert.alert(
+          appMessages.questions.REMOVE_IMAGE.title,
+          appMessages.questions.REMOVE_IMAGE.body,
+          [{ text: "Yes", onPress: () => onChangeImage(null) }, { text: "No" }]
+        );
         break;
       default:
         break;
@@ -49,8 +51,7 @@ function ImageInput({ imageUri, onChangeImage }) {
   const useCamera = async () => {
     try {
       const granted = await ImagePicker.requestCameraPermissionsAsync();
-      if (!granted)
-        alert("You need to enable permission to access the camera.");
+      if (!granted) alert(appMessages.questions.CAMERA_PERMISSION.body);
 
       const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -81,18 +82,16 @@ function ImageInput({ imageUri, onChangeImage }) {
       )}
       {imageUri && (
         <View style={{ padding: 5 }}>
-          <TouchableOpacity
-            activeOpacity={1}
-            style={styles.button}
+          <AppTouchableIcon
+            source="mci"
+            name="close"
+            color={colors.white}
+            size={18}
+            style={styles.icon}
+            containerStyle={styles.button}
             onPress={() => handlePress("remove")}
-          >
-            <MaterialCommunityIcons
-              style={styles.icon}
-              name="close"
-              color={colors.white}
-              size={22}
-            ></MaterialCommunityIcons>
-          </TouchableOpacity>
+          />
+
           <View style={styles.container}>
             <Image source={{ uri: imageUri }} style={styles.image} />
           </View>
