@@ -1,0 +1,27 @@
+{
+  "build": {
+    "release": {
+      "releaseChannel": "1"
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    }
+  },
+  "cli": {
+    "version": ">= 0.47.0"
+  }
+}

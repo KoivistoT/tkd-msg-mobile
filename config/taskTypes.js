@@ -1,0 +1,17 @@
+export default {
+  userDeleted: "userDeleted",
+  userArchived: "userArchived",
+  userActivated: "userActivated",
+  newUser: "newUser",
+  userTemporaryDeleted: "userTemporaryDeleted",
+  userDataEdited: "userDataEdited",
+  newMessage: "new message",
+  messageDeleted: "messageDeleted",
+  messageUpdated: "messageUpdated",
+  roomNameChanged: "roomNameChanged",
+  roomDescriptionChanged: "roomDescriptionChanged",
+  membersChanged: "membersChanged",
+  roomArchived: "roomArchived",
+  roomActivated: "roomActivated",
+  roomLatestMessageChanged: "roomLatestMessageChanged",
+};
